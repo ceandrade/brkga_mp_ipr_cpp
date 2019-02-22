@@ -2,18 +2,16 @@
  * brkga_mp_ipr.hpp: Biased Random-Key Genetic Algorithm Multi-Parent
  *                   with Implict Path Relinking.
  *
- * Author: Carlos Eduardo de Andrade
- *         <cea@research.att.com / ce.andrade@gmail.com>
+ * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * All Rights Reserved.
  *
- * (c) Copyright 2015-2018.
- *     Institute of Computing, University of Campinas.
- *     AT&T Labs Research.
+ * (c) Copyright 2010, 2011 Rodrigo F. Toso, Mauricio G.C. Resende.
+ * All Rights Reserved.
  *
- * (c) Copyright 2010, 2011 Rodrigo F. Toso <rtoso@cs.rutgers.edu>
- *     and Mauricio G.C. Resende <mgcr@research.att.com>.
+ * Created on : Jan 06, 2015 by andrade.
+ * Last update: Feb 21, 2019 by andrade.
  *
- *  Created on : Jan 06, 2015 by andrade.
- *  Last update: Oct 17, 2018 by andrade.
+ * This code is released under LICENSE.md.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -93,7 +91,7 @@ enum class Selection {
     /// Chooses uniformly random solutions from the elite sets.
     RANDOMELITE
 };
-}
+} // namespace PathRelinking
 
 /// Specifies a bias function when choosing parents to mating
 /// (`r` is a given parameter). This function substitutes the `rhoe`
@@ -123,6 +121,9 @@ enum class BiasFunction {
     // r^-2
     /// \f$r^{-2}\f$
     QUADRATIC,
+
+    /// Indicates a custom function supplied by the user.
+    CUSTOM
 };
 
 //----------------------------------------------------------------------------//
@@ -342,9 +343,11 @@ public:
  * \brief Encapsulates a population of chromosomes.
  *
  * Encapsulates a population of chromosomes providing supporting methods for
- * making the implementation easier. All methods and attributes are public and
- * can be manipulated directly from BRKGA algorithms. Note that this class is
- * not meant to be used externally of this unit.
+ * making the implementation easier.
+ *
+ * **NOTE:** All methods and attributes are public and can be manipulated
+ * directly from BRKGA algorithms. Note that this class is not meant to be used
+ * externally of this unit.
  */
 class Population {
 public:
@@ -486,6 +489,321 @@ public:
     }
     //@}
 };
+
+//----------------------------------------------------------------------------//
+// BRKGA Params class.
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Represents the BRKGA and IPR hyper-parameters.
+ */
+class BrkgaParams {
+public:
+    /** \name BRKGA Hyper-parameters */
+    //@{
+    /// Number of elements in the population.
+    unsigned population_size;
+
+    /// Percentage of individuals to become the elite set (0, 1].
+    double elite_percentage;
+
+    /// Percentage of mutants to be inserted in the population.
+    unsigned mutants_percentage;
+
+    /// Number of elite parents for mating.
+    unsigned num_elite_parents;
+
+    /// Number of total parents for mating.
+    unsigned total_parents;
+
+    /// Type of bias that will be used.
+    BiasFunction bias_type;
+
+    /// Number of independent parallel populations.
+    unsigned num_independent_populations;
+    //@}
+
+    /** \name Path Relinking parameters */
+    //@{
+    /// Number of pairs of chromosomes to be tested to path relinking.
+    unsigned pr_number_pairs;
+
+    /// Mininum distance between chromosomes selected to path-relinking.
+    double pr_minimum_distance;
+
+    /// Path relinking type.
+    PathRelinking::Type pr_type;
+
+    /// Individual selection to path-relinking.
+    PathRelinking::Selection pr_selection;
+
+    /// Defines the block size based on the size of the population.
+    double alpha_block_size;
+
+    /// Percentage / path size to be computed. Value in (0, 1].
+    double pr_percentage;
+    //@}
+
+public:
+    /** \name Default operators */
+    //@{
+    /// Default constructor.
+    BrkgaParams():
+        population_size(0),
+        elite_percentage(0.0),
+        mutants_percentage(0.0),
+        num_elite_parents(0),
+        total_parents(0),
+        bias_type(BiasFunction::CONSTANT),
+        num_independent_populations(0),
+        pr_number_pairs(0),
+        pr_minimum_distance(0.0),
+        pr_type(PathRelinking::Type::DIRECT),
+        pr_selection(PathRelinking::Selection::BESTSOLUTION),
+        alpha_block_size(0.0),
+        pr_percentage(0.0)
+    {}
+
+    /// Assignment operator for complaince.
+    BrkgaParams& operator=(const BrkgaParams&) = default;
+
+    /// Destructor.
+    ~BrkgaParams() = default;
+    //@}
+};
+
+//----------------------------------------------------------------------------//
+// External Control Params class.
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Represents additional control parameters that can be used outside this
+ * framework.
+ *
+ * These parameters are not used directly in the BRKGA nor in the path
+ * relinking. However, they are loaded from the configuration file and can be
+ * called by the user to perform out-loop controlling.
+ */
+class ExternalControlParams {
+public:
+    /// Interval at which elite chromosomes are exchanged (0 means no exchange).
+    unsigned exchange_interval;
+
+    /// Number of elite chromosomes exchanged from each population.
+    unsigned num_exchange_indivuduals;
+
+    /// Interval at which the populations are reset (0 means no reset).
+    unsigned reset_interval;
+
+public:
+    /** \name Default operators */
+    //@{
+    /// Default constructor.
+    ExternalControlParams():
+        exchange_interval(0),
+        num_exchange_indivuduals(0),
+        reset_interval(0)
+    {}
+
+    /// Assignment operator for complaince.
+    ExternalControlParams& operator=(const ExternalControlParams&) = default;
+
+    /// Destructor.
+    ~ExternalControlParams() = default;
+    //@}
+};
+
+//----------------------------------------------------------------------------//
+// Loading the parameters from file
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Read the parameters from a configuration file.
+ *
+ * \param filename the configuration file.
+ * \returns a tuple containing the BRKGA and external control parameters.
+ * \throw std::fstream::failure in case of errors in the file.
+ */
+std::pair<BrkgaParams, ExternalControlParams>
+readConfiguration(const std::string& filename) {
+    std::ifstream input(filename, std::ios::in);
+    std::stringstream error_msg;
+
+    if(!input) {
+        error_msg << "File '" << filename << "' cannot be opened!";
+        throw std::fstream::failure(error_msg.str());
+    }
+
+    std::unordered_map<std::string, bool> tokens({
+        {"POPULATION_SIZE", false},
+        {"ELITE_PERCENTAGE", false},
+        {"MUTANTS_PERCENTAGE", false},
+        {"NUM_ELITE_PARENTS", false},
+        {"TOTAL_PARENTS", false},
+        {"BIAS_TYPE", false},
+        {"NUM_INDEPENDENT_POPULATIONS", false},
+        {"PR_NUMBER_PAIRS", false},
+        {"PR_MINIMUM_DISTANCE", false},
+        {"PR_TYPE", false},
+        {"PR_SELECTION", false},
+        {"ALPHA_BLOCK_SIZE", false},
+        {"PR_PERCENTAGE", false},
+        {"EXCHANGE_INTERVAL", false},
+        {"NUM_EXCHANGE_INDIVUDUALS", false},
+        {"RESET_INTERVAL", false}
+    });
+
+    BrkgaParams brkga_params;
+    ExternalControlParams control_params;
+
+    std::string line;
+    unsigned line_count = 0;
+
+    while(std::getline(input, line)) {
+        ++line_count;
+        std::string::size_type pos = line.find_first_not_of(" \t\n\v");
+
+        // Ignore all comments and blank lines.
+        if(pos == std::string::npos || line[pos] == '#')
+            continue;
+
+        std::stringstream line_stream(line);
+        std::string token, data;
+
+        line_stream >> token >> data;
+
+        std::transform(token.begin(), token.end(), token.begin(), toupper);
+        if(tokens.find(token) == tokens.end()) {
+            error_msg << "Invalid token on line " << line_count
+                      << ": " << token;
+            throw std::fstream::failure(error_msg.str());
+        }
+
+        if(tokens[token]) {
+            error_msg << "Duplicate attribute on line " << line_count
+                      << ": " << token << " already read!";
+            throw std::fstream::failure(error_msg.str());
+        }
+
+        std::stringstream data_stream(data);
+        bool fail = false;
+
+        // TODO: for c++17, we may use std:any to short this code using a loop.
+        if(token == "POPULATION_SIZE")
+            fail = !bool(data_stream >> brkga_params.population_size);
+        else
+        if(token == "ELITE_PERCENTAGE")
+            fail = !bool(data_stream >> brkga_params.elite_percentage);
+        else
+        if(token == "MUTANTS_PERCENTAGE")
+            fail = !bool(data_stream >> brkga_params.mutants_percentage);
+        else
+        if(token == "NUM_ELITE_PARENTS")
+            fail = !bool(data_stream >> brkga_params.num_elite_parents);
+        else
+        if(token == "TOTAL_PARENTS")
+            fail = !bool(data_stream >> brkga_params.total_parents);
+        else
+        if(token == "BIAS_TYPE")
+            fail = !bool(data_stream >> brkga_params.bias_type);
+        else
+        if(token == "NUM_INDEPENDENT_POPULATIONS")
+            fail = !bool(data_stream >> brkga_params.num_independent_populations);
+        else
+        if(token == "PR_NUMBER_PAIRS")
+            fail = !bool(data_stream >> brkga_params.pr_number_pairs);
+        else
+        if(token == "PR_MINIMUM_DISTANCE")
+            fail = !bool(data_stream >> brkga_params.pr_minimum_distance);
+        else
+        if(token == "PR_TYPE")
+            fail = !bool(data_stream >> brkga_params.pr_type);
+        else
+        if(token == "PR_SELECTION")
+            fail = !bool(data_stream >> brkga_params.pr_selection);
+        else
+        if(token == "ALPHA_BLOCK_SIZE")
+            fail = !bool(data_stream >> brkga_params.alpha_block_size);
+        else
+        if(token == "PR_PERCENTAGE")
+            fail = !bool(data_stream >> brkga_params.pr_percentage);
+        else
+        if(token == "EXCHANGE_INTERVAL")
+            fail = !bool(data_stream >> control_params.exchange_interval);
+        else
+        if(token == "NUM_EXCHANGE_INDIVUDUALS")
+            fail = !bool(data_stream >> control_params.num_exchange_indivuduals);
+        else
+        if(token == "RESET_INTERVAL")
+            fail = !bool(data_stream >> control_params.reset_interval);
+
+        if(fail) {
+            error_msg << "Invalid value for '" << token
+                      << "' on line "<< line_count
+                      << ": '" << data << "'";
+            throw std::fstream::failure(error_msg.str());
+        }
+
+        tokens[token] = true;
+    }
+
+    for(const auto& attribute_flag : tokens) {
+        if(!attribute_flag.second) {
+            error_msg << "Argument '" << attribute_flag.first
+                      << "' was not supplied in the config file";
+            throw std::fstream::failure(error_msg.str());
+        }
+    }
+
+    return std::make_pair(std::move(brkga_params), std::move(control_params));
+}
+
+//----------------------------------------------------------------------------//
+// Writing the parameters into file
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Write the parameters into a file..
+ *
+ * \param filename the configuration file.
+ * \param brkga_params the BRKGA parameters.
+ * \param control_params the external control parameters. Default is an empty
+ *        object.
+ * \throw std::fstream::failure in case of errors in the file.
+ */
+void writeConfiguration(const std::string& filename,
+        const BrkgaParams& brkga_params,
+        const ExternalControlParams& control_params = ExternalControlParams()) {
+
+    std::ofstream output(filename, std::ios::out);
+    if(!output) {
+        std::stringstream error_msg;
+        error_msg << "File '" << filename << "' cannot be opened!";
+        throw std::fstream::failure(error_msg.str());
+    }
+
+    output << "population_size " << brkga_params.population_size << "\n"
+           << "elite_percentage " << brkga_params.elite_percentage << "\n"
+           << "mutants_percentage " << brkga_params.mutants_percentage << "\n"
+           << "num_elite_parents " << brkga_params.num_elite_parents << "\n"
+           << "total_parents " << brkga_params.total_parents << "\n"
+           << "bias_type " << brkga_params.bias_type << "\n"
+           << "num_independent_populations "
+           << brkga_params.num_independent_populations << "\n"
+           << "pr_number_pairs " << brkga_params.pr_number_pairs << "\n"
+           << "pr_minimum_distance " << brkga_params.pr_minimum_distance << "\n"
+           << "pr_type " << brkga_params.pr_type << "\n"
+           << "pr_selection " << brkga_params.pr_selection << "\n"
+           << "alpha_block_size " << brkga_params.alpha_block_size << "\n"
+           << "pr_percentage " << brkga_params.pr_percentage << "\n"
+           << "exchange_interval " << control_params.exchange_interval << "\n"
+           << "num_exchange_indivuduals "
+           << control_params.num_exchange_indivuduals << "\n"
+           << "reset_interval " << control_params.reset_interval
+           << std::endl;
+
+    output.close();
+}
 
 //----------------------------------------------------------------------------//
 // The Multi-Parent Biased Random-key Genetic Algorithm with Implicit
@@ -1001,8 +1319,7 @@ public:
     unsigned getResetInterval() const { return reset_interval; }
     //@}
 
-protected:
-    /** \name BRKGA Hyper-parameters */
+protected:   /** \name BRKGA Hyper-parameters */
     //@{
     /// Indicate if is maximization or minimization.
     const Sense OPT_SENSE;
@@ -1067,7 +1384,7 @@ protected:
      *
      * These parameters are not used directly in the BRKGA nor in the path
      * relinking. However, they are loaded from the configuration file and can
-     * be called by the user to perform out-loop controlling.
+     * be called by the user to perform out-loop controll.
      */
     //@{
     /// Interval at which elite chromosomes are exchanged (0 means no exchange).
@@ -1489,8 +1806,7 @@ void BRKGA_MP_IPR<Decoder>::readConfiguration(const std::string& filename) {
                   population_size - 1;
 }
 
-//----------------------------------------------------------------------------//
-
+//---------------------------------------------------------------------------//
 template<class Decoder>
 void BRKGA_MP_IPR<Decoder>::writeConfiguration(const std::string& filename) {
     std::ofstream output(filename, std::ios::out);
@@ -2636,7 +2952,7 @@ EnumIO<BRKGA::Sense>::enum_names() {
         "MINIMIZE",
         "MAXIMIZE"
     });
-     return enum_names_;
+    return enum_names_;
 }
 
 /// Template specialization to BRKGA::PathRelinking::Type.
@@ -2647,7 +2963,7 @@ EnumIO<BRKGA::PathRelinking::Type>::enum_names() {
         "DIRECT",
         "PERMUTATION"
     });
-     return enum_names_;
+    return enum_names_;
 }
 
 /// Template specialization to BRKGA::PathRelinking::Selection.
@@ -2658,7 +2974,7 @@ EnumIO<BRKGA::PathRelinking::Selection>::enum_names() {
         "BESTSOLUTION",
         "RANDOMELITE"
     });
-     return enum_names_;
+    return enum_names_;
 }
 
 /// Template specialization to BRKGA::BiasFunction.
@@ -2673,7 +2989,7 @@ EnumIO<BRKGA::BiasFunction>::enum_names() {
         "LOGINVERSE",
         "QUADRATIC"
     });
-     return enum_names_;
+    return enum_names_;
 }
 ///@}
 
