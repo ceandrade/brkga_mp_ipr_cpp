@@ -970,44 +970,20 @@ class BRKGA_MP_IPR {
 public:
     /** \name Constructors and destructor */
     //@{
-
-    BRKGA_MP_IPR(
-        Decoder& decoder_reference,
-        const Sense sense,
-        unsigned seed,
-        unsigned chromosome_size,
-        const BrkgaParams& params,
-        const bool evolutionary_mechanism_on = true,
-        const unsigned max_threads = 1);
-
     /**
-     * \brief Builds the algorithm with the given arguments.
+     * \brief Builds the algorithm and its data strtuctures with the given
+     *        arguments.
      *
-     * \param decoder_reference a reference to the decoder object.
+     * \param decoder_reference a reference to the decoder object. **NOTE:**
+     *        BRKGA uses such object directly for decoding.
      * \param sense the optimization sense (maximization or minimization).
      * \param seed the seed for the random number generator.
      * \param chromosome_size number of genes in each chromosome.
-     * \param population_size number of individuals in each population.
-     * \param elite_percentage percentage of elite individuals into each
-     *        population.
-     * \param mutants_percentage percentage of mutants introduced at each
-     *        generation into the population.
+     * \params params BRKGA and IPR parameters object loaded from a
+     *         configuration file or manually created. All the data is copied.
      * \param evolutionary_mechanism_on if false, no evolution is performed
      *        but only chromosome decoding. Very useful to emulate a
      *        multi-start algorithm.
-     * \param num_elite_parents number of parents from elite set used on the
-     *        multi-parent crossover. By setting `num_elite_parents == 1` and
-     *        `total_parents == 2`, standard BRKGA crossover is performed
-     *        (one elite and one non-elite sets). To emulate standard BRKGA
-     *        bias `rhoe`, a custom bias function must be used.
-     * \param total_parents number of parents to be used on the multi-parent
-     *        crossover. By setting `num_elite_parents == 1` and
-     *        `total_parents == 2`, standard BRKGA crossover is performed
-     *        (one elite and one non-elite sets). To emulate standard BRKGA
-     *        bias `rhoe`, a custom bias function must be used.
-     * \param bias bias function used to choose the parents during multi-parent
-     *        crossover. This function substitutes the `rhoe` parameter from
-     *        the original BRKGA.
      * \param num_independent_populations number of independent populations
      *        (island model).
      * \param max_threads number of threads to perform parallel decoding.\n
@@ -1018,50 +994,12 @@ public:
      */
     BRKGA_MP_IPR(
         Decoder& decoder_reference,
-        Sense sense,
-        unsigned seed,
-        unsigned chromosome_size,
-        unsigned population_size,
-        double elite_percentage,
-        double mutants_percentage,
-        bool evolutionary_mechanism_on = true,
-        unsigned num_elite_parents = 1,
-        unsigned total_parents = 2,
-        BiasFunctionType bias = BiasFunctionType::LOGINVERSE,
-        unsigned num_independent_populations = 1,
-        unsigned max_threads = 1);
-
-    /**
-     * \brief Builds the algorithm with the parameters read from the
-     *        configuration file.
-     *
-     * \param decoder_reference a reference to the decoder object.
-     * \param sense the optimization sense (maximization or minimization).
-     * \param seed the seed for the random number generator.
-     * \param chromosome_size number of genes in each chromosome.
-     * \param configuration_file text file with the BRKGA parameters.
-     *        An example can be found at
-     *        <a href="example.conf">example.conf</a>. Note that the content
-     *        after "#" is considered comments and it is ignored.
-     * \param evolutionary_mechanism_on if false, no evolution is performed
-     *        but only chromosome decoding. Very useful to emulate a
-     *        multi-start algorithm.
-     * \param max_threads number of threads to perform parallel decoding.\n
-     *        **NOTE**: `Decoder::decode()` MUST be thread-safe.
-     *
-     * \throw std::fstream::failure in case of errors in the file.
-     *
-     * \throw std::range_error if some parameter or combination of parameters
-     *        does not fit.
-     */
-    BRKGA_MP_IPR(
-        Decoder& decoder_reference,
-        Sense sense,
-        unsigned seed,
-        unsigned chromosome_size,
-        const std::string& configuration_file,
-        bool evolutionary_mechanism_on = true,
-        unsigned max_threads = 1);
+        const Sense sense,
+        const unsigned seed,
+        const unsigned chromosome_size,
+        const BrkgaParams& params,
+        const bool evolutionary_mechanism_on = true,
+        const unsigned max_threads = 1);
 
     /// Destructor
     ~BRKGA_MP_IPR() {}
@@ -1278,14 +1216,6 @@ public:
 
     /** \name Parameter getters */
     //@{
-    /**
-     * \brief Writes the parameters into a file. This file is similar to
-     *        <a href="example.conf">example.conf</a> without comments.
-     * \param filename the configuration file.
-     * \throw std::fstream::failure in case of errors in the file.
-     */
-    void writeConfiguration(const std::string& filename);
-
     Sense getOptimizationSense() const { return OPT_SENSE; }
 
     unsigned getChromosomeSize() const { return CHROMOSOME_SIZE; }
@@ -1447,22 +1377,6 @@ protected:
     /** \name Helper functions */
     //@{
     /**
-     * \brief Reads the configuration file to setup the BRKGA and Path Relinking
-     *        parameters.
-     *
-     * \param filename the configuration file.
-     * \throw std::fstream::failure in case of errors in the file.
-     */
-    void readConfiguration(const std::string& filename);
-
-    /** \brief Checks the parameters given in the constructors. It also
-     * initializes some data structures.
-     *
-     * \throw std::range_error in case some parameter is not correct.
-     */
-    void checkConfigurationAndInit();
-
-    /**
      * \brief Returns true if a1 is better than a2.
      *
      * This method depends on the optimization sense. When the optimization
@@ -1495,51 +1409,13 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         params(_params),
         OPT_SENSE(_sense),
         CHROMOSOME_SIZE(_chromosome_size),
-        elite_size(0),
-        num_mutants(0),
-        evolutionary_mechanism_on(_evolutionary_mechanism_on),
-        MAX_THREADS(_max_threads),
-
-        // Internal data.
-        decoder(_decoder_reference),
-        rng(_seed),
-        previous(params.num_independent_populations, nullptr),
-        current(params.num_independent_populations, nullptr),
-        bias_function(),
-        total_bias_weight(0.0),
-        shuffled_individuals(params.population_size),
-        parents_ordered(params.total_parents),
-        initial_population(false),
-        initialized(false),
-        reset_phase(false),
-        pr_start_time()
-{}
-
-//----------------------------------------------------------------------------//
-
-template<class Decoder>
-BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
-        Decoder& _decoder_reference,
-        Sense _sense,
-        unsigned _seed,
-        unsigned _chromosome_size,
-        unsigned _population_size,
-        double _elite_percentage,
-        double _mutants_percentage,
-        bool _evolutionary_mechanism_on,
-        unsigned _num_elite_parents,
-        unsigned _total_parents,
-        BiasFunctionType _bias,
-        unsigned _num_independent_populations,
-        unsigned _max_threads):
-
-        // Algorithm parameters.
-        OPT_SENSE(_sense),
-        CHROMOSOME_SIZE(_chromosome_size),
         elite_size(_evolutionary_mechanism_on?
-                    unsigned(_elite_percentage * params.population_size) : 1),
+                    unsigned(params.elite_percentage *
+                             params.population_size)
+                    : 1),
         num_mutants(_evolutionary_mechanism_on?
-                    unsigned(_mutants_percentage * params.population_size):
+                    unsigned(params.mutants_percentage *
+                             params.population_size):
                     params.population_size - 1),
         evolutionary_mechanism_on(_evolutionary_mechanism_on),
         MAX_THREADS(_max_threads),
@@ -1558,219 +1434,6 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         reset_phase(false),
         pr_start_time()
 {
-    checkConfigurationAndInit();
-}
-
-//----------------------------------------------------------------------------//
-
-template<class Decoder>
-BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
-    Decoder& _decoder_reference,
-    Sense _sense,
-    unsigned _seed,
-    unsigned _chromosome_size,
-    const std::string& _configuration_file,
-    bool _evolutionary_mechanism_on,
-    unsigned _max_threads):
-
-        // Algorithm parameters.
-        OPT_SENSE(_sense),
-        CHROMOSOME_SIZE(_chromosome_size),
-        elite_size(0),
-        num_mutants(0),
-        evolutionary_mechanism_on(_evolutionary_mechanism_on),
-        MAX_THREADS(_max_threads),
-
-        // Internal data.
-        decoder(_decoder_reference),
-        rng(_seed),
-        previous(),
-        current(),
-        bias_function(),
-        total_bias_weight(0.0),
-        shuffled_individuals(0),
-        parents_ordered(0),
-        initial_population(false),
-        initialized(false),
-        reset_phase(false),
-        pr_start_time()
-{
-    readConfiguration(_configuration_file);
-    checkConfigurationAndInit();
-
-    previous.resize(params.num_independent_populations, nullptr);
-    current.resize(params.num_independent_populations, nullptr);
-    shuffled_individuals.resize(params.population_size);
-    parents_ordered.resize(params.total_parents);
-}
-
-//----------------------------------------------------------------------------//
-
-template<class Decoder>
-void BRKGA_MP_IPR<Decoder>::readConfiguration(const std::string& filename) {
-    std::ifstream input(filename, std::ios::in);
-    std::stringstream error_msg;
-
-    if(!input) {
-        error_msg << "File '" << filename << "' cannot be opened!";
-        throw std::fstream::failure(error_msg.str());
-    }
-
-    std::unordered_map<std::string, bool> tokens({
-        {"POPULATION_SIZE", false},
-        {"ELITE_PERCENTAGE", false},
-        {"MUTANTS_PERCENTAGE", false},
-        {"ELITE_PARENTS", false},
-        {"TOTAL_PARENTS", false},
-        {"BIAS_FUNCTION", false},
-        {"INDEPENDENT_POPULATIONS", false},
-        {"PR_NUMBER_PAIRS", false},
-        {"PR_MINIMUM_DISTANCE", false},
-        {"PR_TYPE", false},
-        {"PR_SELECTION", false},
-        {"ALPHA_BLOCK_SIZE", false},
-        {"PR_PERCENTAGE", false},
-        {"EXCHANGE_INTERVAL", false},
-        {"NUM_EXCHANGE_INDIVUDUALS", false},
-        {"RESET_INTERVAL", false}
-    });
-
-    double elite_percentage = 0.0;
-    double mutants_percentage = 0.0;
-
-    std::string line;
-    unsigned line_count = 0;
-
-    while(std::getline(input, line)) {
-        ++line_count;
-        std::string::size_type pos = line.find_first_not_of(" \t\n\v");
-
-        // Ignore all comments and blank lines.
-        if(pos == std::string::npos || line[pos] == '#')
-            continue;
-
-        std::stringstream line_stream(line);
-        std::string token, data;
-
-        line_stream >> token >> data;
-
-        std::transform(token.begin(), token.end(), token.begin(), toupper);
-        if(tokens.find(token) == tokens.end()) {
-            error_msg << "Invalid token on line " << line_count
-                      << ": " << token;
-            throw std::fstream::failure(error_msg.str());
-        }
-
-        if(tokens[token]) {
-            error_msg << "Duplicate attribute on line " << line_count
-                      << ": " << token << " already read!";
-            throw std::fstream::failure(error_msg.str());
-        }
-
-        std::stringstream data_stream(data);
-        bool fail = false;
-
-        // TODO: for c++17, we may use std:any to short this code using a loop.
-        if(token == "POPULATION_SIZE")
-            fail = !bool(data_stream >> params.population_size);
-        else
-        if(token == "ELITE_PERCENTAGE")
-            fail = !bool(data_stream >> elite_percentage);
-        else
-        if(token == "MUTANTS_PERCENTAGE")
-            fail = !bool(data_stream >> mutants_percentage);
-        else
-        if(token == "ELITE_PARENTS")
-            fail = !bool(data_stream >> params.num_elite_parents);
-        else
-        if(token == "TOTAL_PARENTS")
-            fail = !bool(data_stream >> params.total_parents);
-        else
-        if(token == "BIAS_FUNCTION")
-            fail = !bool(data_stream >> params.bias_type);
-        else
-        if(token == "INDEPENDENT_POPULATIONS")
-            fail = !bool(data_stream >> params.num_independent_populations);
-        else
-        if(token == "PR_NUMBER_PAIRS")
-            fail = !bool(data_stream >> params.pr_number_pairs);
-        else
-        if(token == "PR_MINIMUM_DISTANCE")
-            fail = !bool(data_stream >> params.pr_minimum_distance);
-        else
-        if(token == "PR_TYPE")
-            fail = !bool(data_stream >> params.pr_type);
-        else
-        if(token == "PR_SELECTION")
-            fail = !bool(data_stream >> params.pr_selection);
-        else
-        if(token == "ALPHA_BLOCK_SIZE")
-            fail = !bool(data_stream >> params.alpha_block_size);
-        else
-        if(token == "PR_PERCENTAGE")
-            fail = !bool(data_stream >> params.pr_percentage);
-
-        if(fail) {
-            error_msg << "Invalid value for '" << token
-                      << "' on line "<< line_count
-                      << ": '" << data << "'";
-            throw std::fstream::failure(error_msg.str());
-        }
-
-        tokens[token] = true;
-    }
-
-    for(const auto& attribute_flag : tokens) {
-        if(!attribute_flag.second) {
-            error_msg << "Argument '" << attribute_flag.first
-                      << "' was not supplied in the config file";
-            throw std::fstream::failure(error_msg.str());
-        }
-    }
-
-    elite_size = evolutionary_mechanism_on?
-                 unsigned(elite_percentage * params.population_size) : 1;
-
-    num_mutants = evolutionary_mechanism_on?
-                  unsigned(mutants_percentage * params.population_size) :
-                  params.population_size - 1;
-}
-
-//---------------------------------------------------------------------------//
-template<class Decoder>
-void BRKGA_MP_IPR<Decoder>::writeConfiguration(const std::string& filename) {
-    std::ofstream output(filename, std::ios::out);
-    if(!output) {
-        std::stringstream error_msg;
-        error_msg << "File '" << filename << "' cannot be opened!";
-        throw std::fstream::failure(error_msg.str());
-    }
-
-    const double elite_percentage = (double) elite_size / params.population_size;
-    const double mutants_percentage = (double) num_mutants / params.population_size;
-
-    output << "params.population_size " << params.population_size << "\n"
-           << "elite_percentage " << elite_percentage << "\n"
-           << "mutants_percentage " << mutants_percentage << "\n"
-           << "elite_parents " << params.num_elite_parents << "\n"
-           << "total_parents " << params.total_parents << "\n"
-           << "bias_function " << params.bias_type << "\n"
-           << "independent_populations " << params.num_independent_populations << "\n"
-           << "pr_number_pairs " << params.pr_number_pairs << "\n"
-           << "pr_minimum_distance " << params.pr_minimum_distance << "\n"
-           << "pr_type " << params.pr_type << "\n"
-           << "pr_selection " << params.pr_selection << "\n"
-           << "alpha_block_size " << params.alpha_block_size << "\n"
-           << "pr_percentage " << params.pr_percentage << "\n"
-           << std::endl;
-
-    output.close();
-}
-
-//----------------------------------------------------------------------------//
-
-template<class Decoder>
-void BRKGA_MP_IPR<Decoder>::checkConfigurationAndInit() {
     using std::range_error;
     std::stringstream ss;
 
@@ -1863,6 +1526,8 @@ void BRKGA_MP_IPR<Decoder>::checkConfigurationAndInit() {
         );
         break;
     }
+
+    rng.discard(1000);  // Discard some states to waum up.
 }
 
 //----------------------------------------------------------------------------//
@@ -2195,7 +1860,8 @@ inline void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     }
 
     // Second, we mate 'pop_size - elite_size - num_mutants' pairs.
-    for(unsigned chr = elite_size; chr < params.population_size - num_mutants; ++chr) {
+    for(unsigned chr = elite_size;
+        chr < params.population_size - num_mutants; ++chr) {
         // First, we shuffled the elite set and non-elite set indices,
         // then we take the elite and non-elite parents. Note that we cannot
         // shuffled both sets together, otherwise we would mix elite
@@ -2220,7 +1886,8 @@ inline void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         }
 
         // Take the non-elite parents.
-        for(unsigned j = 0; j < params.total_parents - params.num_elite_parents; ++j) {
+        for(unsigned j = 0;
+            j < params.total_parents - params.num_elite_parents; ++j) {
             parents_ordered.emplace_back(
                     curr.fitness[shuffled_individuals[j + elite_size]]);
         }
@@ -2250,8 +1917,8 @@ inline void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     }
 
     // To finish, we fill up the remaining spots with mutants.
-    for(unsigned chr = params.population_size - num_mutants; chr < params.population_size;
-        ++chr) {
+    for(unsigned chr = params.population_size - num_mutants;
+        chr < params.population_size; ++chr) {
         for(auto& allele : next.population[chr])
             allele = rand01();
     }
@@ -2437,7 +2104,8 @@ bool BRKGA_MP_IPR<Decoder>::pathRelink(
             std::shared_ptr<DistanceFunctionBase> dist,
             long max_time) {
 
-    size_t block_size = ceil(params.alpha_block_size * sqrt(params.population_size));
+    size_t block_size = ceil(params.alpha_block_size *
+                             sqrt(params.population_size));
     if(block_size > CHROMOSOME_SIZE)
         block_size = CHROMOSOME_SIZE / 2;
 
@@ -2465,7 +2133,6 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
     std::set<std::size_t> remaining_blocks;
     for(std::size_t i = 0; i < NUM_BLOCKS; ++i)
         remaining_blocks.insert(i);
-
     Chromosome old_keys(chr1.size());
 
     struct Triple {
