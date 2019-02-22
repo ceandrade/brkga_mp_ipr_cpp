@@ -979,13 +979,11 @@ public:
      * \param sense the optimization sense (maximization or minimization).
      * \param seed the seed for the random number generator.
      * \param chromosome_size number of genes in each chromosome.
-     * \params params BRKGA and IPR parameters object loaded from a
-     *         configuration file or manually created. All the data is copied.
+     * \param params BRKGA and IPR parameters object loaded from a
+     *        configuration file or manually created. All the data is copied.
      * \param evolutionary_mechanism_on if false, no evolution is performed
      *        but only chromosome decoding. Very useful to emulate a
      *        multi-start algorithm.
-     * \param num_independent_populations number of independent populations
-     *        (island model).
      * \param max_threads number of threads to perform parallel decoding.\n
      *        **NOTE**: `Decoder::decode()` MUST be thread-safe.
      *
@@ -1024,6 +1022,10 @@ public:
     /**
      * \brief Sets a custom bias function used to build the probabilities.
      *
+     * It must be a **positive non-decreasing function**, i.e.
+     * \f$ f: \mathbb{N}^+ \to \mathbb{R}^+\f$ such that
+     * \f$f(i) \ge 0\f$ and \f$f(i) \ge f(i+1)\f$ for
+     * \f$i \in [1..total\_parents]\f$.
      * For example
      * \code{.cpp}
      *      setBiasCustomFunction(
@@ -1034,10 +1036,11 @@ public:
      * \endcode
      * sets an inverse quadratic function.
      *
-     * \param func a unary non-increasing function such domain is
-     *        [1, #total_parents] and returns values in the interval [0, 1].
+     * \param func a unary positive non-increasing function.
+     * \throw std::runtime_error in case the function is not a non-decreasing
+     *        positive function.
      */
-    void setBiasCustomFunction(const std::function<double(const double)>& func);
+    void setBiasCustomFunction(const std::function<double(const unsigned)>& func);
 
     /**
      * \brief Initializes the populations and others parameters of the
@@ -1113,7 +1116,8 @@ public:
      * This method uses all parameters supplied in the constructor.
      * In particular, the block size is computed by
      * \f$\lceil \alpha \times \sqrt{p} \rceil\f$
-     * where \f$\alpha\f$ is #alpha_block_size and \f$p\f$ is #population_size.
+     * where \f$\alpha\f$ is BrkgaParams#alpha_block_size and
+     * \f$p\f$ is BrkgaParams#population_size.
      * If the size is larger than the chromosome size, the size is set to
      * half of the chromosome size.
      *
@@ -1277,7 +1281,7 @@ protected:
     std::vector<std::shared_ptr<Population>> current;
 
     /// Reference for the bias function.
-    std::function<double(const double)> bias_function;
+    std::function<double(const unsigned)> bias_function;
 
     /// Holds the sum of the results of each raking given a bias function.
     /// This value is needed to normalization.
@@ -1491,38 +1495,38 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
     case BiasFunctionType::LOGINVERSE:
         // Same as log(r + 1), but avoids precision loss.
         setBiasCustomFunction(
-            [](const double r) { return 1 / log1p(r); }
+            [](const unsigned r) { return 1.0 / log1p(r); }
         );
         break;
 
     case BiasFunctionType::LINEAR:
         setBiasCustomFunction(
-            [](const double r) { return 1 / r; }
+            [](const unsigned r) { return 1.0 / r; }
         );
         break;
 
     case BiasFunctionType::QUADRATIC:
         setBiasCustomFunction(
-            [](const double r) { return pow(r, -2); }
+            [](const unsigned r) { return pow(r, -2); }
         );
         break;
 
     case BiasFunctionType::CUBIC:
         setBiasCustomFunction(
-                [](const double r) { return pow(r, -3); }
+                [](const unsigned r) { return pow(r, -3); }
         );
         break;
 
     case BiasFunctionType::EXPONENTIAL:
         setBiasCustomFunction(
-                [](const double r) { return exp(-r); }
+                [](const unsigned r) { return exp(-1.0 * r); }
         );
         break;
 
     case BiasFunctionType::CONSTANT:
     default:
         setBiasCustomFunction(
-                [&](const double) { return 1.0 / params.total_parents; }
+                [&](const unsigned) { return 1.0 / params.total_parents; }
         );
         break;
     }
@@ -1621,12 +1625,24 @@ void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
 
 template<class Decoder>
 void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
-            const std::function<double(const double)>& func) {
+            const std::function<double(const unsigned)>& func) {
+
+    std::vector<double> bias_values(params.total_parents);
+    std::iota(bias_values.begin(), bias_values.end(), 1);
+    std::transform(bias_values.begin(), bias_values.end(),
+                   bias_values.begin(), func);
+
+    // If it is not non-increasing, throw an error.
+    if(!std::is_sorted(bias_values.rbegin(), bias_values.rend()))
+        throw std::runtime_error("bias_function must be positive "
+                                 "non-decreasing");
+
+    if(bias_function)
+        params.bias_type = BiasFunctionType::CUSTOM;
 
     bias_function = func;
-    total_bias_weight = 0.0;
-    for(unsigned i = 1; i < params.total_parents + 1; ++i)
-        total_bias_weight += bias_function(i);
+    total_bias_weight = std::accumulate(bias_values.begin(),
+                                        bias_values.end(), 0.0);
 }
 
 //----------------------------------------------------------------------------//
