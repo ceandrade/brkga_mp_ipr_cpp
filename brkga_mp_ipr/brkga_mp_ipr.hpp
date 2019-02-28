@@ -9,7 +9,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: Feb 22, 2019 by andrade.
+ * Last update: Feb 28, 2019 by andrade.
  *
  * This code is released under LICENSE.md.
  *
@@ -91,6 +91,24 @@ enum class Selection {
     /// Chooses uniformly random solutions from the elite sets.
     RANDOMELITE
 };
+
+/// Specifies the result type/status of path relink procedure.
+enum class PathRelinkingResult {
+    /// The chromosomes among the populations are too homogeneous and the path
+    /// relink will not generate improveded solutions.
+    TOO_HOMOGENEOUS = 0,
+
+    /// Path relink was done but no improveded solution was found.
+    NO_IMPROVEMENT = 1,
+
+    /// An improved solution among the elite set was found, but the best
+    /// solution was not improved.
+    ELITE_IMPROVEMENT = 3,
+
+    /// The best solution was improved.
+    BEST_IMPROVEMENT = 7
+};
+
 } // namespace PathRelinking
 
 /// Specifies a bias function type when choosing parents to mating
@@ -145,7 +163,7 @@ public:
     virtual ~DistanceFunctionBase() {}
 
     /**
-     * \brief Computes the distance between two vectors.
+     * \brief Compute the distance between two vectors.
      * \param v1 first vector
      * \param v2 second vector
      */
@@ -153,7 +171,7 @@ public:
                             const std::vector<double>& v2) = 0;
 
     /**
-     * \brief Returns true if the changing of `key1` by `key2` affects
+     * \brief Return true if the changing of `key1` by `key2` affects
      *        the solution.
      * \param key1 the first key
      * \param key2 the second key
@@ -161,7 +179,7 @@ public:
     virtual bool affectSolution(const double key1, const double key2) = 0;
 
     /**
-     * \brief Returns true if the changing of the blocks of keys `v1` by the
+     * \brief Return true if the changing of the blocks of keys `v1` by the
      *        blocks of keys `v2` affects the solution.
      * \param v1_begin begin of the first blocks of keys
      * \param v2_begin begin of the first blocks of keys
@@ -194,7 +212,7 @@ public:
     virtual ~HammingDistance() {}
 
     /**
-     * \brief Computes the Hamming distance between two vectors.
+     * \brief Compute the Hamming distance between two vectors.
      * \param vector1 first vector
      * \param vector2 second vector
      */
@@ -214,7 +232,7 @@ public:
     }
 
     /**
-     * \brief Returns true if the changing of `key1` by `key2` affects
+     * \brief Return true if the changing of `key1` by `key2` affects
      *        the solution.
      * \param key1 the first key
      * \param key2 the second key
@@ -224,7 +242,7 @@ public:
     }
 
     /**
-     * \brief Returns true if the changing of the blocks of keys `v1` by the
+     * \brief Return true if the changing of the blocks of keys `v1` by the
      *        blocks of keys `v2` affects the solution.
      * \param v1_begin begin of the first blocks of keys
      * \param v2_begin begin of the first blocks of keys
@@ -264,7 +282,7 @@ public:
     virtual ~KendallTauDistance() {}
 
     /**
-     * \brief Computes the Kendall Tau distance between two vectors.
+     * \brief Compute the Kendall Tau distance between two vectors.
      * \param vector1 first vector
      * \param vector2 second vector
      */
@@ -307,7 +325,7 @@ public:
     }
 
     /**
-     * \brief Returns true if the changing of `key1` by `key2` affects
+     * \brief Return true if the changing of `key1` by `key2` affects
      *        the solution.
      * \param key1 the first key
      * \param key2 the second key
@@ -317,14 +335,14 @@ public:
     }
 
     /**
-     * \brief Returns true if the changing of the blocks of keys `v1` by the
+     * \brief Return true if the changing of the blocks of keys `v1` by the
      *        blocks of keys `v2` affects the solution.
-     *
-     * TODO (ceandrade): implement this properly.
      *
      * \param v1_begin begin of the first blocks of keys
      * \param v2_begin begin of the first blocks of keys
      * \param block_size number of keys to be considered.
+     *
+     * \todo (ceandrade): implement this properly.
      */
     virtual bool affectSolution(
             std::vector<double>::const_iterator v1_begin,
@@ -395,18 +413,18 @@ public:
 
     /** \name Simple access methods */
     //@{
-    /// Returns the size of each chromosome.
+    /// Return the size of each chromosome.
     unsigned getChromosomeSize() const {
         return population[0].size();
     }
 
-    /// Returns the size of the population.
+    /// Return the size of the population.
     unsigned getPopulationSize() const {
         return population.size();
     };
 
     /**
-     * \brief Returns a copy of an allele for a given chromosome.
+     * \brief Return a copy of an allele for a given chromosome.
      * \param chromosome index of desired chromosome.
      * \param allele index of desired allele.
      * \returns a copy of the allele value.
@@ -416,7 +434,7 @@ public:
     }
 
     /**
-     * \brief Returns a reference for an allele for a given chromosome.
+     * \brief Return a reference for an allele for a given chromosome.
      *
      * Usually used to set the allele value.
      * \param chromosome index of desired chromosome.
@@ -428,7 +446,7 @@ public:
     }
 
     /**
-     * \brief Returns a reference to a chromosome.
+     * \brief Return a reference to a chromosome.
      * \param chromosome index of desired chromosome.
      * \returns a reference to chromosome.
      */
@@ -443,22 +461,22 @@ public:
      * `sortFitness()` beforehand.
      */
     //@{
-    /// Returns the best fitness in this population.
+    /// Return the best fitness in this population.
     double getBestFitness() const {
         return getFitness(0);
     }
 
-    /// Returns the fitness of chromosome i.
+    /// Return the fitness of chromosome i.
     double getFitness(const unsigned i)  const {
         return fitness[i].first;
     }
 
-    /// Returns a reference to the i-th best chromosome.
+    /// Return a reference to the i-th best chromosome.
     Chromosome& getChromosome(unsigned i) {
         return population[fitness[i].second];
     }
 
-    /// Returns a const reference to the i-th best chromosome.
+    /// Return a const reference to the i-th best chromosome.
     const Chromosome& getChromosome(const unsigned i) const {
         return population[fitness[i].second];
     }
@@ -467,7 +485,7 @@ public:
     /** \name Other methods */
     //@{
     /**
-     * \brief Sorts `fitness` by its first parameter according to the sense.
+     * \brief Sort `fitness` by its first parameter according to the sense.
      * \param sense Optimization sense.
      */
     void sortFitness(const Sense sense) {
@@ -480,7 +498,7 @@ public:
     }
 
     /**
-     * \brief Sets the fitness of chromosome.
+     * \brief Set the fitness of chromosome.
      * \param chromosome index of chromosome.
      * \param value allele value.
      */
@@ -623,6 +641,9 @@ public:
  * \param filename the configuration file.
  * \returns a tuple containing the BRKGA and external control parameters.
  * \throw std::fstream::failure in case of errors in the file.
+ * \todo (ceandrade) This method can beneficiate from introspection tools
+ *   from C++17. We would like achieve a code similar to the
+ *   [Julia counterpart](<https://github.com/ceandrade/BrkgaMpIpr.jl>).
  */
 std::pair<BrkgaParams, ExternalControlParams>
 readConfiguration(const std::string& filename) {
@@ -770,6 +791,9 @@ readConfiguration(const std::string& filename) {
  * \param control_params the external control parameters. Default is an empty
  *        object.
  * \throw std::fstream::failure in case of errors in the file.
+ * \todo (ceandrade) This method can beneficiate from introspection tools
+ *   from C++17. We would like achieve a code similar to the
+ *   [Julia counterpart](<https://github.com/ceandrade/BrkgaMpIpr.jl>).
  */
 void writeConfiguration(const std::string& filename,
         const BrkgaParams& brkga_params,
@@ -814,8 +838,8 @@ void writeConfiguration(const std::string& filename,
  * \brief This class represents a Multi-Parent Biased Random-key Genetic
  * Algorithm with Implicit Path Relinking (BRKGA-MP-IPR).
  *
- * \author Carlos Eduardo de Andrade <cea@research.att.com/ce.andrade@gmail.com>
- * \date 2018
+ * \author Carlos Eduardo de Andrade <ce.andrade@gmail.com>
+ * \date 2019
  *
  * Main capabilities
  * ========================
@@ -961,7 +985,7 @@ void writeConfiguration(const std::string& filename,
  * History
  * ========================
  *
- * This API was based on code by Rodrigo Franco Toso, Sep 15, 2011.
+ * This API was based on the code by Rodrigo Franco Toso, Sep 15, 2011.
  * http://github.com/rfrancotoso/brkgaAPI
  *
  */
@@ -971,7 +995,7 @@ public:
     /** \name Constructors and destructor */
     //@{
     /**
-     * \brief Builds the algorithm and its data strtuctures with the given
+     * \brief Build the algorithm and its data strtuctures with the given
      *        arguments.
      *
      * \param decoder_reference a reference to the decoder object. **NOTE:**
@@ -1006,12 +1030,16 @@ public:
     /** \name Initialization methods */
     //@{
     /**
-     * \brief Sets individuals to initial population.
+     * \brief Set individuals to initial population.
      *
-     * This method enables warm starts from solutions obtained from other
-     * methods. All given solutions are assigned to one population only.
-     * Therefore, the maximum number of solutions is the size of the
-     * populations.
+     * Set initial individuals into the poulation to work as warm-starters.
+     * Such individuals can be obtained from solutions of external procedures
+     * such as fast heuristics, other methaheuristics, or even relaxations from
+     * a mixed integer programming model that models the problem.
+     *
+     * All given solutions are assigned to one population only. Therefore, the
+     * maximum number of solutions is the size of the populations.
+     *
      * \param chromosomes a set of individuals encoded as Chromosomes.
      * \throw std::runtime_error if the number of given chromosomes is larger
      *        than the population size; if the sizes of the given chromosomes
@@ -1020,7 +1048,7 @@ public:
     void setInitialPopulation(const std::vector<Chromosome>& chromosomes);
 
     /**
-     * \brief Sets a custom bias function used to build the probabilities.
+     * \brief Set a custom bias function used to build the probabilities.
      *
      * It must be a **positive non-decreasing function**, i.e.
      * \f$ f: \mathbb{N}^+ \to \mathbb{R}^+\f$ such that
@@ -1029,28 +1057,38 @@ public:
      * For example
      * \code{.cpp}
      *      setBiasCustomFunction(
-     *          [](const double x) {
+     *          [](const unsigned x) {
      *              return 1.0 / (x * x);
      *          }
      *      );
      * \endcode
      * sets an inverse quadratic function.
      *
-     * \param func a unary positive non-increasing function.
+     * \param func a reference to a unary positive non-increasing function.
      * \throw std::runtime_error in case the function is not a non-decreasing
      *        positive function.
      */
     void setBiasCustomFunction(const std::function<double(const unsigned)>& func);
 
     /**
-     * \brief Initializes the populations and others parameters of the
+     * \brief Initialize the populations and others parameters of the
      *        algorithm.
      *
      * If a initial population is supplied, this method completes the remain
-     * individuals, if they do not exist.
+     * individuals, if they do not exist. This method also performs the initial
+     * decoding of the chromosomes. Therefore, depending on the decoder
+     * implementation, this can take a while, and the user may want to time
+     * such procedure in his/her experiments.
      *
-     * **NOTE:** this method must be call before any evolutionary or population
-     * handling method.
+     * \warning
+     *      This method must be call before any evolutionary or population
+     *      handling method.
+     *
+     * \warning
+     *     As it is in #evolve(), the decoding is done in parallel using
+     *     threads, and the user **must guarantee that the decoder is
+     *     THREAD-SAFE.** If such property cannot be held, we suggest using
+     *     a single thread  for optimization.
      *
      * \param true_init when set false, it ignores all solutions provided
      *        by `setInitialPopulation()`, and builds a completely random
@@ -1064,8 +1102,14 @@ public:
     /** \name Evolution */
     //@{
     /**
-     * \brief Evolves the current populations following the guidelines of
+     * \brief Evolve the current populations following the guidelines of
      *        Multi-parent BRKGAs.
+     *
+     * \warning
+     *     The decoding is done in parallel using threads, and the user **must
+     *     guarantee that the decoder is THREAD-SAFE.** If such property cannot
+     *     be held, we suggest using a single thread for optimization.
+     *
      * \param generations number of generations to be evolved. Must be larger
      *        than zero.
      * \throw std::runtime_error if the algorithm is not initialized.
@@ -1076,20 +1120,67 @@ public:
 
     /** \name Path relinking */
     //@{
+
     /**
-     * \brief Performs path relinking between elite solutions that are,
-     *        at least, a given minimum distance between themselves.
+     * \brief Perform path relinking between elite solutions that are, at least,
+     * a given minimum distance between themselves. In this method, the
+     * local/loaded parameters are ignored in favor to the supplied ones.
      *
-     * In this method, the local/loaded parameters are ignored in favor to
-     * the supplied ones.
+     * In the presence of multiple populations, the path relinking is performed
+     * between elite chromosomes from different populations, in a circular
+     * fashion. For example, suppose we have 3 populations. The framework
+     * performs 3 path relinkings: the first between individuals from
+     * populations 1 and 2, the second between populations 2 and 3, and the
+     * third between populations 3 and 1. In the case of just one population,
+     * both base and guiding individuals are sampled from the elite set of that
+     * population.
      *
-     * \param dist the functor/object to compute the distance between two
-     *        chromosomes.
+     * Note that the algorithm tries to find a pair of base and guiding
+     * solutions with a minimum distance given by the distance function. If this
+     * is not possible, a new pair of solutions are sampled (without
+     * replacement) and tested against the distance. In case it is not possible
+     * to find such pairs for the given populations, the algorithm skips to the
+     * next pair of populations (in a circular fashion, as described above).
+     * Yet, if such pairs are not found in any case, the algorithm declares
+     * failure. This indicates that the populations are very homogeneous.
+     *
+     * If the found solution is the best solution found so far, IPR replaces the
+     * worst solution by it. Otherwise, IPR computes the distance between the
+     * found solution and all other solutions in the elite set, and replaces the
+     * worst solution by it if and only if the found solution is, at least,
+     * `minimum_distance` from all them.
+     *
+     * The API will call `Decoder::decode()` function always with `writeback =
+     * false`. The reason is that if the decoder rewrites the chromosome, the
+     * path between solutions is lost and inadvertent results may come up. Note
+     * that at the end of the path relinking, the method calls the decoder with
+     * `writeback = true` in the best chromosome found to guarantee that this
+     * chromosome is re-written to reflect the best solution found.
+     *
+     * This method is a multi-thread implementation. Instead of to build and
+     * decode each chromosome one at a time, the method builds a list of
+     * candidates, altering the alleles/keys according to the guide solution,
+     * and then decode all candidates in parallel. Note that
+     * `O(chromosome_size^2 / block_size)` additional memory is necessary to
+     * build the candidates, which can be costly if the `chromosome_size` is
+     * very large.
+     *
+     * \warning
+     *     As it is in #evolve(), the decoding is done in parallel using
+     *     threads, and the user **must guarantee that the decoder is
+     *     THREAD-SAFE.** If such property cannot be held, we suggest using
+     *     a single thread  for optimization.
+     *
+     * \param pr_type type of path relinking to be performed.
+     *        See PathRelinking::Type.
+     * \param pr_selection of which individuals use to path relinking.
+     *        See PathRelinking::Selection.
+     * \param dist a pointer to a functor/object to compute the distance between
+     *        two chromosomes. This object must be inherited from
+     *        BRKGA::DistanceFunctionBase and implement its methods.
      * \param number_pairs number of chromosome pairs to be tested.
      *        If 0, all pairs are tested.
-     * \param minimum_distance between two chromosomes.
-     * \param pathrelinkingtype type of path relinking to be performed.
-     * \param selection of which individuals use to path relinking.
+     * \param minimum_distance between two chromosomes computed byt `dist`.
      * \param block_size number of alleles to be exchanged at once in each
      *        iteration. If one, the traditional path relinking is performed.
      * \param max_time aborts path relinking when reach `max_time`.
@@ -1097,14 +1188,18 @@ public:
      * \param percentage defines the size, in percentage, of the path to
      *        build. Default: 1.0 (100%).
      *
+     * \returns A PathRelinking::PathRelinkingResult depending on the relink
+     *          status.
+     *
      * \throw std::range_error if the percentage or size of the path is
      *        not in (0, 1].
      */
-    bool pathRelink(std::shared_ptr<DistanceFunctionBase> dist,
+    PathRelinking::PathRelinkingResult pathRelink(
+                    PathRelinking::Type pr_type,
+                    PathRelinking::Selection pr_selection,
+                    std::shared_ptr<DistanceFunctionBase> dist,
                     unsigned number_pairs,
                     double minimum_distance,
-                    PathRelinking::Type pathrelinkingtype,
-                    PathRelinking::Selection selection,
                     std::size_t block_size = 1,
                     long max_time = 0,
                     double percentage = 1.0);
@@ -1121,22 +1216,34 @@ public:
      * If the size is larger than the chromosome size, the size is set to
      * half of the chromosome size.
      *
-     * \param dist the functor/object to compute the distance between two
-     *        chromosomes.
+     * Please, refer to #pathRelink() for details.
+     *
+     * \param dist a pointer to a functor/object to compute the distance between
+     *        two chromosomes. This object must be inherited from
+     *        BRKGA::DistanceFunctionBase and implement its methods.
      * \param max_time aborts path relinking when reach `max_time`.
      *        If `max_time <= 0`, no limit is imposed.
+     *
+     * \returns A PathRelinking::PathRelinkingResult depending on the relink
+     *          status.
      *
      * \throw std::range_error if the percentage or size of the path is
      *        not in (0, 1].
      */
-    bool pathRelink(std::shared_ptr<DistanceFunctionBase> dist,
+    PathRelinking::PathRelinkingResult pathRelink(
+                    std::shared_ptr<DistanceFunctionBase> dist,
                     long max_time = 0);
     //@}
 
     /** \name Population manipulation methods */
     //@{
     /**
-     * \brief Exchanges elite-solutions between the populations.
+     * \brief Exchange elite-solutions between the populations.
+
+     * Given a population, the `num_immigrants` best solutions are copied to
+     * the neighbor populations, replacing their worth solutions. If there is
+     * only one population, nothing is done.
+
      * \param num_immigrants number of elite chromosomes to select from each
      *      population.
      * \throw std::range_error if the number of immigrants less than one or
@@ -1148,13 +1255,16 @@ public:
     void exchangeElite(unsigned num_immigrants);
 
     /**
-     * \brief Resets all populations with brand new keys.
+     * \brief Reset all populations with brand new keys.
+     *
+     * All warm-start solutions provided setInitialPopulation() are discarded.
+     * You may use injectChromosome() to insert those solutions again.
      * \throw std::runtime_error if the algorithm is not initialized.
      */
     void reset();
 
     /**
-     * \brief Performs a shaking in the chosen population.
+     * \brief Perform a shaking in the chosen population.
      * \param intensity the intensity of the shaking.
      * \param population_index the index of the population to be shaken. If
      * `population_index >= num_independent_populations`, all populations
@@ -1190,22 +1300,22 @@ public:
     /** \name Support methods */
     //@{
     /**
-     * \brief Returns a reference to a current population.
+     * \brief Return a reference to a current population.
      * \param population_index the population index.
      * \throw std::range_error if the index is larger than number of
      *        populations.
      */
     const Population& getCurrentPopulation(unsigned population_index = 0) const;
 
-    /// Returns a reference to the chromosome with best fitness so far among
+    /// Return a reference to the chromosome with best fitness so far among
     /// all populations.
     const Chromosome& getBestChromosome() const;
 
-    /// Returns the best fitness found so far among all populations.
+    /// Return the best fitness found so far among all populations.
     double getBestFitness() const;
 
     /**
-     * \brief Returns a reference to a chromosome of the given population.
+     * \brief Return a reference to a chromosome of the given population.
      * \param population_index the population index.
      * \param position the chromosome position, ordered by fitness.
      *        The best chromosome is located in position 0.
@@ -1220,6 +1330,8 @@ public:
 
     /** \name Parameter getters */
     //@{
+    const BrkgaParams& getBrkgaParams() const { return params; }
+
     Sense getOptimizationSense() const { return OPT_SENSE; }
 
     unsigned getChromosomeSize() const { return CHROMOSOME_SIZE; }
@@ -1310,7 +1422,7 @@ protected:
     /** \name Core local methods */
     //@{
     /**
-     * \brief Evolves the current population to the next.
+     * \brief Evolve the current population to the next.
      *
      * Note that the next population will be re-populate completely.
      *
@@ -1320,16 +1432,18 @@ protected:
     void evolution(Population& curr, Population& next);
 
     /**
-     * \brief Performs the direct path relinking, changing each allele or block
-     * of alleles of base chromosome for the correspondent one in the guide
-     * chromosome.
+     * \brief Perform the direct path relinking.
+     *
+     * This method changes each allele or block of alleles of base chromosome
+     * for the correspondent one in the guide chromosome.
      *
      * This method is a multi-thread implementation. Instead of to build and
      * decode each chromosome one at a time, the method builds a list of
      * candidates, altering the alleles/keys according to the guide solution,
      * and then decode all candidates in parallel. Note that
-     * O(CHROMOSOME_SIZE^2 / BLOCK_SIZE) additional memory is necessary to build
-     * the candidates, which can be costly if the CHROMOSOME_SIZE is very large.
+     * `O(chromosome_size^2 / block_size)` additional memory is necessary to
+     * build the candidates, which can be costly if the `chromosome_size` is
+     * very large.
      *
      * \param chr1 first chromosome.
      * \param chr2 second chromosome
@@ -1350,11 +1464,19 @@ protected:
                           double percentage);
 
     /**
-     * \brief Performs the permutation-based path relinking.
+     * \brief Perform the permutation-based path relinking.
      *
      * In this method, the permutation induced by the keys in the guide
      * solution is used to change the order of the keys in the permutation
      * induced by the base solution.
+     *
+     * This method is a multi-thread implementation. Instead of to build and
+     * decode each chromosome one at a time, the method builds a list of
+     * candidates, altering the alleles/keys according to the guide solution,
+     * and then decode all candidates in parallel. Note that
+     * `O(chromosome_size^2 / block_size)` additional memory is necessary to
+     * build the candidates, which can be costly if the `chromosome_size` is
+     * very large.
      *
      * The path relinking is performed by changing the order of
      * each allele of base chromosome for the correspondent one in
@@ -1381,7 +1503,7 @@ protected:
     /** \name Helper functions */
     //@{
     /**
-     * \brief Returns true if a1 is better than a2.
+     * \brief Return `true` if `a1` is better than `a2`.
      *
      * This method depends on the optimization sense. When the optimization
      * sense is `Sense::MINIMIZE`, `a1 < a2` will return true, otherwise false.
@@ -1389,10 +1511,10 @@ protected:
      */
     inline bool betterThan(const double a1, const double a2) const;
 
-    /// Evenly distributes real values of given precision across [0, 1].
+    /// Distribute real values of given precision across [0, 1] evenly.
     inline double rand01();
 
-    /// Returns a number between 0 and n.
+    /// Return a number between `0` and `n`.
     inline uint_fast32_t randInt(const uint_fast32_t n);
     //@}
 };
@@ -1953,14 +2075,23 @@ inline void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 //----------------------------------------------------------------------------//
 
 template<class Decoder>
-bool BRKGA_MP_IPR<Decoder>::pathRelink(
-                     std::shared_ptr<DistanceFunctionBase> dist,
-                     unsigned number_pairs,
-                     double minimum_distance,
-                     PathRelinking::Type pathrelinkingtype,
-                     PathRelinking::Selection selection,
-                     std::size_t block_size,
-                     long max_time, double percentage) {
+PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
+                    PathRelinking::Type pr_type,
+                    PathRelinking::Selection pr_selection,
+                    std::shared_ptr<DistanceFunctionBase> dist,
+                    unsigned number_pairs,
+                    double minimum_distance,
+                    std::size_t block_size = 1,
+                    long max_time = 0,
+                    double percentage = 1.0) {
+
+                    //  std::shared_ptr<DistanceFunctionBase> dist,
+                    //  unsigned number_pairs,
+                    //  double minimum_distance,
+                    //  PathRelinking::Type pathrelinkingtype,
+                    //  PathRelinking::Selection selection,
+                    //  std::size_t block_size,
+                    //  long max_time, double percentage) {
 
     if(percentage < 1e-6 || percentage > 1.0)
         throw std::range_error("Percentage/size of path relinking invalid.");
@@ -2018,8 +2149,8 @@ bool BRKGA_MP_IPR<Decoder>::pathRelink(
         while(!index_pairs.empty() && tested_pairs_count < number_pairs &&
               elapsed_seconds < max_time) {
             const auto index =
-                    (selection == PathRelinking::Selection::BESTSOLUTION? 0 :
-                     randInt(index_pairs.size() - 1));
+                    (pr_selection == PathRelinking::Selection::BESTSOLUTION?
+                     0 : randInt(index_pairs.size() - 1));
 
             const auto pos1 = index_pairs[index].first;
             const auto pos2 = index_pairs[index].second;
@@ -2059,7 +2190,7 @@ bool BRKGA_MP_IPR<Decoder>::pathRelink(
                                   std::numeric_limits<double>::max();
 
         // Perform the path relinking.
-        if(pathrelinkingtype == PathRelinking::Type::DIRECT) {
+        if(pr_type == PathRelinking::Type::DIRECT) {
             directPathRelink(initial_solution, guiding_solution, dist,
                              best_found, block_size, max_time, percentage);
         }
@@ -2110,13 +2241,14 @@ bool BRKGA_MP_IPR<Decoder>::pathRelink(
         }
     }
 
-    return path_relinking_possible;
+    //return path_relinking_possible;
+    return PathRelinking::PathRelinkingResult::NO_IMPROVEMENT;
 }
 
 //----------------------------------------------------------------------------//
 
 template<class Decoder>
-bool BRKGA_MP_IPR<Decoder>::pathRelink(
+PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             std::shared_ptr<DistanceFunctionBase> dist,
             long max_time) {
 
