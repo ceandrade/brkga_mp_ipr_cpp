@@ -9,7 +9,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: Feb 28, 2019 by andrade.
+ * Last update: Mar 04, 2019 by andrade.
  *
  * This code is released under LICENSE.md.
  *
@@ -109,6 +109,21 @@ enum class PathRelinkingResult {
     BEST_IMPROVEMENT = 7
 };
 
+/**
+ *  \brief Perform bitwise `OR` between two `PathRelinkingResult` returning
+ *         the highest rank `PathRelinkingResult`.
+ *
+ *  For example
+ *  - TOO_HOMOGENEOUS | NO_IMPROVEMENT == NO_IMPROVEMENT
+ *  - NO_IMPROVEMENT | ELITE_IMPROVEMENT == ELITE_IMPROVEMENT
+ *  - ELITE_IMPROVEMENT | BEST_IMPROVEMENT == BEST_IMPROVEMENT
+ */
+inline PathRelinkingResult& operator|=(PathRelinkingResult& lhs,
+                                       PathRelinkingResult rhs) {
+    lhs = PathRelinkingResult(static_cast<unsigned>(lhs) |
+                              static_cast<unsigned>(rhs));
+    return lhs;
+}
 } // namespace PathRelinking
 
 /// Specifies a bias function type when choosing parents to mating
@@ -363,7 +378,7 @@ public:
  * Encapsulates a population of chromosomes providing supporting methods for
  * making the implementation easier.
  *
- * **NOTE:** All methods and attributes are public and can be manipulated
+ * \warning All methods and attributes are public and can be manipulated
  * directly from BRKGA algorithms. Note that this class is not meant to be used
  * externally of this unit.
  */
@@ -1120,7 +1135,6 @@ public:
 
     /** \name Path relinking */
     //@{
-
     /**
      * \brief Perform path relinking between elite solutions that are, at least,
      * a given minimum distance between themselves. In this method, the
@@ -2081,17 +2095,11 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
                     std::shared_ptr<DistanceFunctionBase> dist,
                     unsigned number_pairs,
                     double minimum_distance,
-                    std::size_t block_size = 1,
-                    long max_time = 0,
-                    double percentage = 1.0) {
+                    std::size_t block_size,
+                    long max_time,
+                    double percentage) {
 
-                    //  std::shared_ptr<DistanceFunctionBase> dist,
-                    //  unsigned number_pairs,
-                    //  double minimum_distance,
-                    //  PathRelinking::Type pathrelinkingtype,
-                    //  PathRelinking::Selection selection,
-                    //  std::size_t block_size,
-                    //  long max_time, double percentage) {
+    using PR = PathRelinking::PathRelinkingResult;
 
     if(percentage < 1e-6 || percentage > 1.0)
         throw std::range_error("Percentage/size of path relinking invalid.");
@@ -2110,6 +2118,8 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
     // Keep track of the time.
     pr_start_time = std::chrono::system_clock::now();
+
+    auto final_status = PR::TOO_HOMOGENEOUS;
 
     for(unsigned pop_count = 0; pop_count < params.num_independent_populations;
         ++pop_count) {
@@ -2181,6 +2191,8 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         if(!found_pair)
             continue;
 
+        std::cout << "\n\npassei\n" << std::endl;
+
         // Create a empty solution.
         std::pair<double, Chromosome> best_found;
         best_found.second.resize(current[0]->getChromosomeSize(), 0.0);
@@ -2188,6 +2200,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         const bool sense = OPT_SENSE == Sense::MAXIMIZE;
         best_found.first = sense? std::numeric_limits<double>::lowest():
                                   std::numeric_limits<double>::max();
+        const auto fence = best_found.first;
 
         // Perform the path relinking.
         if(pr_type == PathRelinking::Type::DIRECT) {
@@ -2200,6 +2213,10 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
                                       percentage);
         }
 
+        final_status |= PR::NO_IMPROVEMENT;
+        if(abs(best_found.first - fence) < 1e-6)
+            continue;
+
         // Re-decode and apply local search if the decoder are able to do it.
         best_found.first = decoder.decode(best_found.second, true);
 
@@ -2208,6 +2225,12 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         bool include_in_population =
            (sense && best_found.first > current[pop_base]->fitness[0].first) ||
            (!sense && best_found.first < current[pop_base]->fitness[0].first);
+
+        const auto best_overall = this->getBestFitness();
+
+        if((sense && best_found.first > best_overall) ||
+           (!sense && best_found.first < best_overall))
+            final_status |= PR::BEST_IMPROVEMENT;
 
         // If not the best, but is better than the worst elite member, check
         // if the distance between this solution and all elite members
@@ -2224,6 +2247,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
                             population[current[pop_base]->fitness[i].second])
                    < minimum_distance - 1e-6) {
                     include_in_population = false;
+                    final_status |= PR::NO_IMPROVEMENT;
                     break;
                 }
             }
@@ -2238,11 +2262,12 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             current[pop_base]->fitness.back().first = best_found.first;
             // Reorder the chromosomes.
             current[pop_base]->sortFitness(OPT_SENSE);
+            final_status |= PR::ELITE_IMPROVEMENT;
         }
     }
 
     //return path_relinking_possible;
-    return PathRelinking::PathRelinkingResult::NO_IMPROVEMENT;
+    return final_status;
 }
 
 //----------------------------------------------------------------------------//
