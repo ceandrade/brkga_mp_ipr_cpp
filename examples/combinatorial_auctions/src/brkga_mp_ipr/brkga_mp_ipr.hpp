@@ -1890,8 +1890,8 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool true_init) {
 //----------------------------------------------------------------------------//
 
 template<class Decoder>
-inline void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
-                                             Population& next) {
+void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
+                                      Population& next) {
     // First, we copy the elite chromosomes to the next generation.
     for(unsigned chr = 0; chr < elite_size; ++chr) {
         next.population[chr] = curr.population[curr.fitness[chr].second];

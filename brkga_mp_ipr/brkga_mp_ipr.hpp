@@ -2003,7 +2003,7 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
 //----------------------------------------------------------------------------//
 
 template<class Decoder>
-inline void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
+void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
                                              Population& next) {
     // First, we copy the elite chromosomes to the next generation.
     for(unsigned chr = 0; chr < elite_size; ++chr) {
@@ -2190,8 +2190,6 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         // a good path relinking. Let's try other populations.
         if(!found_pair)
             continue;
-
-        std::cout << "\n\npassei\n" << std::endl;
 
         // Create a empty solution.
         std::pair<double, Chromosome> best_found;

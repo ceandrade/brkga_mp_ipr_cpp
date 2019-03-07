@@ -1,12 +1,8 @@
 /*******************************************************************************
  * chromosome.hpp: Interface for Chromosome class/structure.
  *
- * Author: Carlos Eduardo de Andrade
- *         <cea@research.att.com / ce.andrade@gmail.com>
- *
- * (c) Copyright 2015-2018.
- *     Institute of Computing, University of Campinas.
- *     AT&T Labs Research.
+ * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * All Rights Reserved.
  *
  *  Created on : Jan 06, 2015 by andrade.
  *  Last update: Jan 05, 2018 by andrade.

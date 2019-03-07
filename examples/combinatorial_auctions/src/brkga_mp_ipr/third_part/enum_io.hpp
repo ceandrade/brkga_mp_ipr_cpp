@@ -86,7 +86,7 @@ public:
     static const std::vector<std::string>& enum_names();
 };
 
-static inline std::string toUpper(const std::string& input)
+static std::string toUpper(const std::string& input)
 {
     std::string copy(input);
     std::transform(copy.cbegin(), copy.cend(), copy.begin(),
