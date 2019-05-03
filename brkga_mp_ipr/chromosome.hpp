@@ -61,7 +61,7 @@ namespace BRKGA {
  *
  *   b) We avoid creating derived class objects with dynamic storage duration;
  *
- *   c) We DO avoid polymorphism:
+ *   c) We **DO** avoid polymorphism:
  *      \code{.cpp}
  *      std::vector<double>* pt = new Chromosome();     // Bad idea
  *      delete pt;      // Delete does not call the Chromosome destructor

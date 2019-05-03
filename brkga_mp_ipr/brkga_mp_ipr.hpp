@@ -9,7 +9,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: Mar 04, 2019 by andrade.
+ * Last update: May 02, 2019 by andrade.
  *
  * This code is released under LICENSE.md.
  *
@@ -157,6 +157,21 @@ enum class BiasFunctionType {
 
     /// Indicates a custom function supplied by the user.
     CUSTOM
+};
+
+/// Specifies the type of shaking to be performed.
+enum class ShakingType {
+    /// Applies the following perturbations:
+    /// 1. Inverts the value of a random chosen, i.e., from `value` to
+    ///    `1 - value`;
+    /// 2. Assigns a random value to a random key.
+    CHANGE = 0,
+
+    /// Applies two swap perturbations:
+    /// 1. Swaps the values of a randomly chosen key `i` and its
+    ///    neighbor `i + 1`;
+    /// 2. Swaps values of two randomly chosen keys.
+    SWAP = 1
 };
 
 //----------------------------------------------------------------------------//
@@ -879,11 +894,11 @@ void writeConfiguration(const std::string& filename,
  * and return a value to be used as fitness to the decoded chromosome.
  * The decoder must have the method
  * \code{.cpp}
- *      double decode(Chromosome& chromosome, bool writeback);
+ *      double decode(Chromosome& chromosome, bool rewrite);
  * \endcode
  *
  * where #Chromosome is a `vector<double>` representing a solution and
- * `writeback` is a boolean indicating that if the decode should rewrite the
+ * `rewrite` is a boolean indicating that if the decode should rewrite the
  * chromosome in case it implements local searches and modifies the initial
  * solution decoded from the chromosome. Since this API has the capability of
  * decoding several chromosomes in parallel, the user must guarantee that
@@ -921,10 +936,10 @@ void writeConfiguration(const std::string& filename,
  * that the populations are very homogeneous.
  *
  * The API will call `Decoder::decode()` always
- * with `writeback = false`. The reason is that if the decoder rewrites the
+ * with `rewrite = false`. The reason is that if the decoder rewrites the
  * chromosome, the path between solutions is lost and inadvertent results may
  * come up. Note that at the end of the path relinking, the method calls the
- * decoder with `writeback = true` in the best chromosome found to guarantee
+ * decoder with `rewrite = true` in the best chromosome found to guarantee
  * that this chromosome is re-written to reflect the best solution found.
  *
  * Other capabilities
@@ -1020,11 +1035,11 @@ public:
      * \param chromosome_size number of genes in each chromosome.
      * \param params BRKGA and IPR parameters object loaded from a
      *        configuration file or manually created. All the data is copied.
+     * \param max_threads number of threads to perform parallel decoding.\n
+     *        **NOTE**: `Decoder::decode()` MUST be thread-safe.
      * \param evolutionary_mechanism_on if false, no evolution is performed
      *        but only chromosome decoding. Very useful to emulate a
      *        multi-start algorithm.
-     * \param max_threads number of threads to perform parallel decoding.\n
-     *        **NOTE**: `Decoder::decode()` MUST be thread-safe.
      *
      * \throw std::range_error if some parameter or combination of parameters
      *        does not fit.
@@ -1035,8 +1050,8 @@ public:
         const unsigned seed,
         const unsigned chromosome_size,
         const BrkgaParams& params,
-        const bool evolutionary_mechanism_on = true,
-        const unsigned max_threads = 1);
+        const unsigned max_threads = 1,
+        const bool evolutionary_mechanism_on = true);
 
     /// Destructor
     ~BRKGA_MP_IPR() {}
@@ -1164,11 +1179,11 @@ public:
      * worst solution by it if and only if the found solution is, at least,
      * `minimum_distance` from all them.
      *
-     * The API will call `Decoder::decode()` function always with `writeback =
+     * The API will call `Decoder::decode()` function always with `rewrite =
      * false`. The reason is that if the decoder rewrites the chromosome, the
      * path between solutions is lost and inadvertent results may come up. Note
      * that at the end of the path relinking, the method calls the decoder with
-     * `writeback = true` in the best chromosome found to guarantee that this
+     * `rewrite = true` in the best chromosome found to guarantee that this
      * chromosome is re-written to reflect the best solution found.
      *
      * This method is a multi-thread implementation. Instead of to build and
@@ -1280,12 +1295,14 @@ public:
     /**
      * \brief Perform a shaking in the chosen population.
      * \param intensity the intensity of the shaking.
+     * \param shaking_type either `CHANGE` or `SWAP` moves.
      * \param population_index the index of the population to be shaken. If
      * `population_index >= num_independent_populations`, all populations
      * are shaken.
      */
-    void shake(unsigned intensity, unsigned population_index =
-                                    std::numeric_limits<unsigned>::infinity());
+    void shake(unsigned intensity, ShakingType shaking_type,
+               unsigned population_index =
+                    std::numeric_limits<unsigned>::infinity());
 
     /**
      * \brief Inject a chromosome and its fitness into a population in the
@@ -1542,8 +1559,8 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         unsigned _seed,
         unsigned _chromosome_size,
         const BrkgaParams& _params,
-        const bool _evolutionary_mechanism_on,
-        const unsigned _max_threads):
+        const unsigned _max_threads,
+        const bool _evolutionary_mechanism_on):
 
         // Algorithm parameters.
         params(_params),
@@ -1962,26 +1979,46 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool true_init) {
 
 template<class Decoder>
 void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
+                                  ShakingType shaking_type,
                                   unsigned population_index) {
     if(!initialized)
         throw std::runtime_error("The algorithm hasn't been initialized. "
                                  "Don't forget to call initialize() method");
 
-    if(population_index >= params.num_independent_populations)
-        population_index = params.num_independent_populations - 1;
 
-    for(unsigned pop_idx = 0; pop_idx <= population_index; ++pop_idx) {
-        auto& pop = current[pop_idx]->population;
+    unsigned pop_start = population_index;
+    unsigned pop_end = population_index;
+    if(population_index >= params.num_independent_populations) {
+        pop_start = 0;
+        pop_end = params.num_independent_populations - 1;
+    }
+
+    for(; pop_start <= pop_end; ++pop_start) {
+        auto& pop = current[pop_start]->population;
 
         // Shake the elite set.
         for(unsigned e = 0; e < elite_size; ++e) {
             for(unsigned k = 0; k < intensity; ++k) {
                 auto i = randInt(CHROMOSOME_SIZE - 2);
-                std::swap(pop[e][i], pop[e][i + 1]);
+                if(shaking_type == ShakingType::CHANGE) {
+                    // Invert value.
+                    pop[e][i] = 1.0 - pop[e][i];
+                }
+                else {
+                    // Swap with neighbor.
+                    std::swap(pop[e][i], pop[e][i + 1]);
+                }
 
                 i = randInt(CHROMOSOME_SIZE - 1);
-                auto j = randInt(CHROMOSOME_SIZE - 1);
-                std::swap(pop[e][i], pop[e][j]);
+                if(shaking_type == ShakingType::CHANGE) {
+                    // Change to random value.
+                    pop[e][i] = rand01();
+                }
+                else {
+                    // Swap two random positions.
+                    auto j = randInt(CHROMOSOME_SIZE - 1);
+                    std::swap(pop[e][i], pop[e][j]);
+                }
             }
         }
 
@@ -1995,8 +2032,11 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
             #pragma omp parallel for num_threads(MAX_THREADS) schedule(static,1)
         #endif
         for(unsigned j = 0; j < params.population_size; ++j)
-            current[pop_idx]->
-                setFitness(j, decoder.decode((*current[pop_idx])(j)));
+            current[pop_start]->
+                setFitness(j, decoder.decode((*current[pop_start])(j)));
+
+        // Now we must sort by fitness, since things might have changed.
+        current[pop_start]->sortFitness(OPT_SENSE);
     }
 }
 
