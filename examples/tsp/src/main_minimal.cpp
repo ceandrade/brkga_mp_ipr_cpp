@@ -29,6 +29,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <string>
 
 using namespace std;
 
@@ -47,9 +48,9 @@ int main(int argc, char* argv[]) {
         // Read arguments and Instance
         ////////////////////////////////////////
 
-        const unsigned seed = atoi(argv[1]);
+        const unsigned seed = stoi(argv[1]);
         const string config_file = argv[2];
-        const unsigned num_generations = atoi(argv[3]);
+        const unsigned num_generations = stoi(argv[3]);
         const string instance_file = argv[4];
 
         cout << "Reading data..." << endl;
@@ -77,12 +78,9 @@ int main(int argc, char* argv[]) {
 
         TSP_Decoder decoder(instance);
 
-        const bool perform_evolution = true;
-        const unsigned num_threads = 1;
-
         BRKGA::BRKGA_MP_IPR<TSP_Decoder> algorithm(
-                decoder, BRKGA::Sense::MINIMIZE, seed, instance.num_nodes,
-                brkga_params, perform_evolution, num_threads);
+                decoder, BRKGA::Sense::MINIMIZE, seed,
+                instance.num_nodes, brkga_params);
 
         // NOTE: don't forget to initialize the algorithm.
         algorithm.initialize();

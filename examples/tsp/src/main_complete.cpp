@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  *  Created on : Mar 06, 2019 by andrade
- *  Last update: Mar 07, 2019 by andrade
+ *  Last update: May 03, 2019 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -24,7 +24,12 @@
  *****************************************************************************/
 
 #include "tsp/tsp_instance.hpp"
-#include "decoders/tsp_decoder.hpp"
+
+// We may choose the simple thread-safe decoder...
+//#include "decoders/tsp_decoder.hpp"
+//... or the pre-allocating thread-safe decoder.
+#include "decoders/tsp_decoder_pre_allocating.hpp"
+
 #include "heuristics/greedy_tour.hpp"
 #include "brkga_mp_ipr.hpp"
 
@@ -242,10 +247,17 @@ Options:
                                            10 * instance.num_nodes);
         cout << "New population size: " << brkga_params.population_size << endl;
 
-        TSP_Decoder decoder(instance);
-        BRKGA::BRKGA_MP_IPR<TSP_Decoder> algorithm(
+        // We may choose the simple thread-safe decoder...
+        // typedef TSP_Decoder LocalDecoder;
+        // TSP_Decoder decoder(instance);
+
+        //... or the pre-allocating thread-safe decoder.
+        typedef TSP_Decoder_pre_allocating LocalDecoder;
+        LocalDecoder decoder(instance, num_threads);
+
+        BRKGA::BRKGA_MP_IPR<LocalDecoder> algorithm(
                 decoder, BRKGA::Sense::MINIMIZE, seed, instance.num_nodes,
-                brkga_params, perform_evolution, num_threads);
+                brkga_params, num_threads, perform_evolution);
 
         ////////////////////////////////////////
         // Injecting the initial/incumbent solution

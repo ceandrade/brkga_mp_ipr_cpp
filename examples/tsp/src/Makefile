@@ -3,7 +3,7 @@
 # All Rights Reserved.
 #
 #  Created on : Mar 05, 2019 by andrade
-#  Last update: Mar 05, 2019 by andrade
+#  Last update: May 03, 2019 by andrade
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -38,7 +38,8 @@ INCLUDES = \
 OBJS = \
 	./tsp/tsp_instance.o \
 	./heuristics/greedy_tour.o \
-	./decoders/tsp_decoder.o
+	./decoders/tsp_decoder.o \
+	./decoders/tsp_decoder_pre_allocating.o
 
 BRKGA_MAIN = ./brkga/main_brkga.o
 BRKGA_EXE = brkga-scheduler
@@ -100,9 +101,7 @@ CXXFLAGS = $(USER_FLAGS)
 .PHONY: all clean
 .SUFFIXES: .cpp .o
 
-# all: main_minimal main_complete
-# all: main_minimal
-all: main_complete
+all: main_minimal main_complete
 
 main_minimal: $(OBJS) $(MAIN_MINIMAL_OBJ)
 	@echo "--> Linking objects... "

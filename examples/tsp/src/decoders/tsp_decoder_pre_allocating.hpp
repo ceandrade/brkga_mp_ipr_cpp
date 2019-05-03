@@ -1,11 +1,12 @@
 /******************************************************************************
- * tsp_decoder.hpp: Interface for TSP_Decoder class.
+ * tsp_decoder_pre_allocating.hpp: Interface for memory pre-allocate,
+ *      thread-safe TSP_Decoder class.
  *
  * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
- *  Created on : Mar 05, 2019 by andrade
- *  Last update: Mar 05, 2019 by andrade
+ *  Created on : May 03, 2019 by andrade
+ *  Last update: May 03, 2019 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -22,8 +23,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-#ifndef TSP_DECODER_HPP_
-#define TSP_DECODER_HPP_
+#ifndef TSP_DECODER_PRE_ALLOCATING_HPP_
+#define TSP_DECODER_PRE_ALLOCATING_HPP_
 
 #include "tsp/tsp_instance.hpp"
 #include "chromosome.hpp"
@@ -33,13 +34,18 @@
  *
  * Simple Traveling Salesman Problem decoder. It creates a permutation of nodes
  * induced by the chromosome and computes the cost of the tour.
+ *
+ * This version pre-allocates memory for the permutations using during the
+ * decoding process.
  */
-class TSP_Decoder {
+class TSP_Decoder_pre_allocating {
 public:
     /** \brief Default Constructor.
      * \param instance TSP instance.
+     * \param num_threads Number of parallel decoding threads.
      */
-    TSP_Decoder(const TSP_Instance& instance);
+    TSP_Decoder_pre_allocating(const TSP_Instance& instance,
+                               const unsigned num_threads = 1);
 
     /** \brief Given a chromossome, build a tour.
      *
@@ -51,6 +57,15 @@ public:
 public:
     /// A reference to a TSP instance.
     const TSP_Instance& instance;
+
+protected:
+    /// Defines a vector that holds node permutations during the decoding.
+    typedef std::vector<std::pair<double, unsigned>> Permutation;
+
+    /// For each thread, pre-allocate and hold memory for node permutation
+    /// during the decode. All memory is allocated in the constructor,
+    /// speeding up the decode process.
+    std::vector<Permutation> permutation_per_thread;
 };
 
-#endif // TSP_DECODER_HPP_
+#endif // TSP_DECODER_PRE_ALLOCATING_HPP_
