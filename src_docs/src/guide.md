@@ -1,5 +1,7 @@
-Guide {#guide}
+Guide / Tutorial {#guide}
 ===============
+
+[TOC]
 
 Installation {#guide_installation}
 ================================================================================
@@ -1398,3 +1400,131 @@ double TSP_Decoder_pre_allocating::decode(Chromosome& chromosome,
     cores** (may -1) to avoid racing and too much context switching. You must
     test which is the best option for your case. In my experience, complex
     decoders benefit more from multi-threading and simple and fast decoders.
+
+Known issues {#known_issues}
+================================================================================
+
+One of the interesting features implemented in this C++ BRKGA-MP-IPR
+framework is the capability to easily load and write the algorithm
+configuration into text files. To enable this feature, we borrow some nice
+code from Bradley Plohr
+(https://codereview.stackexchange.com/questions/14309/conversion-between-enum-and-string-in-c-class-header),
+which make easy to read and write enumerations from standard streams (cout
+and cerr).
+
+However, since BRKGA-MP-IPR is header-only, this feature can cause some
+headaches during the linking, especially if you include the BRKGA-MP-IPR
+header in different modules (translation units on C++ jargon) and compile
+them separately (which normally we do). For example, suppose we have two
+pieces of code, module_a.cpp and module_b.cpp, such that we include BRKGA in
+both (i.e., `#include <brkga_mp_ipr>` in both files.
+
+File module_a.cpp
+```cpp
+#include "brkga_mp_ipr.hpp"
+int main() {
+    auto params = BRKGA::readConfiguration("config.conf");
+    return 0;
+}
+```
+
+File module_b.cpp
+```cpp
+#include "brkga_mp_ipr.hpp"
+void test() {
+    auto params = BRKGA::readConfiguration("config.conf");
+}
+```
+
+Let's compile each one with GCC and link them:
+```bash
+$ g++ -std=c++14 -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+
+$ g++ -std=c++14 -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
+
+$ g++ module_a.o module_b.o -o test
+duplicate symbol EnumIO<BRKGA::PathRelinking::Selection>::enum_names[abi:cxx11]()    in:
+    module_a.o
+    module_b.o
+duplicate symbol EnumIO<BRKGA::Sense>::enum_names[abi:cxx11]()    in:
+    module_a.o
+    module_b.o
+duplicate symbol EnumIO<BRKGA::BiasFunctionType>::enum_names[abi:cxx11]()     in:
+    module_a.o
+    module_b.o
+duplicate symbol EnumIO<BRKGA::PathRelinking::Type>::enum_names[abi:cxx11]()    in:
+    module_a.o
+    module_b.o
+duplicate symbol BRKGA::writeConfiguration(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, BRKGA::BrkgaParams const&, BRKGA::ExternalControlParams const&) in:
+    module_a.o
+    module_b.o
+duplicate symbol BRKGA::readConfiguration(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) in:
+    module_a.o
+    module_b.o
+ld: 6 duplicate symbols for architecture x86_64
+collect2: error: ld returned 1 exit status
+```
+
+Let's try with Clang:
+
+```bash
+$ clang++-mp-7.0 -std=c++14 -pthread -fopenmp -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+
+$ clang++-mp-7.0 -std=c++14 -pthread -fopenmp -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
+
+$ clang++-mp-7.0 module_a.o module_b.o -o test
+duplicate symbol __ZN6EnumIOIN5BRKGA13PathRelinking9SelectionEE10enum_namesEv in:
+    module_a.o
+    module_b.o
+duplicate symbol __ZN6EnumIOIN5BRKGA5SenseEE10enum_namesEv in:
+    module_a.o
+    module_b.o
+duplicate symbol __ZN6EnumIOIN5BRKGA16BiasFunctionTypeEE10enum_namesEv in:
+    module_a.o
+    module_b.o
+duplicate symbol __ZN6EnumIOIN5BRKGA13PathRelinking4TypeEE10enum_namesEv in:
+    module_a.o
+    module_b.o
+duplicate symbol __ZN5BRKGA18writeConfigurationERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEERKNS_11BrkgaParamsERKNS_21ExternalControlParamsE in:
+    module_a.o
+    module_b.o
+duplicate symbol __ZN5BRKGA17readConfigurationERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE in:
+    module_a.o
+    module_b.o
+ld: 6 duplicate symbols for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+So, note that we have several duplicated symbols, which are the `enum`
+writer/readers, and the two stand-alone functions
+`BRKGA::writeConfiguration()` and `BRKGA::readConfiguration()`.
+
+To avoid such a situation, we have to `inline` these functions and template
+specializations. We can do that passing the compiler directive
+`BRKGA_MULTIPLE_INCLUSIONS` which inlines the functions and template
+specializations properly.
+
+```cpp
+$ g++ -std=c++14 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_a.cpp -o module_a.o
+
+$ g++ -std=c++14 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_b.cpp -o module_b.o
+
+$ g++ module_a.o module_b.o -o test
+```
+
+However, we have two side-effects. First, such inlining can make the object
+code grows large since we include several copies of the same functions (which
+are I/O functions which already are large by their nature). Second, the
+compiler may complain about too many inline functions, if you are already
+using several inline functions.
+
+\warning
+    Avoid including `brkga_mp_ip.hpp` in several files/translation units.
+    If unavoidable, use the compiler directive `BRKGA_MULTIPLE_INCLUSIONS`.
+
+But now, suppose we must use multiple inclusions of BRKGA header, and our
+compiler finds issues on inline such functions. The last resource is to move
+functions `BRKGA::writeConfiguration()` and `BRKGA::readConfiguration()`, and
+all enum template specializations (at the end of file `brkga_mp_ipr.hpp`), to
+a unique translation unit. I recommend to it on your `main()` module,
+so that they are compiled just once.

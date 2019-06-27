@@ -1,4 +1,4 @@
-BRKGA-MP-IPR Guide and Documentation {#mainpage}
+BRKGA-MP-IPR
 ================================================================================
 
 BRKGA-MP-IPR provides a _very easy-to-use_ framework for the
@@ -31,7 +31,7 @@ the TODO list.
 If C++ is not suitable to you, we may find useful the [Julia
 version](https://github.com/ceandrade/BrkgaMpIpr.jl) of this framework. At
 this moment, we have no plans to implement the BRKGA-MP-IPR in other
-languages such as Python, Java, or C#. Both if you want to do so, you are
+languages such as Python, Java, or C#. But if you want to do so, you are
 must welcome. But please, keep the API as close as possible to the C++ API
 (or Julia API in case you decide go C), and use the best coding and
 documentation practices of your chosen language/framework.
@@ -40,8 +40,13 @@ If you are not familiar with how BRKGA works, take a look on
 [Standard BRKGA](http://dx.doi.org/10.1007/s10732-010-9143-1) and
 [Multi-Parent BRKGA](http://dx.doi.org/xxx).
 In the future, we will provide a _Prime on BRKGA-MP_
-section. If you know what _elite set_, _decoder_, and so means,
-we can get to the guts on the [Guide](@ref guide).
+section.
+
+Tutorial
+--------------------------------------------------------------------------------
+
+Check out the tutorial and documentation:
+(https://ceandrade.github.com/brkga_mp_ipr)
 
 License and Citing
 --------------------------------------------------------------------------------
@@ -58,10 +63,7 @@ test it must cite explicitly the following article":
 > Journal of Operational Research_, volume XX, issue X, pages xx-xx, 2019.
 > DOI [to be determined](http://dx.doi.org/xxx)
 
-About the logo
+Contributing
 --------------------------------------------------------------------------------
 
-The logo is just a play with 3 chromosomes crossing with each other
-(multi-parent) during the mating process. The lines also represent solutions
-paths that encounter with each other generating new solutions during the
-path-relink.
+[Contribution guidelines for this project](CONTRIBUTING.md)

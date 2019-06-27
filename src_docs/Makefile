@@ -19,12 +19,6 @@
 ###############################################################################
 
 ###############################################################################
-# Doxyrest paths
-###############################################################################
-
-DOXYREST_FRAME_DIR=~/temp/doxyrest-1.1.1-a-mac/share/doxyrest/frame
-
-###############################################################################
 # Required tools
 ###############################################################################
 
@@ -49,11 +43,11 @@ doxygen:
 	doxygen Doxyfile
 
 doxyrest:
-	doxyrest build/xml/index.xml -o build/tmp_rst/index.rst \
-		-F $(DOXYREST_FRAME_DIR) -f c_index.rst.in
+	doxyrest -c doxyrest-config.lua
 
 sphinx:
-	sphinx-build -c . -b html build/tmp_rst build/html_sphinx
+	cp conf.py build/rst
+	sphinx-build -b html build/rst build/html_sphinx
 
 clean:
 	rm -rf build

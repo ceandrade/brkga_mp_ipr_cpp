@@ -7,12 +7,11 @@ utilization and code efficiency and pay special attention to cache utilization.
 This aspect is very important when using multi-threads applications with shared
 memory.
 
-
 Style
 -----------------------
 
 Please, follow the general coding style. Since it is too long to describe all
-details here, study the code already written. However, in general, 
+details here, study the code already written. However, in general,
 
 - Name classes, methods, and variables as clear and meaningful as possible;
 

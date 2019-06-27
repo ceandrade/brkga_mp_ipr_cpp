@@ -9,7 +9,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: May 02, 2019 by andrade.
+ * Last update: May 18, 2019 by andrade.
  *
  * This code is released under LICENSE.md.
  *
@@ -54,6 +54,18 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+
+/// If we need to include this file in multiple translation units (files) that
+/// are compiled separately, we have to `inline` some functions and template
+/// definitions to avoid multiple definitions and linking problems. However,
+/// such inlining can make the object code grows large. In other cases, the
+/// compiler may complain about too many inline functions, if you are already
+/// using several inline functions.
+#ifdef BRKGA_MULTIPLE_INCLUSIONS
+    #define INLINE inline
+#else
+    #define INLINE
+#endif
 
 /**
  * \brief This namespace contains all stuff related to BRKGA Multi Parent
@@ -675,7 +687,7 @@ public:
  *   from C++17. We would like achieve a code similar to the
  *   [Julia counterpart](<https://github.com/ceandrade/BrkgaMpIpr.jl>).
  */
-std::pair<BrkgaParams, ExternalControlParams>
+INLINE std::pair<BrkgaParams, ExternalControlParams>
 readConfiguration(const std::string& filename) {
     std::ifstream input(filename, std::ios::in);
     std::stringstream error_msg;
@@ -825,7 +837,7 @@ readConfiguration(const std::string& filename) {
  *   from C++17. We would like achieve a code similar to the
  *   [Julia counterpart](<https://github.com/ceandrade/BrkgaMpIpr.jl>).
  */
-void writeConfiguration(const std::string& filename,
+INLINE void writeConfiguration(const std::string& filename,
         const BrkgaParams& brkga_params,
         const ExternalControlParams& control_params = ExternalControlParams()) {
 
@@ -871,10 +883,10 @@ void writeConfiguration(const std::string& filename,
  * \author Carlos Eduardo de Andrade <ce.andrade@gmail.com>
  * \date 2019
  *
- * Main capabilities
+ * Main capabilities {#main_cap}
  * ========================
  *
- * Evolutionary process
+ * Evolutionary process {#evol_process}
  * ------------------------
  *
  * In the BRKGA-MP-IPR, we keep a population of chromosomes divided between the
@@ -906,7 +918,7 @@ void writeConfiguration(const std::string& filename,
  * the writable variables per thread. Please, see the example that follows this
  * code.
  *
- * Implicit Path Relinking
+ * Implicit Path Relinking {#ipr}
  * ------------------------
  *
  * This API also implements the Implicit Path Relinking leveraging the decoder
@@ -942,10 +954,10 @@ void writeConfiguration(const std::string& filename,
  * decoder with `rewrite = true` in the best chromosome found to guarantee
  * that this chromosome is re-written to reflect the best solution found.
  *
- * Other capabilities
+ * Other capabilities {#other_cap}
  * ========================
  *
- * Multi-start
+ * Multi-start {#multi_start}
  * ------------------------
  *
  * This API also can be used as a simple multi-start algorithm without
@@ -954,7 +966,7 @@ void writeConfiguration(const std::string& filename,
  * one individual and the number of mutants n - 1, where n is the size of the
  * population. This setup disables the evolutionary process completely.
  *
- * Initial Population
+ * Initial Population {#init_pop}
  * ------------------------
  *
  * This API allows the user provides a set of initial solutions to warm start
@@ -963,7 +975,7 @@ void writeConfiguration(const std::string& filename,
  * encode the solutions on #Chromosome (`vector<double>`) and pass to the method
  * setInitialPopulation() as a `vector<#Chromosome>`.
  *
- * General Usage
+ * General Usage {#gen_usage}
  * ========================
  *
  *  -# The user must call the BRKGA_MP_IPR constructor and pass the desired
@@ -994,7 +1006,7 @@ void writeConfiguration(const std::string& filename,
  * For a comprehensive and detailed usage, please see the examples that follow
  * this API.
  *
- * About multi-threading
+ * About multi-threading {#multi_thread}
  * ========================
  *
  * This API is capable of decoding several chromosomes in
@@ -1012,7 +1024,7 @@ void writeConfiguration(const std::string& filename,
  * number of threads is also tied to the memory utilization, and it should be
  * monitored carefully.
  *
- * History
+ * History {#hist}
  * ========================
  *
  * This API was based on the code by Rodrigo Franco Toso, Sep 15, 2011.
@@ -2744,15 +2756,21 @@ inline uint_fast32_t BRKGA_MP_IPR<Decoder>::randInt(const uint_fast32_t n) {
  * saving time in coding custom solutions. Please, see third_part/enum_io.hpp
  * for complete reference and examples.
  *
- * **NOTE 1:** the specializations must be done in the global namespace.
- * **NOTE 2:** the specialization must be inline-d to avoid multiple
- *             definitions issues across different modules.
+ * \note
+ *      The specializations must be done in the global namespace.
+ *
+ * \warning The specialization must be inline-d to avoid multiple definitions
+ * issues across different modules. However, this can cause "inline" overflow,
+ * and compromise your code. If you include this header only once along with
+ * your code, it is safe to remove the `inline`s from the specializations. But,
+ * if this is not the case, you should move these specializations to a module
+ * you know is included only once, for instance, the `main()` module.
  */
 ///@{
 
 /// Template specialization to BRKGA::Sense.
 template <>
-const std::vector<std::string>&
+INLINE const std::vector<std::string>&
 EnumIO<BRKGA::Sense>::enum_names() {
     static std::vector<std::string> enum_names_({
         "MINIMIZE",
@@ -2763,7 +2781,7 @@ EnumIO<BRKGA::Sense>::enum_names() {
 
 /// Template specialization to BRKGA::PathRelinking::Type.
 template <>
-const std::vector<std::string>&
+INLINE const std::vector<std::string>&
 EnumIO<BRKGA::PathRelinking::Type>::enum_names() {
     static std::vector<std::string> enum_names_({
         "DIRECT",
@@ -2774,7 +2792,7 @@ EnumIO<BRKGA::PathRelinking::Type>::enum_names() {
 
 /// Template specialization to BRKGA::PathRelinking::Selection.
 template <>
-const std::vector<std::string>&
+INLINE const std::vector<std::string>&
 EnumIO<BRKGA::PathRelinking::Selection>::enum_names() {
     static std::vector<std::string> enum_names_({
         "BESTSOLUTION",
@@ -2785,7 +2803,7 @@ EnumIO<BRKGA::PathRelinking::Selection>::enum_names() {
 
 /// Template specialization to BRKGA::BiasFunctionType.
 template <>
-const std::vector<std::string>&
+INLINE const std::vector<std::string>&
 EnumIO<BRKGA::BiasFunctionType>::enum_names() {
     static std::vector<std::string> enum_names_({
         "CONSTANT",
