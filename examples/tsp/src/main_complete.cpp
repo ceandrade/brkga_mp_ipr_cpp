@@ -37,8 +37,8 @@
 #include "third_part/docopt/docopt.h"
 
 #include <algorithm>
-#include <ctime>
 #include <chrono>
+#include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <memory>
@@ -63,7 +63,7 @@ enum class StopRule {
 void log(const string& message) {
     auto start_time = system_clock::to_time_t(system_clock::now());
     string ss(ctime(&start_time));
-    ss[ss.length() - 1] = '\0';  // Workaround to skip unwanted end-of-line.
+    ss.pop_back();  // Workaround to skip unwanted end-of-line.
     cout << "\n[" << ss << "] " << message << endl;
 }
 
