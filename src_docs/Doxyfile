@@ -639,10 +639,9 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT                  = \
-src/index.md \
-src/guide.md \
-src/api.md \
-src/contributing.md \
+src/markdown/index.md \
+src/markdown/guide.md \
+src/markdown/contributing.md \
 ../brkga_mp_ipr
 
 # This tag can be used to specify the character encoding of the source files
