@@ -191,4 +191,4 @@ todo_include_todos = True
 
 def setup(app):
     app.add_javascript('add_target.js')
-    # app.add_stylesheet('custom_theme.css')
+    app.add_stylesheet('custom_theme.css')

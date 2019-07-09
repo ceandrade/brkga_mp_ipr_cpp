@@ -4,7 +4,7 @@
 	:hidden:
 
 	page_guide.rst
-    page_license.rst
+	page_license.rst
 	page_todo.rst
 	page_md_src_contributing.rst
 

@@ -2,7 +2,17 @@
 .. _doxid-todo:
 
 Todo List
-=========
+===============================================================================
+
+Major TODOs
+-------------------------------------------------------------------------------
+
+Implement unit tests and cover tests for all functionalities, mimicking the
+Julia version.
+
+
+Minor TODOs
+-------------------------------------------------------------------------------
 
 .. list-table::
 	:widths: 20 80

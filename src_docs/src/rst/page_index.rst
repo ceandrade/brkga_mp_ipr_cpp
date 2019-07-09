@@ -21,16 +21,16 @@ parameter (assuming that your decoder is thread-safe). This leverage the
 parallel decoding nature that BRKGAs offer, compared to other (meta) heuristic
 frameworks.
 
-The code can be compiled using `> GCC 7.2 <https://gcc.gnu.org>`__ and `> Clang
-6.0 <https://clang.llvm.org>`__, and it is very probable that it can be
+The code can be compiled using `> GCC 7.2 <https://gcc.gnu.org>`_ and `> Clang
+6.0 <https://clang.llvm.org>`_, and it is very probable that it can be
 compiled using other modern C++ compilers, such as Intel and Microsoft
 compilers. To use multiple threads, your compiler must support `OpenMP
-<https://www.openmp.org>`__. The current version has been long developed, and
+<https://www.openmp.org>`_. The current version has been long developed, and
 it is a very mature code used in production in several companies. However, it
 lacks of a proper unit and coverage testing. Such tests are in the TODO list.
 
 If C++ is not suitable to you, we may find useful the `Julia version
-<https://github.com/ceandrade/BrkgaMpIpr.jl>`__ of this framework. At this
+<https://github.com/ceandrade/BrkgaMpIpr.jl>`_ of this framework. At this
 moment, we have no plans to implement the BRKGA-MP-IPR in other languages such
 as Python, Java, or C#. Both if you want to do so, you are must welcome. But
 please, keep the API as close as possible to the C++ API (or Julia API in case
@@ -38,8 +38,8 @@ you decide go C), and use the best coding and documentation practices of your
 chosen language/framework.
 
 If you are not familiar with how BRKGA works, take a look on `Standard BRKGA
-<http://dx.doi.org/10.1007/s10732-010-9143-1>`__ and `Multi-Parent BRKGA
-<http://dx.doi.org/xxx>`__. In the future, we will provide a *Prime on
+<http://dx.doi.org/10.1007/s10732-010-9143-1>`_ and `Multi-Parent BRKGA
+<http://dx.doi.org/xxx>`_. In the future, we will provide a *Prime on
 BRKGA-MP* section. If you know what *elite set*, *decoder*, and so means, we
 can get to the guts on the :ref:`Guide <doxid-guide>`.
 
@@ -58,7 +58,7 @@ must cite explicitly the following article":
   Biased Random-key Genetic Algorithm with Implicit Path Relinking and its 
   real-world applications.  *European Journal of Operational Research*, 
   volume XX, issue X, pages xx-xx, 2019.
-  DOI `to be determined <http://dx.doi.org/xxx>`__
+  DOI `to be determined <http://dx.doi.org/xxx>`_
 
 
 About the logo
