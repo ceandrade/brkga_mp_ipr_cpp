@@ -61,7 +61,7 @@ TL;DR {#guide_tldr}
 The best way to keep it short is to look in the
 on examples on [the git repo.](https://github.com/ceandrade/brkga_mp_ipr)
 Let's take a look into
-[`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr),
+[`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp),
 copied (and trimmed) below:
 
 ```cpp
@@ -112,13 +112,13 @@ You can identify the following basic steps:
 
 1. Create a data structure to hold your input data. This object should be passed
    to the decoder object/functor (example
-   [`tsp/tsp_instance.hpp`](https://github.com/ceandrade/brkga_mp_ipr));
+   [`tsp/tsp_instance.hpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/tsp/tsp_instance.hpp));
 
 2. Implement a decoder object/functor. This function translates a chromosome
    (array of numbers in the interval [0,1]) to a solution for your problem. The
    decoder must return the solution value or cost to be used as fitness by BRKGA
    (example
-   [`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr));
+   [`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr/tree/v1.0/examples/tsp/src/decoders));
 
 3. Load the instance and other relevant data;
 
@@ -194,7 +194,7 @@ The `src` subdir contains all the code to solve TSP. This is its structure:
     or another library you prefer.
 
 The first step is to build the code. Here, we are using
-[GNU/Make](https://www.gnu.org/software/make/) and [GCC
+[GNU/Make](https://www.gnu.org/software/make) and [GCC
 toolchain](https://gcc.gnu.org). You may change for the toolchain of your
 choice. You may need to edit this file according to your compiler version and
 settings.
@@ -354,7 +354,7 @@ scheduling problem, we may choose to keep both makespan and total completion
 time metrics. Therefore, we chose to make the chromosome a "generic" data
 structure in our design.
 
-File [`chomosome.hpp`](https://github.com/ceandrade/brkga_mp_ipr) shows the
+File [`chomosome.hpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/brkga_mp_ipr/chromosome.hpp) shows the
 basic represetation of a chromosome:
 
 ```cpp
@@ -363,7 +363,7 @@ typedef std::vector<double> Chromosome;
 
 If this enough for you, you go already and use such a definition. However,
 instead to redefine in your own code, **we do recommend to import and use the
-definition from** [`chomosome.hpp`](https://github.com/ceandrade/brkga_mp_ipr),
+definition from** [`chomosome.hpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/brkga_mp_ipr/chromosome.hpp),
 since it is the same definition the main BRKGA-MP-IPR algorithm uses.
 
 However, if you need more information to be tracked during the optimization,
@@ -414,7 +414,7 @@ delete pt;      // Delete does not call the Chromosome destructor.
 Again, the decoder is the heart of a BRKGA. An easy way to keep the API clean
 is to define a decoder that has a reference for the input data. This is a TSP
 decoder defined on file
-[`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr):
+[`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/decoders/tsp_decoder.hpp):
 
 ```cpp
 #include "tsp/tsp_instance.hpp"
@@ -535,7 +535,7 @@ that can be used outside the BRKGA-MP-IPR to control several aspects of the
 optimization. For instance, interval to apply path relink, reset the
 population, perform population migration, among others.
 This is how a configuration file looks like
-(see [`config.conf`](https://github.com/ceandrade/brkga_mp_ipr) for
+(see [`config.conf`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/config.conf) for
 a commented version):
 
 ```txt
@@ -566,7 +566,7 @@ hyper-parameters regarding BRKGA and IPR methods and
 although their presence is required on the config file, they are not
 mandatory to the BRKGA-MP-IPR itself.
 
-Let's take a look in the example from `main_minimal.cpp`:
+Let's take a look in the example from [`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp):
 
 ```cpp
 const unsigned seed = stoi(argv[1]);
@@ -650,7 +650,8 @@ To do it, you must set these initial solutions before call `initialize()`.
 Since BRKGA-MP-IPR does not know the problem structure, you must _encode_ the
 warm-start solution as chromosomes (vectors in the interval [0, 1]). In other
 words, you must do the inverse process that your decoder does. For instance,
-this is a piece of code from `main_complete.cpp` showing this process:
+this is a piece of code from [`main_complete.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_complete.cpp) 
+showing this process:
 
 ```cpp
 auto initial_solution = greedy_tour(instance);
@@ -674,7 +675,9 @@ algorithm.setInitialPopulation(
 ```
 
 Here, we create one incumbent solution using the greedy heuristic
-`greedy_tour()` (in `greedy_tour.hpp/.cpp`). It gives us `initial_solution`
+`greedy_tour()`
+[found here](https://github.com/ceandrade/brkga_mp_ipr/tree/v1.0/examples/tsp/src/heuristics).
+It gives us `initial_solution`
 which is a `std::pair<double, std::vector<unsigned>>` containing the cost of
 the tour and the tour itself which is a sequence of nodes to be visited. In
 the next lines, we encode `initial_solution`. First, we create a vector of
@@ -713,7 +716,8 @@ algorithm.evolve(num_generations);
 `BRKGA::BRKGA_MP_IPR::evolve()` evolves all populations for `num_generations`.
 If `num_genertions` is omitted, `evolve()` evolves only one generation.
 
-For example, in `main_minimal.cpp`, we just evolve the population for a given
+For example, in [`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp), 
+we just evolve the population for a given
 number of generations directly and then extract the best solution cost.
 
 ```cpp
@@ -721,7 +725,8 @@ algorithm.evolve(num_generations);
 auto best_cost = algorithm.getBestFitness();
 ```
 
-On `main_complete.cpp`, we have fine-grained control on the optimization.
+On [`main_complete.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_complete.cpp)
+, we have fine-grained control on the optimization.
 There, we have a main loop that evolves the population one generation at a
 time and performs several operations as to hold the best solution, to check
 whether it is time for path relink, population reset, among others. The
@@ -790,7 +795,7 @@ Note that the chromosome is put in a specific position of a given population.
 If you do not provide the fitness, `injectChromosome()` will decode the
 injected chromosome. For example, assuming the `algorithm` is your
 BRKGA-MP-IPR object and `brkga_params` is your `BrkgaParams` object, the
-following code injects a random chromosome `keys` into the population #1 in
+following code injects the random chromosome `keys` into the population #1 in
 the last position (`population_size`), i.e., it will replace the worst solution:
 
 ```cpp
@@ -983,7 +988,7 @@ exchanged during the direct path relink. This parameter is also critical for
 IPR performance since it avoids too many exchanges during the path building.
 Usually, we can compute this number based on the size of the chromosome by
 some factor (`alpha_block_size` in the configuration file), chosen by you.
-Again, details here.
+Again, details [here](http://dx.doi.org/xxx).
 
 \note
     Experiments have shown that a good choice is
@@ -996,7 +1001,7 @@ when `max_time` seconds is reached or `percentage`% of the path is built.
     IPR is a very time-intensive process. You must set the stopping criteria
     accordingly.
 
-Let's see the example on [`main_complete.cpp`](https://github.com/ceandrade/BrkgaMpIpr).
+Let's see the example on [`main_complete.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_complete.cpp).
 Remember, since we are solving the TSP, we want to use the permutation-based
 IPR, and the Kendall Tau distance functions.
 
@@ -1018,7 +1023,7 @@ auto result = algorithm.pathRelink(
 
 Note that most parameters come from `brkga_params`. The maximum IPR time is
 set to the remaining time for optimization (global `maximum_time` minus the
-elapsed time. `pathRelink()` returns a
+elapsed time). `pathRelink()` returns a
 `BRKGA::PathRelinking::PathRelinkingResult` object which defines the status
 of the IPR optimization.
 
@@ -1213,12 +1218,13 @@ auto& control_params = params.second;
 auto [brkga_params, control_params] = BRKGA::readConfiguration("tuned_conf.txt");
 ```
 
-The configuration file must be plain text such that contains pairs of
-parameter name and value. This file must list all fields from
-`BRKGA::BrkgaParams` and `BRKGA::ExternalControlParams`, even though you do
-not use each one. In [`examples`
-folder](https://github.com/ceandrade/BrkgaMpIpr), we have `config.conf` that
-looks like this:
+The configuration file must be plain text such that contains pairs of parameter
+name and value. This file must list all fields from `BRKGA::BrkgaParams` and
+`BRKGA::ExternalControlParams`, even though you do not use each one. In
+[`examples` folder](https://github.com/ceandrade/brkga_mp_ipr/tree/v1.0/examples/tsp),
+we have
+[`config.conf`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/config.conf)
+that looks like this:
 
 ```txt
 population_size 2000
@@ -1321,7 +1327,7 @@ Let's see a simple example considering the TSP example. `TSP_Decode` uses a
 single array to create the permutation of nodes. Let's pre-allocate its
 memory per thread. To keep things separeted and easy to understand, we
 created a new class
-[`TSP_Decoder_pre_allocating`](https://github.com/ceandrade/brkga_mp_ipr)
+[`TSP_Decoder_pre_allocating`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/decoders/tsp_decoder_pre_allocating.hpp)
 so that we allocate, for each thread, a vector to hold the permutation during
 the decoding:
 

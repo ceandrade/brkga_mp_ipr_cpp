@@ -1,14 +1,13 @@
 .. _doxid-global:
 .. index:: pair: namespace; global
 
-Global Namespace
-================
+API documentation
+==============================
 
 .. toctree::
 	:hidden:
 
 	namespace_BRKGA.rst
-	namespace_std.rst
 	class_EnumIO.rst
 
 
@@ -44,7 +43,6 @@ Global Namespace
 
 	namespace :ref:`BRKGA<doxid-namespace_b_r_k_g_a>`;
 		namespace :ref:`BRKGA::PathRelinking<doxid-namespace_b_r_k_g_a_1_1_path_relinking>`;
-	namespace :ref:`std<doxid-namespacestd>`;
 
 	// classes
 

@@ -4,17 +4,20 @@
 	:hidden:
 
 	page_guide.rst
+    page_license.rst
 	page_todo.rst
 	page_md_src_contributing.rst
 
-.. rubric:: Related Pages:
+Related Pages
+-------------------------------------------------------------------------------
 
 |	:doc:`page_guide`
 |	:doc:`page_todo`
 |	:doc:`page_md_src_contributing`
 
 
-.. rubric:: Reference and Index:
+Reference and Index
+-------------------------------------------------------------------------------
 
 .. toctree::
 	:hidden:

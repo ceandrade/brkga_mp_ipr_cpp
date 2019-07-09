@@ -54,9 +54,11 @@ materials mentioning features or use of this software and/or the data used to
 test it must cite explicitly the following article":
 
 > C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
-> Biased Random-key Genetic Algorithm with Implicit Path Relinking. _European
-> Journal of Operational Research_, volume XX, issue X, pages xx-xx, 2019.
-> DOI [to be determined](http://dx.doi.org/xxx)
+> Biased Random-key Genetic Algorithm with Implicit Path Relinking and its 
+> real-world applications.  *European Journal of Operational Research*, 
+> volume XX, issue X, pages xx-xx, 2019.
+> DOI `to be determined <http://dx.doi.org/xxx>`__
+
 
 About the logo
 --------------------------------------------------------------------------------
@@ -65,3 +67,4 @@ The logo is just a play with 3 chromosomes crossing with each other
 (multi-parent) during the mating process. The lines also represent solutions
 paths that encounter with each other generating new solutions during the
 path-relink.
+

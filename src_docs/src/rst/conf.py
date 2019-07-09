@@ -28,6 +28,8 @@ version = ''
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
 
+html_logo = "../assets/logo.png"
+html_favicon = "../assets/favicon.ico"
 
 # -- General configuration ---------------------------------------------------
 
@@ -184,3 +186,8 @@ epub_exclude_files = ['search.html']
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+# -- Additional javascript ---------------------------------------------------
+
+def setup(app):
+    app.add_javascript('add_target.js')
