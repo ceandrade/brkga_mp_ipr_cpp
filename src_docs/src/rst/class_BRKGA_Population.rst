@@ -69,7 +69,7 @@ Encapsulates a population of chromosomes.
 
 Encapsulates a population of chromosomes providing supporting methods for making the implementation easier.
 
-All methods and attributes are public and can be manipulated directly from :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` algorithms. Note that this class is not meant to be used externally of this unit.
+All methods and attributes are public and can be manipulated directly from BRKGA algorithms. Note that this class is not meant to be used externally of this unit.
 
 Fields
 ------

@@ -23,17 +23,7 @@ namespace BRKGA
 Overview
 ~~~~~~~~
 
-This namespace contains all stuff related to :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` Multi Parent with Implicit Path Relinking. :ref:`More...<details-doxid-namespace_b_r_k_g_a>`
-
-
-
-
-
-
-
-
-
-
+This namespace contains all stuff related to Multi-Parent BRKGA with Implicit Path Relinking. :ref:`More...<details-doxid-namespace_b_r_k_g_a>`
 
 
 .. ref-code-block:: cpp
@@ -123,7 +113,7 @@ a) We remember that every operation provided by ``std::vector<>`` must be a sema
 
 b) We avoid creating derived class objects with dynamic storage duration;
 
-c) We **DO** avoid polymorphism:
+c) We **DO AVOID** polymorphism:
 
 .. ref-code-block:: cpp
 
@@ -144,9 +134,10 @@ Global Functions
 
 Read the parameters from a configuration file.
 
-Todo (ceandrade) This method can beneficiate from introspection tools from C++17. We would like achieve a code similar to the `Julia counterpart <https://github.com/ceandrade/BrkgaMpIpr.jl>`__.
-
-
+.. todo::
+  (ceandrade) This method can beneficiate from introspection tools from C++17.
+  We would like achieve a code similar to the `Julia counterpart
+  <https://github.com/ceandrade/BrkgaMpIpr.jl>`_.
 
 .. rubric:: Parameters:
 
@@ -158,16 +149,21 @@ Todo (ceandrade) This method can beneficiate from introspection tools from C++17
 
 		- the configuration file.
 
+
+.. rubric:: Returns:
+
+a tuple containing the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and external control parameters.
+
+.. rubric:: Exceptions:
+
+.. list-table::
+	:widths: 20 80
+    
 	*
 		- std::fstream::failure
 
 		- in case of errors in the file.
 
-
-
-.. rubric:: Returns:
-
-a tuple containing the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and external control parameters.
 
 .. index:: pair: function; writeConfiguration
 .. _doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4:
@@ -208,8 +204,12 @@ Todo (ceandrade) This method can beneficiate from introspection tools from C++17
 
 		- the external control parameters. Default is an empty object.
 
+.. rubric:: Exceptions:
+
+.. list-table::
+	:widths: 20 80
+    
 	*
 		- std::fstream::failure
 
 		- in case of errors in the file.
-

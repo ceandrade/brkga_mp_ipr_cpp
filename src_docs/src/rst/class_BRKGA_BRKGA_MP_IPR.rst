@@ -11,7 +11,9 @@ template class BRKGA::BRKGA_MP_IPR
 Overview
 ~~~~~~~~
 
-This class represents a Multi-Parent Biased Random-key Genetic Algorithm with Implicit Path Relinking (BRKGA-MP-IPR). :ref:`More...<details-doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r>`
+This class represents a Multi-Parent Biased Random-key Genetic Algorithm with
+Implicit Path Relinking (BRKGA-MP-IPR).
+:ref:`More...<details-doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r>`
 
 
 
@@ -123,12 +125,10 @@ Detailed Documentation
 
 This class represents a Multi-Parent Biased Random-key Genetic Algorithm with Implicit Path Relinking (BRKGA-MP-IPR).
 
-Carlos Eduardo de Andrade `ce.andrade@gmail.com <mailto:ce.andrade@gmail.com>`__
-
-2019
 
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1main_cap:
-.. rubric:: Main capabilities :
+Main capabilities
+--------------------------
 
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1evol_process:
 .. rubric:: Evolutionary process :
@@ -156,8 +156,10 @@ Note that the algorithm tries to find a pair of base and guiding solutions with 
 
 The API will call ``Decoder::decode()`` always with ``rewrite = false``. The reason is that if the decoder rewrites the chromosome, the path between solutions is lost and inadvertent results may come up. Note that at the end of the path relinking, the method calls the decoder with ``rewrite = true`` in the best chromosome found to guarantee that this chromosome is re-written to reflect the best solution found.
 
+
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1other_cap:
-.. rubric:: Other capabilities :
+Other capabilities
+----------------------------
 
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1multi_start:
 .. rubric:: Multi-start :
@@ -170,7 +172,8 @@ This API also can be used as a simple multi-start algorithm without evolution. T
 This API allows the user provides a set of initial solutions to warm start the algorithm. In general, initial solutions are created using other (fast) heuristics and help the convergence of the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>`. To do that, the user must encode the solutions on :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>` (``vector<double>``) and pass to the method :ref:`setInitialPopulation() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a59b05650ede92f5e0107ab606ff6e8b7>` as a ``vector<:ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`>``.
 
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1gen_usage:
-.. rubric:: General Usage :
+General Usage
+----------------------------
 
 #. The user must call the :ref:`BRKGA_MP_IPR <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r>` constructor and pass the desired parameters. Please, see :ref:`BRKGA_MP_IPR::BRKGA_MP_IPR <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a041a64b7b5a81b563fd54cfbeec1bb96>` for parameter details;
    
@@ -192,17 +195,21 @@ This API allows the user provides a set of initial solutions to warm start the a
 
 For a comprehensive and detailed usage, please see the examples that follow this API.
 
+
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1multi_thread:
-.. rubric:: About multi-threading :
+About multi-threading
+----------------------------
 
 This API is capable of decoding several chromosomes in parallel, as mentioned before. This capability is based on OpenMP (`http://www.openmp.org <http://www.openmp.org>`__) and the compiler must have support to it. Most recent versions of GNU G++ and Intel C++ Compiler support OpenMP. Clang supports OpenMP since 3.8. However, there are some issues with the libraries, and sometimes, the parallel sections are not enabled. On the major, the user can find fixes to his/her system.
 
 Since, in general, the decoding process can be complex and lengthy, it is recommended that **the number of threads used DO NOT exceed the number of physical cores in the machine.** This improves the overall performance drastically, avoiding cache misses and racing conditions. Note that the number of threads is also tied to the memory utilization, and it should be monitored carefully.
 
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1hist:
-.. rubric:: History :
+History
+----------------------------
 
 This API was based on the code by Rodrigo Franco Toso, Sep 15, 2011. `http://github.com/rfrancotoso/brkgaAPI <http://github.com/rfrancotoso/brkgaAPI>`__
+
 
 Construction
 ------------
@@ -271,10 +278,17 @@ Build the algorithm and its data strtuctures with the given arguments.
 
 		- if false, no evolution is performed but only chromosome decoding. Very useful to emulate a multi-start algorithm.
 
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::range_error
 
 		- if some parameter or combination of parameters does not fit.
+
 
 Methods
 -------
@@ -306,10 +320,17 @@ All given solutions are assigned to one population only. Therefore, the maximum 
 
 		- a set of individuals encoded as Chromosomes.
 
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::runtime_error
 
 		- if the number of given chromosomes is larger than the population size; if the sizes of the given chromosomes do not match with the required chromosome size.
+
 
 .. index:: pair: function; setBiasCustomFunction
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a8616c89626ca3c8e8d3b5adb1da24c92:
@@ -346,10 +367,17 @@ sets an inverse quadratic function.
 
 		- a reference to a unary positive non-increasing function.
 
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::runtime_error
 
 		- in case the function is not a non-decreasing positive function.
+
 
 .. index:: pair: function; initialize
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a7857351d4ce17199bd2fc157589a8592:
@@ -405,6 +433,12 @@ The decoding is done in parallel using threads, and the user **must guarantee th
 
 		- number of generations to be evolved. Must be larger than zero.
 
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::runtime_error
 
@@ -414,6 +448,8 @@ The decoding is done in parallel using threads, and the user **must guarantee th
 		- std::range_error
 
 		- if the number of generations is zero.
+
+
 
 .. index:: pair: function; pathRelink
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a95529466a3e942e4aafa26259aa83d0f:
@@ -494,16 +530,23 @@ As it is in :ref:`evolve() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a
 
 		- defines the size, in percentage, of the path to build. Default: 1.0 (100%).
 
+
+
+.. rubric:: Returns:
+
+A :ref:`PathRelinking::PathRelinkingResult <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` depending on the relink status.
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+
 	*
 		- std::range_error
 
 		- if the percentage or size of the path is not in (0, 1].
 
 
-
-.. rubric:: Returns:
-
-A :ref:`PathRelinking::PathRelinkingResult <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` depending on the relink status.
 
 .. index:: pair: function; pathRelink
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a891815a683e55722a68cf52f47efe44e:
@@ -537,16 +580,23 @@ Please, refer to :ref:`pathRelink() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p__
 
 		- aborts path relinking when reach ``max_time``. If ``max_time <= 0``, no limit is imposed.
 
+
+
+.. rubric:: Returns:
+
+A :ref:`PathRelinking::PathRelinkingResult <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` depending on the relink status.
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::range_error
 
 		- if the percentage or size of the path is not in (0, 1].
 
 
-
-.. rubric:: Returns:
-
-A :ref:`PathRelinking::PathRelinkingResult <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` depending on the relink status.
 
 .. index:: pair: function; exchangeElite
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1ab89298e6c633a81bf8c0462fb40ddd15:
@@ -573,10 +623,18 @@ Given a population, the ``num_immigrants`` best solutions are copied to the neig
 
 		- number of elite chromosomes to select from each population.
 
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::range_error
 
 		- if the number of immigrants less than one or it is larger than or equal to the population size divided by the number of populations minus one, i.e. :math:`\lceil \frac{population\_size}{num\_independent\_populations} \rceil - 1`.
+
+
 
 .. index:: pair: function; reset
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3bfe66221dd2f9c755a65ed7df14e350:
@@ -593,7 +651,7 @@ All warm-start solutions provided :ref:`setInitialPopulation() <doxid-class_b_r_
 
 
 
-.. rubric:: Parameters:
+.. rubric:: Exceptions:
 
 .. list-table::
 	:widths: 20 80
@@ -603,6 +661,7 @@ All warm-start solutions provided :ref:`setInitialPopulation() <doxid-class_b_r_
 
 		- if the algorithm is not initialized.
 
+        
 .. index:: pair: function; shake
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3721a91ed9d3fcbdc57fbcee2e20ac66:
 .. _cid-brkga.brkga_mp_ipr.shake:
@@ -685,10 +744,17 @@ If fitness is not provided (``fitness == Inf``), the decoding is performed over 
 
 		- the pre-computed fitness if it is available.
 
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::range_error
 
 		- eitheir if ``population_index`` is larger than number of populations; or ``position`` is larger than the population size; or ``chromosome.size() != chromosome_size``
+
 
 .. index:: pair: function; getCurrentPopulation
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a878b5edaec7438669ceec2e5fdd42d43:
@@ -702,7 +768,6 @@ If fitness is not provided (``fitness == Inf``), the decoding is performed over 
 Return a reference to a current population.
 
 
-
 .. rubric:: Parameters:
 
 .. list-table::
@@ -713,10 +778,18 @@ Return a reference to a current population.
 
 		- the population index.
 
+
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::range_error
 
 		- if the index is larger than number of populations.
+
+
 
 .. index:: pair: function; getBestChromosome
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa4b0396a4780fde3be8d284c535b600e:
@@ -768,6 +841,11 @@ Return a reference to a chromosome of the given population.
 
 		- the chromosome position, ordered by fitness. The best chromosome is located in position 0.
 
+.. rubric:: Exceptions:
+
+.. list-table::
+    :widths: 20 80
+    
 	*
 		- std::range_error
 
