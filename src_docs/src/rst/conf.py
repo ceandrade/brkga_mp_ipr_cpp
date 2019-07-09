@@ -187,7 +187,8 @@ epub_exclude_files = ['search.html']
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
-# -- Additional javascript ---------------------------------------------------
+# -- Additional CSS  and Javascript ------------------------------------------
 
 def setup(app):
     app.add_javascript('add_target.js')
+    # app.add_stylesheet('custom_theme.css')
