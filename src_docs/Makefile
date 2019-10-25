@@ -47,9 +47,12 @@ doxyrest:
 
 sphinx:
 	mkdir -p build
-	cp -r src/rst build/.
-	cp -r src/assets build/.
+	cp -a src/rst build/.
+	cp -a src/assets build/.
 	sphinx-build -b html build/rst build/html_sphinx
+	touch  build/html_sphinx/.nojekyll
+	rm -rf ../docs
+	cp -a  build/html_sphinx ../docs
 
 clean:
 	rm -rf build
