@@ -155,8 +155,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'BRKGA-MP-IPR', 'BRKGA-MP-IPR Documentation',
-     author, 'BRKGA-MP-IPR', 'One line description of project.',
-     'Miscellaneous'),
+     author, 'BRKGA-MP-IPR', 'BRKGA-MP-IPR Documentation.',
+     'Optimization frameworks'),
 ]
 
 

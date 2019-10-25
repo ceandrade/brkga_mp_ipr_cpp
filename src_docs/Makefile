@@ -3,7 +3,7 @@
 # All Rights Reserved.
 #
 #  Created on : Mar 08, 2019 by andrade
-#  Last update: Mar 08, 2019 by andrade
+#  Last update: Oct 25, 2019 by andrade
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -36,7 +36,7 @@ $(foreach tool,$(REQUIRED_TOOLS),\
 
 .PHONY: all clean
 
-all: doxygen doxyrest sphinx
+all: sphinx
 	echo
 
 doxygen:
@@ -46,7 +46,9 @@ doxyrest:
 	doxyrest -c doxyrest-config.lua
 
 sphinx:
-	cp conf.py build/rst
+	mkdir -p build
+	cp -r src/rst build/.
+	cp -r src/assets build/.
 	sphinx-build -b html build/rst build/html_sphinx
 
 clean:
