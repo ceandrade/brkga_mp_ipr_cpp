@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>enum BRKGA::BiasFunctionType &mdash; BRKGA-MP-IPR 1.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/add_target.js"></script>
+        <script type="text/javascript" src="_static/target-highlight.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/doxyrest-pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/doxyrest-sphinx_rtd_theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="enum BRKGA::Sense" href="enum_BRKGA_Sense.html" />
+    <link rel="prev" title="enum BRKGA::PathRelinking::Type" href="enum_BRKGA_PathRelinking_Type.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BRKGA-MP-IPR
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_md_src_contributing.html">Contributing</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="global.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA_PathRelinking.html">namespace BRKGA::PathRelinking</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">enum BRKGA::BiasFunctionType</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detailed-documentation">Detailed Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_Sense.html">enum BRKGA::Sense</a></li>
+<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_ShakingType.html">enum BRKGA::ShakingType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html">template class BRKGA::BRKGA_MP_IPR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BrkgaParams.html">class BRKGA::BrkgaParams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html">class BRKGA::DistanceFunctionBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html">class BRKGA::ExternalControlParams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_HammingDistance.html">class BRKGA::HammingDistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_KendallTauDistance.html">class BRKGA::KendallTauDistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_Population.html">class BRKGA::Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#detailed-documentation">Detailed Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_EnumIO.html">template class EnumIO</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BRKGA-MP-IPR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="global.html">API documentation</a> &raquo;</li>
+        
+          <li><a href="namespace_BRKGA.html">namespace BRKGA</a> &raquo;</li>
+        
+      <li>enum BRKGA::BiasFunctionType</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/enum_BRKGA_BiasFunctionType.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="enum-brkga-biasfunctiontype">
+<span id="cid-brkga-biasfunctiontype"></span><span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"></span><span id="index-0"></span><h1>enum BRKGA::BiasFunctionType<a class="headerlink" href="#enum-brkga-biasfunctiontype" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Specifies a bias function type when choosing parents to mating (<code class="docutils literal notranslate"><span class="pre">r</span></code> is a given parameter). This function substitutes the <code class="docutils literal notranslate"><span class="pre">rhoe</span></code> parameter from the original <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a>. <a class="reference internal" href="#details-doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"><span class="std std-ref">More…</span></a></p>
+<pre class="highlight overview-code-block literal-block">
+<span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+
+<span class="k">enum</span> <span class="n">BRKGA</span><span class="o">::</span><span class="n">BiasFunctionType</span>
+<span class="p">{</span>
+    <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a8d6b5cada83510220f59e00ce86d4d92"><span class="std std-ref">CONSTANT</span></a><span></span><span class="p">,</span>
+    <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1accd681e34e5e40fbce74618c3ccffcff"><span class="std std-ref">CUBIC</span></a><span></span><span class="p">,</span>
+    <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adcd5fc33e211f31cef0cd7cb36518d31"><span class="std std-ref">EXPONENTIAL</span></a><span></span><span class="p">,</span>
+    <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aaac544aacc3615aada24897a215f5046"><span class="std std-ref">LINEAR</span></a><span></span><span class="p">,</span>
+    <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adca762bd1443afdcf03af352da1c9184"><span class="std std-ref">LOGINVERSE</span></a><span></span><span class="p">,</span>
+    <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aa6ef2e8b7424bfa9d56315aca733861c"><span class="std std-ref">QUADRATIC</span></a><span></span><span class="p">,</span>
+    <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a72baef04098f035e8a320b03ad197818"><span class="std std-ref">CUSTOM</span></a><span></span><span class="p">,</span>
+<span class="p">};</span>
+</pre>
+</div>
+<div class="section" id="detailed-documentation">
+<span id="details-doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Specifies a bias function type when choosing parents to mating (<code class="docutils literal notranslate"><span class="pre">r</span></code> is a given parameter). This function substitutes the <code class="docutils literal notranslate"><span class="pre">rhoe</span></code> parameter from the original <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a>.</p>
+<div class="section" id="enum-values">
+<h3>Enum Values<a class="headerlink" href="#enum-values" title="Permalink to this headline">¶</a></h3>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-constant">
+<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a8d6b5cada83510220f59e00ce86d4d92"></span><span id="index-1"></span><span></span><span class="n">CONSTANT</span>
+</pre>
+<p><span class="math notranslate nohighlight">\(\frac{1}{\text{num. parents for mating}}\)</span> (all individuals have the same probability)</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-cubic">
+<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1accd681e34e5e40fbce74618c3ccffcff"></span><span id="index-2"></span><span></span><span class="n">CUBIC</span>
+</pre>
+<p><span class="math notranslate nohighlight">\(r^{-3}\)</span></p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-exponential">
+<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adcd5fc33e211f31cef0cd7cb36518d31"></span><span id="index-3"></span><span></span><span class="n">EXPONENTIAL</span>
+</pre>
+<p><span class="math notranslate nohighlight">\(e^{-r}\)</span></p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-linear">
+<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aaac544aacc3615aada24897a215f5046"></span><span id="index-4"></span><span></span><span class="n">LINEAR</span>
+</pre>
+<p><span class="math notranslate nohighlight">\(1/r\)</span></p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-loginverse">
+<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adca762bd1443afdcf03af352da1c9184"></span><span id="index-5"></span><span></span><span class="n">LOGINVERSE</span>
+</pre>
+<p><span class="math notranslate nohighlight">\(\frac{1}{\log(r + 1)}\)</span> (usually works better than other functions)</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-quadratic">
+<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aa6ef2e8b7424bfa9d56315aca733861c"></span><span id="index-6"></span><span></span><span class="n">QUADRATIC</span>
+</pre>
+<p><span class="math notranslate nohighlight">\(r^{-2}\)</span></p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-custom">
+<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a72baef04098f035e8a320b03ad197818"></span><span id="index-7"></span><span></span><span class="n">CUSTOM</span>
+</pre>
+<p>Indicates a custom function supplied by the user.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="enum_BRKGA_Sense.html" class="btn btn-neutral float-right" title="enum BRKGA::Sense" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="enum_BRKGA_PathRelinking_Type.html" class="btn btn-neutral float-left" title="enum BRKGA::PathRelinking::Type" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Carlos E. Andrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

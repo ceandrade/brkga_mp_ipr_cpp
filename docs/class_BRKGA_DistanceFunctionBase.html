@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>class BRKGA::DistanceFunctionBase &mdash; BRKGA-MP-IPR 1.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/add_target.js"></script>
+        <script type="text/javascript" src="_static/target-highlight.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/doxyrest-pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/doxyrest-sphinx_rtd_theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="class BRKGA::ExternalControlParams" href="class_BRKGA_ExternalControlParams.html" />
+    <link rel="prev" title="class BRKGA::BrkgaParams" href="class_BRKGA_BrkgaParams.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BRKGA-MP-IPR
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_md_src_contributing.html">Contributing</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="global.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA_PathRelinking.html">namespace BRKGA::PathRelinking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_BiasFunctionType.html">enum BRKGA::BiasFunctionType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_Sense.html">enum BRKGA::Sense</a></li>
+<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_ShakingType.html">enum BRKGA::ShakingType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html">template class BRKGA::BRKGA_MP_IPR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BrkgaParams.html">class BRKGA::BrkgaParams</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">class BRKGA::DistanceFunctionBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detailed-documentation">Detailed Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html">class BRKGA::ExternalControlParams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_HammingDistance.html">class BRKGA::HammingDistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_KendallTauDistance.html">class BRKGA::KendallTauDistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_Population.html">class BRKGA::Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#detailed-documentation">Detailed Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_EnumIO.html">template class EnumIO</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BRKGA-MP-IPR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="global.html">API documentation</a> &raquo;</li>
+        
+          <li><a href="namespace_BRKGA.html">namespace BRKGA</a> &raquo;</li>
+        
+      <li>class BRKGA::DistanceFunctionBase</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/class_BRKGA_DistanceFunctionBase.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="class-brkga-distancefunctionbase">
+<span id="cid-brkga-distancefunctionbase"></span><span id="doxid-class-b-r-k-g-a-1-1-distance-function-base"></span><span id="index-0"></span><h1>class BRKGA::DistanceFunctionBase<a class="headerlink" href="#class-brkga-distancefunctionbase" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Distance Function Base. <a class="reference internal" href="#details-doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">More…</span></a></p>
+<pre class="highlight overview-code-block literal-block" id="cid-brkga-distancefunctionbase-distancefunctionbase">
+<span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1a61acb94a73fd16ffa7740f2a383173d1"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+
+<span class="k">class</span> <span class="n">DistanceFunctionBase</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// methods</span>
+
+    <span class="k">virtual</span> <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-distance-function-base-1acee8e7b478010aff23b3a46cd113860a"><span class="std std-ref">distance</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">v1</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">v2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">bool</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-distance-function-base-1a243c8a1031fb149c6abc16f3869f2ace"><span class="std std-ref">affectSolution</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">key2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">bool</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-distance-function-base-1aca0fc7103888cd025a67a16575954875"><span class="std std-ref">affectSolution</span></a><span></span><span class="p">(</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v1_begin</span><span class="p">,</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v2_begin</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// direct descendants</span>
+
+<span class="k">class</span> <a class="reference internal" href="class_BRKGA_HammingDistance.html#doxid-class-b-r-k-g-a-1-1-hamming-distance"><span class="std std-ref">HammingDistance</span></a><span></span><span class="p">;</span>
+<span class="k">class</span> <a class="reference internal" href="class_BRKGA_KendallTauDistance.html#doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref">KendallTauDistance</span></a><span></span><span class="p">;</span>
+</pre>
+</div>
+<div class="section" id="detailed-documentation">
+<span id="details-doxid-class-b-r-k-g-a-1-1-distance-function-base"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Distance Function Base.</p>
+<p>This class is a interface for functors that compute the distance between two vectors of double numbers.</p>
+<div class="section" id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-distance">
+<span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1acee8e7b478010aff23b3a46cd113860a"></span><span id="index-2"></span><span></span><span class="k">virtual</span> <span class="kt">double</span> <span class="n">distance</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">v1</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">v2</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+</pre>
+<p>Compute the distance between two vectors.</p>
+<p class="rubric">Parameters:</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>v1</td>
+<td>first vector</td>
+</tr>
+<tr class="row-even"><td>v2</td>
+<td>second vector</td>
+</tr>
+</tbody>
+</table>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-affectsolution">
+<span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1a243c8a1031fb149c6abc16f3869f2ace"></span><span id="index-3"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">key2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+</pre>
+<p>Return true if the changing of <code class="docutils literal notranslate"><span class="pre">key1</span></code> by <code class="docutils literal notranslate"><span class="pre">key2</span></code> affects the solution.</p>
+<p class="rubric">Parameters:</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key1</td>
+<td>the first key</td>
+</tr>
+<tr class="row-even"><td>key2</td>
+<td>the second key</td>
+</tr>
+</tbody>
+</table>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-affectsolution-2">
+<span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1aca0fc7103888cd025a67a16575954875"></span><span id="index-4"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v1_begin</span><span class="p">,</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v2_begin</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+</pre>
+<p>Return true if the changing of the blocks of keys <code class="docutils literal notranslate"><span class="pre">v1</span></code> by the blocks of keys <code class="docutils literal notranslate"><span class="pre">v2</span></code> affects the solution.</p>
+<p class="rubric">Parameters:</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>v1_begin</td>
+<td>begin of the first blocks of keys</td>
+</tr>
+<tr class="row-even"><td>v2_begin</td>
+<td>begin of the first blocks of keys</td>
+</tr>
+<tr class="row-odd"><td>block_size</td>
+<td>number of keys to be considered.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="class_BRKGA_ExternalControlParams.html" class="btn btn-neutral float-right" title="class BRKGA::ExternalControlParams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="class_BRKGA_BrkgaParams.html" class="btn btn-neutral float-left" title="class BRKGA::BrkgaParams" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Carlos E. Andrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
