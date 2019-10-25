@@ -46,7 +46,7 @@ Tutorial
 --------------------------------------------------------------------------------
 
 Check out the tutorial and documentation:
-(https://ceandrade.github.com/brkga_mp_ipr)
+(https://ceandrade.github.io/brkga_mp_ipr)
 
 License and Citing
 --------------------------------------------------------------------------------
