@@ -31,9 +31,10 @@ However, it lacks of a proper unit and coverage testing. Such tests are in
 the TODO list.
 
 If C++ is not suitable to you, we may find useful the [Julia
-version](https://github.com/ceandrade/BrkgaMpIpr.jl) of this framework. At
-this moment, we have no plans to implement the BRKGA-MP-IPR in other
-languages such as Python, Java, or C#. But if you want to do so, you are
+version](https://github.com/ceandrade/BrkgaMpIpr.jl) of this framework. 
+We are also developing a Python version.
+At this moment, we have no plans to implement the BRKGA-MP-IPR in other
+languages such as Java or C#. But if you want to do so, you are
 must welcome. But please, keep the API as close as possible to the C++ API
 (or Julia API in case you decide go C), and use the best coding and
 documentation practices of your chosen language/framework.
