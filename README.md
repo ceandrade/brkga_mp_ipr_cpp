@@ -1,4 +1,4 @@
-![BRKGA-MP-IPR logo](https://github.com/ceandrade/brkga_mp_ipr/blob/master/src_docs/src/assets/logo.png)
+![BRKGA-MP-IPR logo](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/src_docs/src/assets/logo.png)
 
 BRKGA-MP-IPR
 ================================================================================
@@ -32,7 +32,9 @@ the TODO list.
 
 If C++ is not suitable to you, we may find useful the [Julia
 version](https://github.com/ceandrade/BrkgaMpIpr.jl) of this framework. 
-We are also developing a Python version.
+We are also developing a 
+[Python version](https://github.com/ceandrade/brkga_mp_ipr_python)
+which is in its earlier stages.
 At this moment, we have no plans to implement the BRKGA-MP-IPR in other
 languages such as Java or C#. But if you want to do so, you are
 must welcome. But please, keep the API as close as possible to the C++ API
@@ -49,7 +51,7 @@ Tutorial
 --------------------------------------------------------------------------------
 
 Check out the tutorial and documentation:
-(https://ceandrade.github.io/brkga_mp_ipr)
+(https://ceandrade.github.io/brkga_mp_ipr_cpp)
 
 License and Citing
 --------------------------------------------------------------------------------
