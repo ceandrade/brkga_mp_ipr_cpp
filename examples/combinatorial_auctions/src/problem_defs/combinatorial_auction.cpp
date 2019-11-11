@@ -37,7 +37,11 @@
 #include <map>
 #include <set>
 #include <iomanip>
+
+#pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/lexical_cast.hpp>
+#pragma GCC diagnostic pop
+
 using namespace std;
 
 #include "combinatorial_auction.hpp"

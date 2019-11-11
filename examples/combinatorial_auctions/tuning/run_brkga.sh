@@ -3,16 +3,16 @@
 # R parameters
 CONFIG_ID="$1"
 INSTANCE_ID="$2"
+SEED="${3}"
+INSTANCE="${4}"
 
 EXE="./brkga-ca"
 CONFIG_FILE="brkga_mp_ipr.conf"  # Not used in the tuning
-SEED="${3}"
 STOP_RULE="Iterations 1000"
 DECODE_APPROACH="Greedy"
 INIT_CONFIG="Random 0 0 0 0"
 MAX_TIME="600"
 PRICING_SCHEME="FirstPrice"
-INSTANCE="${4}"
 INSTANCE_LP="/dev/null"
 POPSIZE="${5}"
 PE="${6}"

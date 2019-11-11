@@ -1,6 +1,6 @@
 ![BRKGA-MP-IPR logo](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/src_docs/src/assets/logo.png)
 
-BRKGA-MP-IPR
+BRKGA-MP-IPR - C++ version
 ================================================================================
 
 BRKGA-MP-IPR provides a _very easy-to-use_ framework for the
@@ -31,7 +31,7 @@ However, it lacks of a proper unit and coverage testing. Such tests are in
 the TODO list.
 
 If C++ is not suitable to you, we may find useful the [Julia
-version](https://github.com/ceandrade/BrkgaMpIpr.jl) of this framework. 
+version](https://github.com/ceandrade/brkga_mp_ipr_julia) of this framework. 
 We are also developing a 
 [Python version](https://github.com/ceandrade/brkga_mp_ipr_python)
 which is in its earlier stages.

@@ -902,7 +902,7 @@ INLINE void writeConfiguration(const std::string& filename,
  * the islands are performed using exchangeElite() method.
  *
  * This code requires the template argument `Decoder` be a class or functor
- * object able to map a chromosome to a solution for the specific problem,
+ * object capable to map a chromosome to a solution for the specific problem,
  * and return a value to be used as fitness to the decoded chromosome.
  * The decoder must have the method
  * \code{.cpp}
@@ -1092,7 +1092,7 @@ public:
     /**
      * \brief Set a custom bias function used to build the probabilities.
      *
-     * It must be a **positive non-decreasing function**, i.e.
+     * It must be a **positive non-increasing function**, i.e.
      * \f$ f: \mathbb{N}^+ \to \mathbb{R}^+\f$ such that
      * \f$f(i) \ge 0\f$ and \f$f(i) \ge f(i+1)\f$ for
      * \f$i \in [1..total\_parents]\f$.
@@ -1368,7 +1368,6 @@ public:
      */
     const Chromosome& getChromosome(unsigned population_index,
                                     unsigned position) const;
-
     //@}
 
     /** \name Parameter getters */
@@ -1429,10 +1428,10 @@ protected:
 
     /** \name Algorithm data */
     //@{
-    /// Previous population.
+    /// Previous populations.
     std::vector<std::shared_ptr<Population>> previous;
 
-    /// Current population.
+    /// Current populations.
     std::vector<std::shared_ptr<Population>> current;
 
     /// Reference for the bias function.
@@ -1678,20 +1677,20 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
 
     case BiasFunctionType::CUBIC:
         setBiasCustomFunction(
-                [](const unsigned r) { return pow(r, -3); }
+            [](const unsigned r) { return pow(r, -3); }
         );
         break;
 
     case BiasFunctionType::EXPONENTIAL:
         setBiasCustomFunction(
-                [](const unsigned r) { return exp(-1.0 * r); }
+            [](const unsigned r) { return exp(-1.0 * r); }
         );
         break;
 
     case BiasFunctionType::CONSTANT:
     default:
         setBiasCustomFunction(
-                [&](const unsigned) { return 1.0 / params.total_parents; }
+            [&](const unsigned) { return 1.0 / params.total_parents; }
         );
         break;
     }

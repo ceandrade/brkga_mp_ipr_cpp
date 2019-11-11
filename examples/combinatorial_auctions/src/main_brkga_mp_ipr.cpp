@@ -32,7 +32,10 @@
 #include <iomanip>
 #include <stdexcept>
 #include <iterator>
+
+#pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/lexical_cast.hpp>
+#pragma GCC diagnostic pop
 
 using namespace std;
 using namespace BRKGA;
@@ -62,7 +65,7 @@ int main(int argc, char* argv[])
              << " <initial-population> <init-percentage> <init-max-time> <init-cplex-time> <init-cplex-iters>"
              << " <max-time> <pricing-scheme> <instance-file> <instance-lp-file>"
             #ifdef TUNING
-             << " <pop_size> <elite_percentage> <mutants_percentage>"
+             << " <brkga_params.population_size> <elite_percentage> <mutants_percentage>"
                 " <num_elite_parents> <total_parents> <bias>"
                 " <num_independent_populations>"
                 " <pr_minimum_distance> <pr_type> <pr_selection>"
@@ -102,7 +105,7 @@ int main(int argc, char* argv[])
     }
 
     // Loading parameters from command line
-    const string configFile(argv[1]);       // config file
+    const string config_file(argv[1]);      // config file
     unsigned long seed;                     // RNG seed
     char stop_rule;                         // stopping rule
     double stop_arg;                        // argument to stopping rule
@@ -117,27 +120,7 @@ int main(int argc, char* argv[])
     const char* instance_file = argv[13];   // instance file
 //    const char* lp_file = argv[14];         // LP file
 
-    // BRKGA params
-    unsigned pop_size;
-    double elite_percentage;
-    double mutants_percentage;
-    unsigned num_elite_parents;
-    unsigned total_parents;
-    BiasFunction bias;
-    unsigned num_independent_populations;
     const unsigned MAX_THR = 1;
-
-    // IPR params
-    double pr_minimum_distance;
-    PathRelinking::Type pr_type;
-    PathRelinking::Selection pr_selection;
-    double alpha_block_size;
-    double pr_percentage;
-
-    // Main loop params
-    unsigned exchange_interval;
-    unsigned num_exchange_indivuduals;
-    unsigned reset_interval;
 
     try {
         seed = boost::lexical_cast<unsigned long>(argv[2]);
@@ -166,74 +149,48 @@ int main(int argc, char* argv[])
         return 64; // BSD usage error code
     }
 
-    // Loading algorithm parameters from config file (code from rtoso).
-    ifstream fin(configFile, std::ios::in);
-    if(!fin) {
-        cerr << "Cannot open configuration file: " << configFile << endl;
-        return 66; // BSD file not found error code
-    }
+    /////////////////////////////////////////
+    // Load config file and show basic info.
+    /////////////////////////////////////////
 
-    fin.exceptions(ifstream::eofbit | ifstream::failbit | ifstream::badbit);
-    try {
-        string line;
-        fin >> pop_size;                        getline(fin, line);
-        fin >> elite_percentage;                getline(fin, line);
-        fin >> mutants_percentage;              getline(fin, line);
-        fin >> num_elite_parents;               getline(fin, line);
-        fin >> total_parents;                   getline(fin, line);
-        fin >> bias;                            getline(fin, line);
-        fin >> num_independent_populations;     getline(fin, line);
-        fin >> pr_minimum_distance;             getline(fin, line);
-        fin >> pr_type;                         getline(fin, line);
-        fin >> pr_selection;                    getline(fin, line);
-        fin >> alpha_block_size;                getline(fin, line);
-        fin >> pr_percentage;                   getline(fin, line);
-        fin >> exchange_interval;               getline(fin, line);
-        fin >> num_exchange_indivuduals;        getline(fin, line);
-        fin >> reset_interval;                  getline(fin, line);
-        fin.close();
-    }
-    catch(ifstream::failure& e) {
-        cerr << "Failure when reading config-file: " << e.what() << endl;
-        fin.close();
-        return 65;  // BSD file read error code
-    }
+    auto params = BRKGA::readConfiguration(config_file);
+    auto& brkga_params = params.first;
+    auto& control_params = params.second;
 
     //-----------------------------------------//
     // Tuning
     //-----------------------------------------//
-
     #ifdef TUNING
-    pop_size = boost::lexical_cast<unsigned>(argv[num_args]);
-    elite_percentage = boost::lexical_cast<double>(argv[num_args + 1]);
-    mutants_percentage = boost::lexical_cast<double>(argv[num_args + 2]);
-    num_elite_parents = boost::lexical_cast<unsigned>(argv[num_args + 3]);
-    total_parents = boost::lexical_cast<unsigned>(argv[num_args + 4]);
-    bias = toEnum<BiasFunction>(argv[num_args + 5]);
-    num_independent_populations = boost::lexical_cast<unsigned>(argv[num_args + 6]);
-    pr_minimum_distance = boost::lexical_cast<double>(argv[num_args + 7]);
-    pr_type = toEnum<PathRelinking::Type>(argv[num_args + 8]);
-    pr_selection = toEnum<PathRelinking::Selection>(argv[num_args + 9]);
-    alpha_block_size = boost::lexical_cast<double>(argv[num_args + 10]);
-    pr_percentage = boost::lexical_cast<double>(argv[num_args + 11]);
-    exchange_interval = boost::lexical_cast<unsigned>(argv[num_args + 12]);
-    num_exchange_indivuduals = boost::lexical_cast<unsigned>(argv[num_args + 13]);
-    reset_interval = boost::lexical_cast<unsigned>(argv[num_args + 14]);
+    brkga_params.population_size = boost::lexical_cast<unsigned>(argv[num_args]);
+    brkga_params.elite_percentage = boost::lexical_cast<double>(argv[num_args + 1]);
+    brkga_params.mutants_percentage = boost::lexical_cast<double>(argv[num_args + 2]);
+    brkga_params.num_elite_parents = boost::lexical_cast<unsigned>(argv[num_args + 3]);
+    brkga_params.total_parents = boost::lexical_cast<unsigned>(argv[num_args + 4]);
+    brkga_params.bias_type = toEnum<BiasFunctionType>(argv[num_args + 5]);
+    brkga_params.num_independent_populations = boost::lexical_cast<unsigned>(argv[num_args + 6]);
+    brkga_params.pr_minimum_distance = boost::lexical_cast<double>(argv[num_args + 7]);
+    brkga_params.pr_type = toEnum<PathRelinking::Type>(argv[num_args + 8]);
+    brkga_params.pr_selection = toEnum<PathRelinking::Selection>(argv[num_args + 9]);
+    brkga_params.alpha_block_size = boost::lexical_cast<double>(argv[num_args + 10]);
+    brkga_params.pr_percentage = boost::lexical_cast<double>(argv[num_args + 11]);
+    control_params.exchange_interval = boost::lexical_cast<unsigned>(argv[num_args + 12]);
+    control_params.num_exchange_indivuduals = boost::lexical_cast<unsigned>(argv[num_args + 13]);
+    control_params.reset_interval = boost::lexical_cast<unsigned>(argv[num_args + 14]);
     #endif
 
     //-----------------------------------------//
 
     cout << "------------------------------------------------------"
          << "\n> Parameters\n"
-         << "\nConfig file: " << configFile
-         << "\n   + % of Elite: " << elite_percentage
-         << "\n   + % of Mutants: " << mutants_percentage
-         << "\n   + # of independent populations: " << num_independent_populations
-         << "\n   + maximum size of each population: " << pop_size
+         << "\nConfig file: " << config_file
+         << "\n   + % of Elite: " << brkga_params.elite_percentage
+         << "\n   + % of Mutants: " << brkga_params.mutants_percentage
+         << "\n   + # of independent populations: " << brkga_params.num_independent_populations
+         << "\n   + maximum size of each population: " << brkga_params.population_size
          << "\n   + # of threads: " << MAX_THR
-         << "\n   + interval of chromossome exchange: " << exchange_interval
-         << "\n   + # of elite chromossome of each population: " << num_exchange_indivuduals
-         << "\n   + reset interval: " << reset_interval
+         << "\n   + interval of chromossome exchange: " << control_params.exchange_interval
+         << "\n   + # of elite chromossome of each population: " << control_params.num_exchange_indivuduals
+         << "\n   + reset interval: " << control_params.reset_interval
          << "\nSeed: " << seed
          << "\nStop Rule: [" << stop_rule << "] "
          << (stop_rule == 'G' ? "Generations -> " :
@@ -250,8 +207,8 @@ int main(int argc, char* argv[])
              << "\n   + Init. Cplex time: " << init_cplex_time
              << "\n   + Init. Cplex iterarions: " << init_cplex_iters;
 
-    cout << "\nPath relink type: " << pr_type;
-    cout << "\nMininum path relink distance: " << pr_minimum_distance
+    cout << "\nPath relink type: " << brkga_params.pr_type;
+    cout << "\nMininum path relink distance: " << brkga_params.pr_minimum_distance
          << "\nMax Time: " << max_time
          << "\nPricing Scheme: " << (pricing == Auction::FirstPrice? "First Price" : "Second Price")
          << "\n------------------------------------------------------" << endl;
@@ -268,19 +225,26 @@ int main(int argc, char* argv[])
         CombinatorialAuctionDecoder decoder(&auction, pricing, decode_approach);
 
         unsigned population_size = 10 * auction.num_bids;
-        if(population_size > pop_size)
-            population_size = (auction.num_bids > pop_size)? auction.num_bids : pop_size;
+        if(population_size > brkga_params.population_size)
+            population_size =
+                (auction.num_bids > brkga_params.population_size)?
+                    auction.num_bids :
+                    brkga_params.population_size;
 
         // The BRKGA_IPR algorithm object.
-        BRKGA_MP_IPR<CombinatorialAuctionDecoder> algorithm(
-                decoder, BRKGA::Sense::MAXIMIZE, seed,
-                auction.num_bids, pop_size, elite_percentage,
-                mutants_percentage, true, num_elite_parents, total_parents,
-                bias, num_independent_populations, MAX_THR);
+        // BRKGA_MP_IPR<CombinatorialAuctionDecoder> algorithm(
+        //         decoder, BRKGA::Sense::MAXIMIZE, seed,
+        //         auction.num_bids, brkga_params.population_size, elite_percentage,
+        //         mutants_percentage, true, num_elite_parents, total_parents,
+        //         bias, num_independent_populations, MAX_THR);
 
+        BRKGA::BRKGA_MP_IPR<CombinatorialAuctionDecoder> algorithm(
+                decoder, BRKGA::Sense::MAXIMIZE, seed, auction.num_bids,
+                brkga_params, MAX_THR);
+
+        // Distance functor for path-relink.
         std::shared_ptr<DistanceFunctionBase> dist_func;
-
-        if(pr_type == BRKGA::PathRelinking::Type::DIRECT)
+        if(brkga_params.pr_type == BRKGA::PathRelinking::Type::DIRECT)
             dist_func.reset(new BRKGA::HammingDistance(0.5));
         else
             dist_func.reset(new BRKGA::KendallTauDistance());
@@ -344,70 +308,102 @@ int main(int argc, char* argv[])
                     large_offset = update_offset;
             }
 
-            unsigned iterWithoutImprovement = iteration - last_update_iteration;
+            unsigned iter_without_improvement = iteration - last_update_iteration;
 
             // Path relink.
-            if((exchange_interval > 0) && (iterWithoutImprovement > 0) &&
-               (iterWithoutImprovement % exchange_interval == 0)) {
+            if((control_params.exchange_interval > 0) && (iter_without_improvement > 0) &&
+               (iter_without_improvement % control_params.exchange_interval == 0)) {
 
-                std::size_t block_size = ceil(alpha_block_size * sqrt(pop_size));
+                std::size_t block_size = ceil(brkga_params.alpha_block_size * sqrt(brkga_params.population_size));
                 if(block_size > algorithm.getChromosomeSize())
                     block_size = algorithm.getChromosomeSize() / 2;
 
                 cout << "Path relink at " << iteration << " iteration. "
                      << "Block size: " << block_size << ". "
-                     << "Type: " << pr_type << ": ";
+                     << "Type: " << brkga_params.pr_type << ": ";
                 cout.flush();
 
+                // auto now = timer.elapsed();
+                // bool res = algorithm.pathRelink(
+                //                 dist_func,
+                //                 auction.num_bids * brkga_params.pr_minimum_distance,
+                //                 brkga_params.pr_type, brkga_params.pr_selection, block_size,
+                //                 long(max_time) - (timer.elapsed() / long(1e9)),
+                //                 brkga_params.pr_percentage);
+                // path_relink_time += timer.elapsed() - now;
+
                 auto now = timer.elapsed();
-                bool res = algorithm.pathRelink(
-                                dist_func,
-                                auction.num_bids * pr_minimum_distance,
-                                pr_type, pr_selection, block_size,
-                                long(max_time) - (timer.elapsed() / long(1e9)),
-                                pr_percentage);
+                auto result = algorithm.pathRelink(
+                    brkga_params.pr_type,
+                    brkga_params.pr_selection,
+                    dist_func,
+                    brkga_params.pr_number_pairs,
+                    brkga_params.pr_minimum_distance,
+                    1, // block_size doesn't not matter for permutation.
+                    long(max_time) - (timer.elapsed() / long(1e9)),
+                    brkga_params.pr_percentage);
+
+                const auto pr_time = timer.elapsed() - now;
                 path_relink_time += timer.elapsed() - now;
 
-                if(res) {
-                    cout << " Current Time: " << timer.elapsed()
-                         << " / Best so far: " << algorithm.getBestFitness()
-                         << endl;
+                using BRKGA::PathRelinking::PathRelinkingResult;
+                switch(result) {
+                    case PathRelinkingResult::TOO_HOMOGENEOUS:
+                        ++num_homogenities;
+                        cout << "- Populations are too too homogeneous | "
+                                "Elapsed time: " << pr_time << endl;
+                        break;
 
-                    fitness = algorithm.getBestFitness();
+                    case PathRelinkingResult::NO_IMPROVEMENT:
+                        cout << "- No improvement found | "
+                                "Elapsed time: " << pr_time << endl;
+                        break;
 
-                    if((fitness - best_fitness) > 1e-6) {
-                        ++path_relink_improvements;
-                        last_update_time = timer.elapsed();
+                    case PathRelinkingResult::ELITE_IMPROVEMENT:
+                        cout << "- Improvement on the elite set but not in the "
+                                "best individual | Elapsed time: "
+                             << pr_time << endl;
+                        break;
 
-                        if(stop_rule != TARGET)
-                            cout << "Improvement Iteration " << iteration
-                                 << " / Current Time: " << last_update_time
-                                 << " / Best Current: " << fitness
-                                 << " / Best Overall: " << best_fitness
-                                 << endl;
+                    case PathRelinkingResult::BEST_IMPROVEMENT:
+                        fitness = algorithm.getBestFitness();
 
-                        best_fitness = fitness;
-                        best_chromosome = algorithm.getBestChromosome();
-                        update_offset = iteration - last_update_iteration;
-                        last_update_iteration = iteration;
+                        cout << "- Best individual improvement: "
+                             << fitness
+                             << " | Elapsed time: " << pr_time << endl;
 
-                        if(large_offset < update_offset)
-                            large_offset = update_offset;
-                    }
-                }
-                else {
-                    ++num_homogenities;
-                    cout << "Populations are too homogeneous to path relink" << endl;
-                }
+                        if((fitness - best_fitness) > 1e-6) {
+                            ++path_relink_improvements;
+                            last_update_time = timer.elapsed();
+
+                            if(stop_rule != TARGET)
+                                cout << "Improvement Iteration " << iteration
+                                    << " / Current Time: " << last_update_time
+                                    << " / Best Current: " << fitness
+                                    << " / Best Overall: " << best_fitness
+                                    << endl;
+
+                            best_fitness = fitness;
+                            best_chromosome = algorithm.getBestChromosome();
+                            update_offset = iteration - last_update_iteration;
+                            last_update_iteration = iteration;
+
+                            if(large_offset < update_offset)
+                                large_offset = update_offset;
+                        }
+                        break;
+
+                    default:;
+                } // end switch
             }
 
-
             // Time to reset?
-            if(reset_interval > 0 && iterWithoutImprovement > 0 &&
-               iterWithoutImprovement % reset_interval == 0) {
+            if(control_params.reset_interval > 0 && iter_without_improvement > 0 &&
+               iter_without_improvement % control_params.reset_interval == 0) {
                 algorithm.reset();
                 if(stop_rule != TARGET)
-                    cout << ">> Reset chromosomes with random keys after " << reset_interval
+                    cout << ">> Reset chromosomes with random keys after "
+                         << control_params.reset_interval
                          << " iterations without improvement." << endl;
             }
 
@@ -419,7 +415,7 @@ int main(int argc, char* argv[])
                     break;
 
                 case IMPROVEMENT:
-                    if(iterWithoutImprovement >= (unsigned)stop_arg)
+                    if(iter_without_improvement >= (unsigned)stop_arg)
                         run = false;
                     break;
 

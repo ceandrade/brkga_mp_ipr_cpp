@@ -30,10 +30,10 @@ OPT = opt
 
 # Set debug mode
 #USER_DEFINES += -DDEBUG
-#USER_DEFINES += -DFULLDEBUG 
+#USER_DEFINES += -DFULLDEBUG
 
 # Set tuning mode
-#USER_DEFINES += -DTUNING
+USER_DEFINES += -DTUNING
 
 ###############################################################################
 # Build options
@@ -105,7 +105,7 @@ USER_FLAGS += -Wall -Wextra -Wcast-align -Wcast-qual -Wdisabled-optimization \
 #USER_FLAGS += -Wconversion
 #USER_FLAGS += -Wunsafe-loop-optimizations # doesn't work very well with C++11 foreach
 
-USER_FLAGS += -pthread -fopenmp 
+USER_FLAGS += -pthread -fopenmp
 
 ###############################################################################
 # Lib and include definitions
@@ -113,7 +113,7 @@ USER_FLAGS += -pthread -fopenmp
 
 ifeq ($(SYSTEM), macosx)
 	INCLUDE_PATH = /opt/local
-	USER_LIBDIRS = /opt/local/lib 
+	USER_LIBDIRS = /opt/local/lib
 else
 	#INCLUDE_PATH = <path to your include dir (usually /usr/include)>
 	#USER_LIBDIRS = <path to your lib dir  (usually /usr/lib) >
@@ -122,8 +122,8 @@ endif
 USER_INCDIRS += \
 	$(INCLUDE_PATH)/include \
 	$(INCLUDE_PATH)/include/boost
-	
-INCLUDES = `for i in $(USER_INCDIRS); do echo $$i | sed -e 's/^/-I/'; done`	
+
+INCLUDES = `for i in $(USER_INCDIRS); do echo $$i | sed -e 's/^/-I/'; done`
 LIBDIRS = `for i in $(USER_LIBDIRS); do echo $$i | sed -e 's/^/-L/'; done`
 
 #Boost libraries
@@ -135,7 +135,7 @@ else
     BOOST_LIBS += boost_system boost_chrono boost_timer boost_filesystem
 endif
 
-LIBS = -lm 
+LIBS = -lm
 LIBS += `for i in $(BOOST_LIBS); do echo $$i | sed -e 's/^/-l/'; done`
 
 ###############################################################################
@@ -177,7 +177,7 @@ all: $(EXE)
 
 $(EXE): $(OBJS)
 	@echo "--> Linking objects... "
-	$(CXX) $(CXXFLAGS) $(LINKER_FLAGS) $(OBJS) -o $@ $(LIBDIRS) $(LIBS) 
+	$(CXX) $(CXXFLAGS) $(LINKER_FLAGS) $(OBJS) -o $@ $(LIBDIRS) $(LIBS)
 	@echo
 
 .cpp.o:
@@ -196,11 +196,11 @@ doc:
 clean:
 	@echo "--> Cleaning compiled..."
 	rm -rf $(EXE) $(OBJS) $(CLIQUER_OBJS)
-	
+
 depclean: docclean clean
-	rm -rf `for i in $(SRC_DIRS); do echo $$i*~; done` 
+	rm -rf `for i in $(SRC_DIRS); do echo $$i*~; done`
 	rm -rf Debug
-	
+
 docclean:
 	@echo "--> Cleaning doc..."
 	rm -rf doc
