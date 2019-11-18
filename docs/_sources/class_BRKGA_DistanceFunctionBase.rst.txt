@@ -75,7 +75,7 @@ Methods
 		const std::vector<double>& v2
 		) = 0
 
-Compute the distance between two vectors.
+Computes the distance between two vectors.
 
 
 
@@ -103,7 +103,7 @@ Compute the distance between two vectors.
 
 	virtual bool affectSolution(const double key1, const double key2) = 0
 
-Return true if the changing of ``key1`` by ``key2`` affects the solution.
+Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 
 
 
@@ -135,7 +135,7 @@ Return true if the changing of ``key1`` by ``key2`` affects the solution.
 		const std::size_t block_size
 		) = 0
 
-Return true if the changing of the blocks of keys ``v1`` by the blocks of keys ``v2`` affects the solution.
+Returns true if the changing of the blocks of keys ``v1`` by the blocks of keys ``v2`` affects the solution.
 
 
 

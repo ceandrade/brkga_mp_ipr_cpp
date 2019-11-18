@@ -132,12 +132,12 @@ Global Functions
 
 	:ref:`INLINE<doxid-brkga__mp__ipr_8hpp_1a2eb6f9e0395b47b8d5e3eeae4fe0c116>` std::pair<:ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`, :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`> readConfiguration(const std::string& filename)
 
-Read the parameters from a configuration file.
+Reads the parameters from a configuration file.
 
 .. todo::
   (ceandrade) This method can beneficiate from introspection tools from C++17.
   We would like achieve a code similar to the `Julia counterpart
-  <https://github.com/ceandrade/BrkgaMpIpr.jl>`_.
+  <https://github.com/ceandrade/brkga_mp_ipr_julia>`_.
 
 .. rubric:: Parameters:
 
@@ -178,11 +178,12 @@ a tuple containing the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and external con
 		const :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`& control_params = :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`()
 		)
 
-Write the parameters into a file..
+Writes the parameters into a file.
 
-Todo (ceandrade) This method can beneficiate from introspection tools from C++17. We would like achieve a code similar to the `Julia counterpart <https://github.com/ceandrade/BrkgaMpIpr.jl>`__.
-
-
+.. todo::
+  (ceandrade) This method can beneficiate from introspection tools from C++17.
+  We would like achieve a code similar to the `Julia counterpart
+  <https://github.com/ceandrade/brkga_mp_ipr_julia>`_.
 
 .. rubric:: Parameters:
 

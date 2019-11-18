@@ -197,8 +197,7 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Kendall Tau distance between two vectors. <a class="reference internal" href="#details-doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block" id="cid-brkga-kendalltaudistance-kendalltaudistance">
-<span id="doxid-class-b-r-k-g-a-1-1-kendall-tau-distance-1a8873ac7512526a7555ebf8f962451e83"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight overview-code-block literal-block" id="cid-brkga-kendalltaudistance-kendalltaudistance"><span id="doxid-class-b-r-k-g-a-1-1-kendall-tau-distance-1a8873ac7512526a7555ebf8f962451e83"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
 
 <span class="k">class</span> <span class="nl">KendallTauDistance</span><span class="p">:</span> <span class="k">public</span> <a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">BRKGA::DistanceFunctionBase</span></a><span></span>
 <span class="p">{</span>
@@ -217,12 +216,10 @@
         <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v2_begin</span><span class="p">,</span>
         <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span>
         <span class="p">);</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 <div class="section" id="inherited-members">
 <h3>Inherited Members<a class="headerlink" href="#inherited-members" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight overview-inherited-code-block literal-block">
-<span></span><span class="k">public</span><span class="o">:</span>
+<pre class="highlight overview-inherited-code-block literal-block"><span></span><span class="k">public</span><span class="o">:</span>
     <span class="c1">// methods</span>
 
     <span class="k">virtual</span> <span class="kt">double</span> <a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base-1acee8e7b478010aff23b3a46cd113860a"><span class="std std-ref">distance</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">v1</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">v2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -232,8 +229,7 @@
         <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v1_begin</span><span class="p">,</span>
         <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v2_begin</span><span class="p">,</span>
         <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span>
-        <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</pre>
+        <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span></pre>
 </div>
 </div>
 <div class="section" id="detailed-documentation">
@@ -242,71 +238,65 @@
 <p>This class is a functor that computes the Kendall Tau distance between two vectors. This version is not normalized.</p>
 <div class="section" id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-kendalltaudistance-distance">
-<span id="doxid-class-b-r-k-g-a-1-1-kendall-tau-distance-1aeb8d4c9cd3b87b08f84762ed83d347ff"></span><span id="index-2"></span><span></span><span class="k">virtual</span> <span class="kt">double</span> <span class="n">distance</span><span class="p">(</span>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-kendalltaudistance-distance"><span id="doxid-class-b-r-k-g-a-1-1-kendall-tau-distance-1aeb8d4c9cd3b87b08f84762ed83d347ff"></span><span id="index-2"></span><span></span><span class="k">virtual</span> <span class="kt">double</span> <span class="n">distance</span><span class="p">(</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">vector1</span><span class="p">,</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">vector2</span>
-    <span class="p">)</span>
-</pre>
-<p>Compute the Kendall Tau distance between two vectors.</p>
+    <span class="p">)</span></pre>
+<p>Computes the Kendall Tau distance between two vectors.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>vector1</td>
-<td>first vector</td>
+<tbody>
+<tr class="row-odd"><td><p>vector1</p></td>
+<td><p>first vector</p></td>
 </tr>
-<tr class="row-even"><td>vector2</td>
-<td>second vector</td>
+<tr class="row-even"><td><p>vector2</p></td>
+<td><p>second vector</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-kendalltaudistance-affectsolution">
-<span id="doxid-class-b-r-k-g-a-1-1-kendall-tau-distance-1a0901afc35a6f2a44427d0a1ce78b2daa"></span><span id="index-3"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">key2</span><span class="p">)</span>
-</pre>
-<p>Return true if the changing of <code class="docutils literal notranslate"><span class="pre">key1</span></code> by <code class="docutils literal notranslate"><span class="pre">key2</span></code> affects the solution.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-kendalltaudistance-affectsolution"><span id="doxid-class-b-r-k-g-a-1-1-kendall-tau-distance-1a0901afc35a6f2a44427d0a1ce78b2daa"></span><span id="index-3"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">key2</span><span class="p">)</span></pre>
+<p>Returns true if the changing of <code class="docutils literal notranslate"><span class="pre">key1</span></code> by <code class="docutils literal notranslate"><span class="pre">key2</span></code> affects the solution.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>key1</td>
-<td>the first key</td>
+<tbody>
+<tr class="row-odd"><td><p>key1</p></td>
+<td><p>the first key</p></td>
 </tr>
-<tr class="row-even"><td>key2</td>
-<td>the second key</td>
+<tr class="row-even"><td><p>key2</p></td>
+<td><p>the second key</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-kendalltaudistance-affectsolution-2">
-<span id="doxid-class-b-r-k-g-a-1-1-kendall-tau-distance-1a4638274b38b50051eaba3f399b1b9c5f"></span><span id="index-4"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-kendalltaudistance-affectsolution-2"><span id="doxid-class-b-r-k-g-a-1-1-kendall-tau-distance-1a4638274b38b50051eaba3f399b1b9c5f"></span><span id="index-4"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v1_begin</span><span class="p">,</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v2_begin</span><span class="p">,</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span>
-    <span class="p">)</span>
-</pre>
-<p>Return true if the changing of the blocks of keys <code class="docutils literal notranslate"><span class="pre">v1</span></code> by the blocks of keys <code class="docutils literal notranslate"><span class="pre">v2</span></code> affects the solution.</p>
+    <span class="p">)</span></pre>
+<p>Returns true if the changing of the blocks of keys <code class="docutils literal notranslate"><span class="pre">v1</span></code> by the blocks of keys <code class="docutils literal notranslate"><span class="pre">v2</span></code> affects the solution.</p>
 <p>Todo (ceandrade): implement this properly.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>v1_begin</td>
-<td>begin of the first blocks of keys</td>
+<tbody>
+<tr class="row-odd"><td><p>v1_begin</p></td>
+<td><p>begin of the first blocks of keys</p></td>
 </tr>
-<tr class="row-even"><td>v2_begin</td>
-<td>begin of the first blocks of keys</td>
+<tr class="row-even"><td><p>v2_begin</p></td>
+<td><p>begin of the first blocks of keys</p></td>
 </tr>
-<tr class="row-odd"><td>block_size</td>
-<td>number of keys to be considered.</td>
+<tr class="row-odd"><td><p>block_size</p></td>
+<td><p>number of keys to be considered.</p></td>
 </tr>
 </tbody>
 </table>

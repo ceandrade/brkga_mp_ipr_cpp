@@ -200,8 +200,7 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Specifies the result type/status of path relink procedure. <a class="reference internal" href="#details-doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight overview-code-block literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
 
 <span class="k">enum</span> <span class="n">BRKGA</span><span class="o">::</span><span class="n">PathRelinking</span><span class="o">::</span><span class="n">PathRelinkingResult</span>
 <span class="p">{</span>
@@ -209,29 +208,20 @@
     <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253ae7339868191fd122c45d9abb0dcb87e9"><span class="std std-ref">NO_IMPROVEMENT</span></a><span></span>    <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253ae523f249a5e460a70f2ae8ac7d7a959b"><span class="std std-ref">ELITE_IMPROVEMENT</span></a><span></span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
     <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253a44ea02fc8a02805c8ddfe8d37d101a39"><span class="std std-ref">BEST_IMPROVEMENT</span></a><span></span>  <span class="o">=</span> <span class="mi">7</span><span class="p">,</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 </div>
 <div class="section" id="detailed-documentation">
 <span id="details-doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Specifies the result type/status of path relink procedure.</p>
 <div class="section" id="enum-values">
 <h3>Enum Values<a class="headerlink" href="#enum-values" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-pathrelinking-pathrelinkingresult-too-homogeneous">
-<span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253afc79eaa94186dcf0eda5c1df7bd87001"></span><span id="index-1"></span><span></span><span class="n">TOO_HOMOGENEOUS</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-pathrelinking-pathrelinkingresult-too-homogeneous"><span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253afc79eaa94186dcf0eda5c1df7bd87001"></span><span id="index-1"></span><span></span><span class="n">TOO_HOMOGENEOUS</span></pre>
 <p>The chromosomes among the populations are too homogeneous and the path relink will not generate improveded solutions.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-pathrelinking-pathrelinkingresult-no-improvement">
-<span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253ae7339868191fd122c45d9abb0dcb87e9"></span><span id="index-2"></span><span></span><span class="n">NO_IMPROVEMENT</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-pathrelinking-pathrelinkingresult-no-improvement"><span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253ae7339868191fd122c45d9abb0dcb87e9"></span><span id="index-2"></span><span></span><span class="n">NO_IMPROVEMENT</span></pre>
 <p>Path relink was done but no improveded solution was found.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-pathrelinking-pathrelinkingresult-elite-improvement">
-<span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253ae523f249a5e460a70f2ae8ac7d7a959b"></span><span id="index-3"></span><span></span><span class="n">ELITE_IMPROVEMENT</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-pathrelinking-pathrelinkingresult-elite-improvement"><span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253ae523f249a5e460a70f2ae8ac7d7a959b"></span><span id="index-3"></span><span></span><span class="n">ELITE_IMPROVEMENT</span></pre>
 <p>An improved solution among the elite set was found, but the best solution was not improved.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-pathrelinking-pathrelinkingresult-best-improvement">
-<span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253a44ea02fc8a02805c8ddfe8d37d101a39"></span><span id="index-4"></span><span></span><span class="n">BEST_IMPROVEMENT</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-pathrelinking-pathrelinkingresult-best-improvement"><span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253a44ea02fc8a02805c8ddfe8d37d101a39"></span><span id="index-4"></span><span></span><span class="n">BEST_IMPROVEMENT</span></pre>
 <p>The best solution was improved.</p>
 </div>
 </div>

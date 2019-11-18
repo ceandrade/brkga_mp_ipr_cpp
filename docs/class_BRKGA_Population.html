@@ -197,8 +197,7 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Encapsulates a population of chromosomes. <a class="reference internal" href="#details-doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block" id="cid-brkga-population-population">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a3d6fdd4cf00ab477910a6597655fafc6"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight overview-code-block literal-block" id="cid-brkga-population-population"><span id="doxid-class-b-r-k-g-a-1-1-population-1a3d6fdd4cf00ab477910a6597655fafc6"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
 
 <span class="k">class</span> <span class="n">Population</span>
 <span class="p">{</span>
@@ -227,177 +226,144 @@
     <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population-1a9df2d69c9fbf43309b0671d4047045df"><span class="std std-ref">getChromosome</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
     <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population-1a76fb0dc9cde602acbbaa2897326c3d1b"><span class="std std-ref">sortFitness</span></a><span></span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="enum_BRKGA_Sense.html#doxid-namespace-b-r-k-g-a-1af28538be111c8320b2fec44b77ec5e9b"><span class="std std-ref">Sense</span></a><span></span> <span class="n">sense</span><span class="p">);</span>
     <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population-1a56eb4c547d2580ab4fd152713149a5d8"><span class="std std-ref">setFitness</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">value</span><span class="p">);</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 </div>
 <div class="section" id="detailed-documentation">
 <span id="details-doxid-class-b-r-k-g-a-1-1-population"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Encapsulates a population of chromosomes.</p>
 <p>Encapsulates a population of chromosomes providing supporting methods for making the implementation easier.</p>
-<p>All methods and attributes are public and can be manipulated directly from BRKGA algorithms. Note that this class is not meant to be used externally of this unit.</p>
+<p>All methods and attributes are public and can be manipulated directly from <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> algorithms. Note that this class is not meant to be used externally of this unit.</p>
 <div class="section" id="fields">
 <h3>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="id1">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a6c7b2ab4336c57d4659f09ca0c324a64"></span><span id="index-2"></span><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&gt;</span> <span class="n">population</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="id1"><span id="doxid-class-b-r-k-g-a-1-1-population-1a6c7b2ab4336c57d4659f09ca0c324a64"></span><span id="index-2"></span><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&gt;</span> <span class="n">population</span></pre>
 <p><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a> as vectors of probabilities.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-fitness">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1aae21b41493146e6d64ee39973b168dda"></span><span id="index-3"></span><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;</span> <span class="n">fitness</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-fitness"><span id="doxid-class-b-r-k-g-a-1-1-population-1aae21b41493146e6d64ee39973b168dda"></span><span id="index-3"></span><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;</span> <span class="n">fitness</span></pre>
 <p>Fitness (double) of a each chromosome.</p>
 </div>
 <div class="section" id="construction">
 <h3>Construction<a class="headerlink" href="#construction" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-population-2">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a19bd527e27e46bf18a1cfa3663f9f080"></span><span id="index-4"></span><span></span><span class="n">Population</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chr_size</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">pop_size</span><span class="p">)</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-population-2"><span id="doxid-class-b-r-k-g-a-1-1-population-1a19bd527e27e46bf18a1cfa3663f9f080"></span><span id="index-4"></span><span></span><span class="n">Population</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chr_size</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">pop_size</span><span class="p">)</span></pre>
 <p>Default constructor.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>chr_size</td>
-<td>size of chromosome.</td>
+<tbody>
+<tr class="row-odd"><td><p>chr_size</p></td>
+<td><p>size of chromosome.</p></td>
 </tr>
-<tr class="row-even"><td>pop_size</td>
-<td>size of population.</td>
+<tr class="row-even"><td><p>pop_size</p></td>
+<td><p>size of population.</p></td>
 </tr>
-<tr class="row-odd"><td>std::range_error</td>
-<td>if population size or chromosome size is zero.</td>
+<tr class="row-odd"><td><p>std::range_error</p></td>
+<td><p>if population size or chromosome size is zero.</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-population-3">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1acad8426e87b3d2f7b1c62852f8dca67b"></span><span id="index-5"></span><span></span><span class="n">Population</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-population-3"><span id="doxid-class-b-r-k-g-a-1-1-population-1acad8426e87b3d2f7b1c62852f8dca67b"></span><span id="index-5"></span><span></span><span class="n">Population</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span></pre>
 <p>Copy constructor.</p>
 </div>
 <div class="section" id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-operator">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1ac5f739b17b2bcf6db820f4bcd5a2fbcb"></span><span id="index-6"></span><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span><span class="p">)</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-operator"><span id="doxid-class-b-r-k-g-a-1-1-population-1ac5f739b17b2bcf6db820f4bcd5a2fbcb"></span><span id="index-6"></span><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span><span class="p">)</span></pre>
 <p>Assignment operator for complaince.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getchromosomesize">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a856736e44609a0f652fcd4f19fbbf8e0"></span><span id="index-7"></span><span></span><span class="kt">unsigned</span> <span class="n">getChromosomeSize</span><span class="p">()</span> <span class="k">const</span>
-</pre>
-<p>Return the size of each chromosome.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getpopulationsize">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a0be8c63eeca28c5c43386d4b6a999375"></span><span id="index-8"></span><span></span><span class="kt">unsigned</span> <span class="n">getPopulationSize</span><span class="p">()</span> <span class="k">const</span>
-</pre>
-<p>Return the size of the population.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-operator-2">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a8994402e065ce2f327d565ce49dc320f"></span><span id="index-9"></span><span></span><span class="kt">double</span> <span class="k">operator</span> <span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">allele</span><span class="p">)</span> <span class="k">const</span>
-</pre>
-<p>Return a copy of an allele for a given chromosome.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getchromosomesize"><span id="doxid-class-b-r-k-g-a-1-1-population-1a856736e44609a0f652fcd4f19fbbf8e0"></span><span id="index-7"></span><span></span><span class="kt">unsigned</span> <span class="n">getChromosomeSize</span><span class="p">()</span> <span class="k">const</span></pre>
+<p>Returns the size of each chromosome.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getpopulationsize"><span id="doxid-class-b-r-k-g-a-1-1-population-1a0be8c63eeca28c5c43386d4b6a999375"></span><span id="index-8"></span><span></span><span class="kt">unsigned</span> <span class="n">getPopulationSize</span><span class="p">()</span> <span class="k">const</span></pre>
+<p>Returns the size of the population.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-operator-2"><span id="doxid-class-b-r-k-g-a-1-1-population-1a8994402e065ce2f327d565ce49dc320f"></span><span id="index-9"></span><span></span><span class="kt">double</span> <span class="k">operator</span> <span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">allele</span><span class="p">)</span> <span class="k">const</span></pre>
+<p>Returns a copy of an allele for a given chromosome.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>chromosome</td>
-<td>index of desired chromosome.</td>
+<tbody>
+<tr class="row-odd"><td><p>chromosome</p></td>
+<td><p>index of desired chromosome.</p></td>
 </tr>
-<tr class="row-even"><td>allele</td>
-<td>index of desired allele.</td>
+<tr class="row-even"><td><p>allele</p></td>
+<td><p>index of desired allele.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Returns:</p>
 <p>a copy of the allele value.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-operator-3">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a86d677ddf7dcbb89753c99222d97095a"></span><span id="index-10"></span><span></span><span class="kt">double</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">allele</span><span class="p">)</span>
-</pre>
-<p>Return a reference for an allele for a given chromosome.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-operator-3"><span id="doxid-class-b-r-k-g-a-1-1-population-1a86d677ddf7dcbb89753c99222d97095a"></span><span id="index-10"></span><span></span><span class="kt">double</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">allele</span><span class="p">)</span></pre>
+<p>Returns a reference for an allele for a given chromosome.</p>
 <p>Usually used to set the allele value.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>chromosome</td>
-<td>index of desired chromosome.</td>
+<tbody>
+<tr class="row-odd"><td><p>chromosome</p></td>
+<td><p>index of desired chromosome.</p></td>
 </tr>
-<tr class="row-even"><td>allele</td>
-<td>index of desired allele.</td>
+<tr class="row-even"><td><p>allele</p></td>
+<td><p>index of desired allele.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Returns:</p>
 <p>a reference of the allele value.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-operator-4">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1ae1d8028f658ed1009b379650f3182c46"></span><span id="index-11"></span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="k">operator</span> <span class="p">()</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">)</span>
-</pre>
-<p>Return a reference to a chromosome.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-operator-4"><span id="doxid-class-b-r-k-g-a-1-1-population-1ae1d8028f658ed1009b379650f3182c46"></span><span id="index-11"></span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="k">operator</span> <span class="p">()</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">)</span></pre>
+<p>Returns a reference to a chromosome.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>chromosome</td>
-<td>index of desired chromosome.</td>
+<tbody>
+<tr class="row-odd"><td><p>chromosome</p></td>
+<td><p>index of desired chromosome.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Returns:</p>
 <p>a reference to chromosome.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getbestfitness">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a55cccc61fa2ca7f131dd0361ed6f9f0c"></span><span id="index-12"></span><span></span><span class="kt">double</span> <span class="n">getBestFitness</span><span class="p">()</span> <span class="k">const</span>
-</pre>
-<p>Return the best fitness in this population.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getfitness">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a9b0cdd9402ff3682e106717630175431"></span><span id="index-13"></span><span></span><span class="kt">double</span> <span class="n">getFitness</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span>
-</pre>
-<p>Return the fitness of chromosome i.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getchromosome">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a6ed0c28c9dd264620c8bd7cd356c6022"></span><span id="index-14"></span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">i</span><span class="p">)</span>
-</pre>
-<p>Return a reference to the i-th best chromosome.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getchromosome-2">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a9df2d69c9fbf43309b0671d4047045df"></span><span id="index-15"></span><span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span>
-</pre>
-<p>Return a const reference to the i-th best chromosome.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-sortfitness">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a76fb0dc9cde602acbbaa2897326c3d1b"></span><span id="index-16"></span><span></span><span class="kt">void</span> <span class="n">sortFitness</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="enum_BRKGA_Sense.html#doxid-namespace-b-r-k-g-a-1af28538be111c8320b2fec44b77ec5e9b"><span class="std std-ref">Sense</span></a><span></span> <span class="n">sense</span><span class="p">)</span>
-</pre>
-<p>Sort <code class="docutils literal notranslate"><span class="pre">fitness</span></code> by its first parameter according to the sense.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getbestfitness"><span id="doxid-class-b-r-k-g-a-1-1-population-1a55cccc61fa2ca7f131dd0361ed6f9f0c"></span><span id="index-12"></span><span></span><span class="kt">double</span> <span class="n">getBestFitness</span><span class="p">()</span> <span class="k">const</span></pre>
+<p>Returns the best fitness in this population.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getfitness"><span id="doxid-class-b-r-k-g-a-1-1-population-1a9b0cdd9402ff3682e106717630175431"></span><span id="index-13"></span><span></span><span class="kt">double</span> <span class="n">getFitness</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span></pre>
+<p>Returns the fitness of chromosome i.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getchromosome"><span id="doxid-class-b-r-k-g-a-1-1-population-1a6ed0c28c9dd264620c8bd7cd356c6022"></span><span id="index-14"></span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">i</span><span class="p">)</span></pre>
+<p>Returns a reference to the i-th best chromosome.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-getchromosome-2"><span id="doxid-class-b-r-k-g-a-1-1-population-1a9df2d69c9fbf43309b0671d4047045df"></span><span id="index-15"></span><span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span></pre>
+<p>Returns a const reference to the i-th best chromosome.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-sortfitness"><span id="doxid-class-b-r-k-g-a-1-1-population-1a76fb0dc9cde602acbbaa2897326c3d1b"></span><span id="index-16"></span><span></span><span class="kt">void</span> <span class="n">sortFitness</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="enum_BRKGA_Sense.html#doxid-namespace-b-r-k-g-a-1af28538be111c8320b2fec44b77ec5e9b"><span class="std std-ref">Sense</span></a><span></span> <span class="n">sense</span><span class="p">)</span></pre>
+<p>Sorts <code class="docutils literal notranslate"><span class="pre">fitness</span></code> by its first parameter according to the sense.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>sense</td>
-<td>Optimization sense.</td>
+<tbody>
+<tr class="row-odd"><td><p>sense</p></td>
+<td><p>Optimization sense.</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-population-setfitness">
-<span id="doxid-class-b-r-k-g-a-1-1-population-1a56eb4c547d2580ab4fd152713149a5d8"></span><span id="index-17"></span><span></span><span class="kt">void</span> <span class="n">setFitness</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">value</span><span class="p">)</span>
-</pre>
-<p>Set the fitness of chromosome.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-population-setfitness"><span id="doxid-class-b-r-k-g-a-1-1-population-1a56eb4c547d2580ab4fd152713149a5d8"></span><span id="index-17"></span><span></span><span class="kt">void</span> <span class="n">setFitness</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">value</span><span class="p">)</span></pre>
+<p>Sets the fitness of chromosome.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>chromosome</td>
-<td>index of chromosome.</td>
+<tbody>
+<tr class="row-odd"><td><p>chromosome</p></td>
+<td><p>index of chromosome.</p></td>
 </tr>
-<tr class="row-even"><td>value</td>
-<td>allele value.</td>
+<tr class="row-even"><td><p>value</p></td>
+<td><p>allele value.</p></td>
 </tr>
 </tbody>
 </table>

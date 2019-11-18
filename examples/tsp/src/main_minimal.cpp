@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
     try {
         ////////////////////////////////////////
-        // Read arguments and Instance
+        // Read command-line arguments and the instance
         ////////////////////////////////////////
 
         const unsigned seed = stoi(argv[1]);

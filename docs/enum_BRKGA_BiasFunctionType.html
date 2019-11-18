@@ -195,8 +195,7 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Specifies a bias function type when choosing parents to mating (<code class="docutils literal notranslate"><span class="pre">r</span></code> is a given parameter). This function substitutes the <code class="docutils literal notranslate"><span class="pre">rhoe</span></code> parameter from the original <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a>. <a class="reference internal" href="#details-doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight overview-code-block literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
 
 <span class="k">enum</span> <span class="n">BRKGA</span><span class="o">::</span><span class="n">BiasFunctionType</span>
 <span class="p">{</span>
@@ -207,41 +206,26 @@
     <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adca762bd1443afdcf03af352da1c9184"><span class="std std-ref">LOGINVERSE</span></a><span></span><span class="p">,</span>
     <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aa6ef2e8b7424bfa9d56315aca733861c"><span class="std std-ref">QUADRATIC</span></a><span></span><span class="p">,</span>
     <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a72baef04098f035e8a320b03ad197818"><span class="std std-ref">CUSTOM</span></a><span></span><span class="p">,</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 </div>
 <div class="section" id="detailed-documentation">
 <span id="details-doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Specifies a bias function type when choosing parents to mating (<code class="docutils literal notranslate"><span class="pre">r</span></code> is a given parameter). This function substitutes the <code class="docutils literal notranslate"><span class="pre">rhoe</span></code> parameter from the original <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a>.</p>
 <div class="section" id="enum-values">
 <h3>Enum Values<a class="headerlink" href="#enum-values" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-constant">
-<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a8d6b5cada83510220f59e00ce86d4d92"></span><span id="index-1"></span><span></span><span class="n">CONSTANT</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-constant"><span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a8d6b5cada83510220f59e00ce86d4d92"></span><span id="index-1"></span><span></span><span class="n">CONSTANT</span></pre>
 <p><span class="math notranslate nohighlight">\(\frac{1}{\text{num. parents for mating}}\)</span> (all individuals have the same probability)</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-cubic">
-<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1accd681e34e5e40fbce74618c3ccffcff"></span><span id="index-2"></span><span></span><span class="n">CUBIC</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-cubic"><span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1accd681e34e5e40fbce74618c3ccffcff"></span><span id="index-2"></span><span></span><span class="n">CUBIC</span></pre>
 <p><span class="math notranslate nohighlight">\(r^{-3}\)</span></p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-exponential">
-<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adcd5fc33e211f31cef0cd7cb36518d31"></span><span id="index-3"></span><span></span><span class="n">EXPONENTIAL</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-exponential"><span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adcd5fc33e211f31cef0cd7cb36518d31"></span><span id="index-3"></span><span></span><span class="n">EXPONENTIAL</span></pre>
 <p><span class="math notranslate nohighlight">\(e^{-r}\)</span></p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-linear">
-<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aaac544aacc3615aada24897a215f5046"></span><span id="index-4"></span><span></span><span class="n">LINEAR</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-linear"><span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aaac544aacc3615aada24897a215f5046"></span><span id="index-4"></span><span></span><span class="n">LINEAR</span></pre>
 <p><span class="math notranslate nohighlight">\(1/r\)</span></p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-loginverse">
-<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adca762bd1443afdcf03af352da1c9184"></span><span id="index-5"></span><span></span><span class="n">LOGINVERSE</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-loginverse"><span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1adca762bd1443afdcf03af352da1c9184"></span><span id="index-5"></span><span></span><span class="n">LOGINVERSE</span></pre>
 <p><span class="math notranslate nohighlight">\(\frac{1}{\log(r + 1)}\)</span> (usually works better than other functions)</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-quadratic">
-<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aa6ef2e8b7424bfa9d56315aca733861c"></span><span id="index-6"></span><span></span><span class="n">QUADRATIC</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-quadratic"><span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1aa6ef2e8b7424bfa9d56315aca733861c"></span><span id="index-6"></span><span></span><span class="n">QUADRATIC</span></pre>
 <p><span class="math notranslate nohighlight">\(r^{-2}\)</span></p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-custom">
-<span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a72baef04098f035e8a320b03ad197818"></span><span id="index-7"></span><span></span><span class="n">CUSTOM</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-biasfunctiontype-custom"><span id="doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a72baef04098f035e8a320b03ad197818"></span><span id="index-7"></span><span></span><span class="n">CUSTOM</span></pre>
 <p>Indicates a custom function supplied by the user.</p>
 </div>
 </div>

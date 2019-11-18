@@ -47,12 +47,14 @@ public:
     TSP_Decoder_pre_allocating(const TSP_Instance& instance,
                                const unsigned num_threads = 1);
 
-    /** \brief Given a chromossome, build a tour.
+    /** \brief Given a chromossome, builds a tour.
      *
      * \param chromosome A vector of doubles represent a problem solution.
+     * \param rewrite Indicates if the chromosome must be rewritten. Not used
+     *                this decoder, but keep due to API requirements.
      * \return the cost of the tour.
      */
-    double decode(BRKGA::Chromosome& chromosome, bool rewrite = true);
+    double decode(BRKGA::Chromosome& chromosome, bool rewrite);
 
 public:
     /// A reference to a TSP instance.

@@ -88,7 +88,7 @@ class CombinatorialAuctionDecoder { //: public BRKGA_Decoder {
          * \param writeback rewrite the chromosome to reflect the solution.
          * \return a double with fitness value.
          */
-        virtual double decode(vector< double >& chromosome, bool writeback = true);
+        virtual double decode(vector< double >& chromosome, bool writeback);
         //@}
 
         /** \name Member Methods */

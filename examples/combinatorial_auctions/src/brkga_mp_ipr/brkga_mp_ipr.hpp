@@ -205,7 +205,7 @@ public:
     virtual ~DistanceFunctionBase() {}
 
     /**
-     * \brief Compute the distance between two vectors.
+     * \brief Computes the distance between two vectors.
      * \param v1 first vector
      * \param v2 second vector
      */
@@ -213,7 +213,7 @@ public:
                             const std::vector<double>& v2) = 0;
 
     /**
-     * \brief Return true if the changing of `key1` by `key2` affects
+     * \brief Returns true if the changing of `key1` by `key2` affects
      *        the solution.
      * \param key1 the first key
      * \param key2 the second key
@@ -221,7 +221,7 @@ public:
     virtual bool affectSolution(const double key1, const double key2) = 0;
 
     /**
-     * \brief Return true if the changing of the blocks of keys `v1` by the
+     * \brief Returns true if the changing of the blocks of keys `v1` by the
      *        blocks of keys `v2` affects the solution.
      * \param v1_begin begin of the first blocks of keys
      * \param v2_begin begin of the first blocks of keys
@@ -254,7 +254,7 @@ public:
     virtual ~HammingDistance() {}
 
     /**
-     * \brief Compute the Hamming distance between two vectors.
+     * \brief Computes the Hamming distance between two vectors.
      * \param vector1 first vector
      * \param vector2 second vector
      */
@@ -274,7 +274,7 @@ public:
     }
 
     /**
-     * \brief Return true if the changing of `key1` by `key2` affects
+     * \brief Returns true if the changing of `key1` by `key2` affects
      *        the solution.
      * \param key1 the first key
      * \param key2 the second key
@@ -284,7 +284,7 @@ public:
     }
 
     /**
-     * \brief Return true if the changing of the blocks of keys `v1` by the
+     * \brief Returns true if the changing of the blocks of keys `v1` by the
      *        blocks of keys `v2` affects the solution.
      * \param v1_begin begin of the first blocks of keys
      * \param v2_begin begin of the first blocks of keys
@@ -324,7 +324,7 @@ public:
     virtual ~KendallTauDistance() {}
 
     /**
-     * \brief Compute the Kendall Tau distance between two vectors.
+     * \brief Computes the Kendall Tau distance between two vectors.
      * \param vector1 first vector
      * \param vector2 second vector
      */
@@ -367,7 +367,7 @@ public:
     }
 
     /**
-     * \brief Return true if the changing of `key1` by `key2` affects
+     * \brief Returns true if the changing of `key1` by `key2` affects
      *        the solution.
      * \param key1 the first key
      * \param key2 the second key
@@ -377,7 +377,7 @@ public:
     }
 
     /**
-     * \brief Return true if the changing of the blocks of keys `v1` by the
+     * \brief Returns true if the changing of the blocks of keys `v1` by the
      *        blocks of keys `v2` affects the solution.
      *
      * \param v1_begin begin of the first blocks of keys
@@ -455,18 +455,18 @@ public:
 
     /** \name Simple access methods */
     //@{
-    /// Return the size of each chromosome.
+    /// Returns the size of each chromosome.
     unsigned getChromosomeSize() const {
         return population[0].size();
     }
 
-    /// Return the size of the population.
+    /// Returns the size of the population.
     unsigned getPopulationSize() const {
         return population.size();
     };
 
     /**
-     * \brief Return a copy of an allele for a given chromosome.
+     * \brief Returns a copy of an allele for a given chromosome.
      * \param chromosome index of desired chromosome.
      * \param allele index of desired allele.
      * \returns a copy of the allele value.
@@ -476,7 +476,7 @@ public:
     }
 
     /**
-     * \brief Return a reference for an allele for a given chromosome.
+     * \brief Returns a reference for an allele for a given chromosome.
      *
      * Usually used to set the allele value.
      * \param chromosome index of desired chromosome.
@@ -488,7 +488,7 @@ public:
     }
 
     /**
-     * \brief Return a reference to a chromosome.
+     * \brief Returns a reference to a chromosome.
      * \param chromosome index of desired chromosome.
      * \returns a reference to chromosome.
      */
@@ -503,22 +503,22 @@ public:
      * `sortFitness()` beforehand.
      */
     //@{
-    /// Return the best fitness in this population.
+    /// Returns the best fitness in this population.
     double getBestFitness() const {
         return getFitness(0);
     }
 
-    /// Return the fitness of chromosome i.
+    /// Returns the fitness of chromosome i.
     double getFitness(const unsigned i)  const {
         return fitness[i].first;
     }
 
-    /// Return a reference to the i-th best chromosome.
+    /// Returns a reference to the i-th best chromosome.
     Chromosome& getChromosome(unsigned i) {
         return population[fitness[i].second];
     }
 
-    /// Return a const reference to the i-th best chromosome.
+    /// Returns a const reference to the i-th best chromosome.
     const Chromosome& getChromosome(const unsigned i) const {
         return population[fitness[i].second];
     }
@@ -527,7 +527,7 @@ public:
     /** \name Other methods */
     //@{
     /**
-     * \brief Sort `fitness` by its first parameter according to the sense.
+     * \brief Sorts `fitness` by its first parameter according to the sense.
      * \param sense Optimization sense.
      */
     void sortFitness(const Sense sense) {
@@ -540,7 +540,7 @@ public:
     }
 
     /**
-     * \brief Set the fitness of chromosome.
+     * \brief Sets the fitness of chromosome.
      * \param chromosome index of chromosome.
      * \param value allele value.
      */
@@ -678,14 +678,14 @@ public:
 //----------------------------------------------------------------------------//
 
 /**
- * \brief Read the parameters from a configuration file.
+ * \brief Reads the parameters from a configuration file.
  *
  * \param filename the configuration file.
  * \returns a tuple containing the BRKGA and external control parameters.
  * \throw std::fstream::failure in case of errors in the file.
  * \todo (ceandrade) This method can beneficiate from introspection tools
  *   from C++17. We would like achieve a code similar to the
- *   [Julia counterpart](<https://github.com/ceandrade/BrkgaMpIpr.jl>).
+ *   [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
  */
 INLINE std::pair<BrkgaParams, ExternalControlParams>
 readConfiguration(const std::string& filename) {
@@ -826,7 +826,7 @@ readConfiguration(const std::string& filename) {
 //----------------------------------------------------------------------------//
 
 /**
- * \brief Write the parameters into a file..
+ * \brief Writes the parameters into a file..
  *
  * \param filename the configuration file.
  * \param brkga_params the BRKGA parameters.
@@ -835,7 +835,7 @@ readConfiguration(const std::string& filename) {
  * \throw std::fstream::failure in case of errors in the file.
  * \todo (ceandrade) This method can beneficiate from introspection tools
  *   from C++17. We would like achieve a code similar to the
- *   [Julia counterpart](<https://github.com/ceandrade/BrkgaMpIpr.jl>).
+ *   [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
  */
 INLINE void writeConfiguration(const std::string& filename,
         const BrkgaParams& brkga_params,
@@ -1037,7 +1037,7 @@ public:
     /** \name Constructors and destructor */
     //@{
     /**
-     * \brief Build the algorithm and its data strtuctures with the given
+     * \brief Builds the algorithm and its data strtuctures with the given
      *        arguments.
      *
      * \param decoder_reference a reference to the decoder object. **NOTE:**
@@ -1072,7 +1072,7 @@ public:
     /** \name Initialization methods */
     //@{
     /**
-     * \brief Set individuals to initial population.
+     * \brief Sets individuals to initial population.
      *
      * Set initial individuals into the poulation to work as warm-starters.
      * Such individuals can be obtained from solutions of external procedures
@@ -1090,7 +1090,7 @@ public:
     void setInitialPopulation(const std::vector<Chromosome>& chromosomes);
 
     /**
-     * \brief Set a custom bias function used to build the probabilities.
+     * \brief Sets a custom bias function used to build the probabilities.
      *
      * It must be a **positive non-increasing function**, i.e.
      * \f$ f: \mathbb{N}^+ \to \mathbb{R}^+\f$ such that
@@ -1113,7 +1113,7 @@ public:
     void setBiasCustomFunction(const std::function<double(const unsigned)>& func);
 
     /**
-     * \brief Initialize the populations and others parameters of the
+     * \brief Initializes the populations and others parameters of the
      *        algorithm.
      *
      * If a initial population is supplied, this method completes the remain
@@ -1144,7 +1144,7 @@ public:
     /** \name Evolution */
     //@{
     /**
-     * \brief Evolve the current populations following the guidelines of
+     * \brief Evolves the current populations following the guidelines of
      *        Multi-parent BRKGAs.
      *
      * \warning
@@ -1163,7 +1163,7 @@ public:
     /** \name Path relinking */
     //@{
     /**
-     * \brief Perform path relinking between elite solutions that are, at least,
+     * \brief Performs path relinking between elite solutions that are, at least,
      * a given minimum distance between themselves. In this method, the
      * local/loaded parameters are ignored in favor to the supplied ones.
      *
@@ -1221,7 +1221,7 @@ public:
      *        BRKGA::DistanceFunctionBase and implement its methods.
      * \param number_pairs number of chromosome pairs to be tested.
      *        If 0, all pairs are tested.
-     * \param minimum_distance between two chromosomes computed by `dist`.
+     * \param minimum_distance between two chromosomes computed byt `dist`.
      * \param block_size number of alleles to be exchanged at once in each
      *        iteration. If one, the traditional path relinking is performed.
      * \param max_time aborts path relinking when reach `max_time`.
@@ -1279,7 +1279,7 @@ public:
     /** \name Population manipulation methods */
     //@{
     /**
-     * \brief Exchange elite-solutions between the populations.
+     * \brief Exchanges elite-solutions between the populations.
 
      * Given a population, the `num_immigrants` best solutions are copied to
      * the neighbor populations, replacing their worth solutions. If there is
@@ -1296,7 +1296,7 @@ public:
     void exchangeElite(unsigned num_immigrants);
 
     /**
-     * \brief Reset all populations with brand new keys.
+     * \brief Resets all populations with brand new keys.
      *
      * All warm-start solutions provided setInitialPopulation() are discarded.
      * You may use injectChromosome() to insert those solutions again.
@@ -1305,7 +1305,7 @@ public:
     void reset();
 
     /**
-     * \brief Perform a shaking in the chosen population.
+     * \brief Performs a shaking in the chosen population.
      * \param intensity the intensity of the shaking.
      * \param shaking_type either `CHANGE` or `SWAP` moves.
      * \param population_index the index of the population to be shaken. If
@@ -1317,7 +1317,7 @@ public:
                     std::numeric_limits<unsigned>::infinity());
 
     /**
-     * \brief Inject a chromosome and its fitness into a population in the
+     * \brief Injects a chromosome and its fitness into a population in the
      *         given place position.
      *
      * If fitness is not provided (`fitness == Inf`), the decoding is performed
@@ -1343,14 +1343,14 @@ public:
     /** \name Support methods */
     //@{
     /**
-     * \brief Return a reference to a current population.
+     * \brief Returns a reference to a current population.
      * \param population_index the population index.
      * \throw std::range_error if the index is larger than number of
      *        populations.
      */
     const Population& getCurrentPopulation(unsigned population_index = 0) const;
 
-    /// Return a reference to the chromosome with best fitness so far among
+    /// Returns a reference to the chromosome with best fitness so far among
     /// all populations.
     const Chromosome& getBestChromosome() const;
 
@@ -1358,7 +1358,7 @@ public:
     double getBestFitness() const;
 
     /**
-     * \brief Return a reference to a chromosome of the given population.
+     * \brief Returns a reference to a chromosome of the given population.
      * \param population_index the population index.
      * \param position the chromosome position, ordered by fitness.
      *        The best chromosome is located in position 0.
@@ -1390,10 +1390,10 @@ public:
 protected:
     /** \name BRKGA Hyper-parameters */
     //@{
-    /// THE BRKGA and IPR hyper-parameters.
+    /// The BRKGA and IPR hyper-parameters.
     BrkgaParams params;
 
-    /// Indicate if is maximization or minimization.
+    /// Indicates whether we are maximizing or minimizing.
     const Sense OPT_SENSE;
 
     /// Number of genes in the chromosome.
@@ -1464,7 +1464,7 @@ protected:
     /** \name Core local methods */
     //@{
     /**
-     * \brief Evolve the current population to the next.
+     * \brief Evolves the current population to the next.
      *
      * Note that the next population will be re-populate completely.
      *
@@ -1474,7 +1474,7 @@ protected:
     void evolution(Population& curr, Population& next);
 
     /**
-     * \brief Perform the direct path relinking.
+     * \brief Performs the direct path relinking.
      *
      * This method changes each allele or block of alleles of base chromosome
      * for the correspondent one in the guide chromosome.
@@ -1506,7 +1506,7 @@ protected:
                           double percentage);
 
     /**
-     * \brief Perform the permutation-based path relinking.
+     * \brief Performs the permutation-based path relinking.
      *
      * In this method, the permutation induced by the keys in the guide
      * solution is used to change the order of the keys in the permutation
@@ -1545,7 +1545,7 @@ protected:
     /** \name Helper functions */
     //@{
     /**
-     * \brief Return `true` if `a1` is better than `a2`.
+     * \brief Returns `true` if `a1` is better than `a2`.
      *
      * This method depends on the optimization sense. When the optimization
      * sense is `Sense::MINIMIZE`, `a1 < a2` will return true, otherwise false.
@@ -1553,10 +1553,10 @@ protected:
      */
     inline bool betterThan(const double a1, const double a2) const;
 
-    /// Distribute real values of given precision across [0, 1] evenly.
+    /// Distributes real values of given precision across [0, 1] evenly.
     inline double rand01();
 
-    /// Return a number between `0` and `n`.
+    /// Returns a number between `0` and `n`.
     inline uint_fast32_t randInt(const uint_fast32_t n);
     //@}
 };
@@ -1779,7 +1779,7 @@ void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
     local_chr = chromosome;
 
     if(!(fitness < std::numeric_limits<double>::infinity()))
-        fitness = decoder.decode(local_chr);
+        fitness = decoder.decode(local_chr, true);
 
     pop->setFitness(position, fitness);
     pop->sortFitness(OPT_SENSE);
@@ -1971,7 +1971,7 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool true_init) {
             #pragma omp parallel for num_threads(MAX_THREADS) schedule(static,1)
         #endif
         for(unsigned j = 0; j < params.population_size; ++j)
-            current[i]->setFitness(j, decoder.decode((*current[i])(j)));
+            current[i]->setFitness(j, decoder.decode((*current[i])(j), true));
 
         // Sort and copy to previous.
         current[i]->sortFitness(OPT_SENSE);
@@ -2044,7 +2044,7 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
         #endif
         for(unsigned j = 0; j < params.population_size; ++j)
             current[pop_start]->
-                setFitness(j, decoder.decode((*current[pop_start])(j)));
+                setFitness(j, decoder.decode((*current[pop_start])(j), true));
 
         // Now we must sort by fitness, since things might have changed.
         current[pop_start]->sortFitness(OPT_SENSE);
@@ -2055,7 +2055,7 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
 
 template<class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
-                                             Population& next) {
+                                      Population& next) {
     // First, we copy the elite chromosomes to the next generation.
     for(unsigned chr = 0; chr < elite_size; ++chr) {
         next.population[chr] = curr.population[curr.fitness[chr].second];
@@ -2104,12 +2104,12 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 
         // Performs the mate.
         for(unsigned allele = 0; allele < CHROMOSOME_SIZE; ++allele) {
-            // Start parent from 1 because the bias function.
+            // Roullete method.
             unsigned parent = 0;
             double cumulative_probability = 0.0;
             const double toss = rand01();
-
             do {
+                // Start parent from 1 because the bias function.
                 cumulative_probability += bias_function(++parent) /
                                           total_bias_weight;
             } while(cumulative_probability < toss);
@@ -2131,7 +2131,7 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         #pragma omp parallel for num_threads(MAX_THREADS) schedule(static, 1)
     #endif
     for(unsigned i = elite_size; i < params.population_size; ++i)
-        next.setFitness(i, decoder.decode(next.population[i]));
+        next.setFitness(i, decoder.decode(next.population[i], true));
 
     // Now we must sort by fitness, since things might have changed.
     next.sortFitness(OPT_SENSE);

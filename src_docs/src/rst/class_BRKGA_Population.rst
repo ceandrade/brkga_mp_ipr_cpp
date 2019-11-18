@@ -69,7 +69,7 @@ Encapsulates a population of chromosomes.
 
 Encapsulates a population of chromosomes providing supporting methods for making the implementation easier.
 
-All methods and attributes are public and can be manipulated directly from BRKGA algorithms. Note that this class is not meant to be used externally of this unit.
+All methods and attributes are public and can be manipulated directly from :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` algorithms. Note that this class is not meant to be used externally of this unit.
 
 Fields
 ------
@@ -166,7 +166,7 @@ Assignment operator for complaince.
 
 	unsigned getChromosomeSize() const
 
-Return the size of each chromosome.
+Returns the size of each chromosome.
 
 .. index:: pair: function; getPopulationSize
 .. _doxid-class_b_r_k_g_a_1_1_population_1a0be8c63eeca28c5c43386d4b6a999375:
@@ -177,7 +177,7 @@ Return the size of each chromosome.
 
 	unsigned getPopulationSize() const
 
-Return the size of the population.
+Returns the size of the population.
 
 .. index:: pair: function; operator()
 .. _doxid-class_b_r_k_g_a_1_1_population_1a8994402e065ce2f327d565ce49dc320f:
@@ -188,7 +188,7 @@ Return the size of the population.
 
 	double operator () (const unsigned chromosome, const unsigned allele) const
 
-Return a copy of an allele for a given chromosome.
+Returns a copy of an allele for a given chromosome.
 
 
 
@@ -222,7 +222,7 @@ a copy of the allele value.
 
 	double& operator () (const unsigned chromosome, const unsigned allele)
 
-Return a reference for an allele for a given chromosome.
+Returns a reference for an allele for a given chromosome.
 
 Usually used to set the allele value.
 
@@ -258,7 +258,7 @@ a reference of the allele value.
 
 	:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& operator () (unsigned chromosome)
 
-Return a reference to a chromosome.
+Returns a reference to a chromosome.
 
 
 
@@ -287,7 +287,7 @@ a reference to chromosome.
 
 	double getBestFitness() const
 
-Return the best fitness in this population.
+Returns the best fitness in this population.
 
 .. index:: pair: function; getFitness
 .. _doxid-class_b_r_k_g_a_1_1_population_1a9b0cdd9402ff3682e106717630175431:
@@ -298,7 +298,7 @@ Return the best fitness in this population.
 
 	double getFitness(const unsigned i) const
 
-Return the fitness of chromosome i.
+Returns the fitness of chromosome i.
 
 .. index:: pair: function; getChromosome
 .. _doxid-class_b_r_k_g_a_1_1_population_1a6ed0c28c9dd264620c8bd7cd356c6022:
@@ -309,7 +309,7 @@ Return the fitness of chromosome i.
 
 	:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getChromosome(unsigned i)
 
-Return a reference to the i-th best chromosome.
+Returns a reference to the i-th best chromosome.
 
 .. index:: pair: function; getChromosome
 .. _doxid-class_b_r_k_g_a_1_1_population_1a9df2d69c9fbf43309b0671d4047045df:
@@ -320,7 +320,7 @@ Return a reference to the i-th best chromosome.
 
 	const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getChromosome(const unsigned i) const
 
-Return a const reference to the i-th best chromosome.
+Returns a const reference to the i-th best chromosome.
 
 .. index:: pair: function; sortFitness
 .. _doxid-class_b_r_k_g_a_1_1_population_1a76fb0dc9cde602acbbaa2897326c3d1b:
@@ -331,7 +331,7 @@ Return a const reference to the i-th best chromosome.
 
 	void sortFitness(const :ref:`Sense<doxid-namespace_b_r_k_g_a_1af28538be111c8320b2fec44b77ec5e9b>` sense)
 
-Sort ``fitness`` by its first parameter according to the sense.
+Sorts ``fitness`` by its first parameter according to the sense.
 
 
 
@@ -354,7 +354,7 @@ Sort ``fitness`` by its first parameter according to the sense.
 
 	void setFitness(const unsigned chromosome, const double value)
 
-Set the fitness of chromosome.
+Sets the fitness of chromosome.
 
 
 

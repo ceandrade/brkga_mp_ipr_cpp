@@ -29,8 +29,8 @@
 --! searched in directories -- and in the sequence -- specified here.
 --!
 
-FRAME_DIR_LIST = { "/Users/cea/temp/doxyrest-1.1.1-a-mac/share/doxyrest/frame/cfamily", 
-                   "/Users/cea/temp/doxyrest-1.1.1-a-mac/share/doxyrest/frame/common" }
+FRAME_DIR_LIST = { "./doxyrest-1.1.1-a-mac/share/doxyrest/frame/cfamily", 
+                   "./doxyrest-1.1.1-a-mac/share/doxyrest/frame/common" }
 
 --!
 --! The output master (index) reStructuredText file. Usually, the index frame

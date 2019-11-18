@@ -195,36 +195,30 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Specifies the type of shaking to be performed. <a class="reference internal" href="#details-doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight overview-code-block literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
 
 <span class="k">enum</span> <span class="n">BRKGA</span><span class="o">::</span><span class="n">ShakingType</span>
 <span class="p">{</span>
     <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494a421cfd143e450c3f5814a0495409e073"><span class="std std-ref">CHANGE</span></a><span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494a46fc23bc4e4d57e5469a39658a6dd3e8"><span class="std std-ref">SWAP</span></a><span></span>   <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 </div>
 <div class="section" id="detailed-documentation">
 <span id="details-doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Specifies the type of shaking to be performed.</p>
 <div class="section" id="enum-values">
 <h3>Enum Values<a class="headerlink" href="#enum-values" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-shakingtype-change">
-<span id="doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494a421cfd143e450c3f5814a0495409e073"></span><span id="index-1"></span><span></span><span class="n">CHANGE</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-shakingtype-change"><span id="doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494a421cfd143e450c3f5814a0495409e073"></span><span id="index-1"></span><span></span><span class="n">CHANGE</span></pre>
 <p>Applies the following perturbations:</p>
 <ol class="arabic simple">
-<li>Inverts the value of a random chosen, i.e., from <code class="docutils literal notranslate"><span class="pre">value</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-</span> <span class="pre">value</span></code>;</li>
-<li>Assigns a random value to a random key.</li>
+<li><p>Inverts the value of a random chosen, i.e., from <code class="docutils literal notranslate"><span class="pre">value</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-</span> <span class="pre">value</span></code>;</p></li>
+<li><p>Assigns a random value to a random key.</p></li>
 </ol>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-shakingtype-swap">
-<span id="doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494a46fc23bc4e4d57e5469a39658a6dd3e8"></span><span id="index-2"></span><span></span><span class="n">SWAP</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-shakingtype-swap"><span id="doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494a46fc23bc4e4d57e5469a39658a6dd3e8"></span><span id="index-2"></span><span></span><span class="n">SWAP</span></pre>
 <p>Applies two swap perturbations:</p>
 <ol class="arabic simple">
-<li>Swaps the values of a randomly chosen key <code class="docutils literal notranslate"><span class="pre">i</span></code> and its neighbor <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code>;</li>
-<li>Swaps values of two randomly chosen keys.</li>
+<li><p>Swaps the values of a randomly chosen key <code class="docutils literal notranslate"><span class="pre">i</span></code> and its neighbor <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code>;</p></li>
+<li><p>Swaps values of two randomly chosen keys.</p></li>
 </ol>
 </div>
 </div>

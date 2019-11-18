@@ -204,36 +204,30 @@ download the header files and tell your compiler to include the path to where
 the files were downloaded.</p>
 <p>Quick example (unix): assume we are in an empty folder. So, we copy/clone
 BRKGA-IPR-MP first:</p>
-<pre class="highlight literal-block">
-<span></span>$ git clone https://github.com/ceandrade/brkga_mp_ipr
+<pre class="highlight literal-block"><span></span>$ git clone https://github.com/ceandrade/brkga_mp_ipr_cpp
 Cloning into &#39;brkga_mp_ipr&#39;...
 remote: Enumerating objects: 118, done.
 remote: Counting objects: 100% (118/118), done.
 remote: Compressing objects: 100% (112/112), done.
 remote: Total 118 (delta 24), reused 0 (delta 0)
 Receiving objects: 100% (118/118), 3.50 MiB | 3.66 MiB/s, done.
-Resolving deltas: 100% (24/24), done.
-</pre>
+Resolving deltas: 100% (24/24), done.</pre>
 <p>Let’s write a <code class="docutils literal notranslate"><span class="pre">test.cpp</span></code> with the following code:</p>
-<pre class="highlight literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
+<pre class="highlight literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Testing sense: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">BRKGA</span><span class="o">::</span><span class="n">Sense</span><span class="o">::</span><span class="n">MINIMIZE</span><span class="p">;</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
+<span class="p">}</span></pre>
 <p>Then, let’s compile and see it works:</p>
-<pre class="highlight literal-block">
-<span></span>$ g++ --version
+<pre class="highlight literal-block"><span></span>$ g++ --version
 g++ (MacPorts gcc8 8.2.0_3) 8.2.0
 
 $ g++ -std=c++14 -Ibrkga_mp_ipr/brkga_mp_ipr test.cpp -o test
 
 $ ./test
-Testing sense: MINIMIZE
-</pre>
+Testing sense: MINIMIZE</pre>
 <p>Note the Git clones the whole repository that contains the library code,
 documents, and examples. All the examples were built using <a class="reference external" href="https://www.gnu.org/software/make/">GNU/Make</a> and <a class="reference external" href="https://gcc.gnu.org">GCC toolchain</a>. However, the code is standard C++, and we can
 quickly adapt it to other toolchains such as <a class="reference external" href="https://clang.llvm.org">Clang</a>, <a class="reference external" href="https://visualstudio.microsoft.com">Microsoft</a>, or <a class="reference external" href="https://software.intel.com/en-us/c-compilers">Intel</a> toolchains. To build this
@@ -241,11 +235,10 @@ documentation, we also need <a class="reference external" href="http://www.doxyg
 </div>
 <div class="section" id="tl-dr">
 <h2>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">¶</a></h2>
-<p>The best way to keep it short is to look in the on examples on <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr">the git repo.</a> Let’s take a look into
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>,
+<p>The best way to keep it short is to look in the on examples on <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp">the git repo.</a> Let’s take a look into
+<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>,
 copied (and trimmed) below:</p>
-<pre class="highlight literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&quot;tsp/tsp_instance.hpp&quot;</span><span class="cp"></span>
+<pre class="highlight literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&quot;tsp/tsp_instance.hpp&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;decoders/tsp_decoder.hpp&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -285,25 +278,24 @@ copied (and trimmed) below:</p>
     <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Best cost: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">best_cost</span><span class="p">;</span>
 
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
+<span class="p">}</span></pre>
 <p>You can identify the following basic steps:</p>
 <ol class="arabic simple">
-<li>Create a data structure to hold your input data. This object should be
+<li><p>Create a data structure to hold your input data. This object should be
 passed to the decoder object/functor (example
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/tsp/tsp_instance.hpp">tsp/tsp_instance.hpp</a>);</li>
-<li>Implement a decoder object/functor. This function translates a chromosome
+<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/tsp/tsp_instance.hpp">tsp/tsp_instance.hpp</a>);</p></li>
+<li><p>Implement a decoder object/functor. This function translates a chromosome
 (array of numbers in the interval [0,1]) to a solution for your problem. The
 decoder must return the solution value or cost to be used as fitness by
-BRKGA (example <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/tree/v1.0/examples/tsp/src/decoders">decoders</a>);</li>
-<li>Load the instance and other relevant data;</li>
-<li>Read the algorithm parameters using
+BRKGA (example <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp/src/decoders">decoders</a>);</p></li>
+<li><p>Load the instance and other relevant data;</p></li>
+<li><p>Read the algorithm parameters using
 <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref"><span class="pre">BRKGA::readConfiguration()</span></span></a></code>;
-or create a <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams</span></span></a></code> object by hand;</li>
-<li>Create an <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR</span></span></a></code> algorithm object;</li>
-<li>Call <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a7857351d4ce17199bd2fc157589a8592"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::initialize()</span></span></a></code> to init the BRKGA state;</li>
-<li>Call <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::evolve()</span></span></a></code> to optimize;</li>
-<li>Call <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1af0084ce8397e82db99391bf4dad85219"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getBestFitness()</span></span></a></code> and/or <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getBestChromosome()</span></span></a></code> to retrieve the best solution.</li>
+or create a <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams</span></span></a></code> object by hand;</p></li>
+<li><p>Create an <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR</span></span></a></code> algorithm object;</p></li>
+<li><p>Call <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a7857351d4ce17199bd2fc157589a8592"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::initialize()</span></span></a></code> to init the BRKGA state;</p></li>
+<li><p>Call <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::evolve()</span></span></a></code> to optimize;</p></li>
+<li><p>Call <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1af0084ce8397e82db99391bf4dad85219"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getBestFitness()</span></span></a></code> and/or <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getBestChromosome()</span></span></a></code> to retrieve the best solution.</p></li>
 </ol>
 <p>These are the basic steps, but I do recommend the reading of this guide.</p>
 </div>
@@ -315,7 +307,7 @@ In general, such decoder uses the problem information to map a vector of real
 numbers in the interval [0,1] to a (valid) solution. In some cases, even
 though a valid solution cannot be found, library users apply penalization
 factors and push the BRKGA to find valid solutions.</p>
-<p>Before you go further, please take a look at the <code class="docutils literal notranslate"><span class="pre">examples</span></code> folder in <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr">the
+<p>Before you go further, please take a look at the <code class="docutils literal notranslate"><span class="pre">examples</span></code> folder in <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp">the
 git repo</a>. There, you can find
 two folders with codes to solve <a class="reference external" href="http://dx.doi.org/10.1162/EVCO_a_00138">combinatorial auction problems</a> and traveling salesman problems.
 In this guide, we solve the classical <a class="reference external" href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">Traveling Salesman Problem</a>. Given aset of
@@ -324,31 +316,31 @@ must find a minimum-cost tour among all cities, such that each city is
 visited only once (i.e., find a Hamiltonian cycle of minimum cost). The
 folder has the following structure:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">src</span></code> subdir: contains all the code;</li>
-<li><code class="docutils literal notranslate"><span class="pre">instances</span></code> subdir: folder containing some TSP instances for testing;</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code> subdir: contains all the code;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">instances</span></code> subdir: folder containing some TSP instances for testing;</p></li>
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">src</span></code> subdir contains all the code to solve TSP. This is its structure:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">tsp</span></code> subdir: contains code to load and build data for TSP;</li>
-<li><code class="docutils literal notranslate"><span class="pre">decoders</span></code> subdir: contains the TSP decoder;</li>
-<li><code class="docutils literal notranslate"><span class="pre">heuristics</span></code> subdir: contains a simple heuristic that computes a greedy
-tour;</li>
-<li><code class="docutils literal notranslate"><span class="pre">main_minimal.cpp</span></code> file: minimal code useful to understand and test the
+<li><p><code class="docutils literal notranslate"><span class="pre">tsp</span></code> subdir: contains code to load and build data for TSP;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decoders</span></code> subdir: contains the TSP decoder;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">heuristics</span></code> subdir: contains a simple heuristic that computes a greedy
+tour;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main_minimal.cpp</span></code> file: minimal code useful to understand and test the
 framework. <strong>You should start here!</strong> Please take a look on this file before
-continue this tutorial;</li>
-<li><code class="docutils literal notranslate"><span class="pre">main_complete.cpp</span></code> file: full-featured code, handy for scientific use,
+continue this tutorial;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main_complete.cpp</span></code> file: full-featured code, handy for scientific use,
 such as experimentation and paper writing. This code allows fine-grained
 control of the optimization, show several features of BRKGA-MP-IPR such as
 the path-reliking calls, resets, chromosome injection, and others. It also
 logs all optimization steps, creating outputs easy to be parsed. <strong>You should
-use this code for serious business and experimentation;</strong></li>
-<li><code class="docutils literal notranslate"><span class="pre">config.conf</span></code> file: example of parameter settings;</li>
-<li><code class="docutils literal notranslate"><span class="pre">Makefile</span></code> file: the makefile used to build the executables;</li>
-<li><code class="docutils literal notranslate"><span class="pre">third_part</span></code> subdir: contains the <a class="reference external" href="https://github.com/docopt/docopt.cpp">docopt</a>
+use this code for serious business and experimentation;</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config.conf</span></code> file: example of parameter settings;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Makefile</span></code> file: the makefile used to build the executables;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">third_part</span></code> subdir: contains the <a class="reference external" href="https://github.com/docopt/docopt.cpp">docopt</a>
 dependence for <code class="docutils literal notranslate"><span class="pre">main_complete.cpp</span></code>. This is not strictly necessary for
 BRKGA-MP-IPR, but it adds a nice command line interface. If you have problems
 with that, we can change <code class="docutils literal notranslate"><span class="pre">main_complete.cpp</span></code> using traditional argument
-handling, or another library you prefer.</li>
+handling, or another library you prefer.</p></li>
 </ul>
 <p>The first step is to build the code. Here, we are using <a class="reference external" href="https://www.gnu.org/software/make">GNU/Make</a> and <a class="reference external" href="https://gcc.gnu.org">GCC toolchain</a>. You may change for the toolchain of your choice.
 You may need to edit this file according to your compiler version and
@@ -364,8 +356,7 @@ versions. We also can just type <code class="docutils literal notranslate"><span
 <p>When you call the executables <code class="docutils literal notranslate"><span class="pre">main_minimal</span></code> or <code class="docutils literal notranslate"><span class="pre">main_complete</span></code> without
 arguments, they show the usage. For example, assuming you are using a
 terminal:</p>
-<pre class="highlight literal-block">
-<span></span>$./main_minimal
+<pre class="highlight literal-block"><span></span>$./main_minimal
 Usage: ./main_minimal &lt;seed&gt; &lt;config-file&gt; &lt;num-generations&gt; &lt;tsp-instance-file&gt;
 
 $ ./main_complete
@@ -373,22 +364,18 @@ Arguments did not match expected patterns
 Usage:
   main_complete -c &lt;config_file&gt; -s &lt;seed&gt; -r &lt;stop_rule&gt; -a &lt;stop_arg&gt; -t &lt;max_time&gt; -i &lt;instance_file&gt; [-n &lt;num_threads&gt;] [--no_evolution]
   main_complete (-h | --help)
-...
-</pre>
+...</pre>
 <p>So, this is a possible output whe calling <code class="docutils literal notranslate"><span class="pre">main_minimal</span></code> :</p>
-<pre class="highlight literal-block">
-<span></span>$ ./main_minimal 27000001 config.conf 100 ../instances/brazil58.dat
+<pre class="highlight literal-block"><span></span>$ ./main_minimal 27000001 config.conf 100 ../instances/brazil58.dat
 Reading data...
 Reading parameters...
 Building BRKGA data and initializing...
 Evolving 100 generations...
-Best cost: 27709
-</pre>
+Best cost: 27709</pre>
 <p>For <code class="docutils literal notranslate"><span class="pre">main_complete</span></code>, the output is more verbose, since we want to capture
 as much information as possible to do some statistical analysis. The output
 should be something close to this:</p>
-<pre class="highlight literal-block">
-<span></span>$ ./main_complete -c config.conf -s 2700001 -r Generations -a 100 -t 60 -i ../instances/brazil58.dat
+<pre class="highlight literal-block"><span></span>$ ./main_complete -c config.conf -s 2700001 -r Generations -a 100 -t 60 -i ../instances/brazil58.dat
 ------------------------------------------------------
 &gt; Experiment started at Tue Mar 12 10:03:31 2019
 &gt; Instance: ../instances/brazil58.dat
@@ -455,8 +442,7 @@ Best individual improvements: 0
 % Best tour: 0 29 12 39 24 8 31 19 52 49 3 17 43 23 57 4 26 42 11 56 22 53 54 1 40 34 9 51 50 46 48 2 47 38 28 35 16 25 5 18 27 13 36 14 33 45 55 44 32 20 10 15 21 7 37 41 30 6
 
 Instance,Seed,NumNodes,TotalIterations,TotalTime,TotalPRTime,PRCalls,NumHomogenities,NumPRImprovElite,NumPrImprovBest,LargeOffset,LastUpdateIteration,LastUpdateTime,Cost
-brazil58,2700001,58,101,1.35,0.00,0,0,0,0,24,29,0.43,29956
-</pre>
+brazil58,2700001,58,101,1.35,0.00,0,0,0,0,24,29,0.43,29956</pre>
 <p>I hope by now you got your system set up and running. Let’s see the essential
 details on how to use the BRKGA-MP-IPR.</p>
 </div>
@@ -469,20 +455,18 @@ similar to a <a class="reference external" href="https://en.wikipedia.org/wiki/K
 project solutions/distances in different spaces.</p>
 <p>Here, we have a small difference between the C++ and the Julia
 implementation. In the Julia version, you must define a data container
-inherit from <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr">AbstractInstance</a>,
+inherit from <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp">AbstractInstance</a>,
 and a decoder function. The reason you must do that is because structs in
 Julia have no methods (but constructors), and the decoder function must take
 both chromosome and input data in the call. In C++, we can encapsulate the
 input data into the decoder object, resulting in a much more clear API.</p>
 <p>The basic form of a decoder should be:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">class</span> <span class="n">Decoder</span> <span class="p">{</span>
-    <span class="kt">double</span> <span class="n">decode</span><span class="p">(</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">BRKGA::Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">rewrite</span> <span class="o">=</span> <span class="nb">true</span><span class="p">);</span>
-<span class="p">};</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="k">class</span> <span class="n">Decoder</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">decode</span><span class="p">(</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">BRKGA::Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">rewrite</span><span class="p">);</span>
+<span class="p">};</span></pre>
 <p>The decoder <strong>must</strong> contain a <strong>decode()</strong> method that receives a
 <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref"><span class="pre">BRKGA::Chromosome</span></span></a></code> reference
-and an optional boolean, and returns a float point number. But before going
+and an <code class="docutils literal notranslate"><span class="pre">boolean</span></code>, and returns a float point number. But before going
 further, let’s talk about the chromosome.</p>
 <div class="section" id="the-chromosome-or-vector-of-doubles">
 <h3>The chromosome or vector of doubles<a class="headerlink" href="#the-chromosome-or-vector-of-doubles" title="Permalink to this headline">¶</a></h3>
@@ -494,14 +478,12 @@ other solution metrics that not the main fitness value. For example, in a
 scheduling problem, we may choose to keep both makespan and total completion
 time metrics. Therefore, we chose to make the chromosome a “generic” data
 structure in our design.</p>
-<p>File <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/brkga_mp_ipr/chromosome.hpp">chomosome.hpp</a> shows the
+<p>File <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/brkga_mp_ipr/chromosome.hpp">chomosome.hpp</a> shows the
 basic represetation of a chromosome:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">;</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">;</span></pre>
 <p>If this enough for you, you go already and use such a definition. However,
 instead to redefine in your own code, <strong>we do recommend to import and use the
-definition from</strong> <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/brkga_mp_ipr/chromosome.hpp">chomosome.hpp</a>,
+definition from</strong> <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/brkga_mp_ipr/chromosome.hpp">chomosome.hpp</a>,
 since it is the same definition the main BRKGA-MP-IPR algorithm uses.</p>
 <p>However, if you need more information to be tracked during the optimization,
 you can redefine the chromosome. First, your definition must complain with
@@ -509,8 +491,7 @@ the <code class="docutils literal notranslate"><span class="pre">std::vector&lt;
 from the <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code>. For instance, assume we want to keep track of the
 makespan and the total completion time for a scheduling problem. We can do
 the following:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">class</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="p">{</span>
+<pre class="highlight literal-block"><span></span><span class="k">class</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="k">public</span><span class="o">:</span>
         <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">()</span> <span class="o">:</span>
             std<span></span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(),</span> <span class="n">makespan</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">total_completion_time</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
@@ -526,39 +507,34 @@ the following:</p>
     <span class="k">public</span><span class="o">:</span>
         <span class="kt">double</span> <span class="n">makespan</span><span class="p">;</span>
         <span class="kt">double</span> <span class="n">total_completion_time</span><span class="p">;</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 <p>In general, most people do not recommend to inherit publicly from
 <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code> because it has no virtual destructor. However, we may do
 that as long as:</p>
 <ol class="loweralpha simple">
-<li>We remember that every operation provided by <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code> must be a
-semantically valid operation on an object of the derived class;</li>
-<li>We avoid creating derived class objects with dynamic storage duration;</li>
-<li>We <strong>DO AVOID</strong> polymorphism:</li>
+<li><p>We remember that every operation provided by <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code> must be a
+semantically valid operation on an object of the derived class;</p></li>
+<li><p>We avoid creating derived class objects with dynamic storage duration;</p></li>
+<li><p>We <strong>DO AVOID</strong> polymorphism:</p></li>
 </ol>
-<pre class="highlight literal-block">
-<span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">pt</span> <span class="o">=</span> <span class="k">new</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">();</span>     <span class="c1">// Bad idea.</span>
-<span class="k">delete</span> <span class="n">pt</span><span class="p">;</span>      <span class="c1">// Delete does not call the Chromosome destructor.</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">pt</span> <span class="o">=</span> <span class="k">new</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">();</span>     <span class="c1">// Bad idea.</span>
+<span class="k">delete</span> <span class="n">pt</span><span class="p">;</span>      <span class="c1">// Delete does not call the Chromosome destructor.</span></pre>
 </div>
 <div class="section" id="back-to-the-decoder">
 <h3>Back to the decoder<a class="headerlink" href="#back-to-the-decoder" title="Permalink to this headline">¶</a></h3>
 <p>Again, the decoder is the heart of a BRKGA. An easy way to keep the API clean
 is to define a decoder that has a reference for the input data. This is a TSP
-decoder defined on file <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/decoders/tsp_decoder.hpp">decoders/tsp_decoder.hpp</a>:</p>
-<pre class="highlight literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&quot;tsp/tsp_instance.hpp&quot;</span><span class="cp"></span>
+decoder defined on file <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/decoders/tsp_decoder.hpp">decoders/tsp_decoder.hpp</a>:</p>
+<pre class="highlight literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&quot;tsp/tsp_instance.hpp&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;chromosome.hpp&quot;</span><span class="cp"></span>
 <span class="k">class</span> <span class="n">TSP_Decoder</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
     <span class="n">TSP_Decoder</span><span class="p">(</span><span class="k">const</span> <span class="n">TSP_Instance</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">);</span>
-    <span class="kt">double</span> <span class="n">decode</span><span class="p">(</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">BRKGA::Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">rewrite</span> <span class="o">=</span> <span class="nb">true</span><span class="p">);</span>
+    <span class="kt">double</span> <span class="n">decode</span><span class="p">(</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">BRKGA::Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">rewrite</span><span class="p">);</span>
 
 <span class="k">public</span><span class="o">:</span>
     <span class="k">const</span> <span class="n">TSP_Instance</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">;</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">TSP_Decoder</span></code> get a const reference to <code class="docutils literal notranslate"><span class="pre">TSP_Instance</span></code>, that holds
 the input data. Therefore, <code class="docutils literal notranslate"><span class="pre">TSP_Decoder</span></code> has direct access to the data for
 optimization. This approach also benefits cache efficiency, mainly when
@@ -568,23 +544,25 @@ read-only data already in the cache, which speeds up the optimization.</p>
 should rewrite the chromosome, in case of local search / local improvements be
 performed during the decoder process. This flag is critical if you intend to
 use the Implicit Path Relink (details on
-<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a95529466a3e942e4aafa26259aa83d0f"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::pathRelink()</span></span></a></code>.</p>
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a95529466a3e942e4aafa26259aa83d0f"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::pathRelink()</span></span></a></code>).
+Even though you do not rewrite the chromosome in your decoder, you must provide
+such signature for API compatibility.</p>
 <p>The decoder must return a <code class="docutils literal notranslate"><span class="pre">double</span></code> that is used as the <strong>fitness</strong> to rank
 the chromosomes. In general, fitness is the cost/value of the solution, but you
 may want to use it to penalize solutions that violate the problem constraints,
 for example.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When using multiple threads, <strong>you must guarantee that the decoder is
+<p class="admonition-title">Note</p>
+<p>When using multiple threads, <strong>you must guarantee that the decoder is
 thread-safe.</strong> You may want to create all read-write data structures on each
 call or create a separate storage space for each thread. Section
 <span class="xref std std-ref">Multi-threading</span> brings some
 tips.</p>
 </div>
 <p>In our TSP example, we have a very simple decoder that generates a permutation
-of nodes, and compute the cost of the cycle from that permutation:</p>
-<pre class="highlight literal-block">
-<span></span><span class="kt">double</span> <span class="n">TSP_Decoder</span><span class="o">::</span><span class="n">decode</span><span class="p">(</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span>  <span class="kt">bool</span> <span class="cm">/* not-used */</span><span class="p">)</span> <span class="p">{</span>
+of nodes, and compute the cost of the cycle from that permutation
+(note that we don’t use the flag <code class="docutils literal notranslate"><span class="pre">rewrite</span></code> in this example):</p>
+<pre class="highlight literal-block"><span></span><span class="kt">double</span> <span class="n">TSP_Decoder</span><span class="o">::</span><span class="n">decode</span><span class="p">(</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span>  <span class="kt">bool</span> <span class="cm">/* not-used */</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;</span> <span class="n">permutation</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">num_nodes</span><span class="p">);</span>
     <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">instance</span><span class="p">.</span><span class="n">num_nodes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
         <span class="n">permutation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_pair</span><span class="p">(</span><span class="n">chromosome</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">);</span>
@@ -599,8 +577,7 @@ of nodes, and compute the cost of the cycle from that permutation:</p>
                                   <span class="n">permutation</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">].</span><span class="n">second</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="n">cost</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
+<span class="p">}</span></pre>
 <p>With the instance data and the decoder ready, we can build the BRKGA data
 structures and perform the optimization.</p>
 </div>
@@ -614,16 +591,14 @@ parametrized by the decoder type. This strategy avoids runtime polymorphism,
 drastically improving the performance of the code.</p>
 <p>The first step is to call the algorithm constructor that has the following
 signature:</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">BRKGA_MP_IPR</span><span class="p">(</span>
+<pre class="highlight literal-block"><span></span><span class="n">BRKGA_MP_IPR</span><span class="p">(</span>
     <span class="n">Decoder</span><span class="o">&amp;</span> <span class="n">decoder_reference</span><span class="p">,</span>
     <span class="k">const</span> <a class="reference internal" href="enum_BRKGA_Sense.html#doxid-namespace-b-r-k-g-a-1af28538be111c8320b2fec44b77ec5e9b"><span class="std std-ref">Sense</span></a><span></span> <span class="n">sense</span><span class="p">,</span>
     <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">seed</span><span class="p">,</span>
     <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">chromosome_size</span><span class="p">,</span>
     <span class="k">const</span> <span class="n">BrkgaParams</span><span class="o">&amp;</span> <span class="n">params</span><span class="p">,</span>
     <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">max_threads</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="k">const</span> <span class="kt">bool</span> <span class="n">evolutionary_mechanism_on</span> <span class="o">=</span> <span class="nb">true</span><span class="p">);</span>
-</pre>
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">evolutionary_mechanism_on</span> <span class="o">=</span> <span class="nb">true</span><span class="p">);</span></pre>
 <p>The first argument is the decoder object that must implement the <code class="docutils literal notranslate"><span class="pre">decode()</span></code>
 method as discussed before. You also must indicate whether you are minimizing
 or maximizing through parameter <code class="docutils literal notranslate"><a class="reference internal" href="enum_BRKGA_Sense.html#doxid-namespace-b-r-k-g-a-1af28538be111c8320b2fec44b77ec5e9b"><span class="std std-ref"><span class="pre">BRKGA::Sense</span></span></a></code>.</p>
@@ -656,10 +631,9 @@ also a companion <code class="docutils literal notranslate"><a class="reference 
 control parameters that can be used outside the BRKGA-MP-IPR to control several
 aspects of the optimization. For instance, interval to apply path relink, reset
 the population, perform population migration, among others. This is how a
-configuration file looks like (see <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/config.conf">config.conf</a>
+configuration file looks like (see <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/config.conf">config.conf</a>
 for a commented version):</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">population_size</span> <span class="mi">2000</span>
+<pre class="highlight literal-block"><span></span><span class="n">population_size</span> <span class="mi">2000</span>
 <span class="n">elite_percentage</span> <span class="mf">0.30</span>
 <span class="n">mutants_percentage</span> <span class="mf">0.15</span>
 <span class="n">num_elite_parents</span> <span class="mi">2</span>
@@ -674,8 +648,7 @@ for a commented version):</p>
 <span class="n">pr_percentage</span> <span class="mf">1.0</span>
 <span class="n">exchange_interval</span> <span class="mi">200</span>
 <span class="n">num_exchange_indivuduals</span> <span class="mi">2</span>
-<span class="n">reset_interval</span> <span class="mi">600</span>
-</pre>
+<span class="n">reset_interval</span> <span class="mi">600</span></pre>
 <p>To read this file, you can use the function <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref"><span class="pre">BRKGA::readConfiguration()</span></span></a></code>, which
 returns a <code class="docutils literal notranslate"><span class="pre">std::pair&lt;BrkgaParams,</span> <span class="pre">ExternalControlParams&gt;</span></code>. When reading such
 file, the function ignores all blank lines, and lines starting with <code class="docutils literal notranslate"><span class="pre">#</span></code>. As
@@ -684,9 +657,8 @@ regarding <a class="reference internal" href="namespace_BRKGA.html#doxid-namespa
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref"><span class="pre">BRKGA::ExternalControlParams</span></span></a></code> contains extra control
 parameters, and although their presence is required on the config file, they
 are not mandatory to the BRKGA-MP-IPR itself.</p>
-<p>Let’s take a look in the example from <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">seed</span> <span class="o">=</span> <span class="n">stoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<p>Let’s take a look in the example from <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>:</p>
+<pre class="highlight literal-block"><span></span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">seed</span> <span class="o">=</span> <span class="n">stoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
 <span class="k">const</span> <span class="n">string</span> <span class="n">config_file</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
 <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">num_generations</span> <span class="o">=</span> <span class="n">stoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
 <span class="k">const</span> <span class="n">string</span> <span class="n">instance_file</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
@@ -705,8 +677,7 @@ are not mandatory to the BRKGA-MP-IPR itself.</p>
 
 <a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"><span class="std std-ref">BRKGA::BRKGA_MP_IPR&lt;TSP_Decoder&gt;</span></a><span></span> <span class="n">algorithm</span><span class="p">(</span>
         <span class="n">decoder</span><span class="p">,</span> <a class="reference internal" href="enum_BRKGA_Sense.html#doxid-namespace-b-r-k-g-a-1af28538be111c8320b2fec44b77ec5e9ba704bfa6c1ed5e479c8cfb5bdfc8cccda"><span class="std std-ref">BRKGA::Sense::MINIMIZE</span></a><span></span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span>
-        <span class="n">instance</span><span class="p">.</span><span class="n">num_nodes</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">);</span>
-</pre>
+        <span class="n">instance</span><span class="p">.</span><span class="n">num_nodes</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">);</span></pre>
 <p>This code gets some arguments from the command line and loads a TSP instance.
 After that, it reads the BRKGA parameters from the configuration file. Since in
 this example, we only care about the BRKGA parameters, we ignore the control
@@ -737,16 +708,14 @@ decoding of the chromosomes. Therefore, depending on the decoder
 implementation, this can take a while, and you may want to time such procedure.
 Assuming that <code class="docutils literal notranslate"><span class="pre">algorithm</span></code> is our <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR</span></span></a></code>
 object, the syntax is pretty straightforward:</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span></pre>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">initialize()</span></code> must be called before any optimization methods.</p>
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">initialize()</span></code> must be called before any optimization methods.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">As it is in method <code class="docutils literal notranslate"><span class="pre">evolve()</span></code>, the decoding is done in parallel using
+<p class="admonition-title">Warning</p>
+<p>As it is in method <code class="docutils literal notranslate"><span class="pre">evolve()</span></code>, the decoding is done in parallel using
 threads, and the user <strong>must guarantee that the decoder is THREAD-SAFE.</strong> If
 such property cannot be held, we suggest using a single thread for
 optimization.</p>
@@ -764,10 +733,9 @@ or even from relaxations of integer linear programming models
 Since BRKGA-MP-IPR does not know the problem structure, you must <em>encode</em> the
 warm-start solution as chromosomes (vectors in the interval [0, 1]). In other
 words, you must do the inverse process that your decoder does. For instance,
-this is a piece of code from <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_complete.cpp">main_complete.cpp</a>
+this is a piece of code from <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/main_complete.cpp">main_complete.cpp</a>
 showing this process:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">auto</span> <span class="n">initial_solution</span> <span class="o">=</span> <span class="n">greedy_tour</span><span class="p">(</span><span class="n">instance</span><span class="p">);</span>
+<pre class="highlight literal-block"><span></span><span class="k">auto</span> <span class="n">initial_solution</span> <span class="o">=</span> <span class="n">greedy_tour</span><span class="p">(</span><span class="n">instance</span><span class="p">);</span>
 <span class="p">...</span>
 
 <span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">rng</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
@@ -784,10 +752,9 @@ showing this process:</p>
     <span class="n">initial_chromosome</span><span class="p">[</span><span class="n">initial_tour</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 
 <span class="n">algorithm</span><span class="p">.</span><span class="n">setInitialPopulation</span><span class="p">(</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="n">BRKGA</span><span class="o">::</span><span class="n">Chromosome</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">initial_chromosome</span><span class="p">));</span>
-</pre>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">BRKGA</span><span class="o">::</span><span class="n">Chromosome</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">initial_chromosome</span><span class="p">));</span></pre>
 <p>Here, we create one incumbent solution using the greedy heuristic
-<code class="docutils literal notranslate"><span class="pre">greedy_tour()</span></code> <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/tree/v1.0/examples/tsp/src/heuristics">found here</a>.
+<code class="docutils literal notranslate"><span class="pre">greedy_tour()</span></code> <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp/src/heuristics">found here</a>.
 It gives us
 <code class="docutils literal notranslate"><span class="pre">initial_solution</span></code> which is a <code class="docutils literal notranslate"><span class="pre">std::pair&lt;double,</span> <span class="pre">std::vector&lt;unsigned&gt;&gt;</span></code>
 containing the cost of the tour and the tour itself which is a sequence of
@@ -803,14 +770,12 @@ to assign the incumbent to the initial population. Note that we enclose the
 initial solution inside a vector of chromosomes, since
 <code class="docutils literal notranslate"><span class="pre">setInitialPopulation()</span></code> may take more than one starting solution. See its
 signature:</p>
-<pre class="highlight literal-block">
-<span></span><span class="kt">void</span> <span class="nf">setInitialPopulation</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Chromosome</span><span class="o">&gt;&amp;</span> <span class="n">chromosomes</span><span class="p">);</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="kt">void</span> <span class="nf">setInitialPopulation</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Chromosome</span><span class="o">&gt;&amp;</span> <span class="n">chromosomes</span><span class="p">);</span></pre>
 <p>Indeed, you can have as much warm-start solutions as you like, limited to the
 size of the population. Just remember:</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">setInitialPopulation()</span></code> must be called <strong>BEFORE</strong> <code class="docutils literal notranslate"><span class="pre">initialize()</span></code>.</p>
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">setInitialPopulation()</span></code> must be called <strong>BEFORE</strong> <code class="docutils literal notranslate"><span class="pre">initialize()</span></code>.</p>
 </div>
 </div>
 </div>
@@ -819,20 +784,16 @@ size of the population. Just remember:</p>
 <p>Once all data is set up, it is time to evolve the population and perform other
 operations like path-relinking, shaking, migration, and others. The call is
 pretty simple:</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">evolve</span><span class="p">(</span><span class="n">num_generations</span><span class="p">);</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">evolve</span><span class="p">(</span><span class="n">num_generations</span><span class="p">);</span></pre>
 <p><code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::evolve()</span></span></a></code>
 evolves all populations for <code class="docutils literal notranslate"><span class="pre">num_generations</span></code>. If <code class="docutils literal notranslate"><span class="pre">num_genertions</span></code> is
 omitted, <code class="docutils literal notranslate"><span class="pre">evolve()</span></code> evolves only one generation.</p>
-<p>For example, in <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>, we just evolve the population for a given
+<p>For example, in <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>, we just evolve the population for a given
 number of generations directly and then extract the best solution cost.</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">evolve</span><span class="p">(</span><span class="n">num_generations</span><span class="p">);</span>
-<span class="k">auto</span> <span class="n">best_cost</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">.</span><span class="n">getBestFitness</span><span class="p">();</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">evolve</span><span class="p">(</span><span class="n">num_generations</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">best_cost</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">.</span><span class="n">getBestFitness</span><span class="p">();</span></pre>
 <p>On
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_complete.cpp">main_complete.cpp</a>
+<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/main_complete.cpp">main_complete.cpp</a>
 we have fine-grained control on the optimization.
 There, we have a main loop that evolves the population one generation at a time
 and performs several operations as to hold the best solution, to check whether
@@ -840,8 +801,8 @@ it is time for path relink, population reset, among others. The advantage of
 that code is that we can track all optimization details, and I do recommend
 similar style for experimentation.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Again, the decoding of each chromosome is done in parallel if multi-thread is
+<p class="admonition-title">Warning</p>
+<p>Again, the decoding of each chromosome is done in parallel if multi-thread is
 enabled. Therefore, <strong>we must guarantee that the decoder is THREAD-SAFE.</strong> If
 such property cannot be held, we suggest using a single thread.</p>
 </div>
@@ -851,11 +812,9 @@ such property cannot be held, we suggest using a single thread.</p>
 <p>BRKGA-MP-IPR C++ offers several mechanisms to access a variaty of data during
 the optimization. Most common, we want to access the best chromosome after some
 iterations. You can use the companion functions:</p>
-<pre class="highlight literal-block">
-<span></span><span class="kt">double</span> <span class="nf">getBestFitness</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<pre class="highlight literal-block"><span></span><span class="kt">double</span> <span class="nf">getBestFitness</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 
-<span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getBestChromosome</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</pre>
+<span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getBestChromosome</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span></pre>
 <p><code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1af0084ce8397e82db99391bf4dad85219"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getBestFitness()</span></span></a></code>
 returns the value/fitness of the best chromosome across all populations.</p>
 <p><code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getBestChromosome()</span></span></a></code>
@@ -864,17 +823,13 @@ want to extract an actual solution from such chromosome, i.e., to apply a
 decoding function that returns the actual solution instead only its value.</p>
 <p>You may also want to get a reference of specific chromosome for a given
 population using <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1abfe4eccfd47a8eb88fc920e640f8513f"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getChromosome()</span></span></a></code>.</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
-                                <span class="kt">unsigned</span> <span class="n">position</span><span class="p">)</span> <span class="k">const</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
+                                <span class="kt">unsigned</span> <span class="n">position</span><span class="p">)</span> <span class="k">const</span></pre>
 <p>For example, you can get the 3rd best chromosome from the 2nd population using</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">third_best</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">.</span><span class="n">getChromosome</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">third_best</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">.</span><span class="n">getChromosome</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></pre>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Just remember that C++ is zero-indexed. So, the first population index is 0
+<p class="admonition-title">Note</p>
+<p>Just remember that C++ is zero-indexed. So, the first population index is 0
 (zero), the second population index is 1 (one), and so forth. The same happens
 for the chromosomes.</p>
 </div>
@@ -883,12 +838,10 @@ search procedure on them. It may be useful to reinsert such new solutions in
 the BRKGA population for the next
 evolutionary cycles. You can do that using
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a70bbe32b8bb3f662b629698319dc0261"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::injectChromosome()</span></span></a></code>.</p>
-<pre class="highlight literal-block">
-<span></span><span class="kt">void</span> <span class="n">injectChromosome</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span>
+<pre class="highlight literal-block"><span></span><span class="kt">void</span> <span class="n">injectChromosome</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span>
                       <span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
                       <span class="kt">unsigned</span> <span class="n">position</span><span class="p">,</span>
-                      <span class="kt">double</span> <span class="n">fitness</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">infinity</span><span class="p">());</span>
-</pre>
+                      <span class="kt">double</span> <span class="n">fitness</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">infinity</span><span class="p">());</span></pre>
 <p>Note that the chromosome is put in a specific position of a given population.
 If you do not provide the fitness, <code class="docutils literal notranslate"><span class="pre">injectChromosome()</span></code> will decode the
 injected chromosome. For example, assuming the <code class="docutils literal notranslate"><span class="pre">algorithm</span></code> is your
@@ -896,15 +849,13 @@ BRKGA-MP-IPR object and <code class="docutils literal notranslate"><span class="
 following code injects the random chromosome <code class="docutils literal notranslate"><span class="pre">keys</span></code> into the population #1 in
 the last position (<code class="docutils literal notranslate"><span class="pre">population_size</span></code>), i.e., it will replace the worst
 solution:</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">rng</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
+<pre class="highlight literal-block"><span></span><span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">rng</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
 <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">keys</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">num_nodes</span><span class="p">);</span>
 <span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">key</span> <span class="p">:</span> <span class="n">keys</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">generate_canonical</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span>
                              <span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">digits</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rng</span><span class="p">);</span>
 
-<span class="n">algorithm</span><span class="p">.</span><span class="n">injectChromosome</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">.</span><span class="n">population_size</span><span class="p">)</span>
-</pre>
+<span class="n">algorithm</span><span class="p">.</span><span class="n">injectChromosome</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">.</span><span class="n">population_size</span><span class="p">)</span></pre>
 </div>
 <div class="section" id="implicit-path-relink">
 <h2>Implicit Path Relink<a class="headerlink" href="#implicit-path-relink" title="Permalink to this headline">¶</a></h2>
@@ -918,8 +869,7 @@ population, and you only must provide a few functions and arguments to have a
 Path Relink algorithm ready to go. This is the main signature of
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a95529466a3e942e4aafa26259aa83d0f"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::pathRelink()</span></span></a></code>
 :</p>
-<pre class="highlight literal-block">
-<a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <span class="n">pathRelink</span><span class="p">(</span>
+<pre class="highlight literal-block"><a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <span class="n">pathRelink</span><span class="p">(</span>
                 <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a><span></span> <span class="n">pr_type</span><span class="p">,</span>
                 <a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a><span></span> <span class="n">pr_selection</span><span class="p">,</span>
                 <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DistanceFunctionBase</span><span class="o">&gt;</span> <span class="n">dist</span><span class="p">,</span>
@@ -927,8 +877,7 @@ Path Relink algorithm ready to go. This is the main signature of
                 <span class="kt">double</span> <span class="n">minimum_distance</span><span class="p">,</span>
                 <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
                 <span class="kt">long</span> <span class="n">max_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="kt">double</span> <span class="n">percentage</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">);</span>
-</pre>
+                <span class="kt">double</span> <span class="n">percentage</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">);</span></pre>
 <p>The first argument defines the type of implicit path relink to be performed
 <code class="docutils literal notranslate"><a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref"><span class="pre">BRKGA::PathRelinking::Type</span></span></a></code>.
 The <code class="docutils literal notranslate"><span class="pre">DIRECT</span></code> path relink exchanges the keys of two chromosomes directly, and
@@ -949,8 +898,7 @@ between two chromosomes, and determine if changes in a given (block) of alleles
 change the solution. This object must inherit from
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref"><span class="pre">BRKGA::DistanceFunctionBase</span></span></a></code>, which has the following
 signature:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">class</span> <span class="n">DistanceFunctionBase</span> <span class="p">{</span>
+<pre class="highlight literal-block"><span></span><span class="k">class</span> <span class="n">DistanceFunctionBase</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
     <span class="n">DistanceFunctionBase</span><span class="p">()</span> <span class="p">{}</span>
     <span class="k">virtual</span> <span class="o">~</span><span class="n">DistanceFunctionBase</span><span class="p">()</span> <span class="p">{}</span>
@@ -964,8 +912,7 @@ signature:</p>
             <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v1_begin</span><span class="p">,</span>
             <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v2_begin</span><span class="p">,</span>
             <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 <p>Note that <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref"><span class="pre">BRKGA::DistanceFunctionBase</span></span></a></code> is an abstract interface,
 and children classes must implement all methods.</p>
 <p>If the value returned by method <code class="docutils literal notranslate"><span class="pre">distance()</span></code> is greater than or equal to
@@ -993,8 +940,7 @@ threshold and permutation representations in <a class="reference external" href=
 each chromosome key can represent one of 3 different values (a ternary
 threshold representation). So, one possible way to compute the distance between
 two chromosomes can be:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">class</span> <span class="nl">TernaryHammingDistance</span><span class="p">:</span> <span class="k">public</span> <span class="n">DistanceFunctionBase</span> <span class="p">{</span>
+<pre class="highlight literal-block"><span></span><span class="k">class</span> <span class="nl">TernaryHammingDistance</span><span class="p">:</span> <span class="k">public</span> <span class="n">DistanceFunctionBase</span> <span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
     <span class="kt">double</span> <span class="n">value</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
         <span class="k">return</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="mf">0.33</span> <span class="o">?</span> <span class="mf">0.0</span> <span class="o">:</span> <span class="p">(</span><span class="n">key</span> <span class="o">&lt;</span> <span class="mf">0.66</span> <span class="o">?</span> <span class="mf">1.0</span> <span class="o">:</span> <span class="mf">2.0</span><span class="p">);</span>
@@ -1026,8 +972,7 @@ two chromosomes can be:</p>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 <p>To avoid changes that do not lead to new solutions, we must verify if such key
 exchanges affect the solution. For that, the distance functor object must
 implement the methods <code class="docutils literal notranslate"><span class="pre">affectSolution()</span></code>, which come with two signatures,
@@ -1048,18 +993,17 @@ we start from the 3rd keys and exchange blocks of 2 keys (<code class="docutils 
 level (&lt; 0.5). The blocks can hold only one key/allele, sequential key blocks,
 or even the whole chromosome.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Note that <code class="docutils literal notranslate"><span class="pre">affectSolution()</span></code> is crucial to the IPR performance since this
+<p class="admonition-title">Note</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">affectSolution()</span></code> is crucial to the IPR performance since this
 function helps to avoid exploring regions already surveyed. Also, note that
 <code class="docutils literal notranslate"><span class="pre">affectSolution()</span></code> can incorporate some problem knowledge.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The current implementation of permutation path relink does not make use of
 <code class="docutils literal notranslate"><span class="pre">affectSolution()</span></code>. However, <code class="docutils literal notranslate"><span class="pre">pathRelink()</span></code>) requires the function.
 Therefore, we can implement simple constant methods:</p>
-<pre class="highlight last literal-block">
-<span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">affectSolution</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">key2</span><span class="p">)</span> <span class="p">{</span>
+<pre class="highlight literal-block"><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">affectSolution</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">key2</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -1067,8 +1011,7 @@ Therefore, we can implement simple constant methods:</p>
                             <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v2_begin</span><span class="p">,</span>
                             <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
+<span class="p">}</span></pre>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">block_size</span></code> defines the number of keys / size of the chromosome block to be
 exchanged during the direct path relink. This parameter is also critical for
@@ -1077,22 +1020,21 @@ Usually, we can compute this number based on the size of the chromosome by some
 factor (<code class="docutils literal notranslate"><span class="pre">alpha_block_size</span></code> in the configuration file), chosen by you. Again,
 details <a class="reference external" href="http://dx.doi.org/xxx">here</a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Experiments have shown that a good choice is
+<p class="admonition-title">Note</p>
+<p>Experiments have shown that a good choice is
 <span class="math notranslate nohighlight">\(block\_size = alpha\_block\_size \times \sqrt{size~of~chromosome}\)</span></p>
 </div>
 <p>The last two parameters are stopping criteria. The algorithm stops either when
 <code class="docutils literal notranslate"><span class="pre">max_time</span></code> seconds is reached or <code class="docutils literal notranslate"><span class="pre">percentage</span></code> % of the path is built.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">IPR is a very time-intensive process. You must set the stopping criteria
+<p class="admonition-title">Warning</p>
+<p>IPR is a very time-intensive process. You must set the stopping criteria
 accordingly.</p>
 </div>
-<p>Let’s see the example on <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_complete.cpp">main_complete.cpp</a>.
+<p>Let’s see the example on <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/main_complete.cpp">main_complete.cpp</a>.
 Remember, since we are solving the TSP, we want to use the permutation-based
 IPR, and the Kendall Tau distance functions.</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">if</span><span class="p">(</span><span class="n">brkga_params</span><span class="p">.</span><span class="n">pr_type</span> <span class="o">==</span> <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132a4c5d06b02c97731aaa976179c62dcf76"><span class="std std-ref">BRKGA::PathRelinking::Type::DIRECT</span></a><span></span><span class="p">)</span>
+<pre class="highlight literal-block"><span></span><span class="k">if</span><span class="p">(</span><span class="n">brkga_params</span><span class="p">.</span><span class="n">pr_type</span> <span class="o">==</span> <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132a4c5d06b02c97731aaa976179c62dcf76"><span class="std std-ref">BRKGA::PathRelinking::Type::DIRECT</span></a><span></span><span class="p">)</span>
     <span class="n">dist_func</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <a class="reference internal" href="class_BRKGA_HammingDistance.html#doxid-class-b-r-k-g-a-1-1-hamming-distance"><span class="std std-ref">BRKGA::HammingDistance</span></a><span></span><span class="p">(</span><span class="mf">0.5</span><span class="p">));</span>
 <span class="k">else</span>
     <span class="n">dist_func</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <a class="reference internal" href="class_BRKGA_KendallTauDistance.html#doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref">BRKGA::KendallTauDistance</span></a><span></span><span class="p">())</span>
@@ -1104,16 +1046,15 @@ IPR, and the Kendall Tau distance functions.</p>
     <span class="n">brkga_params</span><span class="p">.</span><span class="n">pr_number_pairs</span><span class="p">,</span>
     <span class="mi">1</span><span class="p">,</span> <span class="c1">// block_size doesn&#39;t not matter for permutation.</span>
     <span class="n">max_time</span> <span class="o">-</span> <span class="n">elapsedFrom</span><span class="p">(</span><span class="n">start_time</span><span class="p">),</span>
-    <span class="n">brkga_params</span><span class="p">.</span><span class="n">pr_percentage</span><span class="p">)</span>
-</pre>
+    <span class="n">brkga_params</span><span class="p">.</span><span class="n">pr_percentage</span><span class="p">)</span></pre>
 <p>Note that most parameters come from <code class="docutils literal notranslate"><span class="pre">brkga_params</span></code>. The maximum IPR time is
 set to the remaining time for optimization (global <code class="docutils literal notranslate"><span class="pre">maximum_time</span></code> minus the
 elapsed time). <code class="docutils literal notranslate"><span class="pre">pathRelink()</span></code> returns a
 <code class="docutils literal notranslate"><a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref"><span class="pre">BRKGA::PathRelinking::PathRelinkingResult</span></span></a></code>
 object which defines the status of the IPR optimization.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">TOO_HOMOGENEOUS</span></code> status is directly linked to the chosen distance
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">TOO_HOMOGENEOUS</span></code> status is directly linked to the chosen distance
 function and minimum distance. If the minimum distance is too large, IPR may
 not be able to find a pair of chromosomes far enough for path relink.</p>
 </div>
@@ -1131,8 +1072,8 @@ the path relinking, the method calls the decoder with <code class="docutils lite
 the best chromosome found to guarantee that this chromosome is re-written to
 reflect the best solution found.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Make sure your decoder does not rewrite the chromosome when called with the
+<p class="admonition-title">Warning</p>
+<p>Make sure your decoder does not rewrite the chromosome when called with the
 argument <code class="docutils literal notranslate"><span class="pre">writeback</span> <span class="pre">=</span> <span class="pre">false</span></code>.</p>
 </div>
 <p>BRKGA-MP-IPR <code class="docutils literal notranslate"><span class="pre">pathRelink()</span></code> implementation is multi-threaded. Instead of to
@@ -1143,8 +1084,8 @@ decode all candidates in parallel. Note that
 build the candidates, which can be costly if the <code class="docutils literal notranslate"><span class="pre">chromosome_size</span></code> is very
 large.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">As it is in method <code class="docutils literal notranslate"><span class="pre">evolve()</span></code>, the decoding is done in parallel using
+<p class="admonition-title">Warning</p>
+<p>As it is in method <code class="docutils literal notranslate"><span class="pre">evolve()</span></code>, the decoding is done in parallel using
 threads, and the user <strong>must guarantee that the decoder is THREAD-SAFE.</strong> If
 such property cannot be held, we suggest using a single thread for
 optimization.</p>
@@ -1158,11 +1099,9 @@ iterations. When such a situation happens, it is a good idea to perturb the
 population, or even restart from a new one completely new. BRKGA-MP-IPR offers
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3721a91ed9d3fcbdc57fbcee2e20ac66"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::shake()</span></span></a></code>,
 an improved variation of the original version proposed in <a class="reference external" href="http://dx.doi.org/10.1016/j.eswa.2019.03.007">this paper</a>.</p>
-<pre class="highlight literal-block">
-<span></span><span class="kt">void</span> <span class="n">shake</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">intensity</span><span class="p">,</span> <a class="reference internal" href="enum_BRKGA_ShakingType.html#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494"><span class="std std-ref">ShakingType</span></a><span></span> <span class="n">shaking_type</span><span class="p">,</span>
+<pre class="highlight literal-block"><span></span><span class="kt">void</span> <span class="n">shake</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">intensity</span><span class="p">,</span> <a class="reference internal" href="enum_BRKGA_ShakingType.html#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494"><span class="std std-ref">ShakingType</span></a><span></span> <span class="n">shaking_type</span><span class="p">,</span>
            <span class="kt">unsigned</span> <span class="n">population_index</span> <span class="o">=</span>
-               <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;::</span><span class="n">infinity</span><span class="p">());</span>
-</pre>
+               <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;::</span><span class="n">infinity</span><span class="p">());</span></pre>
 <p><code class="docutils literal notranslate"><span class="pre">shake()</span></code> method gets an <code class="docutils literal notranslate"><span class="pre">intensity</span></code> parameter that measures how many times
 the perturbation is applied on the elite set for a given <code class="docutils literal notranslate"><span class="pre">population_index</span></code>
 (if not given, all populations are shaken). This method offers two
@@ -1172,25 +1111,21 @@ shaking is recommended when the chromosome uses direct or threshold
 representations. <code class="docutils literal notranslate"><span class="pre">SWAP</span></code> exchanges keys/alleles inducing new permutations. For
 representational definitions, please read <a class="reference external" href="http://dx.doi.org/xxx">this paper</a>. For instance, the following code shakes all
 populations using 10 swap moves:</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">shake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">SWAP</span><span class="p">);</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">shake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">SWAP</span><span class="p">);</span></pre>
 <p>Sometimes, even shaking the populations does not help to escape from local
 maxima/minima. So, we need a drastic measure, restarting from scratch the role
 population. This can be easily accomplished with
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::reset()</span></span></a></code>.</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span></pre>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When using <code class="docutils literal notranslate"><span class="pre">reset()</span></code>, all warm-start solutions provided by
+<p class="admonition-title">Note</p>
+<p>When using <code class="docutils literal notranslate"><span class="pre">reset()</span></code>, all warm-start solutions provided by
 <code class="docutils literal notranslate"><span class="pre">setInitialPopulation()</span></code> are discarded. You may use <code class="docutils literal notranslate"><span class="pre">injectChromosome()</span></code>
 to insert those solutions again.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Again, the decoding of each chromosome is done in parallel if multi-thread is
+<p class="admonition-title">Warning</p>
+<p>Again, the decoding of each chromosome is done in parallel if multi-thread is
 enabled. Therefore, <strong>we must guarantee that the decoder is THREAD-SAFE.</strong> If
 such property cannot be held, we suggest using a single thread..</p>
 </div>
@@ -1208,16 +1143,12 @@ multiple populations. To use multiple populations, you must set
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params-1a9a4a99536f6b755ceb07b54d784f8926"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams.num_independent_populations</span></span></a></code>
 with 2 ou more populations, and build the BRKGA algorithm from such parameters.</p>
 <p>The immigration process is implemented by</p>
-<pre class="highlight literal-block">
-<span></span><span class="kt">void</span> <span class="nf">exchangeElite</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">num_immigrants</span><span class="p">);</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="kt">void</span> <span class="nf">exchangeElite</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">num_immigrants</span><span class="p">);</span></pre>
 <p><code class="docutils literal notranslate"><span class="pre">exchangeElite()</span></code> copies <code class="docutils literal notranslate"><span class="pre">num_immigrants</span></code> from one population to another,
 replacing the worst <code class="docutils literal notranslate"><span class="pre">num_immigrants</span></code> individuals from the recipient
 population. Note that the migration is done for all pairs of populations. For
 instance, the following code exchanges 3 best individuals from each population:</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">exchangeElite</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">exchangeElite</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span></pre>
 </div>
 <div class="section" id="simulating-the-standard-brkga">
 <h2>Simulating the standard BRKGA<a class="headerlink" href="#simulating-the-standard-brkga" title="Permalink to this headline">¶</a></h2>
@@ -1236,8 +1167,7 @@ the individual from which each allele comes to build the new chromosome. Since
 we have one two individuals for crossover in the standard BRKGA, the bias
 function must return the probability to one or other individual. In the
 following code, we do that with a simple <code class="docutils literal notranslate"><span class="pre">if...else</span></code> lambda function.</p>
-<pre class="highlight literal-block">
-<span></span><span class="c1">// Create brkga_params by hand or reading from a file,</span>
+<pre class="highlight literal-block"><span></span><span class="c1">// Create brkga_params by hand or reading from a file,</span>
 <span class="c1">// then set the following by hand.</span>
 <span class="n">brkga_params</span><span class="p">.</span><span class="n">num_elite_parents</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 <span class="n">brkga_params</span><span class="p">.</span><span class="n">total_parents</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
@@ -1246,24 +1176,21 @@ following code, we do that with a simple <code class="docutils literal notransla
 <span class="n">algorithm</span><span class="p">.</span><span class="n">setBiasCustomFunction</span><span class="o">!</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="nl">rho</span> <span class="p">:</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">;</span>
 <span class="p">});</span>
-<span class="n">algorithm</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
-</pre>
+<span class="n">algorithm</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span></pre>
 <p>Here, we first set the <code class="docutils literal notranslate"><span class="pre">num_elite_parents</span> <span class="pre">=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">total_parents</span> <span class="pre">=</span> <span class="pre">2</span></code> as
 explained before. Following, we set a variable <code class="docutils literal notranslate"><span class="pre">rho</span> <span class="pre">=</span> <span class="pre">0.75</span></code>. This is the
 <span class="math notranslate nohighlight">\(\rho\)</span> from standard BRKGA, and you may set it as you wish. Then, we set
 the bias function as a very simple lambda function (note that we must use
 <code class="docutils literal notranslate"><span class="pre">[&amp;]</span></code> to capture <code class="docutils literal notranslate"><span class="pre">rho</span></code> in the outside context):</p>
-<pre class="highlight literal-block">
-<span></span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+<pre class="highlight literal-block"><span></span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="nl">rho</span> <span class="p">:</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
+<span class="p">}</span></pre>
 <p>So, if the index of the chromosome is 0 (elite individual), it gets a 0.75
 rank/probability. If the index is 1 (non-elite individual), the chromosome gets
 0.25 rank/probability.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">All these operations must be done before calling <code class="docutils literal notranslate"><span class="pre">initialize()</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>All these operations must be done before calling <code class="docutils literal notranslate"><span class="pre">initialize()</span></code>.</p>
 </div>
 </div>
 <div class="section" id="reading-and-writing-parameters">
@@ -1274,24 +1201,21 @@ manually, the easiest way to do so is to read such parameters from a
 configuration file. For this, we can use <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref"><span class="pre">BRKGA::readConfiguration()</span></span></a></code> that reads a
 simple plain text file and returns a tuple of <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams</span></span></a></code> and
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref"><span class="pre">BRKGA::ExternalControlParams</span></span></a></code> objects. For instance,</p>
-<pre class="highlight literal-block">
-<span></span><span class="c1">// C++14 syntax.</span>
+<pre class="highlight literal-block"><span></span><span class="c1">// C++14 syntax.</span>
 <span class="k">auto</span> <span class="n">params</span> <span class="o">=</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref">BRKGA::readConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;tuned_conf.txt&quot;</span><span class="p">);</span>
 <span class="k">auto</span><span class="o">&amp;</span> <span class="n">brkga_params</span> <span class="o">=</span> <span class="n">params</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
 <span class="k">auto</span><span class="o">&amp;</span> <span class="n">control_params</span> <span class="o">=</span> <span class="n">params</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
 
 <span class="c1">// C++17 syntax. Isn&#39;t cool?</span>
-<span class="k">auto</span> <span class="p">[</span><span class="n">brkga_params</span><span class="p">,</span> <span class="n">control_params</span><span class="p">]</span> <span class="o">=</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref">BRKGA::readConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;tuned_conf.txt&quot;</span><span class="p">);</span>
-</pre>
+<span class="k">auto</span> <span class="p">[</span><span class="n">brkga_params</span><span class="p">,</span> <span class="n">control_params</span><span class="p">]</span> <span class="o">=</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref">BRKGA::readConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;tuned_conf.txt&quot;</span><span class="p">);</span></pre>
 <p>The configuration file must be plain text such that contains pairs of parameter
 name and value. This file must list all fields from <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams</span></span></a></code> and
 <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref"><span class="pre">BRKGA::ExternalControlParams</span></span></a></code>, even though you do not
-use each one. In <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/tree/v1.0/examples/tsp">examples folder</a>,
+use each one. In <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp">examples folder</a>,
 we have
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/config.conf">config.conf</a>
+<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/config.conf">config.conf</a>
 that looks like this:</p>
-<pre class="highlight literal-block">
-<span></span><span class="n">population_size</span> <span class="mi">2000</span>
+<pre class="highlight literal-block"><span></span><span class="n">population_size</span> <span class="mi">2000</span>
 <span class="n">elite_percentage</span> <span class="mf">0.30</span>
 <span class="n">mutants_percentage</span> <span class="mf">0.15</span>
 <span class="n">num_elite_parents</span> <span class="mi">2</span>
@@ -1306,8 +1230,7 @@ that looks like this:</p>
 <span class="n">pr_percentage</span> <span class="mf">1.0</span>
 <span class="n">exchange_interval</span> <span class="mi">200</span>
 <span class="n">num_exchange_indivuduals</span> <span class="mi">2</span>
-<span class="n">reset_interval</span> <span class="mi">600</span>
-</pre>
+<span class="n">reset_interval</span> <span class="mi">600</span></pre>
 <p>It does not matter whether we use lower or upper cases. Blank lines and lines
 starting with <code class="docutils literal notranslate"><span class="pre">#</span></code> are ignored. The order of the parameters should not matter
 either. And, finally, this file should be readble for both C++ and Julia
@@ -1316,15 +1239,13 @@ framework versions.</p>
 may want to save them for debug or posterior use. To do so, you can use
 <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref"><span class="pre">BRKGA::writeConfiguration()</span></span></a></code>, call upon a
 <code class="docutils literal notranslate"><span class="pre">BrkgaParams</span></code> object.</p>
-<pre class="highlight literal-block">
-<a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref">writeConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;test.conf&quot;</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">);</span>
+<pre class="highlight literal-block"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref">writeConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;test.conf&quot;</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">);</span>
 <span class="c1">//or</span>
-<a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref">writeConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;test.conf&quot;</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">,</span> <span class="n">control_params</span><span class="p">);</span>
-</pre>
+<a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref">writeConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;test.conf&quot;</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">,</span> <span class="n">control_params</span><span class="p">);</span></pre>
 <p>If <code class="docutils literal notranslate"><span class="pre">control_params</span></code> is not given, default values are used in its place.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref"><span class="pre">BRKGA::writeConfiguration()</span></span></a></code>
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref"><span class="pre">BRKGA::writeConfiguration()</span></span></a></code>
 rewrites the given file. So, watch out to not lose previous configurations.</p>
 </div>
 </div>
@@ -1378,11 +1299,10 @@ and recover the memory you want to use.</p>
 <p>Let’s see a simple example considering the TSP example. <code class="docutils literal notranslate"><span class="pre">TSP_Decode</span></code> uses a
 single array to create the permutation of nodes. Let’s pre-allocate its memory
 per thread. To keep things separeted and easy to understand, we created a new
-class <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/decoders/tsp_decoder_pre_allocating.hpp">TSP_Decoder_pre_allocating</a>
+class <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/decoders/tsp_decoder_pre_allocating.hpp">TSP_Decoder_pre_allocating</a>
 so that we allocate, for each thread, a vector to hold the permutation during
 the decoding:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">class</span> <span class="n">TSP_Decoder_pre_allocating</span> <span class="p">{</span>
+<pre class="highlight literal-block"><span></span><span class="k">class</span> <span class="n">TSP_Decoder_pre_allocating</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
     <span class="n">TSP_Decoder_pre_allocating</span><span class="p">(</span><span class="k">const</span> <span class="n">TSP_Instance</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">,</span>
                                <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">num_threads</span> <span class="o">=</span> <span class="mi">1</span><span class="p">);</span>
@@ -1395,8 +1315,7 @@ the decoding:</p>
 <span class="k">protected</span><span class="o">:</span>
     <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;</span> <span class="n">Permutation</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Permutation</span><span class="o">&gt;</span> <span class="n">permutation_per_thread</span><span class="p">;</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 <p>Note that the constructor has one more argument indicating how many threads we
 are using. We also define a type <code class="docutils literal notranslate"><span class="pre">Permutation</span></code> with is a simple vector of
 key-node pairs. The important structure is <code class="docutils literal notranslate"><span class="pre">permuration_per_thread</span></code> which is
@@ -1406,8 +1325,7 @@ permutation vectors for each thread.</p>
 <code class="docutils literal notranslate"><span class="pre">decode</span></code>, we use <a class="reference external" href="https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5.0.pdf">omp_get_thread_num()</a>
 to identify which thread called the decoder, and retrieve the respective data
 strucuture.</p>
-<pre class="highlight literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&lt;omp.h&gt;</span><span class="cp"></span>
+<pre class="highlight literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;omp.h&gt;</span><span class="cp"></span>
 
 <span class="n">TSP_Decoder_pre_allocating</span><span class="o">::</span><span class="n">TSP_Decoder_pre_allocating</span><span class="p">(</span>
             <span class="k">const</span> <span class="n">TSP_Instance</span><span class="o">&amp;</span> <span class="n">_instance</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">num_threads</span><span class="p">)</span><span class="o">:</span>
@@ -1438,17 +1356,16 @@ strucuture.</p>
                                   <span class="n">permutation</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">].</span><span class="n">second</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="n">cost</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
+<span class="p">}</span></pre>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Pre-allocation and multi-threading only make sense for large data structures
+<p class="admonition-title">Note</p>
+<p>Pre-allocation and multi-threading only make sense for large data structures
 and time-consuming decoders. Otherwise, the code spends too much time on
 context switching and system calls.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Multi-threading consumes many resources of the machine and have diminishing
+<p class="admonition-title">Warning</p>
+<p>Multi-threading consumes many resources of the machine and have diminishing
 returns. I recommend using <strong>at most the number of physical cores</strong> (may -1)
 to avoid racing and too much context switching. You must test which is the
 best option for your case. In my experience, complex decoders benefit more
@@ -1471,23 +1388,18 @@ separately (which normally we do). For example, suppose we have two pieces of
 code, module_a.cpp and module_b.cpp, such that we include BRKGA in both (i.e.,
 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;brkga_mp_ipr&gt;</span></code> in both files.</p>
 <p>File module_a.cpp</p>
-<pre class="highlight literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
+<pre class="highlight literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">auto</span> <span class="n">params</span> <span class="o">=</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref">BRKGA::readConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;config.conf&quot;</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
+<span class="p">}</span></pre>
 <p>File module_b.cpp</p>
-<pre class="highlight literal-block">
-<span></span><span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
+<pre class="highlight literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
 <span class="kt">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">auto</span> <span class="n">params</span> <span class="o">=</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref">BRKGA::readConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;config.conf&quot;</span><span class="p">);</span>
-<span class="p">}</span>
-</pre>
+<span class="p">}</span></pre>
 <p>Let’s compile each one with GCC and link them:</p>
-<pre class="highlight literal-block">
-<span></span>$ g++ -std=c++14 -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+<pre class="highlight literal-block"><span></span>$ g++ -std=c++14 -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
 
 $ g++ -std=c++14 -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
 
@@ -1511,11 +1423,9 @@ duplicate symbol BRKGA::readConfiguration(std::__cxx11::basic_string&lt;char, st
     module_a.o
     module_b.o
 ld: 6 duplicate symbols for architecture x86_64
-collect2: error: ld returned 1 exit status
-</pre>
+collect2: error: ld returned 1 exit status</pre>
 <p>Let’s try with Clang:</p>
-<pre class="highlight literal-block">
-<span></span>$ clang++-mp-7.0 -std=c++14 -pthread -fopenmp -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+<pre class="highlight literal-block"><span></span>$ clang++-mp-7.0 -std=c++14 -pthread -fopenmp -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
 
 $ clang++-mp-7.0 -std=c++14 -pthread -fopenmp -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
 
@@ -1539,8 +1449,7 @@ duplicate symbol __ZN5BRKGA17readConfigurationERKNSt3__112basic_stringIcNS0_11ch
     module_a.o
     module_b.o
 ld: 6 duplicate symbols for architecture x86_64
-clang: error: linker command failed with exit code 1 (use -v to see invocation)
-</pre>
+clang: error: linker command failed with exit code 1 (use -v to see invocation)</pre>
 <p>So, note that we have several duplicated symbols, which are the <code class="docutils literal notranslate"><span class="pre">enum</span></code>
 writer/readers, and the two stand-alone functions
 <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref"><span class="pre">BRKGA::writeConfiguration()</span></span></a></code> and
@@ -1549,21 +1458,19 @@ writer/readers, and the two stand-alone functions
 specializations. We can do that passing the compiler directive
 <code class="docutils literal notranslate"><span class="pre">BRKGA_MULTIPLE_INCLUSIONS</span></code> which inlines the functions and template
 specializations properly.</p>
-<pre class="highlight literal-block">
-<span></span>$ g++ -std=c++14 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_a.cpp -o module_a.o
+<pre class="highlight literal-block"><span></span>$ g++ -std=c++14 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_a.cpp -o module_a.o
 
 $ g++ -std=c++14 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_b.cpp -o module_b.o
 
-$ g++ module_a.o module_b.o -o test
-</pre>
+$ g++ module_a.o module_b.o -o test</pre>
 <p>However, we have two side-effects. First, such inlining can make the object
 code grows large since we include several copies of the same functions (which
 are I/O functions which already are large by their nature). Second, the
 compiler may complain about too many inline functions, if you are already using
 several inline functions.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Avoid including <code class="docutils literal notranslate"><span class="pre">brkga_mp_ip.hpp</span></code> in several files/translation units. If
+<p class="admonition-title">Warning</p>
+<p>Avoid including <code class="docutils literal notranslate"><span class="pre">brkga_mp_ip.hpp</span></code> in several files/translation units. If
 unavoidable, use the compiler directive <code class="docutils literal notranslate"><span class="pre">BRKGA_MULTIPLE_INCLUSIONS</span></code>.</p>
 </div>
 <p>But now, suppose we must use multiple inclusions of BRKGA header, and our

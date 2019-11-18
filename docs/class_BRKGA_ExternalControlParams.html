@@ -197,8 +197,7 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Represents additional control parameters that can be used outside this framework. <a class="reference internal" href="#details-doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block" id="cid-brkga-externalcontrolparams-externalcontrolparams">
-<span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1a66bdd4268523ddeca03bc3a02ba80423"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight overview-code-block literal-block" id="cid-brkga-externalcontrolparams-externalcontrolparams"><span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1a66bdd4268523ddeca03bc3a02ba80423"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
 
 <span class="k">class</span> <span class="n">ExternalControlParams</span>
 <span class="p">{</span>
@@ -212,33 +211,24 @@
     <span class="c1">// methods</span>
 
     <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-external-control-params-1a5bcad4c748fddaec8f5213259c4ee734"><span class="std std-ref">operator =</span></a><span></span> <span class="p">(</span><span class="k">const</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span><span class="p">);</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 </div>
 <div class="section" id="detailed-documentation">
 <span id="details-doxid-class-b-r-k-g-a-1-1-external-control-params"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Represents additional control parameters that can be used outside this framework.</p>
-<p>These parameters are not used directly in the BRKGA nor in the path relinking. However, they are loaded from the configuration file and can be called by the user to perform out-loop controlling.</p>
+<p>These parameters are not used directly in the <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> nor in the path relinking. However, they are loaded from the configuration file and can be called by the user to perform out-loop controlling.</p>
 <div class="section" id="fields">
 <h3>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-externalcontrolparams-exchange-interval">
-<span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1a9f8c1c5b517d319c0d5713b9c77efa95"></span><span id="index-2"></span><span></span><span class="kt">unsigned</span> <span class="n">exchange_interval</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-externalcontrolparams-exchange-interval"><span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1a9f8c1c5b517d319c0d5713b9c77efa95"></span><span id="index-2"></span><span></span><span class="kt">unsigned</span> <span class="n">exchange_interval</span></pre>
 <p>Interval at which elite chromosomes are exchanged (0 means no exchange).</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-externalcontrolparams-num-exchange-indivuduals">
-<span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1a43d831d93698b1f982b6d0cdbed0ae12"></span><span id="index-3"></span><span></span><span class="kt">unsigned</span> <span class="n">num_exchange_indivuduals</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-externalcontrolparams-num-exchange-indivuduals"><span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1a43d831d93698b1f982b6d0cdbed0ae12"></span><span id="index-3"></span><span></span><span class="kt">unsigned</span> <span class="n">num_exchange_indivuduals</span></pre>
 <p>Number of elite chromosomes exchanged from each population.</p>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-externalcontrolparams-reset-interval">
-<span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1ae9be7649e2a9c0803ed58385c9208dc3"></span><span id="index-4"></span><span></span><span class="kt">unsigned</span> <span class="n">reset_interval</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-externalcontrolparams-reset-interval"><span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1ae9be7649e2a9c0803ed58385c9208dc3"></span><span id="index-4"></span><span></span><span class="kt">unsigned</span> <span class="n">reset_interval</span></pre>
 <p>Interval at which the populations are reset (0 means no reset).</p>
 </div>
 <div class="section" id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-externalcontrolparams-operator">
-<span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1a5bcad4c748fddaec8f5213259c4ee734"></span><span id="index-5"></span><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span><span class="p">)</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-externalcontrolparams-operator"><span id="doxid-class-b-r-k-g-a-1-1-external-control-params-1a5bcad4c748fddaec8f5213259c4ee734"></span><span id="index-5"></span><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span><span class="p">)</span></pre>
 <p>Assignment operator for complaince.</p>
 </div>
 </div>

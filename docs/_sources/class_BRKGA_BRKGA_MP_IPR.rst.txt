@@ -231,7 +231,7 @@ Construction
 		const bool evolutionary_mechanism_on = true
 		)
 
-Build the algorithm and its data strtuctures with the given arguments.
+Builds the algorithm and its data strtuctures with the given arguments.
 
 
 
@@ -302,9 +302,9 @@ Methods
 
 	void setInitialPopulation(const std::vector<:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`>& chromosomes)
 
-Set individuals to initial population.
+Sets individuals to initial population.
 
-Set initial individuals into the poulation to work as warm-starters. Such individuals can be obtained from solutions of external procedures such as fast heuristics, other methaheuristics, or even relaxations from a mixed integer programming model that models the problem.
+Sets initial individuals into the poulation to work as warm-starters. Such individuals can be obtained from solutions of external procedures such as fast heuristics, other methaheuristics, or even relaxations from a mixed integer programming model that models the problem.
 
 All given solutions are assigned to one population only. Therefore, the maximum number of solutions is the size of the populations.
 
@@ -341,7 +341,7 @@ All given solutions are assigned to one population only. Therefore, the maximum 
 
 	void setBiasCustomFunction(const std::function<double(const unsigned)>& func)
 
-Set a custom bias function used to build the probabilities.
+Sets a custom bias function used to build the probabilities.
 
 It must be a **positive non-decreasing function**, i.e. :math:`f: \mathbb{N}^+ \to \mathbb{R}^+` such that :math:`f(i) \ge 0` and :math:`f(i) \ge f(i+1)` for :math:`i \in [1..total\_parents]`. For example
 
@@ -388,7 +388,7 @@ sets an inverse quadratic function.
 
 	void initialize(bool true_init = true)
 
-Initialize the populations and others parameters of the algorithm.
+Initializes the populations and others parameters of the algorithm.
 
 If a initial population is supplied, this method completes the remain individuals, if they do not exist. This method also performs the initial decoding of the chromosomes. Therefore, depending on the decoder implementation, this can take a while, and the user may want to time such procedure in his/her experiments.
 
@@ -417,7 +417,7 @@ As it is in :ref:`evolve() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a
 
 	void evolve(unsigned generations = 1)
 
-Evolve the current populations following the guidelines of Multi-parent BRKGAs.
+Evolves the current populations following the guidelines of Multi-parent BRKGAs.
 
 The decoding is done in parallel using threads, and the user **must guarantee that the decoder is THREAD-SAFE.** If such property cannot be held, we suggest using a single thread for optimization.
 
@@ -469,7 +469,7 @@ The decoding is done in parallel using threads, and the user **must guarantee th
 		double percentage = 1.0
 		)
 
-Perform path relinking between elite solutions that are, at least, a given minimum distance between themselves. In this method, the local/loaded parameters are ignored in favor to the supplied ones.
+Performs path relinking between elite solutions that are, at least, a given minimum distance between themselves. In this method, the local/loaded parameters are ignored in favor to the supplied ones.
 
 In the presence of multiple populations, the path relinking is performed between elite chromosomes from different populations, in a circular fashion. For example, suppose we have 3 populations. The framework performs 3 path relinkings: the first between individuals from populations 1 and 2, the second between populations 2 and 3, and the third between populations 3 and 1. In the case of just one population, both base and guiding individuals are sampled from the elite set of that population.
 
@@ -607,7 +607,7 @@ A :ref:`PathRelinking::PathRelinkingResult <doxid-namespace_b_r_k_g_a_1_1_path_r
 
 	void exchangeElite(unsigned num_immigrants)
 
-Exchange elite-solutions between the populations.
+Exchanges elite-solutions between the populations.
 
 Given a population, the ``num_immigrants`` best solutions are copied to the neighbor populations, replacing their worth solutions. If there is only one population, nothing is done.
 
@@ -645,7 +645,7 @@ Given a population, the ``num_immigrants`` best solutions are copied to the neig
 
 	void reset()
 
-Reset all populations with brand new keys.
+Resets all populations with brand new keys.
 
 All warm-start solutions provided :ref:`setInitialPopulation() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a59b05650ede92f5e0107ab606ff6e8b7>` are discarded. You may use :ref:`injectChromosome() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a70bbe32b8bb3f662b629698319dc0261>` to insert those solutions again.
 
@@ -675,7 +675,7 @@ All warm-start solutions provided :ref:`setInitialPopulation() <doxid-class_b_r_
 		unsigned population_index = std::numeric_limits<unsigned>::infinity()
 		)
 
-Perform a shaking in the chosen population.
+Performs a shaking in the chosen population.
 
 
 
@@ -713,7 +713,7 @@ Perform a shaking in the chosen population.
 		double fitness = std::numeric_limits<double>::infinity()
 		)
 
-Inject a chromosome and its fitness into a population in the given place position.
+Injects a chromosome and its fitness into a population in the given place position.
 
 If fitness is not provided (``fitness == Inf``), the decoding is performed over chromosome. Once the chromosome is injected, the population is re-sorted according to the chromosomes' fitness.
 
@@ -765,7 +765,7 @@ If fitness is not provided (``fitness == Inf``), the decoding is performed over 
 
 	const :ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`& getCurrentPopulation(unsigned population_index = 0) const
 
-Return a reference to a current population.
+Returns a reference to a current population.
 
 
 .. rubric:: Parameters:
@@ -800,7 +800,7 @@ Return a reference to a current population.
 
 	const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getBestChromosome() const
 
-Return a reference to the chromosome with best fitness so far among all populations.
+Returns a reference to the chromosome with best fitness so far among all populations.
 
 .. index:: pair: function; getBestFitness
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1af0084ce8397e82db99391bf4dad85219:
@@ -811,7 +811,7 @@ Return a reference to the chromosome with best fitness so far among all populati
 
 	double getBestFitness() const
 
-Return the best fitness found so far among all populations.
+Returns the best fitness found so far among all populations.
 
 .. index:: pair: function; getChromosome
 .. _doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1abfe4eccfd47a8eb88fc920e640f8513f:
@@ -822,7 +822,7 @@ Return the best fitness found so far among all populations.
 
 	const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getChromosome(unsigned population_index, unsigned position) const
 
-Return a reference to a chromosome of the given population.
+Returns a reference to a chromosome of the given population.
 
 
 

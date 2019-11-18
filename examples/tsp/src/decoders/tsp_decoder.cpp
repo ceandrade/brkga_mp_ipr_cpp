@@ -37,7 +37,7 @@ TSP_Decoder::TSP_Decoder(const TSP_Instance& _instance):
 
 //-------------------------------[ Decode ]-----------------------------------//
 
-double TSP_Decoder::decode(Chromosome& chromosome,  bool /* not-used */) {
+double TSP_Decoder::decode(Chromosome& chromosome, bool /* not-used */) {
     vector<pair<double, unsigned>> permutation(instance.num_nodes);
     for(unsigned i = 0; i < instance.num_nodes; ++i)
         permutation[i] = make_pair(chromosome[i], i);

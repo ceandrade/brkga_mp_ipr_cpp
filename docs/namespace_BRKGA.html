@@ -195,8 +195,7 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This namespace contains all stuff related to Multi-Parent BRKGA with Implicit Path Relinking. <a class="reference internal" href="#details-doxid-namespace-b-r-k-g-a"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block">
-<span></span><span class="k">namespace</span> <span class="n">BRKGA</span> <span class="p">{</span>
+<pre class="highlight overview-code-block literal-block"><span></span><span class="k">namespace</span> <span class="n">BRKGA</span> <span class="p">{</span>
 
 <span class="c1">// namespaces</span>
 
@@ -234,115 +233,108 @@ INLINE<span></span> <span class="kt">void</span> <a class="reference internal" h
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span> <span class="n">control_params</span> <span class="o">=</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="p">()</span>
     <span class="p">);</span>
 
-<span class="p">}</span> <span class="c1">// namespace BRKGA</span>
-</pre>
+<span class="p">}</span> <span class="c1">// namespace BRKGA</span></pre>
 </div>
 <div class="section" id="detailed-documentation">
 <span id="details-doxid-namespace-b-r-k-g-a"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
 <p>This namespace contains all stuff related to <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> Multi Parent with Implicit Path Relinking.</p>
 <div class="section" id="typedefs">
 <h3>Typedefs<a class="headerlink" href="#typedefs" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-chromosome">
-<span id="doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"></span><span id="index-1"></span><span></span><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">Chromosome</span>
-</pre>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-chromosome"><span id="doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"></span><span id="index-1"></span><span></span><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">Chromosome</span></pre>
 <p>Chromosone representation.</p>
 <p>The chromosome is represented using a vector in the unitary hypercube, i.e., <span class="math notranslate nohighlight">\(v \in [0,1]^n\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the size of the array (dimensions of the hypercube). We use double precision because float precision maybe not be enough for some applications.</p>
 <p>We could use <code class="docutils literal notranslate"><span class="pre">std::vector&lt;double&gt;</span></code> directly. However, using typedef, we can add additional capabilities to the Chromosome class in the future, such as parenting track. For example, we may want to do this:</p>
-<pre class="highlight literal-block">
-<span></span><span class="k">class</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="p">{</span>
+<pre class="highlight literal-block"><span></span><span class="k">class</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="k">public</span><span class="o">:</span>
         <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">()</span> <span class="o">:</span>
             std<span></span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(),</span> <span class="n">my_personal_data</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
             <span class="p">{}</span>
     <span class="k">public</span><span class="o">:</span>
         <span class="kt">double</span> <span class="n">my_personal_data</span><span class="p">;</span>
-<span class="p">};</span>
-</pre>
+<span class="p">};</span></pre>
 <p>to keep track of some data within a specifc chromosome.</p>
 <p>In general, most people do not recommend to inherit publicly from <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code> because it has no virtual destructor. However, we may do that as long as:</p>
 <ol class="loweralpha simple">
-<li>We remember that every operation provided by <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code> must be a semantically valid operation on an object of the derived class;</li>
-<li>We avoid creating derived class objects with dynamic storage duration;</li>
-<li>We <strong>DO AVOID</strong> polymorphism:</li>
+<li><p>We remember that every operation provided by <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code> must be a semantically valid operation on an object of the derived class;</p></li>
+<li><p>We avoid creating derived class objects with dynamic storage duration;</p></li>
+<li><p>We <strong>DO AVOID</strong> polymorphism:</p></li>
 </ol>
-<pre class="highlight literal-block">
-<span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">pt</span> <span class="o">=</span> <span class="k">new</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">();</span>     <span class="c1">// Bad idea</span>
-<span class="k">delete</span> <span class="n">pt</span><span class="p">;</span>      <span class="c1">// Delete does not call the Chromosome destructor</span>
-</pre>
+<pre class="highlight literal-block"><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">pt</span> <span class="o">=</span> <span class="k">new</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">();</span>     <span class="c1">// Bad idea</span>
+<span class="k">delete</span> <span class="n">pt</span><span class="p">;</span>      <span class="c1">// Delete does not call the Chromosome destructor</span></pre>
 </div>
 <div class="section" id="global-functions">
 <h3>Global Functions<a class="headerlink" href="#global-functions" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-readconfiguration">
-<span id="doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"></span><span id="index-2"></span>INLINE<span></span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="p">,</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&gt;</span> <span class="n">readConfiguration</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span>
-</pre>
-<p>Read the parameters from a configuration file.</p>
-<div class="admonition-todo admonition" id="index-3">
-<p class="first admonition-title">Todo</p>
-<p class="last">(ceandrade) This method can beneficiate from introspection tools from C++17.
-We would like achieve a code similar to the <a class="reference external" href="https://github.com/ceandrade/BrkgaMpIpr.jl">Julia counterpart</a>.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-readconfiguration"><span id="doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"></span><span id="index-2"></span>INLINE<span></span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="p">,</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&gt;</span> <span class="n">readConfiguration</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span></pre>
+<p>Reads the parameters from a configuration file.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>(ceandrade) This method can beneficiate from introspection tools from C++17.
+We would like achieve a code similar to the <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia counterpart</a>.</p>
 </div>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>filename</td>
-<td>the configuration file.</td>
+<tbody>
+<tr class="row-odd"><td><p>filename</p></td>
+<td><p>the configuration file.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Returns:</p>
 <p>a tuple containing the <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> and external control parameters.</p>
 <p class="rubric">Exceptions:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>std::fstream::failure</td>
-<td>in case of errors in the file.</td>
+<tbody>
+<tr class="row-odd"><td><p>std::fstream::failure</p></td>
+<td><p>in case of errors in the file.</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-writeconfiguration">
-<span id="doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"></span><span id="index-4"></span>INLINE<span></span> <span class="kt">void</span> <span class="n">writeConfiguration</span><span class="p">(</span>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-writeconfiguration"><span id="doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"></span><span id="index-3"></span>INLINE<span></span> <span class="kt">void</span> <span class="n">writeConfiguration</span><span class="p">(</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">,</span>
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="o">&amp;</span> <span class="n">brkga_params</span><span class="p">,</span>
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span> <span class="n">control_params</span> <span class="o">=</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="p">()</span>
-    <span class="p">)</span>
-</pre>
-<p>Write the parameters into a file..</p>
-<p>Todo (ceandrade) This method can beneficiate from introspection tools from C++17. We would like achieve a code similar to the <a class="reference external" href="https://github.com/ceandrade/BrkgaMpIpr.jl">Julia counterpart</a>.</p>
+    <span class="p">)</span></pre>
+<p>Writes the parameters into a file.</p>
+<div class="admonition-todo admonition" id="id3">
+<p class="admonition-title">Todo</p>
+<p>(ceandrade) This method can beneficiate from introspection tools from C++17.
+We would like achieve a code similar to the <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia counterpart</a>.</p>
+</div>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>filename</td>
-<td>the configuration file.</td>
+<tbody>
+<tr class="row-odd"><td><p>filename</p></td>
+<td><p>the configuration file.</p></td>
 </tr>
-<tr class="row-even"><td>brkga_params</td>
-<td>the <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> parameters.</td>
+<tr class="row-even"><td><p>brkga_params</p></td>
+<td><p>the <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> parameters.</p></td>
 </tr>
-<tr class="row-odd"><td>control_params</td>
-<td>the external control parameters. Default is an empty object.</td>
+<tr class="row-odd"><td><p>control_params</p></td>
+<td><p>the external control parameters. Default is an empty object.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Exceptions:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>std::fstream::failure</td>
-<td>in case of errors in the file.</td>
+<tbody>
+<tr class="row-odd"><td><p>std::fstream::failure</p></td>
+<td><p>in case of errors in the file.</p></td>
 </tr>
 </tbody>
 </table>

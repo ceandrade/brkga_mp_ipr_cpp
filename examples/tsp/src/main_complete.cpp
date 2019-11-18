@@ -370,7 +370,7 @@ Options:
                     brkga_params.pr_selection,
                     dist_func,
                     brkga_params.pr_number_pairs,
-                    brkga_params.pr_minimum_distance
+                    brkga_params.pr_minimum_distance,
                     1, // block_size doesn't not matter for permutation.
                     max_time - elapsedFrom(start_time),
                     brkga_params.pr_percentage);

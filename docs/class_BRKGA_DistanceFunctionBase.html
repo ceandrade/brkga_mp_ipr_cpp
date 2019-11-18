@@ -197,8 +197,7 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Distance Function Base. <a class="reference internal" href="#details-doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block" id="cid-brkga-distancefunctionbase-distancefunctionbase">
-<span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1a61acb94a73fd16ffa7740f2a383173d1"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight overview-code-block literal-block" id="cid-brkga-distancefunctionbase-distancefunctionbase"><span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1a61acb94a73fd16ffa7740f2a383173d1"></span><span id="index-1"></span><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
 
 <span class="k">class</span> <span class="n">DistanceFunctionBase</span>
 <span class="p">{</span>
@@ -218,8 +217,7 @@
 <span class="c1">// direct descendants</span>
 
 <span class="k">class</span> <a class="reference internal" href="class_BRKGA_HammingDistance.html#doxid-class-b-r-k-g-a-1-1-hamming-distance"><span class="std std-ref">HammingDistance</span></a><span></span><span class="p">;</span>
-<span class="k">class</span> <a class="reference internal" href="class_BRKGA_KendallTauDistance.html#doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref">KendallTauDistance</span></a><span></span><span class="p">;</span>
-</pre>
+<span class="k">class</span> <a class="reference internal" href="class_BRKGA_KendallTauDistance.html#doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref">KendallTauDistance</span></a><span></span><span class="p">;</span></pre>
 </div>
 <div class="section" id="detailed-documentation">
 <span id="details-doxid-class-b-r-k-g-a-1-1-distance-function-base"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
@@ -227,70 +225,64 @@
 <p>This class is a interface for functors that compute the distance between two vectors of double numbers.</p>
 <div class="section" id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-distance">
-<span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1acee8e7b478010aff23b3a46cd113860a"></span><span id="index-2"></span><span></span><span class="k">virtual</span> <span class="kt">double</span> <span class="n">distance</span><span class="p">(</span>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-distance"><span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1acee8e7b478010aff23b3a46cd113860a"></span><span id="index-2"></span><span></span><span class="k">virtual</span> <span class="kt">double</span> <span class="n">distance</span><span class="p">(</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">v1</span><span class="p">,</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">v2</span>
-    <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
-</pre>
-<p>Compute the distance between two vectors.</p>
+    <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span></pre>
+<p>Computes the distance between two vectors.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>v1</td>
-<td>first vector</td>
+<tbody>
+<tr class="row-odd"><td><p>v1</p></td>
+<td><p>first vector</p></td>
 </tr>
-<tr class="row-even"><td>v2</td>
-<td>second vector</td>
+<tr class="row-even"><td><p>v2</p></td>
+<td><p>second vector</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-affectsolution">
-<span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1a243c8a1031fb149c6abc16f3869f2ace"></span><span id="index-3"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">key2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
-</pre>
-<p>Return true if the changing of <code class="docutils literal notranslate"><span class="pre">key1</span></code> by <code class="docutils literal notranslate"><span class="pre">key2</span></code> affects the solution.</p>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-affectsolution"><span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1a243c8a1031fb149c6abc16f3869f2ace"></span><span id="index-3"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">key2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span></pre>
+<p>Returns true if the changing of <code class="docutils literal notranslate"><span class="pre">key1</span></code> by <code class="docutils literal notranslate"><span class="pre">key2</span></code> affects the solution.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>key1</td>
-<td>the first key</td>
+<tbody>
+<tr class="row-odd"><td><p>key1</p></td>
+<td><p>the first key</p></td>
 </tr>
-<tr class="row-even"><td>key2</td>
-<td>the second key</td>
+<tr class="row-even"><td><p>key2</p></td>
+<td><p>the second key</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-affectsolution-2">
-<span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1aca0fc7103888cd025a67a16575954875"></span><span id="index-4"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span>
+<pre class="highlight title-code-block literal-block" id="cid-brkga-distancefunctionbase-affectsolution-2"><span id="doxid-class-b-r-k-g-a-1-1-distance-function-base-1aca0fc7103888cd025a67a16575954875"></span><span id="index-4"></span><span></span><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">affectSolution</span><span class="p">(</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v1_begin</span><span class="p">,</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">v2_begin</span><span class="p">,</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span>
-    <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
-</pre>
-<p>Return true if the changing of the blocks of keys <code class="docutils literal notranslate"><span class="pre">v1</span></code> by the blocks of keys <code class="docutils literal notranslate"><span class="pre">v2</span></code> affects the solution.</p>
+    <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span></pre>
+<p>Returns true if the changing of the blocks of keys <code class="docutils literal notranslate"><span class="pre">v1</span></code> by the blocks of keys <code class="docutils literal notranslate"><span class="pre">v2</span></code> affects the solution.</p>
 <p class="rubric">Parameters:</p>
-<table border="1" class="colwidths-given docutils">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="80%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>v1_begin</td>
-<td>begin of the first blocks of keys</td>
+<tbody>
+<tr class="row-odd"><td><p>v1_begin</p></td>
+<td><p>begin of the first blocks of keys</p></td>
 </tr>
-<tr class="row-even"><td>v2_begin</td>
-<td>begin of the first blocks of keys</td>
+<tr class="row-even"><td><p>v2_begin</p></td>
+<td><p>begin of the first blocks of keys</p></td>
 </tr>
-<tr class="row-odd"><td>block_size</td>
-<td>number of keys to be considered.</td>
+<tr class="row-odd"><td><p>block_size</p></td>
+<td><p>number of keys to be considered.</p></td>
 </tr>
 </tbody>
 </table>

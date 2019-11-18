@@ -52,7 +52,7 @@ Detailed Documentation
 
 Represents additional control parameters that can be used outside this framework.
 
-These parameters are not used directly in the BRKGA nor in the path relinking. However, they are loaded from the configuration file and can be called by the user to perform out-loop controlling.
+These parameters are not used directly in the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` nor in the path relinking. However, they are loaded from the configuration file and can be called by the user to perform out-loop controlling.
 
 Fields
 ------
