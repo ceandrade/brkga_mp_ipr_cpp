@@ -13,7 +13,7 @@ the files were downloaded.
 Quick example (unix): assume we are in an empty folder. So, we copy/clone
 BRKGA-IPR-MP first:
 
-    $ git clone https://github.com/ceandrade/brkga_mp_ipr
+    $ git clone https://github.com/ceandrade/brkga_mp_ipr_cpp
     Cloning into 'brkga_mp_ipr'...
     remote: Enumerating objects: 118, done.
     remote: Counting objects: 100% (118/118), done.
@@ -59,10 +59,12 @@ TL;DR {#guide_tldr}
 ================================================================================
 
 The best way to keep it short is to look in the
-on examples on [the git repo.](https://github.com/ceandrade/brkga_mp_ipr)
+on examples on [the git repo.](https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples)
 Let's take a look into
-[`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp),
-copied (and trimmed) below:
+[`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_minimal.cpp),
+which solves the
+[Traveling Salesman Problem (TSP)](https://en.wikipedia.org/wiki/Travelling_salesman_problem).
+This is a trimmed copy:
 
 ```cpp
 #include "tsp/tsp_instance.hpp"
@@ -112,13 +114,13 @@ You can identify the following basic steps:
 
 1. Create a data structure to hold your input data. This object should be passed
    to the decoder object/functor (example
-   [`tsp/tsp_instance.hpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/tsp/tsp_instance.hpp));
+   [`tsp/tsp_instance.hpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/tsp/tsp_instance.hpp));
 
 2. Implement a decoder object/functor. This function translates a chromosome
    (array of numbers in the interval [0,1]) to a solution for your problem. The
    decoder must return the solution value or cost to be used as fitness by BRKGA
    (example
-   [`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr/tree/v1.0/examples/tsp/src/decoders));
+   [`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/decoders/tsp_decoder.hpp));
 
 3. Load the instance and other relevant data;
 
@@ -133,6 +135,17 @@ You can identify the following basic steps:
 
 8. Call `BRKGA::BRKGA_MP_IPR::getBestFitness()` and/or
    `BRKGA::BRKGA_MP_IPR::getBestChromosome()` to retrieve the best solution.
+
+[`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_minimal.cpp)
+provides a very minimal example to understand the necessary steps to use the
+BRKGA-MP-IPR framework. However,
+[`main_complete.cpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_complete.cpp)
+provides a full-featured code, handy for scientific use, such as
+experimentation and paper writing. This code allows fine-grained control of
+the optimization, shows several features of BRKGA-MP-IPR such as the resets,
+chromosome injection, and others. It also logs
+all optimization steps, _creating outputs easy to be parsed._ **You should use
+this code for serious business and experimentation.**
 
 These are the basic steps, but I do recommend the reading of this guide.
 
@@ -650,7 +663,7 @@ To do it, you must set these initial solutions before call `initialize()`.
 Since BRKGA-MP-IPR does not know the problem structure, you must _encode_ the
 warm-start solution as chromosomes (vectors in the interval [0, 1]). In other
 words, you must do the inverse process that your decoder does. For instance,
-this is a piece of code from [`main_complete.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_complete.cpp) 
+this is a piece of code from [`main_complete.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_complete.cpp)
 showing this process:
 
 ```cpp
@@ -716,7 +729,7 @@ algorithm.evolve(num_generations);
 `BRKGA::BRKGA_MP_IPR::evolve()` evolves all populations for `num_generations`.
 If `num_genertions` is omitted, `evolve()` evolves only one generation.
 
-For example, in [`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp), 
+For example, in [`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr/blob/v1.0/examples/tsp/src/main_minimal.cpp),
 we just evolve the population for a given
 number of generations directly and then extract the best solution cost.
 

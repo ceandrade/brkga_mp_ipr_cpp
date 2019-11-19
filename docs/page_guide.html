@@ -235,9 +235,12 @@ documentation, we also need <a class="reference external" href="http://www.doxyg
 </div>
 <div class="section" id="tl-dr">
 <h2>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">¶</a></h2>
-<p>The best way to keep it short is to look in the on examples on <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp">the git repo.</a> Let’s take a look into
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>,
-copied (and trimmed) below:</p>
+<p>The best way to keep it short is to look in the on examples on <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples">the git repo.</a>
+Let’s take a look into
+<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>,
+which solves the
+<cite>Traveling Salesman Problem (TSP) &lt;https://en.wikipedia.org/wiki/Travelling_salesman_problem&gt;</cite>._
+This is a trimmed copy:</p>
 <pre class="highlight literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&quot;tsp/tsp_instance.hpp&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;decoders/tsp_decoder.hpp&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
@@ -283,11 +286,11 @@ copied (and trimmed) below:</p>
 <ol class="arabic simple">
 <li><p>Create a data structure to hold your input data. This object should be
 passed to the decoder object/functor (example
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/tsp/tsp_instance.hpp">tsp/tsp_instance.hpp</a>);</p></li>
+<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/tsp/tsp_instance.hpp">tsp/tsp_instance.hpp</a>);</p></li>
 <li><p>Implement a decoder object/functor. This function translates a chromosome
 (array of numbers in the interval [0,1]) to a solution for your problem. The
 decoder must return the solution value or cost to be used as fitness by
-BRKGA (example <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp/src/decoders">decoders</a>);</p></li>
+BRKGA (example <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/decoders/tsp_decoder.hpp">decoders/tsp_decoder.hpp</a>);</p></li>
 <li><p>Load the instance and other relevant data;</p></li>
 <li><p>Read the algorithm parameters using
 <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref"><span class="pre">BRKGA::readConfiguration()</span></span></a></code>;
@@ -297,6 +300,16 @@ or create a <code class="docutils literal notranslate"><a class="reference inter
 <li><p>Call <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::evolve()</span></span></a></code> to optimize;</p></li>
 <li><p>Call <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1af0084ce8397e82db99391bf4dad85219"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getBestFitness()</span></span></a></code> and/or <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getBestChromosome()</span></span></a></code> to retrieve the best solution.</p></li>
 </ol>
+<p><a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_minimal.cpp">main_minimal.cpp</a>
+provides a very minimal example to understand the necessary steps to use the
+BRKGA-MP-IPR framework. However,
+<cite>main_complete.cpp</cite> &lt;<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_complete.cpp">https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_complete.cpp</a>&gt;`_
+provides a full-featured code, handy for scientific use, such as
+experimentation and paper writing. This code allows fine-grained control of
+the optimization, shows several features of BRKGA-MP-IPR such as the resets,
+chromosome injection, and others. It also logs
+all optimization steps, _creating outputs easy to be parsed._ <strong>You should use
+this code for serious business and experimentation.</strong></p>
 <p>These are the basic steps, but I do recommend the reading of this guide.</p>
 </div>
 <div class="section" id="getting-started">
@@ -330,10 +343,10 @@ framework. <strong>You should start here!</strong> Please take a look on this fi
 continue this tutorial;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">main_complete.cpp</span></code> file: full-featured code, handy for scientific use,
 such as experimentation and paper writing. This code allows fine-grained
-control of the optimization, show several features of BRKGA-MP-IPR such as
-the path-reliking calls, resets, chromosome injection, and others. It also
-logs all optimization steps, creating outputs easy to be parsed. <strong>You should
-use this code for serious business and experimentation;</strong></p></li>
+control of the optimization, shows several features of BRKGA-MP-IPR such as
+the path-relinking calls, resets, chromosome injection, and others. It also
+logs all optimization steps, _creating outputs easy to be parsed._
+<strong>You should use this code for serious business and experimentation;</strong></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">config.conf</span></code> file: example of parameter settings;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Makefile</span></code> file: the makefile used to build the executables;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">third_part</span></code> subdir: contains the <a class="reference external" href="https://github.com/docopt/docopt.cpp">docopt</a>

@@ -66,9 +66,12 @@ TL;DR
 -------------------------------------------------------------------------------
 
 The best way to keep it short is to look in the on examples on `the git repo.
-<https://github.com/ceandrade/brkga_mp_ipr_cpp>`_ Let's take a look into
-`main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/main_minimal.cpp>`_,
-copied (and trimmed) below:
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples>`_
+Let's take a look into
+`main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_minimal.cpp>`_,
+which solves the
+`Traveling Salesman Problem (TSP) <https://en.wikipedia.org/wiki/Travelling_salesman_problem>`._
+This is a trimmed copy:
 
 .. ref-code-block:: cpp
 
@@ -118,12 +121,12 @@ You can identify the following basic steps:
 
 #. Create a data structure to hold your input data. This object should be
    passed to the decoder object/functor (example
-   `tsp/tsp_instance.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/tsp/tsp_instance.hpp>`_);
+   `tsp/tsp_instance.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/tsp/tsp_instance.hpp>`_);
 
 #. Implement a decoder object/functor. This function translates a chromosome
    (array of numbers in the interval [0,1]) to a solution for your problem. The
    decoder must return the solution value or cost to be used as fitness by
-   BRKGA (example `decoders <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp/src/decoders>`_);
+   BRKGA (example `decoders/tsp_decoder.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/decoders/tsp_decoder.hpp>`_);
 
 #. Load the instance and other relevant data;
 
@@ -138,6 +141,17 @@ You can identify the following basic steps:
 #. Call ``:ref:`BRKGA::BRKGA_MP_IPR::evolve() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aee1828c2ca506f18b896f1fc75ceafcb>``` to optimize;
 
 #. Call ``:ref:`BRKGA::BRKGA_MP_IPR::getBestFitness() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1af0084ce8397e82db99391bf4dad85219>``` and/or ``:ref:`BRKGA::BRKGA_MP_IPR::getBestChromosome() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa4b0396a4780fde3be8d284c535b600e>``` to retrieve the best solution.
+
+`main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_minimal.cpp>`_
+provides a very minimal example to understand the necessary steps to use the
+BRKGA-MP-IPR framework. However,
+`main_complete.cpp` <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_complete.cpp>`_
+provides a full-featured code, handy for scientific use, such as
+experimentation and paper writing. This code allows fine-grained control of
+the optimization, shows several features of BRKGA-MP-IPR such as the resets,
+chromosome injection, and others. It also logs
+all optimization steps, _creating outputs easy to be parsed._ **You should use
+this code for serious business and experimentation.**
 
 These are the basic steps, but I do recommend the reading of this guide.
 
@@ -183,10 +197,10 @@ The ``src`` subdir contains all the code to solve TSP. This is its structure:
 
 * ``main_complete.cpp`` file: full-featured code, handy for scientific use,
   such as experimentation and paper writing. This code allows fine-grained
-  control of the optimization, show several features of BRKGA-MP-IPR such as
-  the path-reliking calls, resets, chromosome injection, and others. It also
-  logs all optimization steps, creating outputs easy to be parsed. **You should
-  use this code for serious business and experimentation;**
+  control of the optimization, shows several features of BRKGA-MP-IPR such as
+  the path-relinking calls, resets, chromosome injection, and others. It also
+  logs all optimization steps, _creating outputs easy to be parsed._
+  **You should use this code for serious business and experimentation;**
 
 * ``config.conf`` file: example of parameter settings;
 

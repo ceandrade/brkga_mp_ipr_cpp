@@ -53,6 +53,7 @@ sphinx:
 	touch  build/html_sphinx/.nojekyll
 	rm -rf ../docs
 	cp -a  build/html_sphinx ../docs
+	cp -a src/assets/logo*png ../docs/_static
 
 clean:
 	rm -rf build
