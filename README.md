@@ -1,9 +1,28 @@
 <div align="center">
-  <img src="https://github.com/ceandrade/brkga_mp_ipr_python/blob/master/docs/src/assets/logo_name_300.png">
+  <img src="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/src_docs/src/assets/logo_name_300.png">
 </div>
 
 BRKGA-MP-IPR - C++ version
 ================================================================================
+
+<table>
+<tr>
+  <td>Documentation</td>
+  <td>
+    <a href="https://ceandrade.github.io/brkga_mp_ipr_cpp">
+    <img src="https://img.shields.io/badge/api-reference-blue.svg" alt="Documentation" />
+    </a>
+  </td>
+</tr>
+<tr>
+  <td>License</td>
+  <td>
+    <a href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md">
+    <img src="https://img.shields.io/badge/license-BSD--like-blue" alt="License" />
+    </a>
+  </td>
+</tr>
+</table>
 
 BRKGA-MP-IPR provides a _very easy-to-use_ framework for the
 Multi-Parent Biased Random-Key Genetic Algorithm with Implict Path Relink
@@ -32,10 +51,10 @@ and it is a very mature code used in production in several companies.
 However, it lacks of a proper unit and coverage testing. Such tests are in
 the TODO list.
 
-If C++ is not suitable to you, we may find useful the [Julia
-version](https://github.com/ceandrade/brkga_mp_ipr_julia) of this framework.
+If C++ is not suitable to you, we may find useful the [**Julia
+version**](https://github.com/ceandrade/brkga_mp_ipr_julia) of this framework.
 We are also developing a
-[Python version](https://github.com/ceandrade/brkga_mp_ipr_python)
+[**Python version**](https://github.com/ceandrade/brkga_mp_ipr_python)
 which is in its earlier stages.
 At this moment, we have no plans to implement the BRKGA-MP-IPR in other
 languages such as Java or C#. But if you want to do so, you are
@@ -43,13 +62,16 @@ must welcome. But please, keep the API as close as possible to the C++ API
 (or Julia API in case you decide go C), and use the best coding and
 documentation practices of your chosen language/framework.
 
+- [**Julia version**](https://github.com/ceandrade/brkga_mp_ipr_julia)
+- [**Python version**](https://github.com/ceandrade/brkga_mp_ipr_python)
+
 If you are not familiar with how BRKGA works, take a look on
 [Standard BRKGA](http://dx.doi.org/10.1007/s10732-010-9143-1) and
 [Multi-Parent BRKGA](http://dx.doi.org/xxx).
 In the future, we will provide a _Prime on BRKGA-MP_
 section.
 
-Installation {#guide_installation}
+:computer: Installation
 --------------------------------------------------------------------------------
 
 BRKGA-MP-IPR is a header-only framework, which means that you only need to
@@ -101,7 +123,7 @@ and we can quickly adapt it to other toolchains such as
 To build this documentation, we also need
 [Doxygen](http://www.doxygen.nl).
 
-TL;DR {#guide_tldr}
+:zap: TL;DR
 --------------------------------------------------------------------------------
 
 The best way to keep it short is to look in the
@@ -193,30 +215,41 @@ chromosome injection, and others. It also logs
 all optimization steps, _creating outputs easy to be parsed._ **You should use
 this code for serious business and experimentation.**
 
-Tutorial
+:books: Tutorial and full documentation
 --------------------------------------------------------------------------------
 
-Check out the tutorial and documentation:
-(https://ceandrade.github.io/brkga_mp_ipr_cpp)
+Check out the tutorial and API documentation:
+https://ceandrade.github.io/brkga_mp_ipr_cpp
 
-License and Citing
+:black_nib: License and Citing
 --------------------------------------------------------------------------------
 
 BRKGA-MP-IPR uses a permissive BSD-like license and it can be used as it
 pleases you. And since this framework is also part of an academic effort, we
 kindly ask you to remember to cite the originating paper of this work.
 Indeed, Clause 4 estipulates that "all publications, softwares, or any other
-materials mentioning features or use of this software and/or the data used to
-test it must cite explicitly the following article":
+materials mentioning features or use of this software (as a whole package or
+any parts of it) and/or the data used to test it must cite the following
+article explicitly:":
 
 > C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
 > Biased Random-key Genetic Algorithm with Implicit Path Relinking. _European
-> Journal of Operational Research_, volume XX, issue X, pages xx-xx, 2019.
+> Jornal of Operational Research_, volume XX, issue X, pages xx-xx, 2019.
 > DOI [to be determined](http://dx.doi.org/xxx)
 
-[Check it out the full license.](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md)
+[Check it out the full license.](https://github.com/ceandrade/brkga_mp_ipr_julia/blob/master/LICENSE.md)
 
-Contributing
+:construction_worker: TODO
+--------------------------------------------------------------------------------
+
+CI and tests side:
+
+- Implement unit tests and certify coverage;
+
+- Configure Travis-Ci correctly, such that we can run tests on Mac OSX and
+  Windows too.
+
+:pencil2: Contributing
 --------------------------------------------------------------------------------
 
 [Contribution guidelines for this project](CONTRIBUTING.md)
