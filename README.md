@@ -123,7 +123,7 @@ and we can quickly adapt it to other toolchains such as
 To build this documentation, we also need
 [Doxygen](http://www.doxygen.nl).
 
-:zap: TL;DR
+:zap: Usage - TL;DR
 --------------------------------------------------------------------------------
 
 The best way to keep it short is to look in the

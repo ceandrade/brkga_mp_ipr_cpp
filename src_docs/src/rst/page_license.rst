@@ -22,8 +22,8 @@ met:
    without specific prior written permission.
 
 4. All publications, softwares, or any other materials mentioning features or
-   use of this software and/or the data used to test it
-   must cite explicitly the following article:
+   use of this software (as a whole package or any parts of it) and/or the data
+   used to test it must cite the following article explicitly:
 
   C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
   Biased Random-key Genetic Algorithm with Implicit Path Relinking and its
