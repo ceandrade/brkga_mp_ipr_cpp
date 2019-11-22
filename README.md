@@ -20,6 +20,9 @@ BRKGA-MP-IPR - C++ version
     <a href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md">
     <img src="https://img.shields.io/badge/license-BSD--like-blue" alt="License" />
     </a>
+    <a href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md">
+    <img src="https://img.shields.io/badge/license-MIT-blue" alt="License" />
+    </a>
   </td>
 </tr>
 </table>
