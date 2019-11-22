@@ -1,7 +1,7 @@
-.. index:: pair: page; BRKGA-MP-IPR Guide and Documentation
+.. index:: pair: page; BRKGA-MP-IPR Guide and Documentation - C++ Version
 .. _doxid-indexpage:
 
-BRKGA-MP-IPR Guide and Documentation
+BRKGA-MP-IPR Guide and Documentation - C++ Version
 ===============================================================================
 
 BRKGA-MP-IPR provides a *very easy-to-use* framework for the Multi-Parent
@@ -52,10 +52,11 @@ License and Citing
 
 BRKGA-MP-IPR uses a permissive BSD-like license and it can be used as it
 pleases you. And since this framework is also part of an academic effort, we
-kindly ask you to remember to cite the originating paper of this work. Indeed,
-Clause 4 estipulates that "all publications, softwares, or any other materials
-mentioning features or use of this software and/or the data used to test it
-must cite explicitly the following article":
+kindly ask you to remember to cite the originating paper of this work.
+Indeed, Clause 4 estipulates that "all publications, softwares, or any other
+materials mentioning features or use of this software (as a whole package or
+any parts of it) and/or the data used to test it must cite the following
+article explicitly:":
 
   C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
   Biased Random-key Genetic Algorithm with Implicit Path Relinking and its

@@ -154,10 +154,10 @@ Getting started {#guide_getting_started}
 
 BRKGA-MP-IPR is pretty simple, and you must provide one required _decoder_
 object to translate chromosomes to solutions. In general, such decoder uses
-In general, such decoder uses the problem information to map a vector of real
-numbers in the interval [0,1] to a (valid) solution. In some cases, even
-though a valid solution cannot be found, library users apply penalization
-factors and push the BRKGA to find valid solutions.
+the problem information to map a vector of real numbers in the interval [0,1]
+to a (valid) solution. In some cases, even though a valid solution cannot be
+found, library users apply penalization factors and push the BRKGA to find
+valid solutions.
 
 Before you go further, please take a look at the `examples` folder in
 [the git repo](https://github.com/ceandrade/brkga_mp_ipr). There, you can find

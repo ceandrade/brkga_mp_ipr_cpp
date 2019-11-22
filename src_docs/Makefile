@@ -22,13 +22,13 @@
 # Required tools
 ###############################################################################
 
-REQUIRED_TOOLS := doxygen doxyrest sphinx-build
+#REQUIRED_TOOLS := doxygen doxyrest sphinx-build
 
-$(foreach tool,$(REQUIRED_TOOLS),\
-    $(if $(shell command -v $(tool) 2> /dev/null),,\
-  	  $(error `$(tool)` not found in PATH. Please install `$(tool)`)\
-	 )\
-)
+#$(foreach tool,$(REQUIRED_TOOLS),\
+    #$(if $(shell command -v $(tool) 2> /dev/null),,\
+        #$(error `$(tool)` not found in PATH. Please install `$(tool)`)\
+	 #)\
+#)
 
 ################################################################################
 ## Build Rules

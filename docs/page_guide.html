@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="BRKGA-MP-IPR License" href="page_license.html" />
-    <link rel="prev" title="BRKGA-MP-IPR Guide and Documentation" href="index.html" /> 
+    <link rel="prev" title="BRKGA-MP-IPR Guide and Documentation - C++ Version" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -316,10 +316,10 @@ this code for serious business and experimentation.</strong></p>
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <p>BRKGA-MP-IPR is pretty simple, and you must provide one required <em>decoder</em>
 object to translate chromosomes to solutions. In general, such decoder uses
-In general, such decoder uses the problem information to map a vector of real
-numbers in the interval [0,1] to a (valid) solution. In some cases, even
-though a valid solution cannot be found, library users apply penalization
-factors and push the BRKGA to find valid solutions.</p>
+the problem information to map a vector of real numbers in the interval [0,1]
+to a (valid) solution. In some cases, even though a valid solution cannot be
+found, library users apply penalization factors and push the BRKGA to find
+valid solutions.</p>
 <p>Before you go further, please take a look at the <code class="docutils literal notranslate"><span class="pre">examples</span></code> folder in <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp">the
 git repo</a>. There, you can find
 two folders with codes to solve <a class="reference external" href="http://dx.doi.org/10.1162/EVCO_a_00138">combinatorial auction problems</a> and traveling salesman problems.
@@ -463,15 +463,15 @@ details on how to use the BRKGA-MP-IPR.</p>
 <h2>First things first: the decoder function<a class="headerlink" href="#first-things-first-the-decoder-function" title="Permalink to this headline">¶</a></h2>
 <p>The core of the BRKGA algorithm is the definition of a decoder
 function/object. The decoder maps the chromosomes (vectors of real numbers in
-the interval [0,1]) to solutions of the problem. In some sense, a decoder is
+the interval [0, 1]) to solutions of the problem. In some sense, a decoder is
 similar to a <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_method">kernel function from Support Vector Machines</a> : both functions are used to
 project solutions/distances in different spaces.</p>
-<p>Here, we have a small difference between the C++ and the Julia
-implementation. In the Julia version, you must define a data container
-inherit from <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp">AbstractInstance</a>,
+<p>Here, we have a small difference between the C++/Python and the Julia
+implementations. In the Julia version, you must define a data container
+inherit from <a class="reference external" href="https://ceandrade.github.io/brkga_mp_ipr_julia/guide/index.html#First-things-first:-basic-data-structures-and-decoder-function-1">AbstractInstance</a>,
 and a decoder function. The reason you must do that is because structs in
 Julia have no methods (but constructors), and the decoder function must take
-both chromosome and input data in the call. In C++, we can encapsulate the
+both chromosome and input data in the call. In C++/Python, we can encapsulate the
 input data into the decoder object, resulting in a much more clear API.</p>
 <p>The basic form of a decoder should be:</p>
 <pre class="highlight literal-block"><span></span><span class="k">class</span> <span class="n">Decoder</span> <span class="p">{</span>
@@ -861,7 +861,7 @@ injected chromosome. For example, assuming the <code class="docutils literal not
 BRKGA-MP-IPR object and <code class="docutils literal notranslate"><span class="pre">brkga_params</span></code> is your <code class="docutils literal notranslate"><span class="pre">BrkgaParams</span></code> object, the
 following code injects the random chromosome <code class="docutils literal notranslate"><span class="pre">keys</span></code> into the population #1 in
 the last position (<code class="docutils literal notranslate"><span class="pre">population_size</span></code>), i.e., it will replace the worst
-solution:</p>
+solution by a random one:</p>
 <pre class="highlight literal-block"><span></span><span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">rng</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
 <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">keys</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">num_nodes</span><span class="p">);</span>
 <span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">key</span> <span class="p">:</span> <span class="n">keys</span><span class="p">)</span>
@@ -1187,7 +1187,7 @@ following code, we do that with a simple <code class="docutils literal notransla
 
 <span class="k">const</span> <span class="kt">double</span> <span class="n">rho</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">;</span>
 <span class="n">algorithm</span><span class="p">.</span><span class="n">setBiasCustomFunction</span><span class="o">!</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="nl">rho</span> <span class="p">:</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="nl">rho</span> <span class="p">:</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">;</span>
 <span class="p">});</span>
 <span class="n">algorithm</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span></pre>
 <p>Here, we first set the <code class="docutils literal notranslate"><span class="pre">num_elite_parents</span> <span class="pre">=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">total_parents</span> <span class="pre">=</span> <span class="pre">2</span></code> as
@@ -1196,14 +1196,21 @@ explained before. Following, we set a variable <code class="docutils literal not
 the bias function as a very simple lambda function (note that we must use
 <code class="docutils literal notranslate"><span class="pre">[&amp;]</span></code> to capture <code class="docutils literal notranslate"><span class="pre">rho</span></code> in the outside context):</p>
 <pre class="highlight literal-block"><span></span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="nl">rho</span> <span class="p">:</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="nl">rho</span> <span class="p">:</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">;</span>
 <span class="p">}</span></pre>
-<p>So, if the index of the chromosome is 0 (elite individual), it gets a 0.75
-rank/probability. If the index is 1 (non-elite individual), the chromosome gets
+<p>So, if the index of the chromosome is 1 (elite individual), it gets a 0.75
+rank/probability. If the index is 2 (non-elite individual), the chromosome gets
 0.25 rank/probability.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>All these operations must be done before calling <code class="docutils literal notranslate"><span class="pre">initialize()</span></code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that we consider the index 1 as the elite individual instead index
+0, and index 2 to the non-elite individual opposed to index 1. The reason
+for this is that, internally, BRKGA always pass <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> to the bias
+function to avoid division-by-zero exceptions.</p>
 </div>
 </div>
 <div class="section" id="reading-and-writing-parameters">
@@ -1221,12 +1228,12 @@ simple plain text file and returns a tuple of <code class="docutils literal notr
 
 <span class="c1">// C++17 syntax. Isn&#39;t cool?</span>
 <span class="k">auto</span> <span class="p">[</span><span class="n">brkga_params</span><span class="p">,</span> <span class="n">control_params</span><span class="p">]</span> <span class="o">=</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref">BRKGA::readConfiguration</span></a><span></span><span class="p">(</span><span class="s">&quot;tuned_conf.txt&quot;</span><span class="p">);</span></pre>
-<p>The configuration file must be plain text such that contains pairs of parameter
-name and value. This file must list all fields from <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams</span></span></a></code> and
-<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref"><span class="pre">BRKGA::ExternalControlParams</span></span></a></code>, even though you do not
-use each one. In <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp">examples folder</a>,
-we have
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/config.conf">config.conf</a>
+<p>The configuration file must be plain text such that contains pairs of
+parameter name and value. This file must list all fields from
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams</span></span></a></code> and
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref"><span class="pre">BRKGA::ExternalControlParams</span></span></a></code>, even though you do
+not use each one at this moment. In <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp">examples folder</a>, we
+have <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/config.conf">config.conf</a>
 that looks like this:</p>
 <pre class="highlight literal-block"><span></span><span class="n">population_size</span> <span class="mi">2000</span>
 <span class="n">elite_percentage</span> <span class="mf">0.30</span>
@@ -1245,9 +1252,9 @@ that looks like this:</p>
 <span class="n">num_exchange_indivuduals</span> <span class="mi">2</span>
 <span class="n">reset_interval</span> <span class="mi">600</span></pre>
 <p>It does not matter whether we use lower or upper cases. Blank lines and lines
-starting with <code class="docutils literal notranslate"><span class="pre">#</span></code> are ignored. The order of the parameters should not matter
-either. And, finally, this file should be readble for both C++ and Julia
-framework versions.</p>
+starting with <code class="docutils literal notranslate"><span class="pre">#</span></code> are ignored. The order of the parameters should not
+matter either. And, finally, this file should be readble for both C++, Julia,
+and Python framework versions.</p>
 <p>In some cases, you define some of the parameters at the running time, and you
 may want to save them for debug or posterior use. To do so, you can use
 <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref"><span class="pre">BRKGA::writeConfiguration()</span></span></a></code>, call upon a
@@ -1267,8 +1274,9 @@ rewrites the given file. So, watch out to not lose previous configurations.</p>
 <div class="section" id="algorithm-warmup">
 <h3>Algorithm warmup<a class="headerlink" href="#algorithm-warmup" title="Permalink to this headline">¶</a></h3>
 <p>While in Julia framework version is primordial to do a dry-run to precompile
-all functions, in C++ this warmup is not necessary. However, few dry-runs can
-help the OS/processor with cache locality and give some speedup.</p>
+all functions (and a good idea on Python version), in C++ and Python this
+warmup is not necessary. However, few dry-runs can help the OS/processor with
+cache locality and give some speedup..</p>
 <p>Besides the dry-runs, I would recommend the pre-allocation of all
 resource/memory that you need, if you know in advance how much will be
 necessary. This pre-allocation speeds the decoding process dramatically.</p>
@@ -1507,7 +1515,7 @@ compiled just once.</p>
         <a href="page_license.html" class="btn btn-neutral float-right" title="BRKGA-MP-IPR License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="BRKGA-MP-IPR Guide and Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="BRKGA-MP-IPR Guide and Documentation - C++ Version" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

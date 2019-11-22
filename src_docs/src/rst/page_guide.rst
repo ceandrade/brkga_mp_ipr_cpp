@@ -162,10 +162,10 @@ Getting started
 
 BRKGA-MP-IPR is pretty simple, and you must provide one required *decoder*
 object to translate chromosomes to solutions. In general, such decoder uses
-In general, such decoder uses the problem information to map a vector of real
-numbers in the interval [0,1] to a (valid) solution. In some cases, even
-though a valid solution cannot be found, library users apply penalization
-factors and push the BRKGA to find valid solutions.
+the problem information to map a vector of real numbers in the interval [0,1]
+to a (valid) solution. In some cases, even though a valid solution cannot be
+found, library users apply penalization factors and push the BRKGA to find
+valid solutions.
 
 Before you go further, please take a look at the ``examples`` folder in `the
 git repo <https://github.com/ceandrade/brkga_mp_ipr_cpp>`_. There, you can find
@@ -338,17 +338,18 @@ First things first: the decoder function
 
 The core of the BRKGA algorithm is the definition of a decoder
 function/object. The decoder maps the chromosomes (vectors of real numbers in
-the interval [0,1]) to solutions of the problem. In some sense, a decoder is
+the interval [0, 1]) to solutions of the problem. In some sense, a decoder is
 similar to a `kernel function from Support Vector Machines
 <https://en.wikipedia.org/wiki/Kernel_method>`_ : both functions are used to
 project solutions/distances in different spaces.
 
-Here, we have a small difference between the C++ and the Julia
-implementation. In the Julia version, you must define a data container
-inherit from `AbstractInstance <https://github.com/ceandrade/brkga_mp_ipr_cpp>`_,
+Here, we have a small difference between the C++/Python and the Julia
+implementations. In the Julia version, you must define a data container
+inherit from `AbstractInstance
+<https://ceandrade.github.io/brkga_mp_ipr_julia/guide/index.html#First-things-first:-basic-data-structures-and-decoder-function-1>`_,
 and a decoder function. The reason you must do that is because structs in
 Julia have no methods (but constructors), and the decoder function must take
-both chromosome and input data in the call. In C++, we can encapsulate the
+both chromosome and input data in the call. In C++/Python, we can encapsulate the
 input data into the decoder object, resulting in a much more clear API.
 
 The basic form of a decoder should be:
@@ -863,7 +864,7 @@ injected chromosome. For example, assuming the ``algorithm`` is your
 BRKGA-MP-IPR object and ``brkga_params`` is your ``BrkgaParams`` object, the
 following code injects the random chromosome ``keys`` into the population #1 in
 the last position (``population_size``), i.e., it will replace the worst
-solution:
+solution by a random one:
 
 .. ref-code-block:: cpp
 
@@ -1272,7 +1273,7 @@ following code, we do that with a simple ``if...else`` lambda function.
 
     const double rho = 0.75;
     algorithm.setBiasCustomFunction!([&](const unsigned x) {
-        return x == 0 ? rho : 1.0 - rho;
+        return x == 1 ? rho : 1.0 - rho;
     });
     algorithm.initialize();
 
@@ -1285,16 +1286,21 @@ the bias function as a very simple lambda function (note that we must use
 .. ref-code-block:: cpp
 
     [&](const unsigned x) {
-        return x == 0 ? rho : 1.0 - rho;
+        return x == 1 ? rho : 1.0 - rho;
     }
 
-So, if the index of the chromosome is 0 (elite individual), it gets a 0.75
-rank/probability. If the index is 1 (non-elite individual), the chromosome gets
+So, if the index of the chromosome is 1 (elite individual), it gets a 0.75
+rank/probability. If the index is 2 (non-elite individual), the chromosome gets
 0.25 rank/probability.
 
 .. note::
   All these operations must be done before calling ``initialize()``.
 
+.. warning::
+    Note that we consider the index 1 as the elite individual instead index
+    0, and index 2 to the non-elite individual opposed to index 1. The reason
+    for this is that, internally, BRKGA always pass ``r > 0`` to the bias
+    function to avoid division-by-zero exceptions.
 
 .. _doxid-guide_1guide_parameters:
 Reading and writing parameters
@@ -1320,14 +1326,15 @@ simple plain text file and returns a tuple of ``:ref:`BRKGA::BrkgaParams
     // C++17 syntax. Isn't cool?
     auto [brkga_params, control_params] = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>`("tuned_conf.txt");
 
-The configuration file must be plain text such that contains pairs of parameter
-name and value. This file must list all fields from ``:ref:`BRKGA::BrkgaParams
-<doxid-class_b_r_k_g_a_1_1_brkga_params>``` and
+The configuration file must be plain text such that contains pairs of
+parameter name and value. This file must list all fields from
+``:ref:`BRKGA::BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>``` and
 ``:ref:`BRKGA::ExternalControlParams
-<doxid-class_b_r_k_g_a_1_1_external_control_params>```, even though you do not
-use each one. In `examples folder <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp>`_,
-we have
-`config.conf <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/config.conf>`_
+<doxid-class_b_r_k_g_a_1_1_external_control_params>```, even though you do
+not use each one at this moment. In `examples folder
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp>`_, we
+have `config.conf
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/config.conf>`_
 that looks like this:
 
 .. ref-code-block:: cpp
@@ -1350,9 +1357,9 @@ that looks like this:
     reset_interval 600
 
 It does not matter whether we use lower or upper cases. Blank lines and lines
-starting with ``#`` are ignored. The order of the parameters should not matter
-either. And, finally, this file should be readble for both C++ and Julia
-framework versions.
+starting with ``#`` are ignored. The order of the parameters should not
+matter either. And, finally, this file should be readble for both C++, Julia,
+and Python framework versions.
 
 In some cases, you define some of the parameters at the running time, and you
 may want to save them for debug or posterior use. To do so, you can use
@@ -1382,8 +1389,9 @@ Algorithm warmup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 While in Julia framework version is primordial to do a dry-run to precompile
-all functions, in C++ this warmup is not necessary. However, few dry-runs can
-help the OS/processor with cache locality and give some speedup.
+all functions (and a good idea on Python version), in C++ and Python this
+warmup is not necessary. However, few dry-runs can help the OS/processor with
+cache locality and give some speedup..
 
 Besides the dry-runs, I would recommend the pre-allocation of all
 resource/memory that you need, if you know in advance how much will be
