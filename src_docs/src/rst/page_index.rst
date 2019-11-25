@@ -56,13 +56,12 @@ kindly ask you to remember to cite the originating paper of this work.
 Indeed, Clause 4 estipulates that "all publications, softwares, or any other
 materials mentioning features or use of this software (as a whole package or
 any parts of it) and/or the data used to test it must cite the following
-article explicitly:":
+article explicitly":
 
-  C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
-  Biased Random-key Genetic Algorithm with Implicit Path Relinking and its
-  real-world applications.  *European Journal of Operational Research*,
-  volume XX, issue X, pages xx-xx, 2019.
-  DOI `to be determined <http://dx.doi.org/xxx>`_
+    C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
+    Biased Random-key Genetic Algorithm with Implicit Path Relinking. *European
+    Jornal of Operational Research*, To appear, 2019.
+    DOI https://doi.org/10.1016/j.ejor.2019.11.037
 
 
 About the logo
