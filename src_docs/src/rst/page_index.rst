@@ -30,15 +30,18 @@ it is a very mature code used in production in several companies. However, it
 lacks of a proper unit and coverage testing. Such tests are in the TODO list.
 
 If C++ is not suitable to you, we may find useful the
-`Julia version <https://github.com/ceandrade/brkga_mp_ipr_julia>`_
-of this framework
-or the `Python version <https://github.com/ceandrade/brkga_mp_ipr_python>`_
+`Julia version <https://github.com/ceandrade/brkga_mp_ipr_julia>`_.
+We are also developing a
+`Python version <https://github.com/ceandrade/brkga_mp_ipr_python>`_
 which is in its earlier stages.
 At this moment, we have no plans to implement the BRKGA-MP-IPR in other
-languages such as Java or C#. But if you want to do so, you are
-must welcome. But please, keep the API as close as possible to the C++ API
-(or Julia API in case you decide go C), and use the best coding and
-documentation practices of your chosen language/framework
+languages such as Java or C#. But if you want to do so, you are must welcome.
+But please, keep the API as close as possible to the C++ API (or Julia API in
+case you decide go C), and use the best coding and documentation practices of
+your chosen language/framework.
+
+- `C++ version <https://github.com/ceandrade/brkga_mp_ipr_cpp>`_
+- `Python version <https://github.com/ceandrade/brkga_mp_ipr_python>`_
 
 If you are not familiar with how BRKGA works, take a look on `Standard BRKGA
 <http://dx.doi.org/10.1007/s10732-010-9143-1>`_ and `Multi-Parent BRKGA
