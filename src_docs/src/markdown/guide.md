@@ -1418,7 +1418,7 @@ double TSP_Decoder_pre_allocating::decode(Chromosome& chromosome,
     diminishing returns. I recommend using **at most the number of physical
     cores** (may -1) to avoid racing and too much context switching. You must
     test which is the best option for your case. In my experience, complex
-    decoders benefit more from multi-threading and simple and fast decoders.
+    decoders benefit more from multi-threading than simple and fast decoders.
 
 Known issues {#known_issues}
 ================================================================================
