@@ -2,7 +2,7 @@
 .. _doxid-page_license:
 
 BRKGA-MP-IPR License
-================================================================================
+===============================================================================
 
 Copyright (c) 2019, Carlos Eduardo de Andrade. All other rights reserved.
 
@@ -44,7 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 The MIT License (MIT)
-================================================================================
+-------------------------------------------------------------------------------
 
 Copyright (c) 2018
 Rodrigo Franco Toso and Mauricio G.C. Resende
