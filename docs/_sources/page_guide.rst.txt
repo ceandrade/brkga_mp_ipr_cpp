@@ -70,7 +70,7 @@ The best way to keep it short is to look in the on examples on `the git repo.
 Let's take a look into
 `main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_minimal.cpp>`_,
 which solves the
-`Traveling Salesman Problem (TSP) <https://en.wikipedia.org/wiki/Travelling_salesman_problem>`._
+`Traveling Salesman Problem (TSP) <https://en.wikipedia.org/wiki/Travelling_salesman_problem>`_.
 This is a trimmed copy:
 
 .. ref-code-block:: cpp
