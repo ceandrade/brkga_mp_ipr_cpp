@@ -15,16 +15,16 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(1, os.path.abspath('/Users/cea/temp/doxyrest-1.1.1-a-mac/share/doxyrest/sphinx'))
+sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-1.1.1-a-mac/share/doxyrest/sphinx'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'BRKGA-MP-IPR'
-copyright = '2019, Carlos E. Andrade'
+copyright = '2020, Carlos E. Andrade'
 author = 'Carlos E. Andrade'
 
 # The short X.Y version
-version = ''
+version = '1.0'
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
 

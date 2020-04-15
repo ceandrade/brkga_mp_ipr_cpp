@@ -23,13 +23,13 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script type="text/javascript" src="_static/add_target.js"></script>
-        <script type="text/javascript" src="_static/target-highlight.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/add_target.js"></script>
+        <script src="_static/target-highlight.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -69,6 +69,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -204,14 +208,16 @@ download the header files and tell your compiler to include the path to where
 the files were downloaded.</p>
 <p>Quick example (unix): assume we are in an empty folder. So, we copy/clone
 BRKGA-IPR-MP first:</p>
-<pre class="highlight literal-block"><span></span>$ git clone https://github.com/ceandrade/brkga_mp_ipr_cpp
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/ceandrade/brkga_mp_ipr_cpp
 Cloning into &#39;brkga_mp_ipr&#39;...
 remote: Enumerating objects: 118, done.
 remote: Counting objects: 100% (118/118), done.
 remote: Compressing objects: 100% (112/112), done.
 remote: Total 118 (delta 24), reused 0 (delta 0)
 Receiving objects: 100% (118/118), 3.50 MiB | 3.66 MiB/s, done.
-Resolving deltas: 100% (24/24), done.</pre>
+Resolving deltas: 100% (24/24), done.
+</pre></div>
+</div>
 <p>Let’s write a <code class="docutils literal notranslate"><span class="pre">test.cpp</span></code> with the following code:</p>
 <pre class="highlight literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&quot;brkga_mp_ipr.hpp&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -221,13 +227,15 @@ Resolving deltas: 100% (24/24), done.</pre>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span></pre>
 <p>Then, let’s compile and see it works:</p>
-<pre class="highlight literal-block"><span></span>$ g++ --version
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ g++ --version
 g++ (MacPorts gcc8 8.2.0_3) 8.2.0
 
 $ g++ -std=c++14 -Ibrkga_mp_ipr/brkga_mp_ipr test.cpp -o test
 
 $ ./test
-Testing sense: MINIMIZE</pre>
+Testing sense: MINIMIZE
+</pre></div>
+</div>
 <p>Note the Git clones the whole repository that contains the library code,
 documents, and examples. All the examples were built using <a class="reference external" href="https://www.gnu.org/software/make/">GNU/Make</a> and <a class="reference external" href="https://gcc.gnu.org">GCC toolchain</a>. However, the code is standard C++, and we can
 quickly adapt it to other toolchains such as <a class="reference external" href="https://clang.llvm.org">Clang</a>, <a class="reference external" href="https://visualstudio.microsoft.com">Microsoft</a>, or <a class="reference external" href="https://software.intel.com/en-us/c-compilers">Intel</a> toolchains. To build this
@@ -834,12 +842,17 @@ returns the value/fitness of the best chromosome across all populations.</p>
 returns a <em>reference</em> of the best chromosome across all populations. You may
 want to extract an actual solution from such chromosome, i.e., to apply a
 decoding function that returns the actual solution instead only its value.</p>
-<p>You may also want to get a reference of specific chromosome for a given
-population using <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1abfe4eccfd47a8eb88fc920e640f8513f"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getChromosome()</span></span></a></code>.</p>
+<p>You may also want to get a reference of specific chromosome and its fitness
+for a given population using <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1abfe4eccfd47a8eb88fc920e640f8513f"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::getChromosome()</span></span></a></code>.</p>
 <pre class="highlight literal-block"><span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
-                                <span class="kt">unsigned</span> <span class="n">position</span><span class="p">)</span> <span class="k">const</span></pre>
-<p>For example, you can get the 3rd best chromosome from the 2nd population using</p>
-<pre class="highlight literal-block"><span></span><span class="n">third_best</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">.</span><span class="n">getChromosome</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></pre>
+                                <span class="kt">unsigned</span> <span class="n">position</span><span class="p">)</span> <span class="k">const</span>
+
+<span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getFitness</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
+                             <span class="kt">unsigned</span> <span class="n">position</span><span class="p">)</span> <span class="k">const</span></pre>
+<p>For example, you can get the 3rd best chromosome (and it fitness)
+from the 2nd population using</p>
+<pre class="highlight literal-block"><span></span><span class="n">third_best_chr</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">.</span><span class="n">getChromosome</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">third_best_fitness</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">.</span><span class="n">getFitness</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span></pre>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Just remember that C++ is zero-indexed. So, the first population index is 0
@@ -868,7 +881,7 @@ solution by a random one:</p>
     <span class="n">key</span> <span class="o">=</span> <span class="n">generate_canonical</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span>
                              <span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">digits</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rng</span><span class="p">);</span>
 
-<span class="n">algorithm</span><span class="p">.</span><span class="n">injectChromosome</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">.</span><span class="n">population_size</span><span class="p">)</span></pre>
+<span class="n">algorithm</span><span class="p">.</span><span class="n">injectChromosome</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">brkga_params</span><span class="p">.</span><span class="n">population_size</span><span class="p">);</span></pre>
 </div>
 <div class="section" id="implicit-path-relink">
 <h2>Implicit Path Relink<a class="headerlink" href="#implicit-path-relink" title="Permalink to this headline">¶</a></h2>
@@ -901,7 +914,7 @@ according to its position in the other chromosome. Usually, this kind of path
 relink is more suitable to permutation representations, where the chromosome
 induces an order or permutation. For example, chromosome <code class="docutils literal notranslate"><span class="pre">[0.4,</span> <span class="pre">0.7,</span> <span class="pre">0.1]</span></code>
 may induce the increasing order <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1,</span> <span class="pre">2)</span></code>. More details about threshold and
-permutation representations in <a class="reference external" href="http://dx.doi.org/xxx">this paper</a>.</p>
+permutation representations in <a class="reference external" href="https://doi.org/10.1016/j.ejor.2019.11.037">this paper</a>.</p>
 <p><code class="docutils literal notranslate"><a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref"><span class="pre">BRKGA::PathRelinking::Selection</span></span></a></code>
 defines how the algorithm picks the chromosomes for relinking. <code class="docutils literal notranslate"><span class="pre">BESTSOLUTION</span></code>
 selects, in the order, the best solution of each population. <code class="docutils literal notranslate"><span class="pre">RANDOMELITE</span></code>
@@ -948,7 +961,7 @@ for threshold representations (<code class="docutils literal notranslate"><a cla
 and a class/functor that computes the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Kendall_tau_distance">Kendall Tau distance</a>
 distance for permutation representations (<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_KendallTauDistance.html#doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref"><span class="pre">BRKGA::KendallTauDistance</span></span></a></code>). Again, details about
-threshold and permutation representations in <a class="reference external" href="http://dx.doi.org/xxx">this paper</a>.</p>
+threshold and permutation representations in <a class="reference external" href="https://doi.org/10.1016/j.ejor.2019.11.037">this paper</a>.</p>
 <p>As a simple example, suppose you are using a threshold representation where
 each chromosome key can represent one of 3 different values (a ternary
 threshold representation). So, one possible way to compute the distance between
@@ -1031,7 +1044,7 @@ exchanged during the direct path relink. This parameter is also critical for
 IPR performance since it avoids too many exchanges during the path building.
 Usually, we can compute this number based on the size of the chromosome by some
 factor (<code class="docutils literal notranslate"><span class="pre">alpha_block_size</span></code> in the configuration file), chosen by you. Again,
-details <a class="reference external" href="http://dx.doi.org/xxx">here</a>.</p>
+details <a class="reference external" href="https://doi.org/10.1016/j.ejor.2019.11.037">here</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Experiments have shown that a good choice is
@@ -1122,8 +1135,8 @@ generic/implicit <code class="docutils literal notranslate"><a class="reference 
 <code class="docutils literal notranslate"><span class="pre">CHANGE</span></code>, direct modifications are done in the keys/alleles. This kind of
 shaking is recommended when the chromosome uses direct or threshold
 representations. <code class="docutils literal notranslate"><span class="pre">SWAP</span></code> exchanges keys/alleles inducing new permutations. For
-representational definitions, please read <a class="reference external" href="http://dx.doi.org/xxx">this paper</a>. For instance, the following code shakes all
-populations using 10 swap moves:</p>
+representational definitions, please read <a class="reference external" href="https://doi.org/10.1016/j.ejor.2019.11.037">this paper</a>. For instance, the following
+code shakes all populations using 10 swap moves:</p>
 <pre class="highlight literal-block"><span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">shake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">SWAP</span><span class="p">);</span></pre>
 <p>Sometimes, even shaking the populations does not help to escape from local
 maxima/minima. So, we need a drastic measure, restarting from scratch the role
@@ -1524,7 +1537,7 @@ compiled just once.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Carlos E. Andrade
+        &copy; Copyright 2020, Carlos E. Andrade
 
     </p>
   </div>

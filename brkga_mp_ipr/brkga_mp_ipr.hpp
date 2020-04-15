@@ -2,14 +2,14 @@
  * brkga_mp_ipr.hpp: Biased Random-Key Genetic Algorithm Multi-Parent
  *                   with Implict Path Relinking.
  *
- * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2020, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  * (c) Copyright 2010, 2011 Rodrigo F. Toso, Mauricio G.C. Resende.
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: May 18, 2019 by andrade.
+ * Last update: Apr 15, 2020 by andrade.
  *
  * This code is released under LICENSE.md.
  *
@@ -1368,6 +1368,17 @@ public:
      */
     const Chromosome& getChromosome(unsigned population_index,
                                     unsigned position) const;
+
+    /**
+     * \brief Returns the fitness of a chromosome of the given population.
+     * \param population_index the population index.
+     * \param position the chromosome position, ordered by fitness.
+     *        The best chromosome is located in position 0.
+     * \throw std::range_error eitheir if `population_index` is larger
+     *        than number of populations, or `position` is larger than the
+     *        population size.
+     */
+    double getFitness(unsigned population_index, unsigned position) const;
     //@}
 
     /** \name Parameter getters */
@@ -1741,6 +1752,21 @@ const Chromosome& BRKGA_MP_IPR<Decoder>::getBestChromosome() const {
 
     // Since the chromosomes are ordered by fitness, the first is the best.
     return current[best_k]->getChromosome(0);
+}
+
+//----------------------------------------------------------------------------//
+
+template<class Decoder>
+double BRKGA_MP_IPR<Decoder>::getFitness(unsigned population_index,
+                                         unsigned position) const {
+    if(population_index >= current.size())
+        throw std::range_error("The population index is larger than number of "
+                               "populations");
+    if(position >= params.population_size)
+        throw std::range_error("The chromosome position is larger than number "
+                               "of populations");
+
+    return current[population_index]->fitness[position].first;
 }
 
 //----------------------------------------------------------------------------//

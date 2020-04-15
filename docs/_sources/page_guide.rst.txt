@@ -824,8 +824,8 @@ returns a *reference* of the best chromosome across all populations. You may
 want to extract an actual solution from such chromosome, i.e., to apply a
 decoding function that returns the actual solution instead only its value.
 
-You may also want to get a reference of specific chromosome for a given
-population using ``:ref:`BRKGA::BRKGA_MP_IPR::getChromosome()
+You may also want to get a reference of specific chromosome and its fitness 
+for a given population using ``:ref:`BRKGA::BRKGA_MP_IPR::getChromosome()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1abfe4eccfd47a8eb88fc920e640f8513f>```.
 
 .. ref-code-block:: cpp
@@ -833,11 +833,16 @@ population using ``:ref:`BRKGA::BRKGA_MP_IPR::getChromosome()
     const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getChromosome(unsigned population_index,
                                     unsigned position) const
 
-For example, you can get the 3rd best chromosome from the 2nd population using
+    const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getFitness(unsigned population_index,
+                                 unsigned position) const
+
+For example, you can get the 3rd best chromosome (and it fitness) 
+from the 2nd population using
 
 .. ref-code-block:: cpp
 
-    third_best = algorithm.getChromosome(1, 2)
+    third_best_chr = algorithm.getChromosome(1, 2);
+    third_best_fitness = algorithm.getFitness(1, 2);
 
 .. note::
   Just remember that C++ is zero-indexed. So, the first population index is 0
@@ -874,7 +879,7 @@ solution by a random one:
         key = generate_canonical<double,
                                  numeric_limits<double>::digits>(rng);
 
-    algorithm.injectChromosome(keys, 0, brkga_params.population_size)
+    algorithm.injectChromosome(keys, 0, brkga_params.population_size);
 
 
 .. _doxid-guide_1guide_ipr:
@@ -917,7 +922,7 @@ according to its position in the other chromosome. Usually, this kind of path
 relink is more suitable to permutation representations, where the chromosome
 induces an order or permutation. For example, chromosome ``[0.4, 0.7, 0.1]``
 may induce the increasing order ``(3, 1, 2)``. More details about threshold and
-permutation representations in `this paper <http://dx.doi.org/xxx>`_.
+permutation representations in `this paper <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 
 ``:ref:`BRKGA::PathRelinking::Selection
 <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a3ce8f0aeb5c0063aab2e8cbaee3076fa>```
@@ -978,7 +983,7 @@ and a class/functor that computes the
 distance for permutation representations (``:ref:`BRKGA::KendallTauDistance
 <doxid-class_b_r_k_g_a_1_1_kendall_tau_distance>```). Again, details about
 threshold and permutation representations in `this paper
-<http://dx.doi.org/xxx>`_.
+<https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 
 As a simple example, suppose you are using a threshold representation where
 each chromosome key can represent one of 3 different values (a ternary
@@ -1069,7 +1074,7 @@ exchanged during the direct path relink. This parameter is also critical for
 IPR performance since it avoids too many exchanges during the path building.
 Usually, we can compute this number based on the size of the chromosome by some
 factor (``alpha_block_size`` in the configuration file), chosen by you. Again,
-details `here <http://dx.doi.org/xxx>`_.
+details `here <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 
 
 .. note::
@@ -1179,8 +1184,8 @@ generic/implicit ``:ref:`BRKGA::ShakingType
 shaking is recommended when the chromosome uses direct or threshold
 representations. ``SWAP`` exchanges keys/alleles inducing new permutations. For
 representational definitions, please read `this paper
-<http://dx.doi.org/xxx>`_. For instance, the following code shakes all
-populations using 10 swap moves:
+<https://doi.org/10.1016/j.ejor.2019.11.037>`_. For instance, the following
+code shakes all populations using 10 swap moves:
 
 .. ref-code-block:: cpp
 
