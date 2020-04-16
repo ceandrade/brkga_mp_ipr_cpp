@@ -15,7 +15,8 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-2.0.0-mac/share/doxyrest/sphinx'))
+# sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-2.0.0-mac/share/doxyrest/sphinx'))
+sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-new/sphinx'))
 
 # -- Project information ----------------------------------------------------
 
