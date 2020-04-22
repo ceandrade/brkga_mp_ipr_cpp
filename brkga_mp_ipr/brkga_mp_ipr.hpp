@@ -881,7 +881,7 @@ INLINE void writeConfiguration(const std::string& filename,
  * Algorithm with Implicit Path Relinking (BRKGA-MP-IPR).
  *
  * \author Carlos Eduardo de Andrade <ce.andrade@gmail.com>
- * \date 2019
+ * \date 2020
  *
  * Main capabilities {#main_cap}
  * ========================
