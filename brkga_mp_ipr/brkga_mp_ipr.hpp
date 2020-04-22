@@ -9,7 +9,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: Apr 15, 2020 by andrade.
+ * Last update: Apr 22, 2020 by andrade.
  *
  * This code is released under LICENSE.md.
  *
@@ -568,7 +568,7 @@ public:
     double elite_percentage;
 
     /// Percentage of mutants to be inserted in the population.
-    unsigned mutants_percentage;
+    double mutants_percentage;
 
     /// Number of elite parents for mating.
     unsigned num_elite_parents;

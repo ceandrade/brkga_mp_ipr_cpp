@@ -40,7 +40,7 @@ FRAME_DIR_LIST = { "./doxyrest-1.1.1-a-mac/share/doxyrest/frame/cfamily",
 --! used as the default frame file.
 --!
 
-FRAME_FILE = "index.rst.in"
+FRAME_FILE = "./doxyrest-new/frame/cfamily/index.rst.in"
 
 --!
 --! The input master (index) XML file. Specifying it here allows calling
@@ -79,7 +79,7 @@ EXTRA_PAGE_LIST = {}
 --! The title of the main (index) page.
 --!
 
-INDEX_TITLE = "My Project Documentation"
+INDEX_TITLE = "BRKGA-MP-IPR Documentation"
 
 --!
 --! File with project introduction (reStructuredText). When non-nil, this file

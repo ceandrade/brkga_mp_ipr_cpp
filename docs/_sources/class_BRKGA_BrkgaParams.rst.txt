@@ -39,7 +39,7 @@ Represents the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and IPR hyper-parameters
 	
 		unsigned :ref:`population_size<doxid-class_b_r_k_g_a_1_1_brkga_params_1a8a4b0592480f32a3cf186b6d1759f571>`;
 		double :ref:`elite_percentage<doxid-class_b_r_k_g_a_1_1_brkga_params_1a3b9a181f00f8675ed88e09f0b9c34571>`;
-		unsigned :ref:`mutants_percentage<doxid-class_b_r_k_g_a_1_1_brkga_params_1a84964a7fc9667892e7078f1017542e23>`;
+		double :ref:`mutants_percentage<doxid-class_b_r_k_g_a_1_1_brkga_params_1a84964a7fc9667892e7078f1017542e23>`;
 		unsigned :ref:`num_elite_parents<doxid-class_b_r_k_g_a_1_1_brkga_params_1aec9a49fd5bb618908ccc8633c0244157>`;
 		unsigned :ref:`total_parents<doxid-class_b_r_k_g_a_1_1_brkga_params_1a8c214f59c688ba40baf86b4c4b4377be>`;
 		:ref:`BiasFunctionType<doxid-namespace_b_r_k_g_a_1af0ede0f2a7123e654a4e3176b5539fb1>` :ref:`bias_type<doxid-class_b_r_k_g_a_1_1_brkga_params_1af20949ce2efbd51609e5fb6fcf465c2e>`;
@@ -94,7 +94,7 @@ Percentage of individuals to become the elite set (0, 1].
 .. ref-code-block:: cpp
 	:class: title-code-block
 
-	unsigned mutants_percentage
+	double mutants_percentage
 
 Percentage of mutants to be inserted in the population.
 
