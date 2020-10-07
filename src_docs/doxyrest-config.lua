@@ -289,7 +289,7 @@ ML_PARAM_LIST_COUNT_THRESHOLD = nil
 --! ``nil`` means don't use length threshold.
 --!
 
-ML_PARAM_LIST_LENGTH_THRESHOLD = 80
+ML_PARAM_LIST_LENGTH_THRESHOLD = 40
 
 --!
 --! Use multi-line specifier-modifier lists in function declarations, i.e.
