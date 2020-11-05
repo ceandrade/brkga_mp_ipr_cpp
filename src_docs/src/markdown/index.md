@@ -38,7 +38,7 @@ documentation practices of your chosen language/framework.
 
 If you are not familiar with how BRKGA works, take a look on
 [Standard BRKGA](http://dx.doi.org/10.1007/s10732-010-9143-1) and
-[Multi-Parent BRKGA](http://dx.doi.org/xxx).
+[Multi-Parent BRKGA](http://dx.doi.org/10.1016/j.ejor.2019.11.037).
 In the future, we will provide a _Prime on BRKGA-MP_
 section. If you know what _elite set_, _decoder_, and so means,
 we can get to the guts on the [Guide](@ref guide).
@@ -54,10 +54,9 @@ materials mentioning features or use of this software and/or the data used to
 test it must cite explicitly the following article":
 
 > C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
-> Biased Random-key Genetic Algorithm with Implicit Path Relinking and its 
-> real-world applications.  *European Journal of Operational Research*, 
-> volume XX, issue X, pages xx-xx, 2019.
-> DOI `to be determined <http://dx.doi.org/xxx>`__
+> Biased Random-key Genetic Algorithm with Implicit Path Relinking. _European
+> Journal of Operational Research_, volume 289, number 1, pages 17–30, 2021.
+> DOI [10.1016/j.ejor.2019.11.037](https://doi.org/10.1016/j.ejor.2019.11.037).
 
 
 About the logo

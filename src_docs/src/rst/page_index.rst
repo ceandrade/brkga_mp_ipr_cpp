@@ -63,7 +63,7 @@ article explicitly":
 
     C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
     Biased Random-key Genetic Algorithm with Implicit Path Relinking. *European
-    Journal of Operational Research*, To appear, 2019.
+    Journal of Operational Research*, volume 289, number 1, pages 17–30, 2021.
     DOI `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_
 
 
