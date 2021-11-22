@@ -2357,8 +2357,9 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
     if(block_size > CHROMOSOME_SIZE)
         block_size = CHROMOSOME_SIZE / 2;
 
-    return pathRelink(dist, params.pr_number_pairs, params.pr_minimum_distance,
-                      params.pr_type, params.pr_selection, block_size, max_time,
+    return pathRelink(params.pr_type, params.pr_selection, dist, 
+                      params.pr_number_pairs, params.pr_minimum_distance,
+                      block_size, max_time,
                       params.pr_percentage);
 }
 
