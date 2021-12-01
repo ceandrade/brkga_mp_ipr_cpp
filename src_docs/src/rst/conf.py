@@ -21,13 +21,13 @@ sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation
 # -- Project information ----------------------------------------------------
 
 project = 'BRKGA-MP-IPR'
-copyright = '2020, Carlos E. Andrade'
+copyright = '2019-2022, Carlos E. Andrade'
 author = 'Carlos E. Andrade'
 
 # The short X.Y version
-version = '1.1'
+version = '2.0'
 # The full version, including alpha/beta/rc tags
-release = '1.1.0'
+release = '2.0.0'
 
 html_logo = "../assets/logo.png"
 html_favicon = "../assets/favicon.ico"
@@ -191,6 +191,5 @@ todo_include_todos = True
 # -- Additional CSS  and Javascript ------------------------------------------
 
 def setup(app):
-    app.add_javascript('add_target.js')
-    app.add_stylesheet('custom_theme.css')
-
+    app.add_js_file('add_target.js')
+    app.add_css_file('custom_theme.css')

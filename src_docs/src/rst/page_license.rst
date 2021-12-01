@@ -4,7 +4,7 @@
 BRKGA-MP-IPR License
 ===============================================================================
 
-Copyright (c) 2019, Carlos Eduardo de Andrade. All other rights reserved.
+Copyright (c) 2019-2022, Carlos Eduardo de Andrade. All other rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are only permitted provided that the following conditions are
@@ -30,6 +30,17 @@ met:
     Journal of Operational Research*, volume 289, number 1, pages 17–30, 2021.
     DOI `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_
 
+5. All publications, softwares, or any other materials mentioning features or
+   use of this software (as a whole package or any parts of it on
+   multi-objective mode) and/or the data used to test it must also cite the
+   following article explicitly:
+
+    C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
+    Assignment Problem: a Multi-objective Optimization Approach.
+    *IEEE Transactions on Evolutionary Computation*, volume XXX, number X,
+    pages XX–XX, 2022.
+    DOI:
+    `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -66,3 +77,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+

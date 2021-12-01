@@ -10,6 +10,65 @@ Biased Random-Key Genetic Algorithm with Implict Path Relink
 setup, run, and extract the value of the best solution in less than 5 commands
 (obvisiously, you may need few other lines fo code to do a proper test).
 
+In version 2.0, BRKGA-MP-IPR also deals with multiple objectives in a
+lexicographical or priority dominance order. Differing from classical
+non-dominance order (using Pareto frontiers), the lexicographical order defines
+a *strict preference order among the objective functions.* This leads us to a
+partial ordering of the values of the solutions (composed of several values,
+each one from one objective function). So, we have the following definition
+(abusing a little bit of notation).
+
+  .. admonition:: Definition
+
+    Let :math:`A = (f_1, f_2, \ldots, f_n)` and
+    :math:`A' = (f'_1, f'_2, \ldots, f'_n)`
+    be two vectors for :math:`n` functions :math:`f_1, f_2, \ldots, f_n`.
+    :math:`A` is lexicographical smaller than :math:`A'`, i.e.,
+    :math:`A < A'` if and only if
+    :math:`f_1 < f'_1`, or
+    :math:`f_1 = f'_1` and :math:`f_2 < f'_2`, or
+    :math:`\ldots, f_1 = f'_1, \ldots, f_{n-1} = f'_{n-1}`
+    and :math:`f_n < f'_n`.
+
+For instance, let's assume we have three minimizing objective functions and
+four solutions described in the following table:
+
+  .. table::
+
+    ======== =========== =========== ===========
+    Solution :math:`f_1` :math:`f_2` :math:`f_3`
+    ======== =========== =========== ===========
+    A        50          30          30
+    B        30          55          40
+    C        30          20          50
+    D        30          20          25
+    ======== =========== =========== ===========
+
+Note that Solution B is better than Solution A because :math:`f_1(A) < f_1(B),`
+even though A has much better values for :math:`f_2` and :math:`f_3`. Now,
+Solution C is better B because, although :math:`f_1(B) = f_1(C),` we have that
+:math:`f_2(B) < f_2(C),` regardless of the value of :math:`f_3.` Solution D
+has the best value for all objective functions. Therefore :math:`D < C < B <
+A.`
+
+ .. warning::
+
+    If you really want an algorithm to produce a **non-dominated set of
+    solutions (Pareto frontier)**, this is **not** the right algorithm for you.
+    We recommend taking a look at the `NSGA-II
+    <https://doi.org/10.1109/4235.996017>`_ and `MOAB
+    <https://en.wikipedia.org/wiki/MOEA_Framework>`_.
+
+If you are not familiar with how BRKGA works, take a look on `Standard BRKGA
+<http://dx.doi.org/10.1007/s10732-010-9143-1>`_ and `Multi-Parent BRKGA
+<https://doi.org/10.1016/j.ejor.2019.11.037>`_. 
+If you know what *elite set*, *decoder*,
+and so means, we can get to the guts on the :ref:`Guide <doxid-guide>`.
+
+
+The implementation
+-------------------------------------------------------------------------------
+
 This C++ version provides a fast prototyping API using C++14 standards and
 libraries. All code was developed as a header-only library, and have no
 external dependencies other than those included in the package. So, you just
@@ -40,15 +99,6 @@ But please, keep the API as close as possible to the C++ API (or Julia API in
 case you decide go C), and use the best coding and documentation practices of
 your chosen language/framework.
 
-- `C++ version <https://github.com/ceandrade/brkga_mp_ipr_cpp>`_
-- `Python version <https://github.com/ceandrade/brkga_mp_ipr_python>`_
-
-If you are not familiar with how BRKGA works, take a look on `Standard BRKGA
-<http://dx.doi.org/10.1007/s10732-010-9143-1>`_ and `Multi-Parent BRKGA
-<https://doi.org/10.1016/j.ejor.2019.11.037>`_. In the future, we will provide
-a *Prime on BRKGA-MP* section. If you know what *elite set*, *decoder*,
-and so means, we can get to the guts on the :ref:`Guide <doxid-guide>`.
-
 
 License and Citing
 -------------------------------------------------------------------------------
@@ -61,10 +111,34 @@ materials mentioning features or use of this software (as a whole package or
 any parts of it) and/or the data used to test it must cite the following
 article explicitly":
 
-    C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
+    C.E. Andrade, R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
     Biased Random-key Genetic Algorithm with Implicit Path Relinking. *European
     Journal of Operational Research*, volume 289, number 1, pages 17–30, 2021.
-    DOI `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_
+    DOI:
+    `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+
+If you are using the multi-objective version, you also should cite this paper:
+
+    C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
+    Assignment Problem: a Multi-objective Optimization Approach.
+    *IEEE Transactions on Evolutionary Computation*, volume XXX, number X,
+    pages XX–XX, 2022.
+    DOI:
+    `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+
+You may also consider to cite the following papers from people that helped
+to find bugs and develop new features for BRKGA-MP-IPR 2.0:
+
+    C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
+    Assignment Problem: a Multi-objective Optimization Approach.
+    *IEEE Transactions on Evolutionary Computation*, volume XXX, number X,
+    pages XX–XX, 2022.
+    DOI:
+    `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+
+You can download all references for this
+:download:`Bibtex <../assets/references.bib>`, or this
+:download:`RIS <../assets/references.ris>` files.
 
 
 About the logo
@@ -74,4 +148,3 @@ The logo is just a play with 3 chromosomes crossing with each other
 (multi-parent) during the mating process. The lines also represent solutions
 paths that encounter with each other generating new solutions during the
 path-relink.
-
