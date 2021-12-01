@@ -2,11 +2,11 @@
  * main_minimal.cpp: minimal code for calling BRKGA algorithms to solve
  *                   instances of the Traveling Salesman Problem.
  *
- * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  *  Created on : Mar 05, 2019 by andrade
- *  Last update: Mar 05, 2019 by andrade
+ *  Last update: Dec 01, 2021 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -62,13 +62,8 @@ int main(int argc, char* argv[]) {
 
         cout << "Reading parameters..." << endl;
 
-        // C++14 syntax.
-        auto params = BRKGA::readConfiguration(config_file);
-        auto& brkga_params = params.first;
-
-        // C++17 syntax.
-        // auto [brkga_params, control_params] =
-        //     BRKGA::readConfiguration(config_file);
+        auto [brkga_params, control_params] =
+            BRKGA::readConfiguration(config_file);
 
         ////////////////////////////////////////
         // Build the BRKGA data structures and initialize

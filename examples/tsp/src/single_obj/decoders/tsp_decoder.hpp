@@ -1,11 +1,11 @@
 /******************************************************************************
  * tsp_decoder.hpp: Interface for TSP_Decoder class.
  *
- * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  *  Created on : Mar 05, 2019 by andrade
- *  Last update: Mar 05, 2019 by andrade
+ *  Last update: Nov 30, 2021 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -26,7 +26,8 @@
 #define TSP_DECODER_HPP_
 
 #include "tsp/tsp_instance.hpp"
-#include "chromosome.hpp"
+#include "brkga_mp_ipr/fitness_type.hpp"
+#include "brkga_mp_ipr/chromosome.hpp"
 
 /**
  * \brief Interface for TSP_Decoder class.
@@ -48,7 +49,7 @@ public:
      *                this decoder, but keep due to API requirements.
      * \return the cost of the tour.
      */
-    double decode(BRKGA::Chromosome& chromosome, bool rewrite);
+    BRKGA::fitness_t decode(BRKGA::Chromosome& chromosome, bool rewrite);
 
 public:
     /// A reference to a TSP instance.

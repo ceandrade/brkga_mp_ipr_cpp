@@ -1,11 +1,11 @@
 /******************************************************************************
  * tsp_instance.cpp: Implementation for TSP_Instance class.
  *
- * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  *  Created on : Mar 05, 2019 by andrade
- *  Last update: Mar 05, 2019 by andrade
+ *  Last update: Nov 30, 2021 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -37,7 +37,8 @@ TSP_Decoder::TSP_Decoder(const TSP_Instance& _instance):
 
 //-------------------------------[ Decode ]-----------------------------------//
 
-double TSP_Decoder::decode(Chromosome& chromosome, bool /* not-used */) {
+BRKGA::fitness_t TSP_Decoder::decode(Chromosome& chromosome,
+                                     bool /* not-used */) {
     vector<pair<double, unsigned>> permutation(instance.num_nodes);
     for(unsigned i = 0; i < instance.num_nodes; ++i)
         permutation[i] = make_pair(chromosome[i], i);

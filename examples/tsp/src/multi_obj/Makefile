@@ -1,9 +1,9 @@
 ###############################################################################
-# (c) Copyright 2019, Carlos Eduardo de Andrade.
+# (c) Copyright 2019-2022, Carlos Eduardo de Andrade.
 # All Rights Reserved.
 #
 #  Created on : Mar 05, 2019 by andrade
-#  Last update: May 03, 2019 by andrade
+#  Last update: Dec 01, 2021 by andrade
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -32,7 +32,7 @@ OPT = opt
 # Include dir
 INCLUDES = \
 	-I. \
-	-I../../../brkga_mp_ipr
+	-I./brkga_mp_ipr
 
 # Objects
 OBJS = \
@@ -59,9 +59,7 @@ CXX = g++
 # CXX = clang++
 # CXX = /opt/local/bin/clang++-mp-7.0
 
-# Define the usage of C++14. This code compiles only in modern compilers,
-# for instance, gcc >= 5.2
-USER_FLAGS += -std=c++14
+USER_FLAGS += -std=c++17
 
 # Compiler flags for debugging
 ifneq ($(OPT), opt)

@@ -1,11 +1,11 @@
 /******************************************************************************
  * tsp_decoder_pre_allocating.cpp: Implementation for TSP_Instance class.
  *
- * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  *  Created on : May 03, 2019 by andrade
- *  Last update: May 03, 2019 by andrade
+ *  Last update: Nov 30, 2021 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -41,8 +41,8 @@ TSP_Decoder_pre_allocating::TSP_Decoder_pre_allocating(
 
 //-------------------------------[ Decode ]-----------------------------------//
 
-double TSP_Decoder_pre_allocating::decode(Chromosome& chromosome,
-                                          bool /* not-used */) {
+BRKGA::fitness_t  TSP_Decoder_pre_allocating::decode(Chromosome& chromosome,
+                                                    bool /* not-used */) {
     // If you have OpenMP available, get the allocated memory per thread ID.
     #ifdef _OPENMP
     auto& permutation = permutation_per_thread[omp_get_thread_num()];

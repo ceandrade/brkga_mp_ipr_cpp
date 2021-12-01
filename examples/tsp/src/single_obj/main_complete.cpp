@@ -1,12 +1,12 @@
 /******************************************************************************
- * main_minimal.cpp: minimal code for calling BRKGA algorithms to solve
- *                   instances of the Traveling Salesman Problem.
+ * main_brkga.cpp: complete code for calling BRKGA algorithms to solve
+ *                 instances of the Traveling Salesman Problem.
  *
- * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  *  Created on : Mar 06, 2019 by andrade
- *  Last update: May 03, 2019 by andrade
+ *  Last update: Dec 01, 2021 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -54,7 +54,6 @@ using namespace std::chrono;
 enum class StopRule {
     GENERATIONS = 'G',
     IMPROVEMENT = 'I',
-    TARGET = 'T',
     UNKNOWN = 'U',
 };
 
@@ -93,7 +92,6 @@ Options:
                         - (G)enerations: number of evolutionary generations.
                         - (I)terations: maximum number of generations without
                           improvement in the solutions.
-                        - (T)arget: runs until obtains the target value.
 
     -a <stop_arg>       Argument value for '-r'.
 
@@ -112,7 +110,7 @@ Options:
     string config_file;
     unsigned seed = 0;
     StopRule stop_rule = StopRule::UNKNOWN;
-    double stop_arg = 0.0;
+    unsigned stop_arg = 0;
     double max_time = 0.0;
     string instance_file;
     unsigned num_threads = 1;
@@ -126,7 +124,7 @@ Options:
         seed = static_cast<unsigned>(args["<seed>"].asLong());
         stop_rule = static_cast<StopRule>(toupper(args["<stop_rule>"].
                                           asString()[0]));
-        stop_arg = stod(args["<stop_arg>"].asString());
+        stop_arg = static_cast<unsigned>(args["<stop_arg>"].asLong());
         max_time = stod(args["<max_time>"].asString());
         instance_file = args["<instance_file>"].asString();
         perform_evolution = !args["--no_evolution"].asBool();
@@ -135,28 +133,20 @@ Options:
             num_threads = static_cast<unsigned>(args["<num_threads>"].asLong());
         }
 
-        if(stop_rule != StopRule::GENERATIONS &&
-           stop_rule != StopRule::IMPROVEMENT &&
-           stop_rule != StopRule::TARGET)
+    if(stop_rule != StopRule::GENERATIONS &&
+           stop_rule != StopRule::IMPROVEMENT)
             throw std::logic_error("Incorrect stop rule. Must be either "
-                                   "(G)enerations, (I)terations, or (T)arget");
-
-        stringstream ss;
-        if(stop_rule != StopRule::TARGET && stop_arg < 1e-6) {
-            ss << "when using either 'Generations' or 'Improvement' rules, "
-               << "stop_arg must be positive number. Given '"
-               << stop_arg << "'";
-            throw std::logic_error(ss.str());
-        }
+                                   "(G)enerations or (I)terations");
 
         if(max_time < 1e-6) {
+            stringstream ss;
             ss << "max_time must be > 0. Given '" << max_time << "'";
             throw std::logic_error(ss.str());
         }
     }
-    catch(std::exception& e) {
-        std::cerr << "Error: " << e.what()
-                  << ". Please use -h/--help for correct usage.";
+    catch(exception& e) {
+        cerr << "Error: " << e.what()
+             << ". Please use -h/--help for correct usage.";
         return 64;  // BSD usage error code.
     }
     catch(...) {
@@ -168,61 +158,55 @@ Options:
     // Load config file and show basic info.
     /////////////////////////////////////////
 
-    auto params = BRKGA::readConfiguration(config_file);
-    auto& brkga_params = params.first;
-    auto& control_params = params.second;
-
-    // C++17 syntax.
-    // auto [brkga_params, control_params] =
-    //     BRKGA::readConfiguration(config_file)
+    auto [brkga_params, control_params] = BRKGA::readConfiguration(config_file);
 
     // Main algorithm.
     try {
         { // Local scope for start_time.
         auto start_time = system_clock::to_time_t(system_clock::now());
 
-        cout <<
-        "------------------------------------------------------\n" <<
-        "> Experiment started at " << ctime(&start_time) <<
-        "> Instance: " << instance_file <<
-        "\n> Configuration: " << config_file <<
-        "\n> Algorithm Parameters";
+        cout
+        << "------------------------------------------------------\n"
+        << "> Experiment started at " << ctime(&start_time)
+        << "> Instance: " << instance_file
+        << "\n> Configuration: " << config_file
+        << "\n> Algorithm Parameters";
         }
 
         if(!perform_evolution)
             cout << ">    - Simple multi-start: on (no evolutionary operators)";
         else {
-            cout <<
-            "\n>   - population_size: " << brkga_params.population_size <<
-            "\n>   - elite_percentage: " << brkga_params.elite_percentage <<
-            "\n>   - mutants_percentage: " << brkga_params.mutants_percentage <<
-            "\n>   - num_elite_parents: " << brkga_params.num_elite_parents <<
-            "\n>   - total_parents: " << brkga_params.total_parents <<
-            "\n>   - bias_type: " << brkga_params.bias_type <<
-            "\n>   - num_independent_populations: " <<
-                brkga_params.num_independent_populations <<
-            "\n>   - pr_number_pairs: " << brkga_params.pr_number_pairs <<
-            "\n>   - pr_minimum_distance: " <<
-                brkga_params.pr_minimum_distance <<
-            "\n>   - pr_type: " << brkga_params.pr_type <<
-            "\n>   - pr_selection: " << brkga_params.pr_selection <<
-            "\n>   - alpha_block_size: " << brkga_params.alpha_block_size <<
-            "\n>   - pr_percentage: " << brkga_params.pr_percentage <<
-            "\n>   - exchange_interval: " << control_params.exchange_interval <<
-            "\n>   - num_exchange_indivuduals: " <<
-                control_params.num_exchange_indivuduals <<
-            "\n>   - reset_interval: " << control_params.reset_interval;
+            cout
+            << "\n>   - population_size: " << brkga_params.population_size
+            << "\n>   - elite_percentage: " << brkga_params.elite_percentage
+            << "\n>   - mutants_percentage: " << brkga_params.mutants_percentage
+            << "\n>   - num_elite_parents: " << brkga_params.num_elite_parents
+            << "\n>   - total_parents: " << brkga_params.total_parents
+            << "\n>   - bias_type: " << brkga_params.bias_type
+            << "\n>   - num_independent_populations: "
+            <<     brkga_params.num_independent_populations
+            << "\n>   - pr_number_pairs: " << brkga_params.pr_number_pairs
+            << "\n>   - pr_minimum_distance: "
+            <<     brkga_params.pr_minimum_distance
+            << "\n>   - pr_type: " << brkga_params.pr_type
+            << "\n>   - pr_selection: " << brkga_params.pr_selection
+            << "\n>   - alpha_block_size: " << brkga_params.alpha_block_size
+            << "\n>   - pr_percentage: " << brkga_params.pr_percentage
+            << "\n>   - exchange_interval: " << control_params.exchange_interval
+            << "\n>   - num_exchange_indivuduals: "
+            <<     control_params.num_exchange_indivuduals
+            << "\n>   - reset_interval: " << control_params.reset_interval;
         }
 
-        cout <<
-        "\n> Seed: " << seed <<
-        "\n> Stop rule: " <<
-            (stop_rule == StopRule::GENERATIONS ? "Generations" :
-             (stop_rule == StopRule::TARGET ? "Target" : "Improvement")) <<
-        "\n> Stop argument: " << stop_arg <<
-        "\n> Maximum time (s): " << max_time <<
-        "\n> Number of parallel threads for decoding: " << num_threads <<
-        "\n------------------------------------------------------" << endl;
+        cout
+        << "\n> Seed: " << seed
+        << "\n> Stop rule: "
+        <<     (stop_rule == StopRule::GENERATIONS ? "Generations" :
+                                                     "Improvement")
+        << "\n> Stop argument: " << stop_arg
+        << "\n> Maximum time (s): " << max_time
+        << "\n> Number of parallel threads for decoding: " << num_threads
+        << "\n------------------------------------------------------" << endl;
 
         ////////////////////////////////////////
         // Load instance and adjust BRKGA parameters
@@ -306,7 +290,7 @@ Options:
             dist_func.reset(new BRKGA::KendallTauDistance());
 
         // Optimization info.
-        double best_fitness = numeric_limits<double>::max();
+        BRKGA::fitness_t best_fitness = BRKGA::FITNESS_T_MAX;
         BRKGA::Chromosome best_solution(instance.num_nodes, 0.0);
 
         unsigned last_update_iteration = 0;
@@ -331,8 +315,8 @@ Options:
             // Run one iteration
             algorithm.evolve();
 
-            double fitness = algorithm.getBestFitness();
-            if((best_fitness - fitness) > 0.0) {
+            auto fitness = algorithm.getBestFitness();
+            if(fitness < best_fitness) {
                 last_update_time = elapsedFrom(start_time);
                 best_fitness = fitness;
 
@@ -344,13 +328,13 @@ Options:
 
                 best_solution = algorithm.getBestChromosome();
 
-                cout <<
-                "* " << iteration << " | " <<
-                setiosflags(ios::fixed) << setprecision(0) <<
-                best_fitness << " | " <<
-                setiosflags(ios::fixed) << setprecision(2) <<
-                last_update_time <<
-                endl;
+                cout
+                << "* " << iteration << " | "
+                << setiosflags(ios::fixed) << setprecision(0)
+                << best_fitness << " | "
+                << setiosflags(ios::fixed) << setprecision(2)
+                << last_update_time
+                << endl;
             }
 
             unsigned iters_no_improvement = iteration - last_update_iteration;
@@ -406,7 +390,7 @@ Options:
                              << fitness
                              << " | Elapsed time: " << pr_time << endl;
 
-                        if((best_fitness - fitness) > 0.0) {
+                        if(fitness < best_fitness) {
                             last_update_time = elapsedFrom(start_time);
                             best_fitness = fitness;
 
@@ -419,13 +403,13 @@ Options:
 
                             best_solution = algorithm.getBestChromosome();
 
-                            cout <<
-                            "* " << iteration << " | " <<
-                            setiosflags(ios::fixed) << setprecision(0) <<
-                            best_fitness << " | " <<
-                            setiosflags(ios::fixed) << setprecision(2) <<
-                            last_update_time <<
-                            endl;
+                            cout
+                            << "* " << iteration << " | "
+                            << setiosflags(ios::fixed) << setprecision(0)
+                            << best_fitness << " | "
+                            << setiosflags(ios::fixed) << setprecision(2)
+                            << last_update_time
+                            << endl;
                         }
                         break;
 
@@ -436,19 +420,15 @@ Options:
             // Time to stop?
             switch(stop_rule) {
                 case StopRule::GENERATIONS:
-                    if(iteration == static_cast<unsigned>(stop_arg))
+                    if(iteration == stop_arg)
                         run = false;
                     break;
 
                 case StopRule::IMPROVEMENT:
-                    if(iters_no_improvement >= static_cast<unsigned>(stop_arg))
+                    if(iters_no_improvement >= stop_arg)
                         run = false;
                     break;
 
-                case StopRule::TARGET:
-                    if(best_fitness > stop_arg - 1e-9)
-                        run = false;
-                    break;
                 default:;
             }
 
@@ -461,18 +441,18 @@ Options:
         const auto total_elapsed_time = elapsedFrom(start_time);
 
         log("End of optimization");
-        cout <<
-        "\nTotal number of iterations: " << total_num_iterations <<
-        "\nLast update iteration: " << last_update_iteration <<
-        "\nTotal optimization time: " << total_elapsed_time <<
-        "\nLast update time: " << last_update_time <<
-        "\nLarge number of iterations between improvements: " << large_offset <<
-        "\nTotal path relink time: " << path_relink_time <<
-        "\nTotal path relink calls: " << num_path_relink_calls <<
-        "\nNumber of homogenities: " << num_homogenities <<
-        "\nImprovements in the elite set: " << num_elite_improvements <<
-        "\nBest individual improvements: " << num_best_improvements <<
-        endl;
+        cout
+        << "\nTotal number of iterations: " << total_num_iterations
+        << "\nLast update iteration: " << last_update_iteration
+        << "\nTotal optimization time: " << total_elapsed_time
+        << "\nLast update time: " << last_update_time
+        << "\nLarge number of iterations between improvements: " << large_offset
+        << "\nTotal path relink time: " << path_relink_time
+        << "\nTotal path relink calls: " << num_path_relink_calls
+        << "\nNumber of homogenities: " << num_homogenities
+        << "\nImprovements in the elite set: " << num_elite_improvements
+        << "\nBest individual improvements: " << num_best_improvements
+        << endl;
 
         ////////////////////////////////////////
         // Extracting the best tour
@@ -487,10 +467,11 @@ Options:
 
         sort(tour.begin(), tour.end());
 
-        cout << "\n% Best tour cost: "
-            << setiosflags(ios::fixed) << setprecision(0)
-            << best_fitness
-             << "\n% Best tour: ";
+        cout
+        << "\n% Best tour cost: "
+        << setiosflags(ios::fixed) << setprecision(0)
+        << best_fitness
+        << "\n% Best tour: ";
         for(const auto& kv : tour)
             cout << kv.second << " ";
 
@@ -503,37 +484,38 @@ Options:
         if(pos != string::npos)
                 instance_name = instance_name.substr(0, pos);
 
-        cout <<
+       cout <<
         "\n\nInstance,Seed,NumNodes,TotalIterations,TotalTime,"
         "TotalPRTime,PRCalls,NumHomogenities,NumPRImprovElite,"
-        "NumPrImprovBest,LargeOffset,LastUpdateIteration,LastUpdateTime,Cost" <<
-        endl;
+        "NumPrImprovBest,LargeOffset,LastUpdateIteration,LastUpdateTime,Cost"
+        << endl;
 
-        cout <<
-        instance_name << "," <<
-        seed << "," <<
-        instance.num_nodes << "," <<
-        total_num_iterations << "," <<
-        setiosflags(ios::fixed) << setprecision(2) <<
-        total_elapsed_time << "," <<
-        path_relink_time << "," <<
-        num_path_relink_calls << "," <<
-        num_homogenities << "," <<
-        num_elite_improvements << "," <<
-        num_best_improvements << "," <<
-        large_offset << "," <<
-        last_update_iteration << "," <<
-        last_update_time << "," <<
-        setiosflags(ios::fixed) << setprecision(0) <<
-        best_fitness;
+        cout
+        << instance_name << ","
+        << seed << ","
+        << instance.num_nodes << ","
+        << total_num_iterations << ","
+        << setiosflags(ios::fixed) << setprecision(2)
+        << total_elapsed_time << ","
+        << path_relink_time << ","
+        << num_path_relink_calls << ","
+        << num_homogenities << ","
+        << num_elite_improvements << ","
+        << num_best_improvements << ","
+        << large_offset << ","
+        << last_update_iteration << ","
+        << last_update_time << ","
+        << setiosflags(ios::fixed) << setprecision(0)
+        << best_fitness;
 
         cout.flush();
     }
     catch(exception& e) {
-        cerr << "\n***********************************************************"
-             << "\n****  Exception Occured: " << e.what()
-             << "\n***********************************************************"
-             << endl;
+        cerr
+        << "\n***********************************************************"
+        << "\n****  Exception Occured: " << e.what()
+        << "\n***********************************************************"
+        << endl;
         return 70; // BSD software internal error code
     }
     return 0;
