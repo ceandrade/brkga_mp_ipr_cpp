@@ -875,6 +875,66 @@ INLINE void writeConfiguration(const std::string& filename,
 }
 
 //----------------------------------------------------------------------------//
+// Functions for equality comparisons
+//----------------------------------------------------------------------------//
+
+namespace {
+
+/** \name Functions for equality comparisons
+ *
+ * This is a helper function that, at compiler time, detect if the `fitness_t`
+ * is a floating point type, and applies the absolute diference. Otherwise,
+ * the compiler generates the equality comparison.
+ */
+//@{
+
+/**
+ * @brief Compare two values to equality.
+ *
+ * If these values are real numbers, we compare their absolute difference with
+ * `EQUALITY_THRESHOLD`, i.e., \f$|a - b| < EQUALITY\_THRESHOLD\f$. In other
+ * cases (except tuples, which have a specialization), we use the `operator==`
+ * directly. Therefore, `fitness_t` must define `operator==`.
+ *
+ * \param a First item to be compared.
+ * \param b Second item to be compared.
+ * \return true if a and b are equal.
+ */
+template <class T>
+constexpr bool close_enough(T a, T b) {
+   if constexpr (std::is_floating_point_v<T>)
+      return fabs(a - b) < EQUALITY_THRESHOLD;
+   else
+      return a == b;
+}
+
+/**
+ * \brief Compare two tuples to equality.
+ *
+ * This specialization iterates, recursively, of each tuples' members and
+ * compares them. Note that this is done in compilation time, with no impact at
+ * running time.
+ *
+ * \todo Could we implement this using C++17 template folding?
+ *
+ * \param a First tuple to be compared.
+ * \param b Second tuple to be compared.
+ * \return true if a and b are equal.
+ */
+template <size_t I = 0, typename T, typename... Ts>
+constexpr bool close_enough(std::tuple<T, Ts...> a, std::tuple<T, Ts...> b)
+{
+    // If we have iterated through all elements, just return true.
+    if constexpr(I == sizeof...(Ts) + 1)
+        return true;
+    else
+        return close_enough(std::get<I>(a), std::get<I>(b)) &&
+               close_enough<I + 1>(a, b);
+}
+//@}
+}
+
+//----------------------------------------------------------------------------//
 // The Multi-Parent Biased Random-key Genetic Algorithm with Implicit
 // Path Relinking
 //----------------------------------------------------------------------------//
@@ -1034,7 +1094,7 @@ INLINE void writeConfiguration(const std::string& filename,
  * http://github.com/rfrancotoso/brkgaAPI
  *
  */
-template<class Decoder>
+template <class Decoder>
 class BRKGA_MP_IPR {
 public:
     /** \name Constructors and destructor */
@@ -1589,7 +1649,7 @@ protected:
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         Decoder& _decoder_reference,
         const Sense _sense,
@@ -1751,7 +1811,7 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 inline bool BRKGA_MP_IPR<Decoder>::betterThan(const fitness_t& a1,
                                               const fitness_t& a2) const {
     return (a1 < a2) == (OPT_SENSE == Sense::MINIMIZE);
@@ -1759,7 +1819,7 @@ inline bool BRKGA_MP_IPR<Decoder>::betterThan(const fitness_t& a1,
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 const Population&
 BRKGA_MP_IPR<Decoder>::getCurrentPopulation(unsigned population_index) const {
     if(population_index >= current.size())
@@ -1770,7 +1830,7 @@ BRKGA_MP_IPR<Decoder>::getCurrentPopulation(unsigned population_index) const {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 fitness_t BRKGA_MP_IPR<Decoder>::getBestFitness() const {
     fitness_t best = current[0]->fitness[0].first;
     for(unsigned i = 1; i < params.num_independent_populations; ++i) {
@@ -1782,7 +1842,7 @@ fitness_t BRKGA_MP_IPR<Decoder>::getBestFitness() const {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 const Chromosome& BRKGA_MP_IPR<Decoder>::getBestChromosome() const {
     unsigned best_k = 0;
     for(unsigned i = 1; i < params.num_independent_populations; ++i)
@@ -1796,7 +1856,7 @@ const Chromosome& BRKGA_MP_IPR<Decoder>::getBestChromosome() const {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 fitness_t BRKGA_MP_IPR<Decoder>::getFitness(unsigned population_index,
                                             unsigned position) const {
     if(population_index >= current.size())
@@ -1811,7 +1871,7 @@ fitness_t BRKGA_MP_IPR<Decoder>::getFitness(unsigned population_index,
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 const Chromosome& BRKGA_MP_IPR<Decoder>::getChromosome(
         unsigned population_index, unsigned position) const {
     if(population_index >= current.size())
@@ -1826,7 +1886,7 @@ const Chromosome& BRKGA_MP_IPR<Decoder>::getChromosome(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
         unsigned population_index, unsigned position, fitness_t fitness) {
     if(population_index >= current.size())
@@ -1855,7 +1915,7 @@ void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
             const std::function<double(const unsigned)>& func) {
 
@@ -1879,7 +1939,7 @@ void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::reset() {
     if(!initialized) {
         throw std::runtime_error("The algorithm hasn't been initialized. "
@@ -1890,7 +1950,7 @@ void BRKGA_MP_IPR<Decoder>::reset() {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolve(unsigned generations) {
     if(!initialized)
         throw std::runtime_error("The algorithm hasn't been initialized. "
@@ -1910,7 +1970,7 @@ void BRKGA_MP_IPR<Decoder>::evolve(unsigned generations) {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned num_immigrants) {
     if(params.num_independent_populations == 1)
         return;
@@ -1960,7 +2020,7 @@ void BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned num_immigrants) {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::setInitialPopulation(
                                 const std::vector<Chromosome>& chromosomes) {
     // First, reserve some memory.
@@ -2002,7 +2062,7 @@ void BRKGA_MP_IPR<Decoder>::setInitialPopulation(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::initialize(bool reset) {
     auto& rng = rng_per_thread[0];
 
@@ -2050,7 +2110,7 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool reset) {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
                                   ShakingType shaking_type,
                                   unsigned population_index) {
@@ -2116,7 +2176,7 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
                                       Population& next) {
     // First, we copy the elite chromosomes to the next generation.
@@ -2235,23 +2295,7 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 
 //----------------------------------------------------------------------------//
 
-namespace {
-// This is a helper function that, at compiler time, detect if the fitness_t
-// is a floating point type, and applies the absolute diference. Otherwise,
-// the compiler generates the equality comparison.
-// TODO: check each individual in a tuple.
-template <class T>
-constexpr bool close_enough(T a, T b) {
-   if constexpr (std::is_floating_point_v<T>)
-      return fabs(a - b) < 1e-6;
-   else
-      return a == b;
-}
-}
-
-//----------------------------------------------------------------------------//
-
-template<class Decoder>
+template <class Decoder>
 PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
                     PathRelinking::Type pr_type,
                     PathRelinking::Selection pr_selection,
@@ -2361,9 +2405,9 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
         const bool sense = OPT_SENSE == Sense::MAXIMIZE;
         if(sense)
-            best_found.first = FITNESS_T_MIN;
+            best_found.first = FITNESS_T_MIN<fitness_t>;
         else
-            best_found.first = FITNESS_T_MAX;
+            best_found.first = FITNESS_T_MAX<fitness_t>;
 
         const auto fence = best_found.first;
 
@@ -2442,7 +2486,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             std::shared_ptr<DistanceFunctionBase> dist,
             long max_time) {
@@ -2462,7 +2506,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
 // This is a multi-thread version. For small chromosomes, it may be slower than
 // single thread version.
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::directPathRelink(
             const Chromosome& chr1, const Chromosome& chr2,
             std::shared_ptr<DistanceFunctionBase> dist,
@@ -2484,7 +2528,7 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
         Chromosome chr;
         fitness_t fitness;
         std::size_t block_index;
-        Triple(): chr(), fitness(FITNESS_T_MAX), block_index(0) {}
+        Triple(): chr(), fitness(FITNESS_T_MAX<fitness_t>), block_index(0) {}
     };
 
     // Allocate memory for the candidates.
@@ -2558,9 +2602,9 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
         #endif
         for(std::size_t i = 0; i < remaining_blocks.size(); ++i) {
             if(sense)
-                (*candidates_base)[i].fitness = FITNESS_T_MIN;
+                (*candidates_base)[i].fitness = FITNESS_T_MIN<fitness_t>;
             else
-                (*candidates_base)[i].fitness = FITNESS_T_MAX;
+                (*candidates_base)[i].fitness = FITNESS_T_MAX<fitness_t>;
 
             if(times_up) continue;
 
@@ -2580,9 +2624,9 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
 
         fitness_t best_value;
         if(sense)
-            best_value = FITNESS_T_MIN;
+            best_value = FITNESS_T_MIN<fitness_t>;
         else
-            best_value = FITNESS_T_MAX;
+            best_value = FITNESS_T_MAX<fitness_t>;
 
         for(std::size_t i = 0; i < remaining_blocks.size(); ++i) {
             if((best_value < (*candidates_base)[i].fitness && sense) ||
@@ -2641,7 +2685,7 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
                 Chromosome& chr1, Chromosome& chr2,
                 std::shared_ptr<DistanceFunctionBase> /*non-used*/,
@@ -2662,7 +2706,7 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
         std::size_t key_index;
         std::size_t pos1;
         std::size_t pos2;
-        DecodeStruct(): chr(), fitness(FITNESS_T_MAX),
+        DecodeStruct(): chr(), fitness(FITNESS_T_MAX<fitness_t>),
                         key_index(0), pos1(0), pos2(0) {}
     };
 
@@ -2743,9 +2787,9 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
             (*candidates_base)[i].pos2 = position_in_guide;
 
             if(sense)
-                (*candidates_base)[i].fitness = FITNESS_T_MIN;
+                (*candidates_base)[i].fitness = FITNESS_T_MIN<fitness_t>;
             else
-                (*candidates_base)[i].fitness = FITNESS_T_MAX;
+                (*candidates_base)[i].fitness = FITNESS_T_MAX<fitness_t>;
             ++it_idx;
         }
 
@@ -2783,9 +2827,9 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
 
         fitness_t best_value;
         if(sense)
-            best_value = FITNESS_T_MIN;
+            best_value = FITNESS_T_MIN<fitness_t>;
         else
-            best_value = FITNESS_T_MAX;
+            best_value = FITNESS_T_MAX<fitness_t>;
 
         for(std::size_t i = 0; i < remaining_indices.size(); ++i) {
             if((best_value < (*candidates_base)[i].fitness && sense) ||
@@ -2833,7 +2877,7 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 inline double BRKGA_MP_IPR<Decoder>::rand01(std::mt19937& rng) {
     // **NOTE:** instead to use std::generate_canonical<> (which can be
     // a little bit slow), we may use
@@ -2847,7 +2891,7 @@ inline double BRKGA_MP_IPR<Decoder>::rand01(std::mt19937& rng) {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 inline uint_fast32_t BRKGA_MP_IPR<Decoder>::randInt(const uint_fast32_t n,
                                                     std::mt19937& rng) {
     // This code was adapted from Magnus Jonsson (magnus@smartelectronix.com)

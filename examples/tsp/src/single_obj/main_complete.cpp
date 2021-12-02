@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  *  Created on : Mar 06, 2019 by andrade
- *  Last update: Dec 01, 2021 by andrade
+ *  Last update: Dec 02, 2021 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -290,7 +290,7 @@ Options:
             dist_func.reset(new BRKGA::KendallTauDistance());
 
         // Optimization info.
-        BRKGA::fitness_t best_fitness = BRKGA::FITNESS_T_MAX;
+        BRKGA::fitness_t best_fitness = BRKGA::FITNESS_T_MAX<BRKGA::fitness_t>;
         BRKGA::Chromosome best_solution(instance.num_nodes, 0.0);
 
         unsigned last_update_iteration = 0;
