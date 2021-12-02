@@ -15,19 +15,22 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-1.1.1-a-mac/share/doxyrest/sphinx'))
+# sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-2.0.0-mac/share/doxyrest/sphinx'))
+sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-new/sphinx'))
 
-# -- Project information -----------------------------------------------------
+# -- Project information ----------------------------------------------------
 
 project = 'BRKGA-MP-IPR'
-copyright = '2020, Carlos E. Andrade'
+copyright = '2019-2022, Carlos E. Andrade'
 author = 'Carlos E. Andrade'
 
 # The short X.Y version
-version = '1.1'
+version = '2.0'
 # The full version, including alpha/beta/rc tags
-release = '1.1.0'
+release = '2.0.0'
 
+html_logo = "../assets/logo.png"
+html_favicon = "../assets/favicon.ico"
 
 # -- General configuration ---------------------------------------------------
 
@@ -42,7 +45,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'doxyrest',
-    'cpplexer'
+    'cpplexer',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -155,8 +158,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'BRKGA-MP-IPR', 'BRKGA-MP-IPR Documentation',
-     author, 'BRKGA-MP-IPR', 'BRKGA-MP-IPR Documentation.',
-     'Optimization frameworks'),
+     author, 'BRKGA-MP-IPR', 'BRKGA-MP-IPR Documentation',
+     'Optimization framework'),
 ]
 
 
@@ -184,3 +187,9 @@ epub_exclude_files = ['search.html']
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+# -- Additional CSS  and Javascript ------------------------------------------
+
+def setup(app):
+    app.add_js_file('add_target.js')
+    app.add_css_file('custom_theme.css')
