@@ -99,7 +99,7 @@ CXXFLAGS = $(USER_FLAGS)
 .PHONY: all clean
 .SUFFIXES: .cpp .o
 
-all: main_minimal main_complete
+all: main_minimal
 
 main_minimal: $(OBJS) $(MAIN_MINIMAL_OBJ)
 	@echo "--> Linking objects... "

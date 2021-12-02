@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
 
         BRKGA::BRKGA_MP_IPR<TSP_Decoder> algorithm(
                 decoder, BRKGA::Sense::MINIMIZE, seed,
-                instance.num_nodes, brkga_params);
+                instance.num_nodes, brkga_params, 4);
 
         // NOTE: don't forget to initialize the algorithm.
         cout << "Initializing..." << endl;
