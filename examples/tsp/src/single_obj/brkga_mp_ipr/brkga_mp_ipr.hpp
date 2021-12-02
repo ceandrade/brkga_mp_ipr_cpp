@@ -915,6 +915,8 @@ constexpr bool close_enough(T a, T b) {
  * compares them. Note that this is done in compilation time, with no impact at
  * running time.
  *
+ * \todo Could we implement this using C++17 template folding?
+ *
  * \param a First tuple to be compared.
  * \param b Second tuple to be compared.
  * \return true if a and b are equal.
@@ -2403,9 +2405,9 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
         const bool sense = OPT_SENSE == Sense::MAXIMIZE;
         if(sense)
-            best_found.first = FITNESS_T_MIN<fitness_t>;
+            best_found.first = FITNESS_T_MIN;
         else
-            best_found.first = FITNESS_T_MAX<fitness_t>;
+            best_found.first = FITNESS_T_MAX;
 
         const auto fence = best_found.first;
 
@@ -2526,7 +2528,7 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
         Chromosome chr;
         fitness_t fitness;
         std::size_t block_index;
-        Triple(): chr(), fitness(FITNESS_T_MAX<fitness_t>), block_index(0) {}
+        Triple(): chr(), fitness(FITNESS_T_MAX), block_index(0) {}
     };
 
     // Allocate memory for the candidates.
@@ -2600,9 +2602,9 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
         #endif
         for(std::size_t i = 0; i < remaining_blocks.size(); ++i) {
             if(sense)
-                (*candidates_base)[i].fitness = FITNESS_T_MIN<fitness_t>;
+                (*candidates_base)[i].fitness = FITNESS_T_MIN;
             else
-                (*candidates_base)[i].fitness = FITNESS_T_MAX<fitness_t>;
+                (*candidates_base)[i].fitness = FITNESS_T_MAX;
 
             if(times_up) continue;
 
@@ -2622,9 +2624,9 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
 
         fitness_t best_value;
         if(sense)
-            best_value = FITNESS_T_MIN<fitness_t>;
+            best_value = FITNESS_T_MIN;
         else
-            best_value = FITNESS_T_MAX<fitness_t>;
+            best_value = FITNESS_T_MAX;
 
         for(std::size_t i = 0; i < remaining_blocks.size(); ++i) {
             if((best_value < (*candidates_base)[i].fitness && sense) ||
@@ -2704,7 +2706,7 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
         std::size_t key_index;
         std::size_t pos1;
         std::size_t pos2;
-        DecodeStruct(): chr(), fitness(FITNESS_T_MAX<fitness_t>),
+        DecodeStruct(): chr(), fitness(FITNESS_T_MAX),
                         key_index(0), pos1(0), pos2(0) {}
     };
 
@@ -2785,9 +2787,9 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
             (*candidates_base)[i].pos2 = position_in_guide;
 
             if(sense)
-                (*candidates_base)[i].fitness = FITNESS_T_MIN<fitness_t>;
+                (*candidates_base)[i].fitness = FITNESS_T_MIN;
             else
-                (*candidates_base)[i].fitness = FITNESS_T_MAX<fitness_t>;
+                (*candidates_base)[i].fitness = FITNESS_T_MAX;
             ++it_idx;
         }
 
@@ -2825,9 +2827,9 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
 
         fitness_t best_value;
         if(sense)
-            best_value = FITNESS_T_MIN<fitness_t>;
+            best_value = FITNESS_T_MIN;
         else
-            best_value = FITNESS_T_MAX<fitness_t>;
+            best_value = FITNESS_T_MAX;
 
         for(std::size_t i = 0; i < remaining_indices.size(); ++i) {
             if((best_value < (*candidates_base)[i].fitness && sense) ||

@@ -67,20 +67,21 @@ namespace BRKGA {
  */
  typedef std::tuple<double, double> fitness_t;
 
+namespace { // Hide from external usage.
 /**
- * \brief Minimum value of the #fitness_t (generic).
+ * \brief Minimum value template of the #fitness_t (generic).
  *
  * Defines a template for the minimum value for the fitness type. We could use
  * `std::numeric_limits<>::min()`. However, it is not recommended to overload
- * such templates for no-fundamental types such as std::tuple or custom classes.
- * Therefore, we provide our own templates.
+ * such templates for no-fundamental types such as `std::tuple` or custom
+ * classes. Therefore, we provide our own templates.
  *
- * Note that we provided a template for single types and a specialized template
- * for tuples with fundamental types. For any other custom type, the user must
- * provide his/her own template.
+ * **NOTE:** We have provided a template for single types and a specialized
+ * template for tuples with fundamental types. For any other custom type,
+ * the user must provide his/her own template.
  */
 template <class T>
-constexpr T FITNESS_T_MIN = std::numeric_limits<T>::min();
+constexpr T FITNESS_T_MIN_TEMPLATE = std::numeric_limits<T>::min();
 
 /**
  * \brief Minimum value of the #fitness_t (tuple specialization).
@@ -88,23 +89,28 @@ constexpr T FITNESS_T_MIN = std::numeric_limits<T>::min();
  * **NOTE:** this only works if the tuple contains fundamental types.
  */
 template <typename... T>
-constexpr std::tuple<T...> FITNESS_T_MIN<std::tuple<T...>> =
+constexpr std::tuple<T...> FITNESS_T_MIN_TEMPLATE<std::tuple<T...>> =
     std::make_tuple(std::numeric_limits<T>::min()...);
+}
 
+/// The actual minimal value to `fitness_t`.
+static constexpr fitness_t FITNESS_T_MIN = FITNESS_T_MIN_TEMPLATE<fitness_t>;
+
+namespace { // Hide from external usage.
 /**
- * \brief Maximum value of the #fitness_t (generic).
+ * \brief Maximum value template of the #fitness_t (generic).
  *
  * Defines a template for the maximum value for the fitness type. We could use
- * `std::numeric_limits<>::max()`. However, it is not recommended to overload
- * such templates for no-fundamental types such as std::tuple or custom classes.
- * Therefore, we provide our own templates.
+ * `std::numeric_limits<>::min()`. However, it is not recommended to overload
+ * such templates for no-fundamental types such as `std::tuple` or custom
+ * classes. Therefore, we provide our own templates.
  *
- * Note that we provided a template for single types and a specialized template
- * for tuples with fundamental types. For any other custom type, the user must
- * provide his/her own template.
+ * **NOTE:** We have provided a template for single types and a specialized
+ * template for tuples with fundamental types. For any other custom type,
+ * the user must provide his/her own template.
  */
 template <class T>
-constexpr T FITNESS_T_MAX = std::numeric_limits<T>::max();
+constexpr T FITNESS_T_MAX_TEMPLATE = std::numeric_limits<T>::max();
 
 /**
  * \brief Maximum value of the #fitness_t (tuple specialization).
@@ -112,8 +118,12 @@ constexpr T FITNESS_T_MAX = std::numeric_limits<T>::max();
  * **NOTE:** this only works if the tuple contains fundamental types.
  */
 template <typename... T>
-constexpr std::tuple<T...> FITNESS_T_MAX<std::tuple<T...>> =
+constexpr std::tuple<T...> FITNESS_T_MAX_TEMPLATE<std::tuple<T...>> =
     std::make_tuple(std::numeric_limits<T>::max()...);
+}
+
+/// The actual Maximum value to `fitness_t`.
+static constexpr fitness_t FITNESS_T_MAX = FITNESS_T_MAX_TEMPLATE<fitness_t>;
 
 /**
  * This constant is used to compare floating-point numbers to equality.

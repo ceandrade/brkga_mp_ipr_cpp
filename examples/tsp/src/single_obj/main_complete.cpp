@@ -290,7 +290,7 @@ Options:
             dist_func.reset(new BRKGA::KendallTauDistance());
 
         // Optimization info.
-        BRKGA::fitness_t best_fitness = BRKGA::FITNESS_T_MAX<BRKGA::fitness_t>;
+        BRKGA::fitness_t best_fitness = BRKGA::FITNESS_T_MAX;
         BRKGA::Chromosome best_solution(instance.num_nodes, 0.0);
 
         unsigned last_update_iteration = 0;
