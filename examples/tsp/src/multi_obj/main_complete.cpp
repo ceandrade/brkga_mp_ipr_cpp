@@ -340,7 +340,7 @@ Options:
 
             unsigned iters_no_improvement = iteration - last_update_iteration;
 
-            if(control_params.exchange_interval > 0 &&
+            if(false && control_params.exchange_interval > 0 &&
                iters_no_improvement > 0 &&
                (iters_no_improvement % control_params.exchange_interval == 0)) {
 

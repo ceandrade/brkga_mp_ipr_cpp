@@ -8,8 +8,10 @@
  * (c) Copyright 2010, 2011 Rodrigo F. Toso, Mauricio G.C. Resende.
  * All Rights Reserved.
  *
+ * Collaborators: Alberto Kummer, 2021 (parallel mating).
+ *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: Dec 01, 2021 by andrade.
+ * Last update: Dec 03, 2021 by andrade.
  *
  * This code is released under LICENSE.md.
  *
@@ -1517,6 +1519,11 @@ protected:
     /// This value is needed to normalization.
     double total_bias_weight;
 
+    /// During parallel mating, we need to be sure that the same random values
+    /// are generated in each mating, despite the number of threads available.
+    /// Therefore, on each iteration, we generate a set of seeds for each RNG.
+    std::vector<std::mt19937::result_type> mating_seeds;
+
     /// Used to shuffled individual/chromosome indices during the mate.
     /// We have one for each thread during parallel mating.
     std::vector<std::vector<unsigned>> shuffled_individuals_per_thread;
@@ -1681,6 +1688,7 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         current(params.num_independent_populations, nullptr),
         bias_function(),
         total_bias_weight(0.0),
+        mating_seeds(params.population_size - elite_size - num_mutants, 0),
         shuffled_individuals_per_thread(
             _max_threads,
             typename decltype(shuffled_individuals_per_thread)
@@ -2179,6 +2187,16 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
                                       Population& next) {
+    // To ensure the reproducibility, we need to be sure that the same random
+    // values are generated in each mating, despite the number of threads
+    // available. For that, we first generate a seed for each mating step. Then
+    // use them in a RNG within the a thread.
+    { // hidden namespace
+        auto& rng = rng_per_thread[0];
+        for(auto& s: mating_seeds)
+            s = rng();
+    }
+
     // First, we copy the elite chromosomes to the next generation.
     for(unsigned chr = 0; chr < elite_size; ++chr) {
         next.population[chr] = curr.population[curr.fitness[chr].second];
@@ -2186,8 +2204,8 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     }
 
     // Second, we mate 'pop_size - elite_size - num_mutants' pairs.
-    // Here is the novelty: this parallel region allows processing the costly
-    // std::shuffle for each mating in parallel.
+    // This parallel region allows processing the costly std::shuffle
+    // for each mating in parallel.
     #ifdef _OPENMP
         #pragma omp parallel for num_threads(MAX_THREADS) schedule(static, 1)
     #endif
@@ -2207,6 +2225,9 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
             auto& offspring = offspring_per_thread[0];
             auto& rng = rng_per_thread[0];
         #endif
+
+        // Reseed the RNG to guarantee reproducibility.
+        rng.seed(mating_seeds[chr - elite_size]);
 
         // First, we shuffled the elite set and non-elite set indices,
         // then we take the elite and non-elite parents. Note that we cannot
