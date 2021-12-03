@@ -1379,29 +1379,24 @@ public:
                     std::numeric_limits<unsigned>::infinity());
 
     /**
-     * \brief Injects a chromosome and its fitness into a population in the
-     *         given place position.
+     * \brief Injects/Replaces a chromosome of a given population into a
+     *         given position.
      *
-     * If fitness is not provided (`fitness == Inf`), the decoding is performed
-     * over chromosome. Once the chromosome is injected, the population is
-     * re-sorted according to the chromosomes' fitness.
+     * The new chromosome replaces the old one, and the decoder is triggered to
+     * compute the new fitness. Once done, the population is re-sorted
+     * according to the chromosomes' fitness.
      *
      * \param chromosome the chromosome to be injected.
      * \param population_index the population index.
      * \param position the chromosome position.
-     * \param fitness the pre-computed fitness if it is available.
      *
      * \throw std::range_error eitheir if `population_index` is larger
      *        than number of populations; or `position` is larger than the
      *        population size; or ` chromosome.size() != chromosome_size`
-     *
-     * TODO: need to thing how to do this better. Maybe use the MAX or MIN
-     * from fitness_t.
      */
     void injectChromosome(const Chromosome& chromosome,
                           unsigned population_index,
-                          unsigned position,
-                          fitness_t fitness);
+                          unsigned position);
     //@}
 
     /** \name Support methods */
@@ -1896,7 +1891,7 @@ const Chromosome& BRKGA_MP_IPR<Decoder>::getChromosome(
 
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
-        unsigned population_index, unsigned position, fitness_t fitness) {
+        unsigned population_index, unsigned position) {
     if(population_index >= current.size())
         throw std::range_error("The population index is larger than number of "
                                "populations");
@@ -1912,12 +1907,7 @@ void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
     auto& local_chr = pop->population[pop->fitness[position].second];
     local_chr = chromosome;
 
-    // TODO: need to thing how to do this better. Maybe use the MAX or MIN
-    // from fitness_t.
-    // if(!(fitness < std::numeric_limits<double>::infinity()))
-    fitness = decoder.decode(local_chr, true);
-
-    pop->setFitness(position, fitness);
+    pop->setFitness(position, decoder.decode(local_chr, true));
     pop->sortFitness(OPT_SENSE);
 }
 
@@ -1934,7 +1924,7 @@ void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
 
     // If it is not non-increasing, throw an error.
     if(!std::is_sorted(bias_values.rbegin(), bias_values.rend()))
-        throw std::runtime_error("bias_function must be positive "
+        throw std::runtime_error("The bias function must be positive "
                                  "non-decreasing");
 
     if(bias_function)
@@ -2905,7 +2895,6 @@ inline double BRKGA_MP_IPR<Decoder>::rand01(std::mt19937& rng) {
     //    rng() * (1.0 / std::numeric_limits<std::mt19937::result_type>::max());
     // However, this approach has some precision problems on some platforms
     // (notably Linux).
-
     return std::generate_canonical<double, std::numeric_limits<double>::digits>
           (rng);
 }
@@ -2918,7 +2907,6 @@ inline uint_fast32_t BRKGA_MP_IPR<Decoder>::randInt(const uint_fast32_t n,
     // This code was adapted from Magnus Jonsson (magnus@smartelectronix.com)
     // Find which bits are used in n. Note that this is specific
     // for uint_fast32_t types.
-
     uint_fast32_t used = n;
     used |= used >> 1;
     used |= used >> 2;
