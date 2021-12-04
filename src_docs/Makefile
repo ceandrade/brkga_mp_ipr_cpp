@@ -46,13 +46,14 @@ doxyrest:
 	doxyrest -c doxyrest-config.lua
 
 sphinx:
-	mkdir -p build
-	cp -a src/rst build/.
+	rm -rf build/rst_tmp
+	rm -rf build/html_sphinx
+	cp -a src/rst build/rst_tmp
 	cp -a src/assets build/.
-	sphinx-build -b html build/rst build/html_sphinx
+	sphinx-build -b html build/rst_tmp build/html_sphinx
 	touch  build/html_sphinx/.nojekyll
 	rm -rf ../docs
-	cp -a  build/html_sphinx ../docs
+	cp -a build/html_sphinx ../docs
 	cp -a src/assets/logo*png ../docs/_static
 
 clean:

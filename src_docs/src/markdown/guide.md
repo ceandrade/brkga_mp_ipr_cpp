@@ -116,24 +116,26 @@ You can identify the following basic steps:
    to the decoder object/functor (example
    [`tsp/tsp_instance.hpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/tsp/tsp_instance.hpp));
 
-2. Implement a decoder object/functor. This function translates a chromosome
+2. Certify that `BRKGA::fitness_t` has the correct type;
+
+3. Implement a decoder object/functor. This function translates a chromosome
    (array of numbers in the interval [0,1]) to a solution for your problem. The
    decoder must return the solution value or cost to be used as fitness by BRKGA
    (example
    [`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/decoders/tsp_decoder.hpp));
 
-3. Load the instance and other relevant data;
+4. Load the instance and other relevant data;
 
-4. Read the algorithm parameters using `BRKGA::readConfiguration()`; or
+5. Read the algorithm parameters using `BRKGA::readConfiguration()`; or
    create a `BRKGA::BrkgaParams` object by hand;
 
-5. Create an `BRKGA::BRKGA_MP_IPR` algorithm object;
+6. Create an `BRKGA::BRKGA_MP_IPR` algorithm object;
 
-6. Call `BRKGA::BRKGA_MP_IPR::initialize()` to init the BRKGA state;
+7. Call `BRKGA::BRKGA_MP_IPR::initialize()` to init the BRKGA state;
 
-7. Call `BRKGA::BRKGA_MP_IPR::evolve()` to optimize;
+8. Call `BRKGA::BRKGA_MP_IPR::evolve()` to optimize;
 
-8. Call `BRKGA::BRKGA_MP_IPR::getBestFitness()` and/or
+9. Call `BRKGA::BRKGA_MP_IPR::getBestFitness()` and/or
    `BRKGA::BRKGA_MP_IPR::getBestChromosome()` to retrieve the best solution.
 
 [`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/main_minimal.cpp)

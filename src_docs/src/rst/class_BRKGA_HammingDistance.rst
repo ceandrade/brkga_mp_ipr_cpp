@@ -1,6 +1,5 @@
 .. index:: pair: class; BRKGA::HammingDistance
 .. _doxid-class_b_r_k_g_a_1_1_hamming_distance:
-.. _cid-brkga.hammingdistance:
 
 class BRKGA::HammingDistance
 ============================
@@ -11,29 +10,15 @@ class BRKGA::HammingDistance
 Overview
 ~~~~~~~~
 
-Hamming distance between two vectors. :ref:`More...<details-doxid-class_b_r_k_g_a_1_1_hamming_distance>`
+Hamming distance between two vectors. :ref:`More...<details-class_b_r_k_g_a_1_1_hamming_distance>`
 
-
-
-
-
-
-
-
-
-
-
-.. index:: pair: function; ~HammingDistance
-.. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1a63f407a819c88ca7d9469c13850c5ebd:
-.. _cid-brkga.hammingdistance.~hammingdistance:
 
 .. ref-code-block:: cpp
-	:class: overview-code-block
+	:class: doxyrest-overview-code-block
 
 	#include <brkga_mp_ipr.hpp>
 	
-	class HammingDistance: public :ref:`BRKGA::DistanceFunctionBase<doxid-class_b_r_k_g_a_1_1_distance_function_base>`
-	{
+	class HammingDistance: public :ref:`BRKGA::DistanceFunctionBase<doxid-class_b_r_k_g_a_1_1_distance_function_base>` {
 	public:
 		// fields
 	
@@ -50,7 +35,10 @@ Hamming distance between two vectors. :ref:`More...<details-doxid-class_b_r_k_g_
 			const std::vector<double>& vector2
 			);
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_hamming_distance_1abd15c245ad7be970116330e4f91c3c0f>`(const double key1, const double key2);
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_hamming_distance_1abd15c245ad7be970116330e4f91c3c0f>`(
+			const double key1,
+			const double key2
+			);
 	
 		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_hamming_distance_1a4df949516a669e17a5b7a6550dd9cbca>`(
 			std::vector<double>::const_iterator v1_begin,
@@ -63,13 +51,20 @@ Inherited Members
 -----------------
 
 .. ref-code-block:: cpp
-	:class: overview-inherited-code-block
+	:class: doxyrest-overview-inherited-code-block
 
 	public:
 		// methods
 	
-		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1acee8e7b478010aff23b3a46cd113860a>`(const std::vector<double>& v1, const std::vector<double>& v2) = 0;
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a243c8a1031fb149c6abc16f3869f2ace>`(const double key1, const double key2) = 0;
+		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1acee8e7b478010aff23b3a46cd113860a>`(
+			const std::vector<double>& v1,
+			const std::vector<double>& v2
+			) = 0;
+	
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a243c8a1031fb149c6abc16f3869f2ace>`(
+			const double key1,
+			const double key2
+			) = 0;
 	
 		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1aca0fc7103888cd025a67a16575954875>`(
 			std::vector<double>::const_iterator v1_begin,
@@ -77,7 +72,7 @@ Inherited Members
 			const std::size_t block_size
 			) = 0;
 
-.. _details-doxid-class_b_r_k_g_a_1_1_hamming_distance:
+.. _details-class_b_r_k_g_a_1_1_hamming_distance:
 
 Detailed Documentation
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -91,10 +86,9 @@ Fields
 
 .. index:: pair: variable; threshold
 .. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1ae4f83a7d514e75c3abf3d47663c1b9d9:
-.. _cid-brkga.hammingdistance.threshold:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	double threshold
 
@@ -105,10 +99,9 @@ Construction
 
 .. index:: pair: function; HammingDistance
 .. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1ac4a9b6c41241556c35c08535050bea53:
-.. _cid-brkga.hammingdistance.hammingdistance:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	HammingDistance(const double _threshold = 0.5)
 
@@ -131,10 +124,9 @@ Methods
 
 .. index:: pair: function; distance
 .. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1ade9120b27adf3834a36406c508cb6ee9:
-.. _cid-brkga.hammingdistance.distance:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	virtual double distance(
 		const std::vector<double>& vector1,
@@ -162,12 +154,14 @@ Computes the Hamming distance between two vectors.
 
 .. index:: pair: function; affectSolution
 .. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1abd15c245ad7be970116330e4f91c3c0f:
-.. _cid-brkga.hammingdistance.affectsolution:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	virtual bool affectSolution(const double key1, const double key2)
+	virtual bool affectSolution(
+		const double key1,
+		const double key2
+		)
 
 Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 
@@ -190,10 +184,9 @@ Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 
 .. index:: pair: function; affectSolution
 .. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1a4df949516a669e17a5b7a6550dd9cbca:
-.. _cid-brkga.hammingdistance.affectsolution-2:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	virtual bool affectSolution(
 		std::vector<double>::const_iterator v1_begin,

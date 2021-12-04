@@ -1,6 +1,5 @@
 .. index:: pair: enum; ShakingType
 .. _doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494:
-.. _cid-brkga.shakingtype:
 
 enum BRKGA::ShakingType
 =======================
@@ -8,20 +7,19 @@ enum BRKGA::ShakingType
 Overview
 ~~~~~~~~
 
-Specifies the type of shaking to be performed. :ref:`More...<details-doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494>`
+Specifies the type of shaking to be performed. :ref:`More...<details-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494>`
 
 .. ref-code-block:: cpp
-	:class: overview-code-block
+	:class: doxyrest-overview-code-block
 
 	#include <brkga_mp_ipr.hpp>
 
-	enum BRKGA::ShakingType
-	{
+	enum ShakingType {
 	    :ref:`CHANGE<doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494a421cfd143e450c3f5814a0495409e073>` = 0,
 	    :ref:`SWAP<doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494a46fc23bc4e4d57e5469a39658a6dd3e8>`   = 1,
 	};
 
-.. _details-doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494:
+.. _details-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494:
 
 Detailed Documentation
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -33,10 +31,9 @@ Enum Values
 
 .. index:: pair: enumvalue; CHANGE
 .. _doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494a421cfd143e450c3f5814a0495409e073:
-.. _cid-brkga.shakingtype.change:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	CHANGE
 
@@ -48,10 +45,9 @@ Applies the following perturbations:
 
 .. index:: pair: enumvalue; SWAP
 .. _doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494a46fc23bc4e4d57e5469a39658a6dd3e8:
-.. _cid-brkga.shakingtype.swap:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	SWAP
 

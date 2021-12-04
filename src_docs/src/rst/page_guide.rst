@@ -6,11 +6,12 @@ Guide / Tutorial
 
 This tutorial is based on the single objective function usage of BRKGA.
 However, almost all information also applies to the multi-objective mode with
-minimal changes, as explained in Section 
+minimal changes, as explained in Section
 :ref:`Using BRKGA-MP on multi-objective mode <doxid-guide_1guide_multi_obj>`.
 
 
 .. _doxid-guide_1guide_installation:
+
 Installation
 -------------------------------------------------------------------------------
 
@@ -49,34 +50,56 @@ Then, let's compile and see it works:
 .. code-block::
 
     $ g++ --version
-    g++ (MacPorts gcc8 8.2.0_3) 8.2.0
+    g++ (MacPorts gcc10 10.3.0_0) 10.3.0
 
-    $ g++ -std=c++14 -Ibrkga_mp_ipr/brkga_mp_ipr test.cpp -o test
+    $ g++ -std=c++17 -Ibrkga_mp_ipr/brkga_mp_ipr test.cpp -o test
 
     $ ./test
     Testing sense: MINIMIZE
 
 Note the Git clones the whole repository that contains the library code,
 documents, and examples. All the examples were built using `GNU/Make
-<https://www.gnu.org/software/make/>`_ and `GCC toolchain
+<https://www.gnu.org/software/make>`_ and `GCC toolchain
 <https://gcc.gnu.org>`_. However, the code is standard C++, and we can
 quickly adapt it to other toolchains such as `Clang
 <https://clang.llvm.org>`_, `Microsoft
 <https://visualstudio.microsoft.com>`_, or `Intel
-<https://software.intel.com/en-us/c-compilers>`_ toolchains. To build this
-documentation, we also need `Doxygen <http://www.doxygen.nl>`_.
+<https://software.intel.com/en-us/c-compilers>`_ toolchains.
 
 
 .. _doxid-guide_1guide_tldr_single_obj:
+
 TL;DR - Single objective
 -------------------------------------------------------------------------------
 
 The best way to keep it short is to look in the on examples on `the git repo.
 <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples>`_
-Let's take a look into
-`main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp>`_,
-which solves the
-`Traveling Salesman Problem (TSP) <https://en.wikipedia.org/wiki/Travelling_salesman_problem>`_.
+Let's start solving the traditional single-objective `Traveling Salesman
+Problem (TSP) <https://en.wikipedia.org/wiki/Travelling_salesman_problem>`_.
+First, we must ensure that
+``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>```
+has the right single-object type. Let's
+take a look at the trimmed version of
+`fitness_type.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/brkga_mp_ipr/fitness_type.hpp>`_.
+This is a trimmed copy:
+
+.. ref-code-block:: cpp
+
+    #include <limits>
+    #include <tuple>
+
+    namespace BRKGA {
+
+    typedef double fitness_t;
+
+    //...
+    } // end namespace BRKGA_MP_IPR
+
+Here,
+``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>```
+defines the type of the objective function value. In the vast
+majority of the cases, `double` suffices. Let's take a look into the main call
+`main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp>`_.
 This is a trimmed copy:
 
 .. ref-code-block:: cpp
@@ -104,8 +127,8 @@ This is a trimmed copy:
 
         auto instance = TSP_Instance(instance_file);
 
-        auto params = BRKGA::readConfiguration(config_file);
-        auto& brkga_params = params.first;
+        auto [brkga_params, control_params] =
+            BRKGA::readConfiguration(config_file);
 
         TSP_Decoder decoder(instance);
 
@@ -129,6 +152,10 @@ You can identify the following basic steps:
    passed to the decoder object/functor (example
    `tsp/tsp_instance.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/tsp/tsp_instance.hpp>`_);
 
+#. Certify that
+   ``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>```
+   has the correct type;
+
 #. Implement a decoder object/functor. This function translates a chromosome
    (array of numbers in the interval [0,1]) to a solution for your problem. The
    decoder must return the solution value or cost to be used as fitness by
@@ -137,44 +164,80 @@ You can identify the following basic steps:
 #. Load the instance and other relevant data;
 
 #. Read the algorithm parameters using
-   ``:ref:`BRKGA::readConfiguration() <doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>```;
+   ``:ref:`BRKGA::readConfiguration() <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>```;
    or create a ``:ref:`BRKGA::BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>``` object by hand;
 
 #. Create an ``:ref:`BRKGA::BRKGA_MP_IPR <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r>``` algorithm object;
 
-#. Call ``:ref:`BRKGA::BRKGA_MP_IPR::initialize() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a7857351d4ce17199bd2fc157589a8592>``` to init the BRKGA state;
+#. Call ``:ref:`BRKGA::BRKGA_MP_IPR::initialize() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a65fbb0b0c6b2daba98f346601354d957>``` to init the BRKGA state;
 
 #. Call ``:ref:`BRKGA::BRKGA_MP_IPR::evolve() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aee1828c2ca506f18b896f1fc75ceafcb>``` to optimize;
 
-#. Call ``:ref:`BRKGA::BRKGA_MP_IPR::getBestFitness() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1af0084ce8397e82db99391bf4dad85219>``` and/or ``:ref:`BRKGA::BRKGA_MP_IPR::getBestChromosome() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa4b0396a4780fde3be8d284c535b600e>``` to retrieve the best solution.
+#. Call ``:ref:`BRKGA::BRKGA_MP_IPR::getBestFitness() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0499e65fbddae20a97b276504fe72e39>``` and/or ``:ref:`BRKGA::BRKGA_MP_IPR::getBestChromosome() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa4b0396a4780fde3be8d284c535b600e>``` to retrieve the best solution.
 
-`main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp>`_
+`main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp>`__
 provides a very minimal example to understand the necessary steps to use the
 BRKGA-MP-IPR framework. However,
-`main_complete.cpp` <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`_
+`main_complete.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`_
 provides a full-featured code, handy for scientific use, such as
 experimentation and paper writing. This code allows fine-grained control of
 the optimization, shows several features of BRKGA-MP-IPR such as the resets,
 chromosome injection, and others. It also logs
-all optimization steps, _creating outputs easy to be parsed._ **You should use
+all optimization steps, *creating outputs easy to be parsed.* **You should use
 this code for serious business and experimentation.**
 
 These are the basic steps, but I do recommend the reading of this guide.
 
 
 .. _doxid-guide_1guide_tldr_multi_obj:
+
 TL;DR - Multi objective
 -------------------------------------------------------------------------------
 
-TODO.
+  .. warning::
 
-.. warning::
-   Remember, BRKGA-MP-IPR multi-objective mode produces **lexicographical
-   dominated solutions** but **no non-dominated solutions** (Pareto frontier).
-   Please, see the details in the :ref:`introduction <doxid-indexpage>`.
+    Remember, BRKGA-MP-IPR multi-objective mode produces **lexicographical
+    dominated solutions** but **no non-dominated solutions** (Pareto frontier).
+    Please, see the details in the :ref:`introduction <doxid-indexpage>`.
+
+To use BRKGA-MP_IPR in the multi-objective mode, we first must set
+``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>```
+according to the number of objectives we want. In the
+`repo example, <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples/tsp/src/multi_obj>`_
+we consider the TSP with two objectives: first, we must minimize the total tour
+length, and second, the size of the largest edge in the tour. For that, we must
+change the file
+`fitness_type.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/brkga_mp_ipr/fitness_type.hpp>`_
+to reflect such a thing. In this example, we use the standard `std::tuple`:
+
+.. ref-code-block:: cpp
+
+    #include <limits>
+    #include <tuple>
+
+    namespace BRKGA {
+
+    typedef std::tuple<double, double> fitness_t;
+
+    //...
+    } // end namespace BRKGA_MP_IPR
+
+In this case, the first component of the tuple holds the tour length, and the
+second contains the largest edge. On Section
+:ref:`Using BRKGA-MP on multi-objective mode <doxid-guide_1guide_multi_obj>`,
+we talk with more details about multi-objective problems. Just keep in mind,
+although you could use any type for your `fitness_t`, you should prefer to use
+`std::tuple`.
+
+The remaining code is almost identical to the single-objective. The only
+differences are in computing the largest edge, and printing such information on
+the main call. All the steps described briefly in the
+:ref:`previous section <doxid-guide_1guide_tldr_single_obj>`
+are also used here.
 
 
 .. _doxid-guide_1guide_getting_started:
+
 Getting started
 -------------------------------------------------------------------------------
 
@@ -217,7 +280,7 @@ The ``src`` subdir contains all the code to solve TSP. This is its structure:
   such as experimentation and paper writing. This code allows fine-grained
   control of the optimization, shows several features of BRKGA-MP-IPR such as
   the path-relinking calls, resets, chromosome injection, and others. It also
-  logs all optimization steps, _creating outputs easy to be parsed._
+  logs all optimization steps, *creating outputs easy to be parsed.*
   **You should use this code for serious business and experimentation;**
 
 * ``config.conf`` file: example of parameter settings;
@@ -231,7 +294,7 @@ The ``src`` subdir contains all the code to solve TSP. This is its structure:
   handling, or another library you prefer.
 
 The first step is to build the code. Here, we are using `GNU/Make
-<https://www.gnu.org/software/make>`_ and `GCC toolchain
+<https://www.gnu.org/software/make>`__ and `GCC toolchain
 <https://gcc.gnu.org>`_. You may change for the toolchain of your choice.
 You may need to edit this file according to your compiler version and
 settings. The first thing to note in the makefile is the parameter ``OPT``
@@ -351,8 +414,12 @@ details on how to use the BRKGA-MP-IPR.
 
 
 .. _doxid-guide_1guide_decoder:
-First things first: the decoder function
+
+First things first
 -------------------------------------------------------------------------------
+
+The decoder function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The core of the BRKGA algorithm is the definition of a decoder
 function/object. The decoder maps the chromosomes (vectors of real numbers in
@@ -364,7 +431,7 @@ project solutions/distances in different spaces.
 Here, we have a small difference between the C++/Python and the Julia
 implementations. In the Julia version, you must define a data container
 inherit from `AbstractInstance
-<https://ceandrade.github.io/brkga_mp_ipr_julia/guide/index.html#First-things-first:-basic-data-structures-and-decoder-function-1>`_,
+<https://ceandrade.github.io/BrkgaMpIpr.jl/guide/#First-things-first:-basic-data-structures-and-decoder-function-1>`_,
 and a decoder function. The reason you must do that is because structs in
 Julia have no methods (but constructors), and the decoder function must take
 both chromosome and input data in the call. In C++/Python, we can encapsulate the
@@ -375,14 +442,16 @@ The basic form of a decoder should be:
 .. ref-code-block:: cpp
 
     class Decoder {
-        double decode(:ref:`BRKGA::Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome, bool rewrite);
+    public:
+        :ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` decode(:ref:`BRKGA::Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome, bool rewrite);
     };
 
-The decoder **must** contain a **decode()** method that receives a
+The decoder **must** contain a public **decode()** method that receives a
 ``:ref:`BRKGA::Chromosome
 <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>``` reference
-and an ``boolean``, and returns a float point number. But before going
-further, let's talk about the chromosome.
+and an ``boolean``, and returns a
+:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>`.
+But before going further, let's talk about the chromosome.
 
 
 The chromosome or vector of doubles
@@ -397,8 +466,9 @@ scheduling problem, we may choose to keep both makespan and total completion
 time metrics. Therefore, we chose to make the chromosome a "generic" data
 structure in our design.
 
-File `chomosome.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/brkga_mp_ipr/chromosome.hpp>`_ shows the
-basic represetation of a chromosome:
+File
+`chomosome.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/brkga_mp_ipr/chromosome.hpp>`_
+shows the basic represetation of a chromosome:
 
 .. ref-code-block:: cpp
 
@@ -411,8 +481,8 @@ since it is the same definition the main BRKGA-MP-IPR algorithm uses.
 
 However, if you need more information to be tracked during the optimization,
 you can redefine the chromosome. First, your definition must complain with
-the ``std::vector<>`` interface. The easiest way to do that is to inherit
-from the ``std::vector<>``. For instance, assume we want to keep track of the
+the ``std::vector`` interface. The easiest way to do that is to inherit
+from the ``std::vector``. For instance, assume we want to keep track of the
 makespan and the total completion time for a scheduling problem. We can do
 the following:
 
@@ -437,10 +507,10 @@ the following:
     };
 
 In general, most people do not recommend to inherit publicly from
-``std::vector<>`` because it has no virtual destructor. However, we may do
+``std::vector`` because it has no virtual destructor. However, we may do
 that as long as:
 
-a) We remember that every operation provided by ``std::vector<>`` must be a
+a) We remember that every operation provided by ``std::vector`` must be a
    semantically valid operation on an object of the derived class;
 
 b) We avoid creating derived class objects with dynamic storage duration;
@@ -459,7 +529,7 @@ Back to the decoder
 Again, the decoder is the heart of a BRKGA. An easy way to keep the API clean
 is to define a decoder that has a reference for the input data. This is a TSP
 decoder defined on file `decoders/tsp_decoder.hpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/decoders/tsp_decoder.hpp>`_:
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/decoders/tsp_decoder.hpp>`__:
 
 .. ref-code-block:: cpp
 
@@ -529,6 +599,7 @@ structures and perform the optimization.
 
 
 .. _doxid-guide_1guide_brkga_object:
+
 Building BRKGA-MP-IPR algorithm object
 -------------------------------------------------------------------------------
 
@@ -630,7 +701,7 @@ regarding :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and IPR methods and
 parameters, and although their presence is required on the config file, they
 are not mandatory to the BRKGA-MP-IPR itself.
 
-Let's take a look in the example from `main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_minimal.cpp>`_:
+Let's take a look in the example from `main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_minimal.cpp>`__:
 
 .. ref-code-block:: cpp
 
@@ -678,6 +749,7 @@ random number generator.
 
 
 .. _doxid-guide_1guide_algo_init:
+
 Initialization and Warm-start solutions
 -------------------------------------------------------------------------------
 
@@ -724,7 +796,7 @@ Since BRKGA-MP-IPR does not know the problem structure, you must *encode* the
 warm-start solution as chromosomes (vectors in the interval [0, 1]). In other
 words, you must do the inverse process that your decoder does. For instance,
 this is a piece of code from `main_complete.cpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`_
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`__
 showing this process:
 
 .. ref-code-block:: cpp
@@ -779,6 +851,7 @@ size of the population. Just remember:
 
 
 .. _doxid-guide_1guide_opt:
+
 Optimization time: evolving the population
 -------------------------------------------------------------------------------
 
@@ -795,8 +868,10 @@ pretty simple:
 evolves all populations for ``num_generations``. If ``num_genertions`` is
 omitted, ``evolve()`` evolves only one generation.
 
-For example, in `main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_minimal.cpp>`_, we just evolve the population for a given
-number of generations directly and then extract the best solution cost.
+For example, in `main_minimal.cpp
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_minimal.cpp>`__,
+we just evolve the population for a given number of generations directly and
+then extract the best solution cost.
 
 .. ref-code-block:: cpp
 
@@ -804,7 +879,7 @@ number of generations directly and then extract the best solution cost.
     auto best_cost = algorithm.getBestFitness();
 
 On
-`main_complete.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`_
+`main_complete.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`__
 we have fine-grained control on the optimization.
 There, we have a main loop that evolves the population one generation at a time
 and performs several operations as to hold the best solution, to check whether
@@ -819,6 +894,7 @@ similar style for experimentation.
 
 
 .. _doxid-guide_1guide_access_solutions:
+
 Accessing solutions/chromosomes
 -------------------------------------------------------------------------------
 
@@ -833,7 +909,7 @@ iterations. You can use the companion functions:
     const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getBestChromosome() const;
 
 ``:ref:`BRKGA::BRKGA_MP_IPR::getBestFitness()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1af0084ce8397e82db99391bf4dad85219>```
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0499e65fbddae20a97b276504fe72e39>```
 returns the value/fitness of the best chromosome across all populations.
 
 ``:ref:`BRKGA::BRKGA_MP_IPR::getBestChromosome()
@@ -842,7 +918,7 @@ returns a *reference* of the best chromosome across all populations. You may
 want to extract an actual solution from such chromosome, i.e., to apply a
 decoding function that returns the actual solution instead only its value.
 
-You may also want to get a reference of specific chromosome and its fitness 
+You may also want to get a reference of specific chromosome and its fitness
 for a given population using ``:ref:`BRKGA::BRKGA_MP_IPR::getChromosome()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1abfe4eccfd47a8eb88fc920e640f8513f>```.
 
@@ -854,7 +930,7 @@ for a given population using ``:ref:`BRKGA::BRKGA_MP_IPR::getChromosome()
     const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getFitness(unsigned population_index,
                                  unsigned position) const
 
-For example, you can get the 3rd best chromosome (and it fitness) 
+For example, you can get the 3rd best chromosome (and it fitness)
 from the 2nd population using
 
 .. ref-code-block:: cpp
@@ -901,6 +977,7 @@ solution by a random one:
 
 
 .. _doxid-guide_1guide_ipr:
+
 Implicit Path Relink
 -------------------------------------------------------------------------------
 
@@ -1107,7 +1184,7 @@ The last two parameters are stopping criteria. The algorithm stops either when
   accordingly.
 
 Let's see the example on `main_complete.cpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`_.
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`__.
 Remember, since we are solving the TSP, we want to use the permutation-based
 IPR, and the Kendall Tau distance functions.
 
@@ -1176,6 +1253,7 @@ large.
 
 
 .. _doxid-guide_1guide_shaking_reset:
+
 Shaking and Resetting
 -------------------------------------------------------------------------------
 
@@ -1231,6 +1309,7 @@ population. This can be easily accomplished with
 
 
 .. _doxid-guide_1guide_migration:
+
 Multi-population and migration
 -------------------------------------------------------------------------------
 
@@ -1265,6 +1344,7 @@ instance, the following code exchanges 3 best individuals from each population:
 
 
 .. _doxid-guide_1guide_standard_brkga:
+
 Simulating the standard BRKGA
 -------------------------------------------------------------------------------
 
@@ -1326,6 +1406,7 @@ rank/probability. If the index is 2 (non-elite individual), the chromosome gets
     function to avoid division-by-zero exceptions.
 
 .. _doxid-guide_1guide_parameters:
+
 Reading and writing parameters
 -------------------------------------------------------------------------------
 
@@ -1405,6 +1486,7 @@ If ``control_params`` is not given, default values are used in its place.
 
 
 .. _doxid-guide_1guide_multi_obj:
+
 Using BRKGA-MP on multi-objective mode
 -------------------------------------------------------------------------------
 
@@ -1412,6 +1494,7 @@ TODO;
 
 
 .. _doxid-guide_1guide_tips:
+
 (Probable Valuable) Tips
 -------------------------------------------------------------------------------
 
@@ -1556,6 +1639,7 @@ strucuture.
   best option for your case. In my experience, complex decoders benefit more
   from multi-threading than simple and fast decoders.
 
+.. _doxid-guide_1guide_known_issues:
 
 Known issues
 -------------------------------------------------------------------------------

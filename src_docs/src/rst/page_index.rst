@@ -61,7 +61,7 @@ A.`
 
 If you are not familiar with how BRKGA works, take a look on `Standard BRKGA
 <http://dx.doi.org/10.1007/s10732-010-9143-1>`_ and `Multi-Parent BRKGA
-<https://doi.org/10.1016/j.ejor.2019.11.037>`_. 
+<https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 If you know what *elite set*, *decoder*,
 and so means, we can get to the guts on the :ref:`Guide <doxid-guide>`.
 
@@ -69,7 +69,7 @@ and so means, we can get to the guts on the :ref:`Guide <doxid-guide>`.
 The implementation
 -------------------------------------------------------------------------------
 
-This C++ version provides a fast prototyping API using C++14 standards and
+This C++ version provides a fast prototyping API using C++17 standards and
 libraries. All code was developed as a header-only library, and have no
 external dependencies other than those included in the package. So, you just
 need to copy/check out the files and point your compiler's header path to

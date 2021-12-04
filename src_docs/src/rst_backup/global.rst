@@ -38,7 +38,7 @@ API documentation
 .. ref-code-block:: cpp
 	:class: overview-code-block
 
-	
+
 	// namespaces
 
 	namespace :ref:`BRKGA<doxid-namespace_b_r_k_g_a>`;

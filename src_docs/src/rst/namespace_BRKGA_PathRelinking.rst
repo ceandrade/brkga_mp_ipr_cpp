@@ -1,6 +1,5 @@
 .. index:: pair: namespace; BRKGA::PathRelinking
 .. _doxid-namespace_b_r_k_g_a_1_1_path_relinking:
-.. _cid-brkga.pathrelinking:
 
 namespace BRKGA::PathRelinking
 ==============================
@@ -15,21 +14,11 @@ namespace BRKGA::PathRelinking
 Overview
 ~~~~~~~~
 
-Holds the enumerations for Path Relinking algorithms. :ref:`More...<details-doxid-namespace_b_r_k_g_a_1_1_path_relinking>`
-
-
-
-
-
-
-
-
-
-
+Holds the enumerations for Path Relinking algorithms. :ref:`More...<details-namespace_b_r_k_g_a_1_1_path_relinking>`
 
 
 .. ref-code-block:: cpp
-	:class: overview-code-block
+	:class: doxyrest-overview-code-block
 
 	
 	namespace PathRelinking {
@@ -42,10 +31,13 @@ Holds the enumerations for Path Relinking algorithms. :ref:`More...<details-doxi
 
 	// global functions
 
-	:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>`& :ref:`operator|=<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a12cb77f0dc67b1484f7f36bd5a3da903>` (:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>`& lhs, :ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` rhs);
+	:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>`& :ref:`operator|=<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a2d5412296fb1fa7d2c016b69a1c1194e>` (
+		:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>`& lhs,
+		:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` rhs
+		);
 
 	} // namespace PathRelinking
-.. _details-doxid-namespace_b_r_k_g_a_1_1_path_relinking:
+.. _details-namespace_b_r_k_g_a_1_1_path_relinking:
 
 Detailed Documentation
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -56,21 +48,23 @@ Global Functions
 ----------------
 
 .. index:: pair: function; operator|=
-.. _doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a12cb77f0dc67b1484f7f36bd5a3da903:
-.. _cid-brkga.pathrelinking.operator:
+.. _doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a2d5412296fb1fa7d2c016b69a1c1194e:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>`& operator|= (:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>`& lhs, :ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` rhs)
+	:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>`& operator|= (
+		:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>`& lhs,
+		:ref:`PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` rhs
+		)
 
 Perform bitwise ``OR`` between two ``PathRelinkingResult`` returning the highest rank ``PathRelinkingResult``.
 
 For example
 
-* ``TOO_HOMOGENEOUS | NO_IMPROVEMENT == NO_IMPROVEMENT``
+* TOO_HOMOGENEOUS | NO_IMPROVEMENT == NO_IMPROVEMENT
 
-* ``NO_IMPROVEMENT | ELITE_IMPROVEMENT == ELITE_IMPROVEMENT``
+* NO_IMPROVEMENT | ELITE_IMPROVEMENT == ELITE_IMPROVEMENT
 
-* ``ELITE_IMPROVEMENT | BEST_IMPROVEMENT == BEST_IMPROVEMENT``
+* ELITE_IMPROVEMENT | BEST_IMPROVEMENT == BEST_IMPROVEMENT
 
