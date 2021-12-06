@@ -9,6 +9,7 @@ API documentation
 
 	namespace_BRKGA.rst
 	class_EnumIO.rst
+	preprocessor_directives.rst
 
 .. ref-code-block:: cpp
 	:class: doxyrest-overview-code-block
@@ -17,8 +18,7 @@ API documentation
 	// namespaces
 
 	namespace :ref:`BRKGA<doxid-namespace_b_r_k_g_a>`;
-		namespace :ref:`BRKGA::PathRelinking<doxid-namespace_b_r_k_g_a_1_1_path_relinking>`;
-	namespace :ref:`std<doxid-namespacestd>`;
+	namespace :ref:`BRKGA::PathRelinking<doxid-namespace_b_r_k_g_a_1_1_path_relinking>`;
 
 	// classes
 

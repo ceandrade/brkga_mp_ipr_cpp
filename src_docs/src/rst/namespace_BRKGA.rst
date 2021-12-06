@@ -24,11 +24,9 @@ Overview
 
 This namespace contains all stuff related to :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` Multi Parent with Implicit Path Relinking. :ref:`More...<details-namespace_b_r_k_g_a>`
 
-
 .. ref-code-block:: cpp
 	:class: doxyrest-overview-code-block
 
-	
 	namespace BRKGA {
 
 	// namespaces

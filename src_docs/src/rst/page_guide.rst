@@ -491,11 +491,11 @@ the following:
     class :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`: public std::vector<double> {
     public:
         :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`() :
-            :ref:`std <doxid-namespacestd>`::vector<double>(), makespan(0.0), total_completion_time(0.0)
+            std::vector<double>(), makespan(0.0), total_completion_time(0.0)
             {}
 
         :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`(unsigned _size, double _value = 0.0)
-            :ref:`std <doxid-namespacestd>`::vector<double>(_size, value),
+            std::vector<double>(_size, value),
             makespan(0.0), total_completion_time(0.0)
             {}
 
@@ -1009,7 +1009,7 @@ search procedure on them. It may be useful to reinsert such new solutions in
 the BRKGA population for the next
 evolutionary cycles. You can do that using
 ``:ref:`BRKGA::BRKGA_MP_IPR::injectChromosome()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a70bbe32b8bb3f662b629698319dc0261>```.
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0347f67b59bfe36856d1c27c95d4b151>```.
 
 .. ref-code-block:: cpp
 
@@ -1485,7 +1485,7 @@ simple plain text file and returns a tuple of ``:ref:`BRKGA::BrkgaParams
 
 .. ref-code-block:: cpp
 
-    auto [brkga_params, control_params] = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>`("tuned_conf.txt");
+    auto [brkga_params, control_params] = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>`("tuned_conf.txt");
 
 The configuration file must be plain text such that contains pairs of
 parameter name and value. This file must list all fields from
@@ -1544,10 +1544,181 @@ If ``control_params`` is not given, default values are used in its place.
 
 .. _doxid-guide_1guide_multi_obj:
 
-Using BRKGA-MP on multi-objective mode
+Using BRKGA-MP-IPR on multi-objective mode
 -------------------------------------------------------------------------------
 
-TODO;
+As stated in the introduction, BRKGA-MP-IPR also deals with multiple objectives
+in a lexicographical or priority dominance order. Differing from classical
+non-dominance order (using Pareto frontiers), the lexicographical order defines
+a *strict preference order among the objective functions.* This leads us to a
+partial ordering of the values of the solutions (composed of several values,
+each one from one objective function). So, we have the following definition
+(abusing a little bit of notation).
+
+.. admonition:: Definition
+
+    Let :math:`A = (f_1, f_2, \ldots, f_n)` and
+    :math:`A' = (f'_1, f'_2, \ldots, f'_n)`
+    be two vectors for :math:`n` functions :math:`f_1, f_2, \ldots, f_n`.
+    :math:`A` is lexicographical smaller than :math:`A'`, i.e.,
+    :math:`A < A'` if and only if
+    :math:`f_1 < f'_1`, or
+    :math:`f_1 = f'_1` and :math:`f_2 < f'_2`, or
+    :math:`\ldots, f_1 = f'_1, \ldots, f_{n-1} = f'_{n-1}`
+    and :math:`f_n < f'_n`.
+
+For instance, let's assume we have three minimizing objective functions and
+four solutions described in the following table:
+
+.. table::
+
+    ======== =========== =========== ===========
+    Solution :math:`f_1` :math:`f_2` :math:`f_3`
+    ======== =========== =========== ===========
+    A        50          30          30
+    B        30          55          40
+    C        30          20          50
+    D        30          20          25
+    ======== =========== =========== ===========
+
+Note that Solution B is better than Solution A because :math:`f_1(A) < f_1(B),`
+even though A has much better values for :math:`f_2` and :math:`f_3`. Now,
+Solution C is better B because, although :math:`f_1(B) = f_1(C),` we have that
+:math:`f_2(B) < f_2(C),` regardless of the value of :math:`f_3.` Solution D
+has the best value for all objective functions. Therefore :math:`D < C < B <
+A.`
+
+In many problems in the real-life, the users usually require a particular
+priority order among several objective functions, and therefore, the
+lexicographical approach is very appropriate. However, if the objective
+functions have no apparent order in your scenario, you may need to use a
+non-dominated approach.
+
+.. warning::
+
+    If you really want an algorithm to produce a **non-dominated set of
+    solutions (Pareto frontier)**, this is **not** the right algorithm for you.
+    We recommend taking a look at the `NSGA-II
+    <https://doi.org/10.1109/4235.996017>`_ and `MOAB
+    <https://en.wikipedia.org/wiki/MOEA_Framework>`_.
+
+Note that we could use the single-objective version of the BRKGA, by doing a
+linear (or affine) comnination of the objective function like this:
+
+.. math::
+    \sum_{i = 1}^n \alpha_i f_i
+
+where :math:`n` is the number of objective functions.
+In the minimization case, to guarantee that
+:math:`f_i` is more important than :math:`f_{i + 1}`, we must choose
+:math:`\alpha_i > \sup(D_{i + 1})`, the supremum of set :math:`D_{i+1}` which is
+the image of :math:`f_{i+1}`, i.e., the value :math:`f_{i+1}` can generate.
+In other words, :math:`\alpha_i` must be larger than the highest value
+:math:`f_{i+1}` can take.
+
+For instance, suppose we have two objective integer functions :math:`f_1` and
+:math:`f_2`, for a minimization problem. Function :math:`f_1` values vary from 0
+to 10, and :math:`f_2` varies from 100 to 500. To guarantee that a single unit
+change in :math:`f_1` is more important than all :math:`f_2`, we must make
+alpha1 = 501. Therefore, if we reduce :math:`f_1` off one unit, this impact in
+the combined objective function will be 501 units, which is larger than the
+largest possible value of :math:`f_2`.
+
+The problem with this approach is that it can lead to numerical issues too fast
+and too frequent for lots of practical applications. Depending on the domain of
+our functions, precision errors and overflow can occur, impairing the
+optimization process at all. Second, this is harder to debug and gets more work
+from the developer to break the total value on every single objective value.
+
+That said, to use BRKGA-MP-IPR in the native multi-objective mode,
+we first must set
+``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>```
+according to the number of objectives we want. For that, we must
+change the file
+`fitness_type.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/brkga_mp_ipr/fitness_type.hpp>`_
+to reflect such a thing. In this example, we use the standard `std::tuple`:
+
+.. ref-code-block:: cpp
+
+    #include <limits>
+    #include <tuple>
+
+    namespace BRKGA {
+
+    typedef std::tuple<double, double> fitness_t;
+
+    //...
+    } // end namespace BRKGA_MP_IPR
+
+In theory, we can use any custom structure or class, providing it implements the
+comparison operators(``operator<``, ``operator>``, and ``operator==``).
+
+Internally, BRKGA-MP-IPR doesn't use ``operator==`` directly. BRKGA implements
+the custom function ``close_enough()``. For fundamental numerical types, it
+compares the absolute difference with a given
+:ref:`EQUALITY_THRESHOLD <doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>`,
+i.e., two numbers :math:`a` and :math:`b` equal if :math:`|a - b| <
+EQUALITY\_THRESHOLD`.  For all other types (except ``std::tuple``), we use
+``operator==``. For ``std::tuple``, we have a specialized ``close_enough()``
+that iterates over each element of the tuples calling the base
+``close_enough()``.
+
+Once defined your ``fitness_t``, you must also provide
+:ref:`FITNESS_T_MIN <doxid-namespace_b_r_k_g_a_1a27f915fd21c02aee1097135954420ebb>`
+and
+:ref:`FITNESS_T_MAX <doxid-namespace_b_r_k_g_a_1aa4eaa93f02c949d7af918598c606402f>`,
+if your ``fitness_t`` is not a fundamental type or a tuple of
+fundamental types. The following is an example of a custom ``fitness_t`` should
+looks like.
+
+.. ref-code-block:: cpp
+
+    class MyCrazyFitness {
+    public:
+        MyCrazyFitness(const double _main_part,
+                       const double _secondary_part,
+                       const double _threshold):
+            main_part(_main_part),
+            secondary_part(_secondary_part),
+            threshold(_threshold)
+            {}
+
+        bool operator<(const MyCrazyFitness& second) const {
+            if(this->main_part < (second.main_part - threshold))
+                return true;
+            if(this->secondary_part < second.secondary_part)
+                return true;
+            return false;
+        }
+
+        bool operator>(const MyCrazyFitness& second) const {
+            if(this->main_part > (second.main_part + threshold))
+                return true;
+            if(this->secondary_part > second.secondary_part)
+                return true;
+            return false;
+        }
+
+        bool operator==(const MyCrazyFitness& second) const {
+            return !((*this < second) || (*this > second));
+        }
+
+    public:
+        double main_part;
+        double secondary_part;
+        double threshold;
+    };
+
+    // The following three definitions are mandatory!
+
+    typedef MyCrazyFitness fitness_t;
+
+    static constexpr fitness_t FITNESS_T_MIN = fitness_t(-100.0, -10.0, 1e-16);
+
+    static constexpr fitness_t FITNESS_T_MAX = fitness_t(1000.0, 100.0, 1e-1);
+
+.. warning::
+    Unless we really need a custom ``fitness_t``, you should use ``std::tuple``.
 
 
 .. _doxid-guide_1guide_tips:
@@ -1733,7 +1904,7 @@ File module_a.cpp
 
     #include "brkga_mp_ipr.hpp"
     int main() {
-        auto params = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>`("config.conf");
+        auto params = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>`("config.conf");
         return 0;
     }
 
@@ -1743,7 +1914,7 @@ File module_b.cpp
 
     #include "brkga_mp_ipr.hpp"
     void test() {
-        auto params = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>`("config.conf");
+        auto params = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>`("config.conf");
     }
 
 Let's compile each one with GCC and link them:
