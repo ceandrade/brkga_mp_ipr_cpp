@@ -18,7 +18,7 @@ partial ordering of the values of the solutions (composed of several values,
 each one from one objective function). So, we have the following definition
 (abusing a little bit of notation).
 
-  .. admonition:: Definition
+.. admonition:: Definition
 
     Let :math:`A = (f_1, f_2, \ldots, f_n)` and
     :math:`A' = (f'_1, f'_2, \ldots, f'_n)`
@@ -33,7 +33,7 @@ each one from one objective function). So, we have the following definition
 For instance, let's assume we have three minimizing objective functions and
 four solutions described in the following table:
 
-  .. table::
+.. table::
 
     ======== =========== =========== ===========
     Solution :math:`f_1` :math:`f_2` :math:`f_3`
@@ -51,7 +51,7 @@ Solution C is better B because, although :math:`f_1(B) = f_1(C),` we have that
 has the best value for all objective functions. Therefore :math:`D < C < B <
 A.`
 
- .. warning::
+.. warning::
 
     If you really want an algorithm to produce a **non-dominated set of
     solutions (Pareto frontier)**, this is **not** the right algorithm for you.

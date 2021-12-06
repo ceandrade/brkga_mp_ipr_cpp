@@ -194,11 +194,11 @@ These are the basic steps, but I do recommend the reading of this guide.
 TL;DR - Multi objective
 -------------------------------------------------------------------------------
 
-  .. warning::
-
+.. warning::
     Remember, BRKGA-MP-IPR multi-objective mode produces **lexicographical
     dominated solutions** but **no non-dominated solutions** (Pareto frontier).
     Please, see the details in the :ref:`introduction <doxid-indexpage>`.
+
 
 To use BRKGA-MP_IPR in the multi-objective mode, we first must set
 ``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>```
@@ -467,7 +467,7 @@ time metrics. Therefore, we chose to make the chromosome a "generic" data
 structure in our design.
 
 File
-`chomosome.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/brkga_mp_ipr/chromosome.hpp>`_
+`chomosome.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/brkga_mp_ipr/chromosome.hpp>`_
 shows the basic represetation of a chromosome:
 
 .. ref-code-block:: cpp
@@ -476,7 +476,7 @@ shows the basic represetation of a chromosome:
 
 If this enough for you, you go already and use such a definition. However,
 instead to redefine in your own code, **we do recommend to import and use the
-definition from** `chomosome.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/brkga_mp_ipr/chromosome.hpp>`_,
+definition from** `chomosome.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/brkga_mp_ipr/chromosome.hpp>`_,
 since it is the same definition the main BRKGA-MP-IPR algorithm uses.
 
 However, if you need more information to be tracked during the optimization,
@@ -489,21 +489,21 @@ the following:
 .. ref-code-block:: cpp
 
     class :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`: public std::vector<double> {
-        public:
-            :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`() :
-                :ref:`std <doxid-namespacestd>`::vector<double>(), makespan(0.0), total_completion_time(0.0)
-                {}
+    public:
+        :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`() :
+            :ref:`std <doxid-namespacestd>`::vector<double>(), makespan(0.0), total_completion_time(0.0)
+            {}
 
-            :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`(unsigned _size, double _value = 0.0)
-                :ref:`std <doxid-namespacestd>`::vector<double>(_size, value),
-                makespan(0.0), total_completion_time(0.0)
-                {}
+        :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`(unsigned _size, double _value = 0.0)
+            :ref:`std <doxid-namespacestd>`::vector<double>(_size, value),
+            makespan(0.0), total_completion_time(0.0)
+            {}
 
-            :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`(const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chr) = default;
+        :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`(const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chr) = default;
 
-        public:
-            double makespan;
-            double total_completion_time;
+    public:
+        double makespan;
+        double total_completion_time;
     };
 
 In general, most people do not recommend to inherit publicly from
@@ -526,19 +526,21 @@ c) We **DO AVOID** polymorphism:
 Back to the decoder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Again, the decoder is the heart of a BRKGA. An easy way to keep the API clean
+Again, **the decoder is the heart of a BRKGA.** An easy way to keep the API clean
 is to define a decoder that has a reference for the input data. This is a TSP
 decoder defined on file `decoders/tsp_decoder.hpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/decoders/tsp_decoder.hpp>`__:
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/decoders/tsp_decoder.hpp>`__:
 
 .. ref-code-block:: cpp
 
     #include "tsp/tsp_instance.hpp"
-    #include "chromosome.hpp"
+    #include "brkga_mp_ipr/fitness_type.hpp"
+    #include "brkga_mp_ipr/chromosome.hpp"
+
     class TSP_Decoder {
     public:
         TSP_Decoder(const TSP_Instance& instance);
-        double decode(:ref:`BRKGA::Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome, bool rewrite);
+        :ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` decode(:ref:`BRKGA::Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome, bool rewrite);
 
     public:
         const TSP_Instance& instance;
@@ -559,17 +561,12 @@ use the Implicit Path Relink (details on
 Even though you do not rewrite the chromosome in your decoder, you must provide
 such signature for API compatibility.
 
-The decoder must return a ``double`` that is used as the **fitness** to rank
+The decoder must return a
+:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>`
+that is used as the **fitness** to rank
 the chromosomes. In general, fitness is the cost/value of the solution, but you
 may want to use it to penalize solutions that violate the problem constraints,
 for example.
-
-.. note::
-  When using multiple threads, **you must guarantee that the decoder is
-  thread-safe.** You may want to create all read-write data structures on each
-  call or create a separate storage space for each thread. Section
-  :ref:`Multi-threading <doxid-guide_1guide_tips_multihreading>` brings some
-  tips.
 
 In our TSP example, we have a very simple decoder that generates a permutation
 of nodes, and compute the cost of the cycle from that permutation
@@ -577,25 +574,86 @@ of nodes, and compute the cost of the cycle from that permutation
 
 .. ref-code-block:: cpp
 
-    double TSP_Decoder::decode(:ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome,  bool /* not-used */) {
+    :ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` TSP_Decoder::decode(:ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome,  bool /* not-used */) {
         vector<pair<double, unsigned>> permutation(instance.num_nodes);
         for(unsigned i = 0; i < instance.num_nodes; ++i)
             permutation[i] = make_pair(chromosome[i], i);
 
         sort(permutation.begin(), permutation.end());
 
-        double cost = instance.distance(permutation.front().second,
-                                        permutation.back().second);
+        :ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` cost = instance.distance(permutation.front().second,
+                                                  permutation.back().second);
 
         for(unsigned i = 0; i < instance.num_nodes - 1; ++i)
             cost += instance.distance(permutation[i].second,
                                       permutation[i + 1].second);
-
         return cost;
     }
 
 With the instance data and the decoder ready, we can build the BRKGA data
 structures and perform the optimization.
+
+.. note::
+
+    When using multiple threads, **you must guarantee that the decoder is
+    thread-safe.** You may want to create all read-write data structures on each
+    call or create a separate storage space for each thread. Section
+    :ref:`Multi-threading <doxid-guide_1guide_tips_multi_threading>` brings some
+    tips.
+
+
+:ref:`previous section <doxid-guide_1guide_tldr_single_obj>`
+
+.. warning::
+
+    **The decoder must be a function,** i.e., given a chromosome, it must output
+    the same solution/fitness in any call. In other words, the decoder must be a
+    deterministic (or, at most, pseudo-random) procedure.
+
+Indeed, this is an essential aspect of the decoder: **it must produce the exact
+solution for the same chromosome.** If the decoder cannot do it, we will see a
+substantial degradation in the BRKGA performance regarding convergence. BRKGA
+cannot learn well with non-deterministic decoders. Moreover, non-deterministic
+decoders do not allow reproducibility, impairing their utility for production
+and academic environments.
+
+However, there are several situations where we must toss a coin to break a tie.
+In this case, we must guarantee that such a coin always results in the same
+sequence of values for a given chromosome. In other words, we must ensure that
+our decoder is pseudo-random or pseudo-non-deterministic. We could create a
+Random Number Generator (RNG) inside each decoding call with a fixed seed. But
+this strategy may not explorer the solution space as needed since the seed is
+the same for all decoding.
+
+We can use several strategies to mitigate such situations, but the most used is
+to create an (n+1)-sized chromosome such that one allele (in general, the first
+or the last) is used as a seed to the RNG. In this way, the chromosome also
+carries the information for breaking ties, and therefore, we can reproduce the
+solution. This is an example:
+
+.. ref-code-block:: cpp
+
+    typedef std::mt19937::result_type seed_t;
+
+    // This just reinterprets the bits as they are. This is the safest way to
+    // guarantee reproducibility since we only use the bits. However, since we
+    // are converting the range [0.0, 1.0] from a double, we may have a skewed
+    // list of seeds. We are missing the integer part and negative numbers bits.
+    // Still, for most applications, this should be good enough.
+    auto seed1 = *(reinterpret_cast<seed_t*>(&chromosome[n]))
+
+    // This version may grab all the seed's domain. However, we may face
+    // numerical issues with precision here. In some cases, the same double may
+    // generate two different seeds (depending on the platform), and we will
+    // lose reproducibility. We only recommend using this if you really need a
+    // very diverse set of seeds to generate millions of random numbers in the
+    // decoder.
+    auto seed2 = seed_t(numeric_limits<seed_t>::max() * chromosome[n]);
+
+    // Just instantiate a local random number generator. Tip: this can hit your
+    // performance. Better allocate the RNG before. If you use multiple threads,
+    // please read the Section :ref:`Multi-threading <doxid-guide_1guide_tips_multi_threading>`.
+    std::mt19937 my_local_rng(seed1);
 
 
 .. _doxid-guide_1guide_brkga_object:
@@ -637,7 +695,7 @@ BRKGA-MP-IPR uses the Mersenne Twister engine
 `[2] <https://en.wikipedia.org/wiki/Mersenne_Twister>`_
 from the standard C++ library
 `[3] <http://www.cplusplus.com/reference/random/mt19937>`_
-`[4] <https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine>`_.
+`[4] <https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine>`__.
 
 The ``chromosome_size`` also must be given. It indicates the length of each
 chromosome in the population. In general, this size depends on the instance and
@@ -648,7 +706,7 @@ parameters. We will take about that later.
 ``max_threads`` defines how many threads the algorithm should use for decoding
 and some other operations. As said before, **you must guarantee that the
 decoder is thread-safe** when using two or more threads. See
-:ref:`Multi-threading <doxid-guide_1guide_tips_multihreading>` for more
+:ref:`Multi-threading <doxid-guide_1guide_tips_multi_threading>` for more
 information.
 
 Another common argument is ``evolutionary_mechanism_on`` which is enabled by
@@ -667,7 +725,7 @@ control parameters that can be used outside the BRKGA-MP-IPR to control several
 aspects of the optimization. For instance, interval to apply path relink, reset
 the population, perform population migration, among others. This is how a
 configuration file looks like (see `config.conf
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/config.conf>`_
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/config.conf>`_
 for a commented version):
 
 .. ref-code-block::
@@ -689,8 +747,10 @@ for a commented version):
     num_exchange_indivuduals 2
     reset_interval 600
 
-To read this file, you can use the function ``:ref:`BRKGA::readConfiguration()
-<doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>```, which
+To read this file, you can use the function
+``:ref:`BRKGA::readConfiguration()
+<doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>```;
+which
 returns a ``std::pair<BrkgaParams, ExternalControlParams>``. When reading such
 file, the function ignores all blank lines, and lines starting with ``#``. As
 commented before, ``:ref:`BRKGA::BrkgaParams
@@ -701,7 +761,7 @@ regarding :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and IPR methods and
 parameters, and although their presence is required on the config file, they
 are not mandatory to the BRKGA-MP-IPR itself.
 
-Let's take a look in the example from `main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_minimal.cpp>`__:
+Let's take a look in the example from `main_minimal.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp>`__:
 
 .. ref-code-block:: cpp
 
@@ -712,13 +772,7 @@ Let's take a look in the example from `main_minimal.cpp <https://github.com/cean
 
     auto instance = TSP_Instance(instance_file);
 
-    // C++14 syntax.
-    auto params = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>`(config_file);
-    auto& brkga_params = params.first;
-
-    // C++17 syntax. Isn't cool?
-    // auto [brkga_params, control_params] =
-    //     BRKGA::readConfiguration(config_file);
+    auto [brkga_params, control_params] = BRKGA::readConfiguration(config_file);
 
     TSP_Decoder decoder(instance);
 
@@ -729,13 +783,11 @@ Let's take a look in the example from `main_minimal.cpp <https://github.com/cean
 This code gets some arguments from the command line and loads a TSP instance.
 After that, it reads the BRKGA parameters from the configuration file. Since in
 this example, we only care about the BRKGA parameters, we ignore the control
-parameters (tip: note how C++ 17 notation is much cleaner and more elegant than
-the traditional version). We then build the decoder object, and the BRKGA
-algorithm. Since we are looking for cycles of minimum cost, we ask for the
-algorithm ``MINIMIZE``. The starting seed is also given. Since ``TSP_Decode``
-considers each chromosome key as a node/city, the length of the chromosome must
-be the number of nodes, i.e., ``instance.num_nodes``. Finally, we also pass the
-BRKGA parameters.
+parameters. We then build the decoder object, and the BRKGA algorithm. Since we
+are looking for cycles of minimum cost, we ask for the algorithm ``MINIMIZE``.
+The starting seed is also given. Since ``TSP_Decode`` considers each chromosome
+key as a node/city, the length of the chromosome must be the number of nodes,
+i.e., ``instance.num_nodes``. Finally, we also pass the BRKGA parameters.
 
 Now, we have a ``:ref:`BRKGA::BRKGA_MP_IPR
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r>``` which will be used to
@@ -756,7 +808,7 @@ Initialization and Warm-start solutions
 Before starting the optimization, we need to initialize the :ref:`BRKGA
 <doxid-namespace_b_r_k_g_a>` algorithm state using
 ``:ref:`BRKGA::BRKGA_MP_IPR::initialize()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a7857351d4ce17199bd2fc157589a8592>```
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a65fbb0b0c6b2daba98f346601354d957>```
 method. This procedure initializes the populations and others data structures
 of the BRKGA. If an initial population (warm
 start) is supplied, the initialization method completes the remaining
@@ -780,6 +832,10 @@ object, the syntax is pretty straightforward:
   such property cannot be held, we suggest using a single thread for
   optimization.
 
+.. note::
+    Since ``initialize()`` performs chromosome decoding, you should track
+    the time of this call to accurately estimate the total running time.
+
 Warm-start solutions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -787,16 +843,19 @@ One good strategy is to bootstrap the main optimization algorithm with good
 solutions from fast heuristics
 [`1 <http://dx.doi.org/10.1002/net.21685>`_,
 `2 <http://dx.doi.org/10.1016/j.ejor.2017.10.045>`_,
-`3 <http://dx.doi.org/10.1016/j.ejor.2017.10.045>`_]
+`3 <http://dx.doi.org/10.1016/j.eswa.2019.03.007>`_]
 or even from relaxations of integer linear programming models
-`[4] <http://dx.doi.org/10.1162/EVCO_a_00138>`_.
+`[4] <http://dx.doi.org/10.1162/EVCO_a_00138>`_
+or constraint programming models.
+
+.. TODO: add the reference for the PCI paper.
 
 To do it, you must set these initial solutions before call ``initialize()``.
 Since BRKGA-MP-IPR does not know the problem structure, you must *encode* the
 warm-start solution as chromosomes (vectors in the interval [0, 1]). In other
 words, you must do the inverse process that your decoder does. For instance,
 this is a piece of code from `main_complete.cpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`__
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`__
 showing this process:
 
 .. ref-code-block:: cpp
@@ -820,15 +879,17 @@ showing this process:
     algorithm.setInitialPopulation(
         vector<BRKGA::Chromosome>(1, initial_chromosome));
 
+    algorithm.initialize();
+
 Here, we create one incumbent solution using the greedy heuristic
-``greedy_tour()`` `found here <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp/src/single_obj/heuristics>`_.
+``greedy_tour()`` `found here <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples/tsp/src/single_obj/heuristics>`_.
 It gives us
 ``initial_solution`` which is a ``std::pair<double, std::vector<unsigned>>``
 containing the cost of the tour and the tour itself which is a sequence of
 nodes to be visited. In the next lines, we encode ``initial_solution``. First,
 we create a vector of sorted random ``keys``. For that, we create a new random
 number generator ``rng``, the vector ``keys``, and fill up ``keys`` with random
-numbers in the interval [0,1], using C++ standard library function
+numbers in the interval [0, 1], using C++ standard library function
 ``generate_canonical<>()``. Once we have the keys, we sort them as
 ``TSP_Decoder::decode()`` does. We then create the ``initial_chromosome``, and
 fill it up with ``keys`` according to the nodes' order in ``initial_solution``.
@@ -844,7 +905,7 @@ signature:
     void setInitialPopulation(const std::vector<Chromosome>& chromosomes);
 
 Indeed, you can have as much warm-start solutions as you like, limited to the
-size of the population. Just remember:
+size of the populations. Just remember:
 
 .. warning::
   ``setInitialPopulation()`` must be called **BEFORE** ``initialize()``.
@@ -869,7 +930,7 @@ evolves all populations for ``num_generations``. If ``num_genertions`` is
 omitted, ``evolve()`` evolves only one generation.
 
 For example, in `main_minimal.cpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_minimal.cpp>`__,
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp>`__,
 we just evolve the population for a given number of generations directly and
 then extract the best solution cost.
 
@@ -879,7 +940,7 @@ then extract the best solution cost.
     auto best_cost = algorithm.getBestFitness();
 
 On
-`main_complete.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`__
+`main_complete.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`__
 we have fine-grained control on the optimization.
 There, we have a main loop that evolves the population one generation at a time
 and performs several operations as to hold the best solution, to check whether
@@ -1017,7 +1078,7 @@ according to its position in the other chromosome. Usually, this kind of path
 relink is more suitable to permutation representations, where the chromosome
 induces an order or permutation. For example, chromosome ``[0.4, 0.7, 0.1]``
 may induce the increasing order ``(3, 1, 2)``. More details about threshold and
-permutation representations in `this paper <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+permutation representations in `this paper <https://doi.org/10.1016/j.ejor.2019.11.037>`__.
 
 ``:ref:`BRKGA::PathRelinking::Selection
 <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a3ce8f0aeb5c0063aab2e8cbaee3076fa>```
@@ -1078,7 +1139,7 @@ and a class/functor that computes the
 distance for permutation representations (``:ref:`BRKGA::KendallTauDistance
 <doxid-class_b_r_k_g_a_1_1_kendall_tau_distance>```). Again, details about
 threshold and permutation representations in `this paper
-<https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+<https://doi.org/10.1016/j.ejor.2019.11.037>`__.
 
 As a simple example, suppose you are using a threshold representation where
 each chromosome key can represent one of 3 different values (a ternary
@@ -1149,7 +1210,7 @@ or even the whole chromosome.
 
 .. note::
   The current implementation of permutation path relink does not make use of
-  ``affectSolution()``. However, ``pathRelink()``) requires the function.
+  ``affectSolution()``. However, ``pathRelink()`` requires the function.
   Therefore, we can implement simple constant methods:
 
   .. ref-code-block:: cpp
@@ -1177,14 +1238,14 @@ details `here <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
   :math:`block\_size = alpha\_block\_size \times \sqrt{size~of~chromosome}`
 
 The last two parameters are stopping criteria. The algorithm stops either when
-``max_time`` seconds is reached or ``percentage`` % of the path is built.
+``max_time`` seconds is reached or ``percentage%`` of the path is built.
 
 .. warning::
   IPR is a very time-intensive process. You must set the stopping criteria
   accordingly.
 
 Let's see the example on `main_complete.cpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/main_complete.cpp>`__.
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`__.
 Remember, since we are solving the TSP, we want to use the permutation-based
 IPR, and the Kendall Tau distance functions.
 
@@ -1263,7 +1324,7 @@ population, or even restart from a new one completely new. BRKGA-MP-IPR offers
 ``:ref:`BRKGA::BRKGA_MP_IPR::shake()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3721a91ed9d3fcbdc57fbcee2e20ac66>```,
 an improved variation of the original version proposed in `this paper
-<http://dx.doi.org/10.1016/j.eswa.2019.03.007>`_.
+<http://dx.doi.org/10.1016/j.eswa.2019.03.007>`__.
 
 .. ref-code-block:: cpp
 
@@ -1280,7 +1341,7 @@ generic/implicit ``:ref:`BRKGA::ShakingType
 shaking is recommended when the chromosome uses direct or threshold
 representations. ``SWAP`` exchanges keys/alleles inducing new permutations. For
 representational definitions, please read `this paper
-<https://doi.org/10.1016/j.ejor.2019.11.037>`_. For instance, the following
+<https://doi.org/10.1016/j.ejor.2019.11.037>`__. For instance, the following
 code shakes all populations using 10 swap moves:
 
 .. ref-code-block:: cpp
@@ -1315,7 +1376,7 @@ Multi-population and migration
 
 Multi-population or *island model* was introduced in genetic algorithms in
 `this paper
-<http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.36.7225>`_. The idea
+<http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.36.7225>`__. The idea
 is to evolve parallel and independent populations and, once a while, exchange
 individuals among these populations. In several scenarios, this approach is
 very beneficial for optimization.
@@ -1325,7 +1386,7 @@ the guide until here, you may notice that several methods take into account
 multiple populations. To use multiple populations, you must set
 ``:ref:`BRKGA::BrkgaParams.num_independent_populations
 <doxid-class_b_r_k_g_a_1_1_brkga_params_1a9a4a99536f6b755ceb07b54d784f8926>```
-with 2 ou more populations, and build the BRKGA algorithm from such parameters.
+with 2 or more populations, and build the BRKGA algorithm from such parameters.
 
 The immigration process is implemented by
 
@@ -1360,7 +1421,7 @@ according to the original BRKGA bias parameter :math:`\rho` (rho).
 
 You can use ``:ref:`BRKGA::BRKGA_MP_IPR::setBiasCustomFunction()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a8616c89626ca3c8e8d3b5adb1da24c92>```
-for that task. The given function receives the index of the chromosome and
+for that task. The given function should receive the index of the chromosome and
 returns a ranking for it. Such ranking is used in the roulette method to choose
 the individual from which each allele comes to build the new chromosome. Since
 we have one two individuals for crossover in the standard BRKGA, the bias
@@ -1396,14 +1457,15 @@ So, if the index of the chromosome is 1 (elite individual), it gets a 0.75
 rank/probability. If the index is 2 (non-elite individual), the chromosome gets
 0.25 rank/probability.
 
-.. note::
-  All these operations must be done before calling ``initialize()``.
-
 .. warning::
     Note that we consider the index 1 as the elite individual instead index
     0, and index 2 to the non-elite individual opposed to index 1. The reason
     for this is that, internally, BRKGA always pass ``r > 0`` to the bias
     function to avoid division-by-zero exceptions.
+
+.. warning::
+  All these operations must be done before calling ``initialize()``.
+
 
 .. _doxid-guide_1guide_parameters:
 
@@ -1413,8 +1475,9 @@ Reading and writing parameters
 Although we can build the BRKGA algorithm data by set up a
 ``:ref:`BRKGA::BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>``` object
 manually, the easiest way to do so is to read such parameters from a
-configuration file. For this, we can use ``:ref:`BRKGA::readConfiguration()
-<doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>``` that reads a
+configuration file. For this, we can use
+``:ref:`BRKGA::readConfiguration() <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>```
+that reads a
 simple plain text file and returns a tuple of ``:ref:`BRKGA::BrkgaParams
 <doxid-class_b_r_k_g_a_1_1_brkga_params>``` and
 ``:ref:`BRKGA::ExternalControlParams
@@ -1422,12 +1485,6 @@ simple plain text file and returns a tuple of ``:ref:`BRKGA::BrkgaParams
 
 .. ref-code-block:: cpp
 
-    // C++14 syntax.
-    auto params = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>`("tuned_conf.txt");
-    auto& brkga_params = params.first;
-    auto& control_params = params.second;
-
-    // C++17 syntax. Isn't cool?
     auto [brkga_params, control_params] = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>`("tuned_conf.txt");
 
 The configuration file must be plain text such that contains pairs of
@@ -1436,9 +1493,9 @@ parameter name and value. This file must list all fields from
 ``:ref:`BRKGA::ExternalControlParams
 <doxid-class_b_r_k_g_a_1_1_external_control_params>```, even though you do
 not use each one at this moment. In `examples folder
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/v1.0/examples/tsp>`_, we
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples/tsp>`_, we
 have `config.conf
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/config.conf>`_
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/config.conf>`_
 that looks like this:
 
 .. ref-code-block:: cpp
@@ -1462,7 +1519,7 @@ that looks like this:
 
 It does not matter whether we use lower or upper cases. Blank lines and lines
 starting with ``#`` are ignored. The order of the parameters should not
-matter either. And, finally, this file should be readble for both C++, Julia,
+matter either. And, finally, this file should be readable for both C++, Julia,
 and Python framework versions.
 
 In some cases, you define some of the parameters at the running time, and you
@@ -1504,11 +1561,17 @@ Algorithm warmup
 While in Julia framework version is primordial to do a dry-run to precompile
 all functions (and a good idea on Python version), in C++ and Python this
 warmup is not necessary. However, few dry-runs can help the OS/processor with
-cache locality and give some speedup..
+cache locality and give some speedup.
 
 Besides the dry-runs, I would recommend the pre-allocation of all
 resource/memory that you need, if you know in advance how much will be
 necessary. This pre-allocation speeds the decoding process dramatically.
+There is
+`some argument <https://github.com/ceandrade/brkga_mp_ipr_cpp/issues/3#issuecomment-986107579>`_.
+whether or not we should pre-allocate some data
+structures since it might incur
+`false sharing <https://en.wikipedia.org/wiki/False_sharing>`_.
+Therefore, more experimentation and fine-tuning are needed in this space.
 
 
 Complex decoders and timing
@@ -1525,11 +1588,14 @@ Testing for stopping time uses several CPU cycles, and you need to be careful
 when/where to test it, otherwise, you spend all the optimization time doing
 system calls to the clock.
 
-IMHO, the most effective way to do it is to test time at the very end of the
-decoding. If the current time is larger than the maximum time allowed, simple
-return ``Inf`` or ``-Inf`` according to your optimization direction. In this
-way, we make the solution **invalid** since it violates the maximum time
+IMHO, the most effective way to do it is to test time at the very begining of
+the decoding. If the current time is larger than the maximum time allowed,
+simple return ``Inf`` or ``-Inf`` according to your optimization direction. In
+this way, we make the solution **invalid** since it violates the maximum time
 allowed. The BRKGA framework takes care of the rest.
+
+
+.. _doxid-guide_1guide_tips_multi_threading:
 
 Multi-threading
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1559,7 +1625,7 @@ and recover the memory you want to use.
 Let's see a simple example considering the TSP example. ``TSP_Decode`` uses a
 single array to create the permutation of nodes. Let's pre-allocate its memory
 per thread. To keep things separeted and easy to understand, we created a new
-class `TSP_Decoder_pre_allocating <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/v1.0/examples/tsp/src/single_obj/decoders/tsp_decoder_pre_allocating.hpp>`_
+class `TSP_Decoder_pre_allocating <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/decoders/tsp_decoder_pre_allocating.hpp>`_
 so that we allocate, for each thread, a vector to hold the permutation during
 the decoding:
 
@@ -1586,8 +1652,9 @@ key-node pairs. The important structure is ``permuration_per_thread`` which is
 a simple vector of the size of the number of threads where we allocate the
 permutation vectors for each thread.
 
-Then, in the implementation, we allocate all memory in the constructor. In
-``decode``, we use `omp_get_thread_num()
+Then, in the implementation, we allocate all memory in the constructor
+(`RAII principle <https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization>`_).
+In ``decode``, we use `omp_get_thread_num()
 <https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5.0.pdf>`_
 to identify which thread called the decoder, and retrieve the respective data
 strucuture.
@@ -1639,6 +1706,7 @@ strucuture.
   best option for your case. In my experience, complex decoders benefit more
   from multi-threading than simple and fast decoders.
 
+
 .. _doxid-guide_1guide_known_issues:
 
 Known issues
@@ -1682,9 +1750,9 @@ Let's compile each one with GCC and link them:
 
 .. ref-code-block::
 
-    $ g++ -std=c++14 -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+    $ g++ -std=c++17 -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
 
-    $ g++ -std=c++14 -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
+    $ g++ -std=c++17 -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
 
     $ g++ module_a.o module_b.o -o test
     duplicate symbol EnumIO<BRKGA::PathRelinking::Selection>::enum_names[abi:cxx11]()    in:
@@ -1712,9 +1780,9 @@ Let's try with Clang:
 
 .. ref-code-block::
 
-    $ clang++-mp-7.0 -std=c++14 -pthread -fopenmp -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+    $ clang++-mp-7.0 -std=c++17 -pthread -fopenmp -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
 
-    $ clang++-mp-7.0 -std=c++14 -pthread -fopenmp -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
+    $ clang++-mp-7.0 -std=c++17 -pthread -fopenmp -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
 
     $ clang++-mp-7.0 module_a.o module_b.o -o test
     duplicate symbol __ZN6EnumIOIN5BRKGA13PathRelinking9SelectionEE10enum_namesEv in:
@@ -1743,7 +1811,7 @@ writer/readers, and the two stand-alone functions
 ``:ref:`BRKGA::writeConfiguration()
 <doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>``` and
 ``:ref:`BRKGA::readConfiguration()
-<doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>```.
+<doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>```.
 
 To avoid such a situation, we have to ``inline`` these functions and template
 specializations. We can do that passing the compiler directive
@@ -1752,9 +1820,9 @@ specializations properly.
 
 .. ref-code-block::
 
-    $ g++ -std=c++14 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_a.cpp -o module_a.o
+    $ g++ -std=c++17 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_a.cpp -o module_a.o
 
-    $ g++ -std=c++14 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_b.cpp -o module_b.o
+    $ g++ -std=c++17 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_b.cpp -o module_b.o
 
     $ g++ module_a.o module_b.o -o test
 
@@ -1773,7 +1841,7 @@ compiler finds issues on inline such functions. The last resource is to move
 functions ``:ref:`BRKGA::writeConfiguration()
 <doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>``` and
 ``:ref:`BRKGA::readConfiguration()
-<doxid-namespace_b_r_k_g_a_1ad212f0711891038e623f4d882509897e>```, and all enum
+<doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>```, and all enum
 template specializations (at the end of file ``brkga_mp_ipr.hpp``), to a unique
 translation unit. I recommend to it on your ``main()`` module, so that they are
 compiled just once.
