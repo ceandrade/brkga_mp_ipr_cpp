@@ -598,11 +598,8 @@ structures and perform the optimization.
     When using multiple threads, **you must guarantee that the decoder is
     thread-safe.** You may want to create all read-write data structures on each
     call or create a separate storage space for each thread. Section
-    :ref:`Multi-threading <doxid-guide_1guide_tips_multi_threading>` brings some
-    tips.
-
-
-:ref:`previous section <doxid-guide_1guide_tldr_single_obj>`
+    :ref:`Multi-thread decoding <doxid-guide_1guide_tips_multi_thread_decoding>`
+    brings some tips.
 
 .. warning::
 
@@ -652,7 +649,7 @@ solution. This is an example:
 
     // Just instantiate a local random number generator. Tip: this can hit your
     // performance. Better allocate the RNG before. If you use multiple threads,
-    // please read the Section :ref:`Multi-threading <doxid-guide_1guide_tips_multi_threading>`.
+    // please read the Section :ref:`Multi-thread decoding <doxid-guide_1guide_tips_multi_thread_decoding>`.
     std::mt19937 my_local_rng(seed1);
 
 
@@ -706,8 +703,8 @@ parameters. We will take about that later.
 ``max_threads`` defines how many threads the algorithm should use for decoding
 and some other operations. As said before, **you must guarantee that the
 decoder is thread-safe** when using two or more threads. See
-:ref:`Multi-threading <doxid-guide_1guide_tips_multi_threading>` for more
-information.
+:ref:`Multi-thread decoding <doxid-guide_1guide_tips_multi_thread_decoding>`
+for more information.
 
 Another common argument is ``evolutionary_mechanism_on`` which is enabled by
 default. When disabled, no evolution is performed. The algorithm only decodes
@@ -1766,9 +1763,9 @@ this way, we make the solution **invalid** since it violates the maximum time
 allowed. The BRKGA framework takes care of the rest.
 
 
-.. _doxid-guide_1guide_tips_multi_threading:
+.. _doxid-guide_1guide_tips_multi_thread_decoding:
 
-Multi-threading
+Multi-thread decoding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Since `Moore's law <https://en.wikipedia.org/wiki/Moore%27s_law>`_ is not
@@ -1876,6 +1873,148 @@ strucuture.
   to avoid racing and too much context switching. You must test which is the
   best option for your case. In my experience, complex decoders benefit more
   from multi-threading than simple and fast decoders.
+
+
+.. _doxid-guide_1guide_tips_multi_thread_mating:
+
+Multi-thread mating
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+One of the nice additions to BRKGA-MP-IPR 2.0 is the capability of performing
+the mating in parallel. Such capability speeds up the algorithm substantially,
+mainly for large chromosomes and large populations. However, when performing
+parallel mating, we have some points regarding reproducibility described below.
+
+The parallel mating is controlled in compilation time by the preprocessing flags
+:ref:`MATING_FULL_SPEED <doxid-brkga__mp__ipr_8hpp_mating_full_speed>`,
+:ref:`MATING_SEED_ONLY <doxid-brkga__mp__ipr_8hpp_mating_seed_only>`,
+and
+:ref:`MATING_SEQUENTIAL <doxid-brkga__mp__ipr_8hpp_mating_sequential>`.
+
+Compiling your code with
+:ref:`MATING_SEQUENTIAL <doxid-brkga__mp__ipr_8hpp_mating_sequential>`,
+enabled will remove the parallel
+mating at all, and the algorithm will behave like the previous versions. This
+option can be very slow for large chromosomes and large populations. But it
+makes debugging easier. Following we have a quick example using the TSP decoder
+with 4 threads, for 1,000 generations. Note that the average total time
+(real time) is 7m 38s.
+
+.. ref-code-block::
+
+    $ make
+    ...
+    ...
+    g++ -DMATING_SEQUENTIAL -std=c++17 -O3 -fomit-frame-pointer -funroll-loops \
+        -ftracer -fpeel-loops -fprefetch-loop-arrays -pthread -fopenmp \
+        -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
+    ...
+
+    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
+
+    real	7m39.152s
+    user	10m47.575s
+    sys		0m1.079s
+
+    real	7m41.216s
+    user	10m50.354s
+    sys		0m1.180s
+
+    real	7m35.458s
+    user	10m42.487s
+    sys		0m0.853s
+
+
+Setting
+:ref:`MATING_SEED_ONLY <doxid-brkga__mp__ipr_8hpp_mating_seed_only>`,
+BRKGA will perform the mating in parallel, however, in
+a more controlled way. On each evolutionary step, the algorithm creates a
+sequence of seeds (one per to-be-generated offspring). Such seeds are fed to a
+pseudo-random number generator (RNG) for each thread: when starting the mating,
+the RNG is seeded before being used. This occurs in each iteration. In this way,
+all generators have their state controlled by the main generator, and therefore,
+**the unique seed** supplied by the user. This is another example, running the
+same machine and also 4 threads. The average total time is 3m 15s, a wooping
+reduction of ~57%.
+
+.. ref-code-block::
+
+    $ make
+    ...
+    ...
+    g++ -DMATING_SEED_ONLY -std=c++17 -O3 -fomit-frame-pointer -funroll-loops \
+        -ftracer -fpeel-loops -fprefetch-loop-arrays -pthread -fopenmp \
+        -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
+    ...
+
+    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
+
+    real	3m15.552s
+    user	12m35.755s
+    sys		0m1.704s
+
+    real	3m15.644s
+    user	12m36.619s
+    sys		0m1.382s
+
+    real	3m15.445s
+    user	12m38.104s
+    sys		0m1.115s
+
+Finally,
+:ref:`MATING_FULL_SPEED <doxid-brkga__mp__ipr_8hpp_mating_full_speed>`
+enables parallel mating at full speed. In this case,
+each thread has a unique RNG previously seeded at the beginning of the algorithm
+(BRKGA constructor). This initialization is done in a chain: the first RNG is
+seeded with the seed provided by the user. For the following, the algorithm uses
+the previous RNG state as seed. In this way, we guarantee that all RNGs have
+different states, but all depend on the user seed. However, in this case, **the
+reproducibility depends on both the seed given by the user and the number of
+threads**. This is because to guarantee reproducibility, we must ensure that the
+same chromosome region is handled by the same thread (id) since we have an RNG
+per thread. In other words, the random states must be the same for each thread,
+on different runs.  When we increase or decrease the number of threads,
+different threads will handle the chromosomes. However, this is the fastest
+method. Here is another example, using the same conditions as before.
+The average here is 3m 7s, a marginal improve regarding to
+:ref:`MATING_SEED_ONLY <doxid-brkga__mp__ipr_8hpp_mating_seed_only>`.
+
+.. ref-code-block::
+
+    $ make
+    ...
+    ...
+    g++ -DMATING_FULL_SPEED -std=c++17 -O3 -fomit-frame-pointer -funroll-loops \
+        -ftracer -fpeel-loops -fprefetch-loop-arrays -pthread -fopenmp \
+        -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
+    ...
+
+    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
+
+    real	3m2.835s
+    user	11m47.193s
+    sys	0m1.724s
+
+    real	3m7.438s
+    user	12m3.809s
+    sys		0m1.368s
+
+    real	3m7.876s
+    user	12m6.018s
+    sys		0m1.368s
+
+
+.. warning::
+
+    Remember, when using
+    :ref:`MATING_FULL_SPEED <doxid-brkga__mp__ipr_8hpp_mating_full_speed>`,
+    the results depend on both **seed** and **number of threads.**
+    Multiple runs with the same seed and number of threads should produce the
+    same results. Changing one or other, the results will change.
+
+Of course, these results depend on the problem and decoder implementation. But
+you can see that, or simple/fast decoders, both parallel options represent a
+very significant improvement over the serial version.
 
 
 .. _doxid-guide_1guide_known_issues:

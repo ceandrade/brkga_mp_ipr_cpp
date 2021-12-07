@@ -11,7 +11,7 @@
  * Collaborators: Alberto Kummer, 2021 (parallel mating).
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: Dec 03, 2021 by andrade.
+ * Last update: Dec 07, 2021 by andrade.
  *
  * This code is released under LICENSE.md.
  *
@@ -54,11 +54,13 @@
 #include <stdexcept>
 #include <stdexcept>
 #include <sys/time.h>
-// #include <tuple>
+#include <tuple>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
+
+//----------------------------------------------------------------------------//
 
 /// If we need to include this file in multiple translation units (files) that
 /// are compiled separately, we have to `inline` some functions and template
@@ -70,6 +72,42 @@
     #define INLINE inline
 #else
     #define INLINE
+#endif
+
+//----------------------------------------------------------------------------//
+
+// These preprocessor flags determine how the mating process will happen
+// regarding reproducibility.  One of the following options should be used.
+// If more than one is given, MATING_FULL_SPEED takes priority over
+// MATING_SEED_ONLY, which takes priority over MATING_SEQUENTIAL. If no option
+// is supplied, BRKGA-MP-IPR assume MATING_FULL_SPEED.
+//
+// At full speed, the mating process is done in parallel, using independent
+// RNGs. The results are reproducible if and only if you use the same seed and
+// the same number of threads.
+//
+// Using the following option, the mating is still parallel, but each RNG is
+// seeded on each mating. This is a little bit slower than full speed, but we
+// depend only on the seed, regardless of the number of threads. I.e., Runs with
+// a different number of threads, but the same seed should result in the same
+// sequence of decisions.
+//
+// Using this option, the mating process is completely sequential, as in the
+// original BRKGA. The reproducibility is guaranteed with only the same seed.
+// This option can be very slow for large chromosomes and large populations.
+// But it makes debugging easier.
+
+#if defined(MATING_FULL_SPEED)
+    #undef MATING_SEQUENTIAL
+    #undef MATING_SEED_ONLY
+#elif defined(MATING_SEED_ONLY)
+    #undef MATING_SEQUENTIAL
+    #undef MATING_FULL_SPEED
+#elif defined(MATING_SEQUENTIAL)
+    #undef MATING_SEED_ONLY
+    #undef MATING_FULL_SPEED
+#else
+    #define MATING_FULL_SPEED
 #endif
 
 /**
@@ -891,7 +929,7 @@ namespace {
 //@{
 
 /**
- * @brief Compare two values to equality.
+ * \brief Compare two values to equality.
  *
  * If these values are real numbers, we compare their absolute difference with
  * `EQUALITY_THRESHOLD`, i.e., \f$|a - b| < EQUALITY\_THRESHOLD\f$. In other
@@ -1514,10 +1552,12 @@ protected:
     /// This value is needed to normalization.
     double total_bias_weight;
 
+    #ifdef MATING_SEED_ONLY
     /// During parallel mating, we need to be sure that the same random values
     /// are generated in each mating, despite the number of threads available.
     /// Therefore, on each iteration, we generate a set of seeds for each RNG.
     std::vector<std::mt19937::result_type> mating_seeds;
+    #endif
 
     /// Used to shuffled individual/chromosome indices during the mate.
     /// We have one for each thread during parallel mating.
@@ -1642,7 +1682,8 @@ protected:
     inline double rand01(std::mt19937& rng);
 
     /**
-     * Returns a number between `0` and `n`.
+     * Returns an integer number between `0` and `n`.
+     * \param n The upper bound.
      * \param rng The random number generator to be used.
      */
     inline uint_fast32_t randInt(const uint_fast32_t n, std::mt19937& rng);
@@ -1683,22 +1724,39 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         current(params.num_independent_populations, nullptr),
         bias_function(),
         total_bias_weight(0.0),
-        mating_seeds(params.population_size - elite_size - num_mutants, 0),
-        shuffled_individuals_per_thread(
-            _max_threads,
-            typename decltype(shuffled_individuals_per_thread)
-                ::value_type(params.population_size)
-        ),
-        parents_ordered_per_thread(
-            _max_threads,
-            typename decltype(parents_ordered_per_thread)
-                ::value_type(params.total_parents)
-        ),
-        offspring_per_thread(
-            _max_threads,
-            typename decltype(offspring_per_thread)
-                ::value_type(_chromosome_size)
-        ),
+        #ifdef MATING_SEED_ONLY
+            mating_seeds(params.population_size - elite_size - num_mutants, 0),
+        #endif
+        #ifndef MATING_SEQUENTIAL
+            shuffled_individuals_per_thread(
+                _max_threads,
+                typename decltype(shuffled_individuals_per_thread)
+                    ::value_type(params.population_size)
+            ),
+            parents_ordered_per_thread(
+                _max_threads,
+                typename decltype(parents_ordered_per_thread)
+                    ::value_type(params.total_parents)
+            ),
+            offspring_per_thread(
+                _max_threads,
+                typename decltype(offspring_per_thread)
+                    ::value_type(_chromosome_size)
+            ),
+        #else
+            shuffled_individuals_per_thread(1,
+                typename decltype(shuffled_individuals_per_thread)
+                    ::value_type(params.population_size)
+            ),
+            parents_ordered_per_thread(1,
+                typename decltype(parents_ordered_per_thread)
+                    ::value_type(params.total_parents)
+            ),
+            offspring_per_thread(1,
+                typename decltype(offspring_per_thread)
+                    ::value_type(_chromosome_size)
+            ),
+        #endif
         initial_population(false),
         initialized(false),
         pr_start_time()
@@ -1802,14 +1860,16 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
     // the RNGs in a chain so that they have different states, although still
     // reproducible. So, we start with the given sedd for the first RNG.
     rng_per_thread[0].seed(_seed);
-    rng_per_thread[0].discard(1000);
+    rng_per_thread[0].discard(rng_per_thread[0].state_size);
 
     // For the other RNGs, we use the state of the previous RNG as seed.
-    for(size_t i = 1; i < rng_per_thread.size(); ++i) {
-        auto& local_rng = rng_per_thread[i];
-        local_rng.seed(rng_per_thread[i - 1]());
-        local_rng.discard(1000);
-    }
+    #ifndef MATING_SEQUENTIAL
+        for(size_t i = 1; i < rng_per_thread.size(); ++i) {
+            auto& local_rng = rng_per_thread[i];
+            local_rng.seed(rng_per_thread[i - 1]());
+            local_rng.discard(local_rng.state_size);
+        }
+    #endif
 }
 
 //----------------------------------------------------------------------------//
@@ -2177,15 +2237,18 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
                                       Population& next) {
+
     // To ensure the reproducibility, we need to be sure that the same random
     // values are generated in each mating, despite the number of threads
     // available. For that, we first generate a seed for each mating step. Then
     // use them in a RNG within the a thread.
+    #ifdef MATING_SEED_ONLY
     { // hidden namespace
         auto& rng = rng_per_thread[0];
         for(auto& s: mating_seeds)
             s = rng();
     }
+    #endif
 
     // First, we copy the elite chromosomes to the next generation.
     for(unsigned chr = 0; chr < elite_size; ++chr) {
@@ -2196,8 +2259,10 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     // Second, we mate 'pop_size - elite_size - num_mutants' pairs.
     // This parallel region allows processing the costly std::shuffle
     // for each mating in parallel.
+    #ifndef MATING_SEQUENTIAL
     #ifdef _OPENMP
         #pragma omp parallel for num_threads(MAX_THREADS) schedule(static, 1)
+    #endif
     #endif
     for(unsigned chr = elite_size;
         chr < params.population_size - num_mutants; ++chr) {
@@ -2216,8 +2281,10 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
             auto& rng = rng_per_thread[0];
         #endif
 
+        #ifdef MATING_SEED_ONLY
         // Reseed the RNG to guarantee reproducibility.
         rng.seed(mating_seeds[chr - elite_size]);
+        #endif
 
         // First, we shuffled the elite set and non-elite set indices,
         // then we take the elite and non-elite parents. Note that we cannot
@@ -2279,8 +2346,10 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     }
 
     // To finish, we fill up the remaining spots with mutants.
+    #ifndef MATING_SEQUENTIAL
     #ifdef _OPENMP
         #pragma omp parallel for num_threads(MAX_THREADS) schedule(static, 1)
+    #endif
     #endif
     for(unsigned chr = params.population_size - num_mutants;
         chr < params.population_size; ++chr) {
@@ -2435,7 +2504,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
         final_status |= PR::NO_IMPROVEMENT;
 
-        // Note: is fitness_t contains float types, so the comparison
+        // **NOTE:** is fitness_t contains float types, so the comparison
         // `best_found.first == fence` may be unfase. Therefore, we use
         // helper functions that define the correct behavior at compilation
         // time.

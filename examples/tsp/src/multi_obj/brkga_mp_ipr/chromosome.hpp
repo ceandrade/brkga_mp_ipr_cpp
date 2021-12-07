@@ -35,7 +35,7 @@ namespace BRKGA {
  * hypercube). We use double precision because float precision maybe not be
  * enough for some applications.
  *
- * We could use `std::vector<double>` directly. However, using typedef, we can
+ * We could use `std::vector<double>` directly. However, using `typedef`, we can
  * add additional capabilities to the Chromosome class in the future, such as
  * parenting track. For example, we may want to do this:
  *
@@ -53,15 +53,15 @@ namespace BRKGA {
  * to keep track of some data within a specifc chromosome.
  *
  * In general, most people do not recommend to inherit publicly from
- * `std::vector<>` because it has no virtual destructor. However, we may do that
+ * `std::vector` because it has no virtual destructor. However, we may do that
  * as long as:
  *
- *   a) We remember that every operation provided by `std::vector<>` must be a
+ *   a) We remember that every operation provided by `std::vector` must be a
  *   semantically valid operation on an object of the derived class;
  *
  *   b) We avoid creating derived class objects with dynamic storage duration;
  *
- *   c) We **DO avoid** polymorphism:
+ *   c) We **DO AVOID** polymorphism:
  *      \code{.cpp}
  *      std::vector<double>* pt = new Chromosome();     // Bad idea
  *      delete pt;      // Delete does not call the Chromosome destructor

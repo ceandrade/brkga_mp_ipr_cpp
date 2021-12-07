@@ -24,9 +24,11 @@ Overview
 
 This namespace contains all stuff related to :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` Multi Parent with Implicit Path Relinking. :ref:`More...<details-namespace_b_r_k_g_a>`
 
+
 .. ref-code-block:: cpp
 	:class: doxyrest-overview-code-block
 
+	
 	namespace BRKGA {
 
 	// namespaces
@@ -147,7 +149,7 @@ For multi-objective problems (with dominance/lexicographical sorting), we need t
 
 We do recommend use ``std::tuple``.
 
-Internally, BRKGA-MP-IPR doesn't use ``operator==`` directly. :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` implements the custom function ``close_enough()``. For fundamental numerical types, it compares the absolute difference with a given :ref:`EQUALITY_THRESHOLD <doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>`, i.e., two numbers :math:`a` and :math:`b` equal if :math:`|a - b| < EQUALITY\_THRESHOLD`. For all types (except ``std::tuple``), we use operator==. For ``std::tuple``, we have a specialized ``close_enough()`` that iterates over each element of the tuples calling the base ``close_enough()``.
+Internally, BRKGA-MP-IPR doesn't use ``operator==`` directly. :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` implements the custom function ``close_enough()``. For fundamental numerical types, it compares the absolute difference with a given :ref:`EQUALITY_THRESHOLD <doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>`, i.e., two numbers :math:`a` and :math:`b` equal if :math:`|a - b| < EQUALITY\_THRESHOLD`. For all other types (except ``std::tuple``), we use operator==. For ``std::tuple``, we have a specialized ``close_enough()`` that iterates over each element of the tuples calling the base ``close_enough()``.
 
 If you are using custom class other than fundamental types or tuples with fundamental types, you must also provide two const template expressions :ref:`FITNESS_T_MIN <doxid-namespace_b_r_k_g_a_1a27f915fd21c02aee1097135954420ebb>` and :ref:`FITNESS_T_MAX <doxid-namespace_b_r_k_g_a_1aa4eaa93f02c949d7af918598c606402f>`.
 

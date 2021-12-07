@@ -3,7 +3,7 @@
 # All Rights Reserved.
 #
 #  Created on : Mar 05, 2019 by andrade
-#  Last update: Dec 02, 2021 by andrade
+#  Last update: Dec 07, 2021 by andrade
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -24,6 +24,30 @@
 
 # Optimization switch
 OPT = opt
+
+# Determines how the mating process will happen regarding reproducibility.  One
+# of the following options should be used. If more than one is given,
+# MATING_FULL_SPEED takes priority over MATING_SEED_ONLY, which takes priority
+# over MATING_SEQUENTIAL. If no option is supplied, BRKGA-Mp-IPR assume
+# MATING_FULL_SPEED.
+#
+# At full speed, the mating process is done in parallel, using independent RNGs.
+# The results are reproducible if and only if you use the same seed and the same
+# number of threads.
+USER_FLAGS += -DMATING_FULL_SPEED
+
+# Using the following option, the mating is still parallel, but each RNG is
+# seeded on each mating. This is a little bit slower than full speed, but we
+# depend only on the seed, regardless of the number of threads. I.e., Runs with
+# a different number of threads, but the same seed should result in the same
+# sequence of decisions.
+# USER_FLAGS += -DMATING_SEED_ONLY
+
+# Using this option, the mating process is completely sequential, as in the
+# original BRKGA. The reproducibility is guaranteed with only the same seed.
+# This option can be very slow for large chromosomes and large populations. But
+# it makes debugging easier.
+# USER_FLAGS += -DMATING_SEQUENTIAL
 
 ###############################################################################
 # Build options
@@ -54,7 +78,6 @@ MAIN_MINIMAL_EXE = main_minimal
 # C++ Compiler command and flags
 CXX = g++
 # CXX = clang++
-# CXX = /opt/local/bin/clang++-mp-7.0
 
 USER_FLAGS += -std=c++17
 
