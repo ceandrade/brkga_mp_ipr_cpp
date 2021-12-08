@@ -93,11 +93,13 @@ If C++ is not suitable to you, we may find useful the
 We are also developing a
 `Python version <https://github.com/ceandrade/brkga_mp_ipr_python>`_
 which is in its earlier stages.
-At this moment, we have no plans to implement the BRKGA-MP-IPR in other
-languages such as Java or C#. But if you want to do so, you are must welcome.
-But please, keep the API as close as possible to the C++ API (or Julia API in
-case you decide go C), and use the best coding and documentation practices of
-your chosen language/framework.
+However, both Julia and Python versions only support single-objective
+optimization at this moment. We have no timeline to implement multi-objective
+optimization in such platforms.  At this moment, we have no plans to implement
+the BRKGA-MP-IPR in other languages such as Java or C#. But if you want to do
+so, you are must welcome.  But please, keep the API as close as possible to the
+C++ API (or Julia API in case you decide go C), and use the best coding and
+documentation practices of your chosen language/framework.
 
 
 License and Citing

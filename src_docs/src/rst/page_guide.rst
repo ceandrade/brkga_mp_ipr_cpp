@@ -200,7 +200,7 @@ TL;DR - Multi objective
     Please, see the details in the :ref:`introduction <doxid-indexpage>`.
 
 
-To use BRKGA-MP_IPR in the multi-objective mode, we first must set
+To use BRKGA-MP-IPR in the multi-objective mode, we first must set
 ``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>```
 according to the number of objectives we want. In the
 `repo example, <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples/tsp/src/multi_obj>`_
