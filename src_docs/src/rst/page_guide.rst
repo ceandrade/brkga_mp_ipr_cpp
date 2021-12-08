@@ -1910,7 +1910,7 @@ with 4 threads, for 1,000 generations. Note that the average total time
         -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
     ...
 
-    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
+    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/vm1084.dat > /dev/null; done
 
     real	7m39.152s
     user	10m47.575s
@@ -1934,7 +1934,7 @@ pseudo-random number generator (RNG) for each thread: when starting the mating,
 the RNG is seeded before being used. This occurs in each iteration. In this way,
 all generators have their state controlled by the main generator, and therefore,
 **the unique seed** supplied by the user. This is another example, running the
-same machine and also 4 threads. The average total time is 3m 15s, a wooping
+same machine and also 4 threads. The average total time is 3m 15s, a whooping
 reduction of ~57%.
 
 .. ref-code-block::
@@ -1947,7 +1947,7 @@ reduction of ~57%.
         -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
     ...
 
-    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
+    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/vm1084.dat > /dev/null; done
 
     real	3m15.552s
     user	12m35.755s
@@ -1989,7 +1989,7 @@ The average here is 3m 7s, a marginal improve regarding to
         -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
     ...
 
-    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
+    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/vm1084.dat > /dev/null; done
 
     real	3m2.835s
     user	11m47.193s
