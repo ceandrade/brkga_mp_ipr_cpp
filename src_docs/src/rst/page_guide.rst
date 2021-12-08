@@ -2016,6 +2016,20 @@ Of course, these results depend on the problem and decoder implementation. But
 you can see that, or simple/fast decoders, both parallel options represent a
 very significant improvement over the serial version.
 
+.. note::
+
+    We thank `Alberto Francisco Kummer Neto <https://github.com/afkummer>`_
+    very much for the first version of the parallel mating and the fruitful
+    discussions about it and other topics. Please, also consider citing his
+    paper:
+
+        A.F. Kummer N., L.S. Buriol, O.C.B. de Araujo. A biased random key
+        genetic algorithm applied to the VRPTW with skill requirements and
+        synchronization constraints. *Proceedings of the 2020 Genetic and
+        Evolutionary Computation Conference (GECCO '20)*, pages 717-724, 2020.
+        DOI: `10.1145/3377930.3390209
+        <https://doi.org/10.1145/3377930.3390209>`_.
+
 
 .. _doxid-guide_1guide_known_issues:
 

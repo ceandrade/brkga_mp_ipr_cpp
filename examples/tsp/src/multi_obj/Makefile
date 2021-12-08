@@ -88,7 +88,7 @@ ifneq ($(OPT), opt)
 else
 	USER_FLAGS += -O3 -fomit-frame-pointer -funroll-loops
 	ifeq ($(CXX), g++)
-		USER_FLAGS += -ftracer -fpeel-loops -fprefetch-loop-arrays
+		USER_FLAGS += -ftracer -fpeel-loops -fprefetch-loop-arrays -flto
 	endif
 endif
 

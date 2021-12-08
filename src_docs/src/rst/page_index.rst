@@ -111,13 +111,17 @@ materials mentioning features or use of this software (as a whole package or
 any parts of it) and/or the data used to test it must cite the following
 article explicitly":
 
+.. admonition:: Reference
+
     C.E. Andrade, R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
     Biased Random-key Genetic Algorithm with Implicit Path Relinking. *European
     Journal of Operational Research*, volume 289, number 1, pages 17–30, 2021.
     DOI:
     `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 
-If you are using the multi-objective version, you also should cite this paper:
+If you are using the multi-objective version, you must also cite this paper:
+
+.. admonition:: Reference
 
     C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
     Assignment Problem: a Multi-objective Optimization Approach.
@@ -129,12 +133,14 @@ If you are using the multi-objective version, you also should cite this paper:
 You may also consider to cite the following papers from people that helped
 to find bugs and develop new features for BRKGA-MP-IPR 2.0:
 
-    C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
-    Assignment Problem: a Multi-objective Optimization Approach.
-    *IEEE Transactions on Evolutionary Computation*, volume XXX, number X,
-    pages XX–XX, 2022.
+.. admonition:: Reference
+
+    A.F. Kummer N., L.S. Buriol, O.C.B. de Araujo. A biased random key genetic
+    algorithm applied to the VRPTW with skill requirements and synchronization
+    constraints. *Proceedings of the 2020 Genetic and Evolutionary Computation
+    Conference (GECCO '20)*, pages 717-724, 2020.
     DOI:
-    `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+    `10.1145/3377930.3390209 <https://doi.org/10.1145/3377930.3390209>`_.
 
 You can download all references for this
 :download:`Bibtex <../assets/references.bib>`, or this
