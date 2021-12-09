@@ -2,18 +2,30 @@
  * brkga_mp_ipr.hpp: Biased Random-Key Genetic Algorithm Multi-Parent
  *                   with Implict Path Relinking.
  *
+ * Created on : Jan 06, 2015 by andrade.
+ * Last update: Dec 07, 2021 by andrade.
+ *
  * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
+ *
+ * This code is released under BRKGA-MP-IPR License:
+ * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
  *
  * (c) Copyright 2010, 2011 Rodrigo F. Toso, Mauricio G.C. Resende.
  * All Rights Reserved.
  *
+ * This code is released under MIT License:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * - The above copyright notice and this permission notice shall be included
+ *   in all copies or substantial portions of the Software.
+ *
  * Collaborators: Alberto Kummer, 2021 (parallel mating).
- *
- * Created on : Jan 06, 2015 by andrade.
- * Last update: Dec 07, 2021 by andrade.
- *
- * This code is released under LICENSE.md.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -96,7 +108,6 @@
 // original BRKGA. The reproducibility is guaranteed with only the same seed.
 // This option can be very slow for large chromosomes and large populations.
 // But it makes debugging easier.
-
 #if defined(MATING_FULL_SPEED)
     #undef MATING_SEQUENTIAL
     #undef MATING_SEED_ONLY

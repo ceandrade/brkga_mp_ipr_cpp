@@ -1,13 +1,16 @@
 /******************************************************************************
  * combinatorial_auction.hpp: Implementation for Combinatorial Auction class.
  *
+ * Created on : Jun 24, 2011 by andrade
+ * Last update: Mar 23, 2013 by andrade
+ *
  * Author: Carlos Eduardo de Andrade <andrade@ic.unicamp.br>
  *
  * (c) Copyright 2013 Institute of Computing, University of Campinas.
  *     All Rights Reserved.
  *
- *  Created on : Jun 24, 2011 by andrade
- *  Last update: Mar 23, 2013 by andrade
+ * This code is released under BRKGA-MP-IPR License:
+ * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE

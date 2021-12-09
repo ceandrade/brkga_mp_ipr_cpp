@@ -4,10 +4,11 @@
  * (c) Copyright 2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
- *  Created on : May 18, 2021 by andrade.
- *  Last update: Dec 03, 2021 by andrade.
+ * Created on : May 18, 2021 by andrade.
+ * Last update: Dec 03, 2021 by andrade.
  *
- * This code is released under LICENSE.md.
+ * This code is released under BRKGA-MP-IPR License:
+ * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -66,7 +67,7 @@ namespace BRKGA {
  *      tuples with fundamental types, you must also provide two const template
  *      expressions #FITNESS_T_MIN and #FITNESS_T_MAX.
  */
-typedef std::tuple<double, double> fitness_t;
+ typedef std::tuple<double, double> fitness_t;
 
 namespace { // Hide from external usage.
 /**

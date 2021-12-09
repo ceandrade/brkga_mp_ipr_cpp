@@ -1,13 +1,14 @@
 /******************************************************************************
  * tsp_instance.cpp: Implementation for TSP_Instance class.
  *
- * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * Created on : Mar 05, 2019 by andrade
+ * Last update: Mar 05, 2019 by andrade
+ *
+ * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
- *  Created on : Mar 05, 2019 by andrade
- *  Last update: Mar 05, 2019 by andrade
- *
- * This code is released under LICENSE.md.
+ * This code is released under BRKGA-MP-IPR License:
+ * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE

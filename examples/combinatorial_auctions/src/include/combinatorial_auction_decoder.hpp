@@ -2,13 +2,16 @@
  * combinatorial_auction_decoder.hpp: Interface for Combinatorial Auction
  * Decoder class.
  *
+ * Created on : Jun 24, 2011 by andrade
+ * Last update: Dec 09, 2021 by andrade
+ *
  * Author: Carlos Eduardo de Andrade <andrade@ic.unicamp.br>
  *
- * (c) Copyright 2015 Institute of Computing, University of Campinas.
+ * (c) Copyright 2015-2022 Institute of Computing, University of Campinas.
  *     All Rights Reserved.
  *
- *  Created on : Jun 24, 2011 by andrade
- *  Last update: Jan 19, 2015 by andrade
+ * This code is released under BRKGA-MP-IPR License:
+ * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -27,6 +30,7 @@
 #define COMBINATORIAL_AUCTION_DECODER_HPP
 
 #include "combinatorial_auction.hpp"
+#include "brkga_mp_ipr/fitness_type.hpp"
 
 #include <utility>
 using std::pair;
@@ -88,7 +92,7 @@ class CombinatorialAuctionDecoder { //: public BRKGA_Decoder {
          * \param writeback rewrite the chromosome to reflect the solution.
          * \return a double with fitness value.
          */
-        virtual double decode(vector< double >& chromosome, bool writeback);
+        virtual BRKGA::fitness_t decode(vector< double >& chromosome, bool writeback);
         //@}
 
         /** \name Member Methods */

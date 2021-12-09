@@ -2,13 +2,16 @@
  * combinatorial_auction_decoder.cpp: Implementation for Combinatorial Auction
  * Decoder class.
  *
+ * Created on : Jun 24, 2011 by andrade
+ * Last update: Dec 09, 2021 by andrade
+ *
  * Author: Carlos Eduardo de Andrade <andrade@ic.unicamp.br>
  *
- * (c) Copyright 2013 Institute of Computing, University of Campinas.
+ * (c) Copyright 2013-2022 Institute of Computing, University of Campinas.
  *     All Rights Reserved.
  *
- *  Created on : Jun 24, 2011 by andrade
- *  Last update: Mar 23, 2013 by andrade
+ * This code is released under BRKGA-MP-IPR License:
+ * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -116,7 +119,7 @@ CombinatorialAuctionDecoder::CombinatorialAuctionDecoder(
 
 //--------------------------------[ Decode ]---------------------------------//
 
-double CombinatorialAuctionDecoder::decode(vector< double >& chromosome, bool writeback) {
+BRKGA::fitness_t CombinatorialAuctionDecoder::decode(vector< double >& chromosome, bool writeback) {
     #ifdef FULLDEBUG
     cout << setiosflags(ios::fixed) << setprecision(6)
          << "\n------------------------------------------------------\n"

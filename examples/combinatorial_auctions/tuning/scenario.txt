@@ -1,3 +1,27 @@
+###############################################################################
+# (c) Copyright 2019-2022, Carlos Eduardo de Andrade. All Rights Reserved.
+#
+# This code is released under LICENSE.md.
+#
+# Created on:  Dec 28, 2018 by ceandrade
+# Last update: Jan 09, 2019 by ceandrade
+#
+# This code is released under BRKGA-MP-IPR License:
+# https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+###############################################################################
+
 ###################################################### -*- mode: r -*- #####
 ## Scenario setup for Iterated Race (iRace).
 ############################################################################
@@ -56,11 +80,11 @@ targetRunner = "./run_brkga.sh"
 ## performed. It determines the (maximum) budget of experiments for the tuning.
 maxExperiments = 3000
 
-## The maximum time in seconds for the runs of targetRunner that will be 
-## performed. The mean execution time is estimated to calculate the maximum number 
+## The maximum time in seconds for the runs of targetRunner that will be
+## performed. The mean execution time is estimated to calculate the maximum number
 ## of experiments. When this is used targetRunner must return the execution time
 ## as second output.
-# maxTime = 0             
+# maxTime = 0
 
 ## The percentage of the budget used for estimating the mean execution time.
 ## Only used when maxTime > 0.
@@ -131,7 +155,7 @@ maxExperiments = 3000
 ## Enable/disable deterministic algorithm mode, if enabled irace
 ## will not use an instance more that once in each race. Note that
 ## if the number of instances provided is less than firstTest, no
-## statistical test will be performed. 
+## statistical test will be performed.
 # deterministic = 0
 
 ## Seed of the random number generator (must be a positive integer, NA
@@ -146,7 +170,7 @@ parallel = 4
 ## parallel. Load-balancing makes better use of computing resources, but
 ## increases communication overhead. If this overhead is large, disabling
 ## load-balancing may be faster.
-# loadBalancing = 
+# loadBalancing =
 
 ## Specify how irace waits for jobs to finish when targetRunner submits jobs to
 ## a batch cluster: sge, pbs, torque or slurm (targetRunner must submit jobs to
@@ -180,7 +204,7 @@ parallel = 4
 ## elitist irace.
 # elitistNewInstances  = 1
 
-## Limit for the elitist race, number of statistical test performed without 
+## Limit for the elitist race, number of statistical test performed without
 ## elimination of configurations.
 # elitistLimit  = 2
 

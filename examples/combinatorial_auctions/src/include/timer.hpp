@@ -1,13 +1,16 @@
 /******************************************************************************
  * timer.hpp: Interface/Implementation for system clock time class.
  *
+ * Created on : 09/09/2011 by andrade
+ * Last update: 09/09/2011 by andrade
+ *
  * Author: Carlos Eduardo de Andrade <andrade@ic.unicamp.br>
  *
  * (c) Copyright 2011 Institute of Computing, University of Campinas.
  *     All Rights Reserved.
  *
- *  Created on : 09/09/2011 by andrade
- *  Last update: 09/09/2011 by andrade
+ * This code is released under BRKGA-MP-IPR License:
+ * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE

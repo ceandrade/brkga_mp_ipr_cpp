@@ -1,12 +1,17 @@
 ###############################################################################
+# Makefile: building instructions using GNU Make utilities.
+#
+# Created on : Jan 13, 2015 by andrade
+# Last update: Dec 09, 2021 by andrade
+#
 # Author: Carlos Eduardo de Andrade <ce.andrade@gmail.com>
 #
-# (c) Copyright 2015
+# (c) Copyright 2015-2022
 #     Institute of Computing, University of Campinas.
 #     All Rights Reserved.
 #
-#  Created on : Jan 13, 2015 by andrade
-#  Last update: Jan 13, 2015 by andrade
+# This code is released under BRKGA-MP-IPR License:
+# https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -34,6 +39,30 @@ OPT = opt
 
 # Set tuning mode
 USER_DEFINES += -DTUNING
+
+# Determines how the mating process will happen regarding reproducibility.  One
+# of the following options should be used. If more than one is given,
+# MATING_FULL_SPEED takes priority over MATING_SEED_ONLY, which takes priority
+# over MATING_SEQUENTIAL. If no option is supplied, BRKGA-Mp-IPR assume
+# MATING_FULL_SPEED.
+#
+# At full speed, the mating process is done in parallel, using independent RNGs.
+# The results are reproducible if and only if you use the same seed and the same
+# number of threads.
+USER_FLAGS += -DMATING_FULL_SPEED
+
+# Using the following option, the mating is still parallel, but each RNG is
+# seeded on each mating. This is a little bit slower than full speed, but we
+# depend only on the seed, regardless of the number of threads. I.e., Runs with
+# a different number of threads, but the same seed should result in the same
+# sequence of decisions.
+# USER_FLAGS += -DMATING_SEED_ONLY
+
+# Using this option, the mating process is completely sequential, as in the
+# original BRKGA. The reproducibility is guaranteed with only the same seed.
+# This option can be very slow for large chromosomes and large populations. But
+# it makes debugging easier.
+# USER_FLAGS += -DMATING_SEQUENTIAL
 
 ###############################################################################
 # Build options
@@ -72,13 +101,13 @@ else
     SYSTEM = linux
 endif
 
-# Define the usage of C++14. This code compiles only in modern compilers,
+# Define the usage of C++17. This code compiles only in modern compilers,
 # for instance, gcc >= 5.2
-USER_FLAGS += -std=c++14
+USER_FLAGS += -std=c++17
 
 # Compiler flags for debugging
 ifneq ($(OPT), opt)
-	USER_FLAGS += -ggdb3 -fexceptions -fno-optimize-sibling-calls -fno-inline
+	USER_FLAGS += -ggdb3 -fexceptions -fno-optimize-sibling-calls -fno-inline -flto
 	# -fsanitize=address
 	# -fsanitize=undefined
 else
