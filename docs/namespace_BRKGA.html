@@ -1,82 +1,45 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>namespace BRKGA &mdash; BRKGA-MP-IPR 1.1.0 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>namespace BRKGA &mdash; BRKGA-MP-IPR 2.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/doxyrest-pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/doxyrest-sphinx_rtd_theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
         <script src="_static/add_target.js"></script>
         <script src="_static/target-highlight.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/doxyrest-pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/doxyrest-sphinx_rtd_theme.css" type="text/css" />
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="namespace BRKGA::PathRelinking" href="namespace_BRKGA_PathRelinking.html" />
     <link rel="prev" title="API documentation" href="global.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> BRKGA-MP-IPR
-          
-
-          
-            
             <img src="_static/logo.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                1.1
+                2.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -84,17 +47,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
@@ -118,88 +71,51 @@
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#detailed-documentation">Detailed Documentation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#typedefs">Typedefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#global-variables">Global Variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#global-functions">Global Functions</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_EnumIO.html">template class EnumIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessor_directives.html">Preprocessor directives</a></li>
 </ul>
 </li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">BRKGA-MP-IPR</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="global.html">API documentation</a> &raquo;</li>
-        
       <li>namespace BRKGA</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="_sources/namespace_BRKGA.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="namespace-brkga">
-<span id="cid-brkga"></span><span id="doxid-namespace-b-r-k-g-a"></span><span id="index-0"></span><h1>namespace BRKGA<a class="headerlink" href="#namespace-brkga" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="namespace-brkga">
+<span id="doxid-namespace-b-r-k-g-a"></span><span id="index-0"></span><h1>namespace BRKGA<a class="headerlink" href="#namespace-brkga" title="Permalink to this headline"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This namespace contains all stuff related to Multi-Parent BRKGA with Implicit Path Relinking. <a class="reference internal" href="#details-doxid-namespace-b-r-k-g-a"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight overview-code-block literal-block"><span></span><span class="k">namespace</span> <span class="n">BRKGA</span> <span class="p">{</span>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<p>This namespace contains all stuff related to <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> Multi Parent with Implicit Path Relinking. <a class="reference internal" href="#details-namespace-b-r-k-g-a"><span class="std std-ref">More…</span></a></p>
+<pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="k">namespace</span> <span class="n">BRKGA</span> <span class="p">{</span>
 
 <span class="c1">// namespaces</span>
 
@@ -208,6 +124,7 @@
 <span class="c1">// typedefs</span>
 
 <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">;</span>
+<span class="k">typedef</span> <span class="kt">double</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span><span class="p">;</span>
 
 <span class="c1">// enums</span>
 
@@ -227,54 +144,75 @@
 <span class="k">class</span> <a class="reference internal" href="class_BRKGA_KendallTauDistance.html#doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref">KendallTauDistance</span></a><span></span><span class="p">;</span>
 <span class="k">class</span> <a class="reference internal" href="class_BRKGA_Population.html#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="p">;</span>
 
+<span class="c1">// global variables</span>
+
+<span class="k">static</span> <span class="k">constexpr</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a27f915fd21c02aee1097135954420ebb"><span class="std std-ref">FITNESS_T_MIN</span></a><span></span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1aa4eaa93f02c949d7af918598c606402f"><span class="std std-ref">FITNESS_T_MAX</span></a><span></span><span class="p">;</span>
+<span class="k">constexpr</span> <span class="kt">double</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a8d1d184901bb4f34c71c7bb73a86a84a"><span class="std std-ref">EQUALITY_THRESHOLD</span></a><span></span><span class="p">;</span>
+
 <span class="c1">// global functions</span>
 
-INLINE<span></span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="p">,</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&gt;</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"><span class="std std-ref">readConfiguration</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">);</span>
+<a class="reference internal" href="preprocessor_directives.html#doxid-brkga-mp-ipr-8hpp-1a2eb6f9e0395b47b8d5e3eeae4fe0c116"><span class="std std-ref">INLINE</span></a><span></span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="p">,</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&gt;</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a6ea1575c98d23be6abbc2a497f31529f"><span class="std std-ref">readConfiguration</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">);</span>
 
-INLINE<span></span> <span class="kt">void</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref">writeConfiguration</span></a><span></span><span class="p">(</span>
+<a class="reference internal" href="preprocessor_directives.html#doxid-brkga-mp-ipr-8hpp-1a2eb6f9e0395b47b8d5e3eeae4fe0c116"><span class="std std-ref">INLINE</span></a><span></span> <span class="kt">void</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span class="std std-ref">writeConfiguration</span></a><span></span><span class="p">(</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">,</span>
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="o">&amp;</span> <span class="n">brkga_params</span><span class="p">,</span>
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span> <span class="n">control_params</span> <span class="o">=</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="p">()</span>
     <span class="p">);</span>
 
 <span class="p">}</span> <span class="c1">// namespace BRKGA</span></pre>
-</div>
-<div class="section" id="detailed-documentation">
-<span id="details-doxid-namespace-b-r-k-g-a"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="detailed-documentation">
+<span id="details-namespace-b-r-k-g-a"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline"></a></h2>
 <p>This namespace contains all stuff related to <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> Multi Parent with Implicit Path Relinking.</p>
-<div class="section" id="typedefs">
-<h3>Typedefs<a class="headerlink" href="#typedefs" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-chromosome"><span id="doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"></span><span id="index-1"></span><span></span><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">Chromosome</span></pre>
+<section id="typedefs">
+<h3>Typedefs<a class="headerlink" href="#typedefs" title="Permalink to this headline"></a></h3>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span id="index-1"></span><span></span><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">Chromosome</span></pre>
 <p>Chromosone representation.</p>
 <p>The chromosome is represented using a vector in the unitary hypercube, i.e., <span class="math notranslate nohighlight">\(v \in [0,1]^n\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the size of the array (dimensions of the hypercube). We use double precision because float precision maybe not be enough for some applications.</p>
-<p>We could use <code class="docutils literal notranslate"><span class="pre">std::vector&lt;double&gt;</span></code> directly. However, using typedef, we can add additional capabilities to the Chromosome class in the future, such as parenting track. For example, we may want to do this:</p>
+<p>We could use <code class="docutils literal notranslate"><span class="pre">std::vector&lt;double&gt;</span></code> directly. However, using <code class="docutils literal notranslate"><span class="pre">typedef</span></code>, we can add additional capabilities to the Chromosome class in the future, such as parenting track. For example, we may want to do this:</p>
 <pre class="highlight literal-block"><span></span><span class="k">class</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="k">public</span><span class="o">:</span>
         <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">()</span> <span class="o">:</span>
-            std<span></span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(),</span> <span class="n">my_personal_data</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(),</span> <span class="n">my_personal_data</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
             <span class="p">{}</span>
     <span class="k">public</span><span class="o">:</span>
         <span class="kt">double</span> <span class="n">my_personal_data</span><span class="p">;</span>
 <span class="p">};</span></pre>
 <p>to keep track of some data within a specifc chromosome.</p>
-<p>In general, most people do not recommend to inherit publicly from <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code> because it has no virtual destructor. However, we may do that as long as:</p>
+<p>In general, most people do not recommend to inherit publicly from <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> because it has no virtual destructor. However, we may do that as long as:</p>
 <ol class="loweralpha simple">
-<li><p>We remember that every operation provided by <code class="docutils literal notranslate"><span class="pre">std::vector&lt;&gt;</span></code> must be a semantically valid operation on an object of the derived class;</p></li>
+<li><p>We remember that every operation provided by <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> must be a semantically valid operation on an object of the derived class;</p></li>
 <li><p>We avoid creating derived class objects with dynamic storage duration;</p></li>
 <li><p>We <strong>DO AVOID</strong> polymorphism:</p></li>
 </ol>
 <pre class="highlight literal-block"><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">pt</span> <span class="o">=</span> <span class="k">new</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="p">();</span>     <span class="c1">// Bad idea</span>
 <span class="k">delete</span> <span class="n">pt</span><span class="p">;</span>      <span class="c1">// Delete does not call the Chromosome destructor</span></pre>
-</div>
-<div class="section" id="global-functions">
-<h3>Global Functions<a class="headerlink" href="#global-functions" title="Permalink to this headline">¶</a></h3>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-readconfiguration"><span id="doxid-namespace-b-r-k-g-a-1ad212f0711891038e623f4d882509897e"></span><span id="index-2"></span>INLINE<span></span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="p">,</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&gt;</span> <span class="n">readConfiguration</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span></pre>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span id="index-2"></span><span></span><span class="k">typedef</span> <span class="kt">double</span> <span class="n">fitness_t</span></pre>
+<p>Fitness type representation.</p>
+<p>In general, fitness_t is a single number for single-objective problems. For instance:</p>
+<pre class="highlight literal-block"><span></span><span class="k">typedef</span> <span class="kt">double</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span><span class="p">;</span></pre>
+<p>For multi-objective problems (with dominance/lexicographical sorting), we need to use multiple values. We can either use a class, structure, or <code class="docutils literal notranslate"><span class="pre">std::tuple</span></code>. Using a custom class or structure, we must provide copy assignment (<code class="docutils literal notranslate"><span class="pre">operator=</span></code>) and comparison operators (<code class="docutils literal notranslate"><span class="pre">operator&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">operator&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">operator==</span></code>). We have all these perks using <code class="docutils literal notranslate"><span class="pre">std:tuple</span></code>. For example, assume we have three minimization objective functions. Then we may have:</p>
+<pre class="highlight literal-block"><span></span><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="kt">double</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span><span class="p">;</span></pre>
+<p>We do recommend use <code class="docutils literal notranslate"><span class="pre">std::tuple</span></code>.</p>
+<p>Internally, BRKGA-MP-IPR doesn’t use <code class="docutils literal notranslate"><span class="pre">operator==</span></code> directly. <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> implements the custom function <code class="docutils literal notranslate"><span class="pre">close_enough()</span></code>. For fundamental numerical types, it compares the absolute difference with a given <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a8d1d184901bb4f34c71c7bb73a86a84a"><span class="std std-ref">EQUALITY_THRESHOLD</span></a>, i.e., two numbers <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> equal if <span class="math notranslate nohighlight">\(|a - b| &lt; EQUALITY\_THRESHOLD\)</span>. For all other types (except <code class="docutils literal notranslate"><span class="pre">std::tuple</span></code>), we use operator==. For <code class="docutils literal notranslate"><span class="pre">std::tuple</span></code>, we have a specialized <code class="docutils literal notranslate"><span class="pre">close_enough()</span></code> that iterates over each element of the tuples calling the base <code class="docutils literal notranslate"><span class="pre">close_enough()</span></code>.</p>
+<p>If you are using custom class other than fundamental types or tuples with fundamental types, you must also provide two const template expressions <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1a27f915fd21c02aee1097135954420ebb"><span class="std std-ref">FITNESS_T_MIN</span></a> and <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1aa4eaa93f02c949d7af918598c606402f"><span class="std std-ref">FITNESS_T_MAX</span></a>.</p>
+</section>
+<section id="global-variables">
+<h3>Global Variables<a class="headerlink" href="#global-variables" title="Permalink to this headline"></a></h3>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-namespace-b-r-k-g-a-1a27f915fd21c02aee1097135954420ebb"><span id="index-3"></span><span></span><span class="k">static</span> <span class="k">constexpr</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span> <span class="n">FITNESS_T_MIN</span></pre>
+<p>The actual minimal value to <code class="docutils literal notranslate"><span class="pre">fitness_t</span></code>.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-namespace-b-r-k-g-a-1aa4eaa93f02c949d7af918598c606402f"><span id="index-4"></span><span></span><span class="k">static</span> <span class="k">constexpr</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span> <span class="n">FITNESS_T_MAX</span></pre>
+<p>The actual Maximum value to <code class="docutils literal notranslate"><span class="pre">fitness_t</span></code>.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-namespace-b-r-k-g-a-1a8d1d184901bb4f34c71c7bb73a86a84a"><span id="index-5"></span><span></span><span class="k">constexpr</span> <span class="kt">double</span> <span class="n">EQUALITY_THRESHOLD</span></pre>
+<p>This constant is used to compare floating-point numbers to equality. Therefore, we consider two numbers <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> equal if <span class="math notranslate nohighlight">\(|a - b| &lt; EQUALITY\_THRESHOLD\)</span>.</p>
+<p>Currently, this constant is only used during IPR procedures to compare fitness with fundamental types (int, flot, char, etc), either single type or embedded in a tuple. If your <code class="docutils literal notranslate"><span class="pre">fitness_t</span></code> has a custom type, this is not applied, as explained in <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a>.</p>
+</section>
+<section id="global-functions">
+<h3>Global Functions<a class="headerlink" href="#global-functions" title="Permalink to this headline"></a></h3>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-namespace-b-r-k-g-a-1a6ea1575c98d23be6abbc2a497f31529f"><span id="index-6"></span><a class="reference internal" href="preprocessor_directives.html#doxid-brkga-mp-ipr-8hpp-1a2eb6f9e0395b47b8d5e3eeae4fe0c116"><span class="std std-ref">INLINE</span></a><span></span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="p">,</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&gt;</span> <span class="n">readConfiguration</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span></pre>
 <p>Reads the parameters from a configuration file.</p>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>(ceandrade) This method can beneficiate from introspection tools from C++17.
-We would like achieve a code similar to the <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia counterpart</a>.</p>
-</div>
+<p>Todo (ceandrade) This method can beneficiate from introspection tools from C++17. We would like achieve a code similar to the <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia counterpart</a>.</p>
 <p class="rubric">Parameters:</p>
 <table class="colwidths-given docutils align-default">
 <colgroup>
@@ -285,33 +223,20 @@ We would like achieve a code similar to the <a class="reference external" href="
 <tr class="row-odd"><td><p>filename</p></td>
 <td><p>the configuration file.</p></td>
 </tr>
-</tbody>
-</table>
-<p class="rubric">Returns:</p>
-<p>a tuple containing the <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> and external control parameters.</p>
-<p class="rubric">Exceptions:</p>
-<table class="colwidths-given docutils align-default">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>std::fstream::failure</p></td>
+<tr class="row-even"><td><p>std::fstream::failure</p></td>
 <td><p>in case of errors in the file.</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight title-code-block literal-block" id="cid-brkga-writeconfiguration"><span id="doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"></span><span id="index-3"></span>INLINE<span></span> <span class="kt">void</span> <span class="n">writeConfiguration</span><span class="p">(</span>
+<p class="rubric">Returns:</p>
+<p>a tuple containing the <a class="reference internal" href="#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> and external control parameters.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-namespace-b-r-k-g-a-1a01bade43afee725ca73c3f45a76012c4"><span id="index-7"></span><a class="reference internal" href="preprocessor_directives.html#doxid-brkga-mp-ipr-8hpp-1a2eb6f9e0395b47b8d5e3eeae4fe0c116"><span class="std std-ref">INLINE</span></a><span></span> <span class="kt">void</span> <span class="n">writeConfiguration</span><span class="p">(</span>
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">,</span>
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="o">&amp;</span> <span class="n">brkga_params</span><span class="p">,</span>
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="o">&amp;</span> <span class="n">control_params</span> <span class="o">=</span> <a class="reference internal" href="class_BRKGA_ExternalControlParams.html#doxid-class-b-r-k-g-a-1-1-external-control-params"><span class="std std-ref">ExternalControlParams</span></a><span></span><span class="p">()</span>
     <span class="p">)</span></pre>
-<p>Writes the parameters into a file.</p>
-<div class="admonition-todo admonition" id="id3">
-<p class="admonition-title">Todo</p>
-<p>(ceandrade) This method can beneficiate from introspection tools from C++17.
-We would like achieve a code similar to the <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia counterpart</a>.</p>
-</div>
+<p>Writes the parameters into a file..</p>
+<p>Todo (ceandrade) This method can beneficiate from introspection tools from C++17. We would like achieve a code similar to the <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia counterpart</a>.</p>
 <p class="rubric">Parameters:</p>
 <table class="colwidths-given docutils align-default">
 <colgroup>
@@ -328,71 +253,44 @@ We would like achieve a code similar to the <a class="reference external" href="
 <tr class="row-odd"><td><p>control_params</p></td>
 <td><p>the external control parameters. Default is an empty object.</p></td>
 </tr>
-</tbody>
-</table>
-<p class="rubric">Exceptions:</p>
-<table class="colwidths-given docutils align-default">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>std::fstream::failure</p></td>
+<tr class="row-even"><td><p>std::fstream::failure</p></td>
 <td><p>in case of errors in the file.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="namespace_BRKGA_PathRelinking.html" class="btn btn-neutral float-right" title="namespace BRKGA::PathRelinking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="global.html" class="btn btn-neutral float-left" title="API documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="global.html" class="btn btn-neutral float-left" title="API documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="namespace_BRKGA_PathRelinking.html" class="btn btn-neutral float-right" title="namespace BRKGA::PathRelinking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2020, Carlos E. Andrade
-
-    </p>
+    <p>&#169; Copyright 2019-2022, Carlos E. Andrade.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

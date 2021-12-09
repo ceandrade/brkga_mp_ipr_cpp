@@ -208,16 +208,17 @@ we consider the TSP with two objectives: first, we must minimize the total tour
 length, and second, the size of the largest edge in the tour. For that, we must
 change the file
 `fitness_type.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/brkga_mp_ipr/fitness_type.hpp>`_
-to reflect such a thing. In this example, we use the standard `std::tuple`:
+to reflect such a thing. In this example, we use the standard
+`std::tuple <https://en.cppreference.com/w/cpp/utility/tuple>`_
 
 .. ref-code-block:: cpp
 
     #include <limits>
-    #include <tuple>
+    #include <:ref:`tuple <https://en.cppreference.com/w/cpp/utility/tuple>`>
 
     namespace BRKGA {
 
-    typedef std::tuple<double, double> fitness_t;
+    typedef :ref:`std::tuple <https://en.cppreference.com/w/cpp/utility/tuple>`<double, double> fitness_t;
 
     //...
     } // end namespace BRKGA_MP_IPR
@@ -1633,16 +1634,17 @@ we first must set
 according to the number of objectives we want. For that, we must
 change the file
 `fitness_type.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/brkga_mp_ipr/fitness_type.hpp>`_
-to reflect such a thing. In this example, we use the standard `std::tuple`:
+to reflect such a thing. In this example, we use the standard
+`std::tuple <https://en.cppreference.com/w/cpp/utility/tuple>`_:
 
 .. ref-code-block:: cpp
 
     #include <limits>
-    #include <tuple>
+    #include <:ref:`tuple <https://en.cppreference.com/w/cpp/utility/tuple>`>
 
     namespace BRKGA {
 
-    typedef std::tuple<double, double> fitness_t;
+    typedef :ref:`std::tuple <https://en.cppreference.com/w/cpp/utility/tuple>`<double, double> fitness_t;
 
     //...
     } // end namespace BRKGA_MP_IPR
@@ -2169,4 +2171,3 @@ functions ``:ref:`BRKGA::writeConfiguration()
 template specializations (at the end of file ``brkga_mp_ipr.hpp``), to a unique
 translation unit. I recommend to it on your ``main()`` module, so that they are
 compiled just once.
-

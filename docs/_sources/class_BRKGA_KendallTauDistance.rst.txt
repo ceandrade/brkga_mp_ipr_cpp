@@ -1,6 +1,5 @@
 .. index:: pair: class; BRKGA::KendallTauDistance
 .. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance:
-.. _cid-brkga.kendalltaudistance:
 
 class BRKGA::KendallTauDistance
 ===============================
@@ -11,29 +10,15 @@ class BRKGA::KendallTauDistance
 Overview
 ~~~~~~~~
 
-Kendall Tau distance between two vectors. :ref:`More...<details-doxid-class_b_r_k_g_a_1_1_kendall_tau_distance>`
+Kendall Tau distance between two vectors. :ref:`More...<details-class_b_r_k_g_a_1_1_kendall_tau_distance>`
 
-
-
-
-
-
-
-
-
-
-
-.. index:: pair: function; ~KendallTauDistance
-.. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a8873ac7512526a7555ebf8f962451e83:
-.. _cid-brkga.kendalltaudistance.~kendalltaudistance:
 
 .. ref-code-block:: cpp
-	:class: overview-code-block
+	:class: doxyrest-overview-code-block
 
 	#include <brkga_mp_ipr.hpp>
 	
-	class KendallTauDistance: public :ref:`BRKGA::DistanceFunctionBase<doxid-class_b_r_k_g_a_1_1_distance_function_base>`
-	{
+	class KendallTauDistance: public :ref:`BRKGA::DistanceFunctionBase<doxid-class_b_r_k_g_a_1_1_distance_function_base>` {
 	public:
 		// methods
 	
@@ -42,7 +27,10 @@ Kendall Tau distance between two vectors. :ref:`More...<details-doxid-class_b_r_
 			const std::vector<double>& vector2
 			);
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a0901afc35a6f2a44427d0a1ce78b2daa>`(const double key1, const double key2);
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a0901afc35a6f2a44427d0a1ce78b2daa>`(
+			const double key1,
+			const double key2
+			);
 	
 		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a4638274b38b50051eaba3f399b1b9c5f>`(
 			std::vector<double>::const_iterator v1_begin,
@@ -55,13 +43,20 @@ Inherited Members
 -----------------
 
 .. ref-code-block:: cpp
-	:class: overview-inherited-code-block
+	:class: doxyrest-overview-inherited-code-block
 
 	public:
 		// methods
 	
-		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1acee8e7b478010aff23b3a46cd113860a>`(const std::vector<double>& v1, const std::vector<double>& v2) = 0;
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a243c8a1031fb149c6abc16f3869f2ace>`(const double key1, const double key2) = 0;
+		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1acee8e7b478010aff23b3a46cd113860a>`(
+			const std::vector<double>& v1,
+			const std::vector<double>& v2
+			) = 0;
+	
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a243c8a1031fb149c6abc16f3869f2ace>`(
+			const double key1,
+			const double key2
+			) = 0;
 	
 		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1aca0fc7103888cd025a67a16575954875>`(
 			std::vector<double>::const_iterator v1_begin,
@@ -69,7 +64,7 @@ Inherited Members
 			const std::size_t block_size
 			) = 0;
 
-.. _details-doxid-class_b_r_k_g_a_1_1_kendall_tau_distance:
+.. _details-class_b_r_k_g_a_1_1_kendall_tau_distance:
 
 Detailed Documentation
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -83,10 +78,9 @@ Methods
 
 .. index:: pair: function; distance
 .. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1aeb8d4c9cd3b87b08f84762ed83d347ff:
-.. _cid-brkga.kendalltaudistance.distance:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	virtual double distance(
 		const std::vector<double>& vector1,
@@ -114,12 +108,14 @@ Computes the Kendall Tau distance between two vectors.
 
 .. index:: pair: function; affectSolution
 .. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a0901afc35a6f2a44427d0a1ce78b2daa:
-.. _cid-brkga.kendalltaudistance.affectsolution:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	virtual bool affectSolution(const double key1, const double key2)
+	virtual bool affectSolution(
+		const double key1,
+		const double key2
+		)
 
 Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 
@@ -142,10 +138,9 @@ Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 
 .. index:: pair: function; affectSolution
 .. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a4638274b38b50051eaba3f399b1b9c5f:
-.. _cid-brkga.kendalltaudistance.affectsolution-2:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	virtual bool affectSolution(
 		std::vector<double>::const_iterator v1_begin,

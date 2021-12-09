@@ -26,4 +26,3 @@ Reference and Index
 
 |	:doc:`global`
 |	:ref:`genindex`
-
