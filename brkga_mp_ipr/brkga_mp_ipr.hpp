@@ -2,16 +2,30 @@
  * brkga_mp_ipr.hpp: Biased Random-Key Genetic Algorithm Multi-Parent
  *                   with Implict Path Relinking.
  *
+ * Created on : Jan 06, 2015 by andrade.
+ * Last update: Dec 07, 2021 by andrade.
+ *
  * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
+ *
+ * This code is released under BRKGA-MP-IPR License:
+ * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
  *
  * (c) Copyright 2010, 2011 Rodrigo F. Toso, Mauricio G.C. Resende.
  * All Rights Reserved.
  *
- * Created on : Jan 06, 2015 by andrade.
- * Last update: Dec 01, 2021 by andrade.
+ * This code is released under MIT License:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * This code is released under LICENSE.md.
+ * - The above copyright notice and this permission notice shall be included
+ *   in all copies or substantial portions of the Software.
+ *
+ * Collaborators: Alberto Kummer, 2021 (parallel mating).
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -32,6 +46,7 @@
 // This includes helpers to read and write enums.
 #include "third_part/enum_io.hpp"
 
+#include "fitness_type.hpp"
 #include "chromosome.hpp"
 
 #include <algorithm>
@@ -51,9 +66,13 @@
 #include <stdexcept>
 #include <stdexcept>
 #include <sys/time.h>
+#include <tuple>
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
+
+//----------------------------------------------------------------------------//
 
 /// If we need to include this file in multiple translation units (files) that
 /// are compiled separately, we have to `inline` some functions and template
@@ -65,6 +84,41 @@
     #define INLINE inline
 #else
     #define INLINE
+#endif
+
+//----------------------------------------------------------------------------//
+
+// These preprocessor flags determine how the mating process will happen
+// regarding reproducibility.  One of the following options should be used.
+// If more than one is given, MATING_FULL_SPEED takes priority over
+// MATING_SEED_ONLY, which takes priority over MATING_SEQUENTIAL. If no option
+// is supplied, BRKGA-MP-IPR assume MATING_FULL_SPEED.
+//
+// At full speed, the mating process is done in parallel, using independent
+// RNGs. The results are reproducible if and only if you use the same seed and
+// the same number of threads.
+//
+// Using the following option, the mating is still parallel, but each RNG is
+// seeded on each mating. This is a little bit slower than full speed, but we
+// depend only on the seed, regardless of the number of threads. I.e., Runs with
+// a different number of threads, but the same seed should result in the same
+// sequence of decisions.
+//
+// Using this option, the mating process is completely sequential, as in the
+// original BRKGA. The reproducibility is guaranteed with only the same seed.
+// This option can be very slow for large chromosomes and large populations.
+// But it makes debugging easier.
+#if defined(MATING_FULL_SPEED)
+    #undef MATING_SEQUENTIAL
+    #undef MATING_SEED_ONLY
+#elif defined(MATING_SEED_ONLY)
+    #undef MATING_SEQUENTIAL
+    #undef MATING_FULL_SPEED
+#elif defined(MATING_SEQUENTIAL)
+    #undef MATING_SEED_ONLY
+    #undef MATING_FULL_SPEED
+#else
+    #define MATING_FULL_SPEED
 #endif
 
 /**
@@ -416,8 +470,8 @@ public:
     /// Population as vectors of probabilities.
     std::vector<Chromosome> population;
 
-    /// Fitness (double) of a each chromosome.
-    std::vector<std::pair<double, unsigned>> fitness;
+    /// Fitness of each chromosome.
+    std::vector<std::pair<fitness_t, unsigned>> fitness;
     //@}
 
     /** \name Default constructors and destructor */
@@ -504,12 +558,12 @@ public:
      */
     //@{
     /// Returns the best fitness in this population.
-    double getBestFitness() const {
+    fitness_t getBestFitness() const {
         return getFitness(0);
     }
 
     /// Returns the fitness of chromosome i.
-    double getFitness(const unsigned i)  const {
+    fitness_t getFitness(const unsigned i)  const {
         return fitness[i].first;
     }
 
@@ -531,7 +585,7 @@ public:
      * \param sense Optimization sense.
      */
     void sortFitness(const Sense sense) {
-        typedef std::pair<double, unsigned> local_type;
+        typedef std::pair<fitness_t, unsigned> local_type;
         if(sense == Sense::MAXIMIZE)
             std::sort(fitness.begin(), fitness.end(),
                       std::greater<local_type>());
@@ -544,7 +598,7 @@ public:
      * \param chromosome index of chromosome.
      * \param value allele value.
      */
-    void setFitness(const unsigned chromosome, const double value) {
+    void setFitness(const unsigned chromosome, const fitness_t value) {
         fitness[chromosome] = std::make_pair(value, chromosome);
     }
     //@}
@@ -872,6 +926,66 @@ INLINE void writeConfiguration(const std::string& filename,
 }
 
 //----------------------------------------------------------------------------//
+// Functions for equality comparisons
+//----------------------------------------------------------------------------//
+
+namespace {
+
+/** \name Functions for equality comparisons
+ *
+ * This is a helper function that, at compiler time, detect if the `fitness_t`
+ * is a floating point type, and applies the absolute diference. Otherwise,
+ * the compiler generates the equality comparison.
+ */
+//@{
+
+/**
+ * \brief Compare two values to equality.
+ *
+ * If these values are real numbers, we compare their absolute difference with
+ * `EQUALITY_THRESHOLD`, i.e., \f$|a - b| < EQUALITY\_THRESHOLD\f$. In other
+ * cases (except tuples, which have a specialization), we use the `operator==`
+ * directly. Therefore, `fitness_t` must define `operator==`.
+ *
+ * \param a First item to be compared.
+ * \param b Second item to be compared.
+ * \return true if a and b are equal.
+ */
+template <class T>
+constexpr bool close_enough(T a, T b) {
+   if constexpr (std::is_floating_point_v<T>)
+      return fabs(a - b) < EQUALITY_THRESHOLD;
+   else
+      return a == b;
+}
+
+/**
+ * \brief Compare two tuples to equality.
+ *
+ * This specialization iterates, recursively, of each tuples' members and
+ * compares them. Note that this is done in compilation time, with no impact at
+ * running time.
+ *
+ * \todo Could we implement this using C++17 template folding?
+ *
+ * \param a First tuple to be compared.
+ * \param b Second tuple to be compared.
+ * \return true if a and b are equal.
+ */
+template <size_t I = 0, typename T, typename... Ts>
+constexpr bool close_enough(std::tuple<T, Ts...> a, std::tuple<T, Ts...> b)
+{
+    // If we have iterated through all elements, just return true.
+    if constexpr(I == sizeof...(Ts) + 1)
+        return true;
+    else
+        return close_enough(std::get<I>(a), std::get<I>(b)) &&
+               close_enough<I + 1>(a, b);
+}
+//@}
+}
+
+//----------------------------------------------------------------------------//
 // The Multi-Parent Biased Random-key Genetic Algorithm with Implicit
 // Path Relinking
 //----------------------------------------------------------------------------//
@@ -1031,7 +1145,7 @@ INLINE void writeConfiguration(const std::string& filename,
  * http://github.com/rfrancotoso/brkgaAPI
  *
  */
-template<class Decoder>
+template <class Decoder>
 class BRKGA_MP_IPR {
 public:
     /** \name Constructors and destructor */
@@ -1079,13 +1193,10 @@ public:
      * such as fast heuristics, other methaheuristics, or even relaxations from
      * a mixed integer programming model that models the problem.
      *
-     * All given solutions are assigned to one population only. Therefore, the
-     * maximum number of solutions is the size of the populations.
+     * We assign as many individuals as possible across all populations.
+     * Extra individuals are disregarded.
      *
      * \param chromosomes a set of individuals encoded as Chromosomes.
-     * \throw std::runtime_error if the number of given chromosomes is larger
-     *        than the population size; if the sizes of the given chromosomes
-     *        do not match with the required chromosome size.
      */
     void setInitialPopulation(const std::vector<Chromosome>& chromosomes);
 
@@ -1132,13 +1243,13 @@ public:
      *     THREAD-SAFE.** If such property cannot be held, we suggest using
      *     a single thread  for optimization.
      *
-     * \param true_init when set false, it ignores all solutions provided
+     * \param reset when set true, it ignores all solutions provided
      *        by `setInitialPopulation()`, and builds a completely random
-     *        population. This parameter is set to false during reset phase.
-     *        When true, `initialize()` considers all solutions given by
+     *        population. This parameter is set to true during reset phase.
+     *        When false, `initialize()` considers all solutions given by
      *        `setInitialPopulation()`.
      */
-    void initialize(bool true_init = true);
+    void initialize(bool reset = false);
     //@}
 
     /** \name Evolution */
@@ -1317,17 +1428,16 @@ public:
                     std::numeric_limits<unsigned>::infinity());
 
     /**
-     * \brief Injects a chromosome and its fitness into a population in the
-     *         given place position.
+     * \brief Injects/Replaces a chromosome of a given population into a
+     *         given position.
      *
-     * If fitness is not provided (`fitness == Inf`), the decoding is performed
-     * over chromosome. Once the chromosome is injected, the population is
-     * re-sorted according to the chromosomes' fitness.
+     * The new chromosome replaces the old one, and the decoder is triggered to
+     * compute the new fitness. Once done, the population is re-sorted
+     * according to the chromosomes' fitness.
      *
      * \param chromosome the chromosome to be injected.
      * \param population_index the population index.
      * \param position the chromosome position.
-     * \param fitness the pre-computed fitness if it is available.
      *
      * \throw std::range_error eitheir if `population_index` is larger
      *        than number of populations; or `position` is larger than the
@@ -1335,9 +1445,7 @@ public:
      */
     void injectChromosome(const Chromosome& chromosome,
                           unsigned population_index,
-                          unsigned position,
-                          double fitness =
-                                      std::numeric_limits<double>::infinity());
+                          unsigned position);
     //@}
 
     /** \name Support methods */
@@ -1355,7 +1463,7 @@ public:
     const Chromosome& getBestChromosome() const;
 
     /// Return the best fitness found so far among all populations.
-    double getBestFitness() const;
+    fitness_t getBestFitness() const;
 
     /**
      * \brief Returns a reference to a chromosome of the given population.
@@ -1378,7 +1486,7 @@ public:
      *        than number of populations, or `position` is larger than the
      *        population size.
      */
-    double getFitness(unsigned population_index, unsigned position) const;
+    fitness_t getFitness(unsigned population_index, unsigned position) const;
     //@}
 
     /** \name Parameter getters */
@@ -1455,13 +1563,20 @@ protected:
     /// This value is needed to normalization.
     double total_bias_weight;
 
+    #ifdef MATING_SEED_ONLY
+    /// During parallel mating, we need to be sure that the same random values
+    /// are generated in each mating, despite the number of threads available.
+    /// Therefore, on each iteration, we generate a set of seeds for each RNG.
+    std::vector<std::mt19937::result_type> mating_seeds;
+    #endif
+
     /// Used to shuffled individual/chromosome indices during the mate.
     /// We have one for each thread during parallel mating.
     std::vector<std::vector<unsigned>> shuffled_individuals_per_thread;
 
     /// Defines the order of parents during the mating.
     /// We have one for each thread during parallel mating.
-    std::vector<std::vector<std::pair<double, unsigned>>>
+    std::vector<std::vector<std::pair<fitness_t, unsigned>>>
     parents_ordered_per_thread;
 
     /// Temporary structures that hold the offsrping per thread. Used
@@ -1473,9 +1588,6 @@ protected:
 
     /// Indicates if the algorithm was proper initialized.
     bool initialized;
-
-    /// Indicates if the algorithm have been reset.
-    bool reset_phase;
 
     /// Holds the start time for a call of the path relink procedure.
     std::chrono::system_clock::time_point pr_start_time;
@@ -1521,7 +1633,7 @@ protected:
      */
     void directPathRelink(const Chromosome& chr1, const Chromosome& chr2,
                           std::shared_ptr<DistanceFunctionBase> dist,
-                          std::pair<double, Chromosome>& best_found,
+                          std::pair<fitness_t, Chromosome>& best_found,
                           std::size_t block_size,
                           long max_time,
                           double percentage);
@@ -1557,7 +1669,7 @@ protected:
      */
     void permutatioBasedPathRelink(Chromosome& chr1, Chromosome& chr2,
                                    std::shared_ptr<DistanceFunctionBase> dist,
-                                   std::pair<double, Chromosome>& best_found,
+                                   std::pair<fitness_t, Chromosome>& best_found,
                                    std::size_t block_size,
                                    long max_time,
                                    double percentage);
@@ -1572,7 +1684,7 @@ protected:
      * sense is `Sense::MINIMIZE`, `a1 < a2` will return true, otherwise false.
      * The opposite happens for `Sense::MAXIMIZE`.
      */
-    inline bool betterThan(const double a1, const double a2) const;
+    inline bool betterThan(const fitness_t& a1, const fitness_t& a2) const;
 
     /**
      * Distributes real values of given precision across [0, 1] evenly.
@@ -1581,7 +1693,8 @@ protected:
     inline double rand01(std::mt19937& rng);
 
     /**
-     * Returns a number between `0` and `n`.
+     * Returns an integer number between `0` and `n`.
+     * \param n The upper bound.
      * \param rng The random number generator to be used.
      */
     inline uint_fast32_t randInt(const uint_fast32_t n, std::mt19937& rng);
@@ -1590,7 +1703,7 @@ protected:
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         Decoder& _decoder_reference,
         const Sense _sense,
@@ -1622,24 +1735,41 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         current(params.num_independent_populations, nullptr),
         bias_function(),
         total_bias_weight(0.0),
-        shuffled_individuals_per_thread(
-            _max_threads,
-            typename decltype(shuffled_individuals_per_thread)
-                ::value_type(params.population_size)
-        ),
-        parents_ordered_per_thread(
-            _max_threads,
-            typename decltype(parents_ordered_per_thread)
-                ::value_type(params.total_parents)
-        ),
-        offspring_per_thread(
-            _max_threads,
-            typename decltype(offspring_per_thread)
-                ::value_type(_chromosome_size)
-        ),
+        #ifdef MATING_SEED_ONLY
+            mating_seeds(params.population_size - elite_size - num_mutants, 0),
+        #endif
+        #ifndef MATING_SEQUENTIAL
+            shuffled_individuals_per_thread(
+                _max_threads,
+                typename decltype(shuffled_individuals_per_thread)
+                    ::value_type(params.population_size)
+            ),
+            parents_ordered_per_thread(
+                _max_threads,
+                typename decltype(parents_ordered_per_thread)
+                    ::value_type(params.total_parents)
+            ),
+            offspring_per_thread(
+                _max_threads,
+                typename decltype(offspring_per_thread)
+                    ::value_type(_chromosome_size)
+            ),
+        #else
+            shuffled_individuals_per_thread(1,
+                typename decltype(shuffled_individuals_per_thread)
+                    ::value_type(params.population_size)
+            ),
+            parents_ordered_per_thread(1,
+                typename decltype(parents_ordered_per_thread)
+                    ::value_type(params.total_parents)
+            ),
+            offspring_per_thread(1,
+                typename decltype(offspring_per_thread)
+                    ::value_type(_chromosome_size)
+            ),
+        #endif
         initial_population(false),
         initialized(false),
-        reset_phase(false),
         pr_start_time()
 {
     using std::range_error;
@@ -1741,27 +1871,29 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
     // the RNGs in a chain so that they have different states, although still
     // reproducible. So, we start with the given sedd for the first RNG.
     rng_per_thread[0].seed(_seed);
-    rng_per_thread[0].discard(1000);
+    rng_per_thread[0].discard(rng_per_thread[0].state_size);
 
     // For the other RNGs, we use the state of the previous RNG as seed.
-    for(size_t i = 1; i < rng_per_thread.size(); ++i) {
-        auto& local_rng = rng_per_thread[i];
-        local_rng.seed(rng_per_thread[i - 1]());
-        local_rng.discard(1000);
-    }
+    #ifndef MATING_SEQUENTIAL
+        for(size_t i = 1; i < rng_per_thread.size(); ++i) {
+            auto& local_rng = rng_per_thread[i];
+            local_rng.seed(rng_per_thread[i - 1]());
+            local_rng.discard(local_rng.state_size);
+        }
+    #endif
 }
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
-inline bool BRKGA_MP_IPR<Decoder>::betterThan(const double a1,
-                                              const double a2) const {
+template <class Decoder>
+inline bool BRKGA_MP_IPR<Decoder>::betterThan(const fitness_t& a1,
+                                              const fitness_t& a2) const {
     return (a1 < a2) == (OPT_SENSE == Sense::MINIMIZE);
 }
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 const Population&
 BRKGA_MP_IPR<Decoder>::getCurrentPopulation(unsigned population_index) const {
     if(population_index >= current.size())
@@ -1772,9 +1904,9 @@ BRKGA_MP_IPR<Decoder>::getCurrentPopulation(unsigned population_index) const {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
-double BRKGA_MP_IPR<Decoder>::getBestFitness() const {
-    double best = current[0]->fitness[0].first;
+template <class Decoder>
+fitness_t BRKGA_MP_IPR<Decoder>::getBestFitness() const {
+    fitness_t best = current[0]->fitness[0].first;
     for(unsigned i = 1; i < params.num_independent_populations; ++i) {
         if(betterThan(current[i]->fitness[0].first, best))
             best = current[i]->fitness[0].first;
@@ -1784,7 +1916,7 @@ double BRKGA_MP_IPR<Decoder>::getBestFitness() const {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 const Chromosome& BRKGA_MP_IPR<Decoder>::getBestChromosome() const {
     unsigned best_k = 0;
     for(unsigned i = 1; i < params.num_independent_populations; ++i)
@@ -1798,9 +1930,9 @@ const Chromosome& BRKGA_MP_IPR<Decoder>::getBestChromosome() const {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
-double BRKGA_MP_IPR<Decoder>::getFitness(unsigned population_index,
-                                         unsigned position) const {
+template <class Decoder>
+fitness_t BRKGA_MP_IPR<Decoder>::getFitness(unsigned population_index,
+                                            unsigned position) const {
     if(population_index >= current.size())
         throw std::range_error("The population index is larger than number of "
                                "populations");
@@ -1813,7 +1945,7 @@ double BRKGA_MP_IPR<Decoder>::getFitness(unsigned population_index,
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 const Chromosome& BRKGA_MP_IPR<Decoder>::getChromosome(
         unsigned population_index, unsigned position) const {
     if(population_index >= current.size())
@@ -1828,9 +1960,9 @@ const Chromosome& BRKGA_MP_IPR<Decoder>::getChromosome(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
-        unsigned population_index, unsigned position, double fitness) {
+        unsigned population_index, unsigned position) {
     if(population_index >= current.size())
         throw std::range_error("The population index is larger than number of "
                                "populations");
@@ -1846,16 +1978,13 @@ void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
     auto& local_chr = pop->population[pop->fitness[position].second];
     local_chr = chromosome;
 
-    if(!(fitness < std::numeric_limits<double>::infinity()))
-        fitness = decoder.decode(local_chr, true);
-
-    pop->setFitness(position, fitness);
+    pop->setFitness(position, decoder.decode(local_chr, true));
     pop->sortFitness(OPT_SENSE);
 }
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
             const std::function<double(const unsigned)>& func) {
 
@@ -1866,7 +1995,7 @@ void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
 
     // If it is not non-increasing, throw an error.
     if(!std::is_sorted(bias_values.rbegin(), bias_values.rend()))
-        throw std::runtime_error("bias_function must be positive "
+        throw std::runtime_error("The bias function must be positive "
                                  "non-decreasing");
 
     if(bias_function)
@@ -1879,19 +2008,18 @@ void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::reset() {
     if(!initialized) {
         throw std::runtime_error("The algorithm hasn't been initialized. "
                                  "Don't forget to call initialize() method");
     }
-    reset_phase = true;
-    initialize(false);
+    initialize(true);
 }
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolve(unsigned generations) {
     if(!initialized)
         throw std::runtime_error("The algorithm hasn't been initialized. "
@@ -1911,7 +2039,7 @@ void BRKGA_MP_IPR<Decoder>::evolve(unsigned generations) {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned num_immigrants) {
     if(params.num_independent_populations == 1)
         return;
@@ -1961,75 +2089,73 @@ void BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned num_immigrants) {
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::setInitialPopulation(
                                 const std::vector<Chromosome>& chromosomes) {
-
-    if(chromosomes.size() > params.population_size) {
-        std::stringstream ss;
-        ss << "Number of given chromosomes (" << chromosomes.size()
-           << ") is larger than the population size ("
-           << params.population_size << ")";
-        throw std::runtime_error(ss.str());
+    // First, reserve some memory.
+    for(auto& pop : current) {
+        pop.reset(new Population(CHROMOSOME_SIZE, 1));
+        pop->population.pop_back();
+        pop->population.reserve(params.population_size);
     }
 
-    current[0].reset(new Population(CHROMOSOME_SIZE, chromosomes.size()));
+    auto it_init_chr = chromosomes.begin();
+    auto it_pop = current.begin();
 
-    unsigned i = 0;
-    for(const auto& chr : chromosomes) {
-        if(chr.size() != CHROMOSOME_SIZE) {
+    unsigned counter = 0;
+    while(it_init_chr != chromosomes.end()) {
+        if(it_init_chr->size() != CHROMOSOME_SIZE) {
             std::stringstream ss;
-            ss << "Error on setting initial population: chromosome " << i
-               << " does not have the required dimension (actual size: "
-               << chr.size() << ", required size: " << CHROMOSOME_SIZE << ")";
+            ss << "Error on setting initial population: chromosome " << counter
+               << " does not have the required dimension"
+               << " (actual size: " << it_init_chr->size()
+               << ", required size: " << CHROMOSOME_SIZE << ")";
             throw std::runtime_error(ss.str());
         }
-        std::copy(chr.begin(), chr.end(), current[0]->population[i].begin());
-        ++i;
+
+        (*it_pop)->population.push_back(*it_init_chr);
+        ++counter;
+        ++it_init_chr;
+
+        if(counter == params.population_size) {
+            ++it_pop;
+            counter = 0;
+        }
+
+        if(it_pop == current.end())
+            it_init_chr = chromosomes.end();
     }
+
     initial_population = true;
 }
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
-void BRKGA_MP_IPR<Decoder>::initialize(bool true_init) {
+template <class Decoder>
+void BRKGA_MP_IPR<Decoder>::initialize(bool reset) {
     auto& rng = rng_per_thread[0];
 
-    // Verify the initial population and complete or prune it!
-    unsigned start = 0;
-    if(initial_population && true_init) {
-        if(current[0]->population.size() < params.population_size) {
-            auto pop = current[0];
+    // Check and complete the populations.
+    for(auto& pop : current) {
+        if(!pop) {
+            pop.reset(new Population(CHROMOSOME_SIZE, params.population_size));
+        }
+        else {
+            pop->fitness.resize(params.population_size);
+        }
+
+        if(reset)
+            pop->population.clear();
+
+        if(pop->population.size() < params.population_size) {
             Chromosome chromosome(CHROMOSOME_SIZE);
             unsigned last_chromosome = pop->population.size();
 
             pop->population.resize(params.population_size);
-            pop->fitness.resize(params.population_size);
-
             for(; last_chromosome < params.population_size; ++last_chromosome) {
                 for(unsigned k = 0; k < CHROMOSOME_SIZE; ++k)
                     chromosome[k] = rand01(rng);
                 pop->population[last_chromosome] = chromosome;
-            }
-        }
-        // Prune some additional chromosomes.
-        else if(current[0]->population.size() > params.population_size) {
-            current[0]->population.resize(params.population_size);
-            current[0]->fitness.resize(params.population_size);
-        }
-        start = 1;
-    }
-
-    // Initialize each chromosome of the current population.
-    for(; start < params.num_independent_populations; ++start) {
-        if(!reset_phase)
-            current[start].reset(new Population(CHROMOSOME_SIZE,
-                                                params.population_size));
-
-        for(unsigned j = 0; j < params.population_size; ++j) {
-            for(unsigned k = 0; k < CHROMOSOME_SIZE; ++k) {
-                (*current[start])(j, k) = rand01(rng);
             }
         }
     }
@@ -2045,20 +2171,15 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool true_init) {
 
         // Sort and copy to previous.
         current[i]->sortFitness(OPT_SENSE);
-        if(!reset_phase)
-            previous[i].reset(new Population(*current[i]));
-
-        if(reset_phase && true_init)
-            previous[i].reset(new Population(*current[i]));
+        previous[i].reset(new Population(*current[i]));
     }
 
     initialized = true;
-    reset_phase = false;
 }
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
                                   ShakingType shaking_type,
                                   unsigned population_index) {
@@ -2124,9 +2245,21 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
                                       Population& next) {
+
+    // To ensure the reproducibility, we need to be sure that the same random
+    // values are generated in each mating, despite the number of threads
+    // available. For that, we first generate a seed for each mating step. Then
+    // use them in a RNG within the a thread.
+    #ifdef MATING_SEED_ONLY
+    { // hidden namespace
+        auto& rng = rng_per_thread[0];
+        for(auto& s: mating_seeds)
+            s = rng();
+    }
+    #endif
 
     // First, we copy the elite chromosomes to the next generation.
     for(unsigned chr = 0; chr < elite_size; ++chr) {
@@ -2135,25 +2268,33 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     }
 
     // Second, we mate 'pop_size - elite_size - num_mutants' pairs.
-    // Here is the novelty: this parallel region allows processing the costly
-    // std::shuffle for each mating in parallel.
+    // This parallel region allows processing the costly std::shuffle
+    // for each mating in parallel.
+    #ifndef MATING_SEQUENTIAL
     #ifdef _OPENMP
         #pragma omp parallel for num_threads(MAX_THREADS) schedule(static, 1)
+    #endif
     #endif
     for(unsigned chr = elite_size;
         chr < params.population_size - num_mutants; ++chr) {
 
         #ifdef _OPENMP
-        auto& shuffled_individuals =
-            shuffled_individuals_per_thread[omp_get_thread_num()];
-        auto& parents_ordered = parents_ordered_per_thread[omp_get_thread_num()];
-        auto& offspring = offspring_per_thread[omp_get_thread_num()];
-        auto& rng = rng_per_thread[omp_get_thread_num()];
+            auto& shuffled_individuals =
+                shuffled_individuals_per_thread[omp_get_thread_num()];
+            auto& parents_ordered =
+                parents_ordered_per_thread[omp_get_thread_num()];
+            auto& offspring = offspring_per_thread[omp_get_thread_num()];
+            auto& rng = rng_per_thread[omp_get_thread_num()];
         #else
-        auto& shuffled_individuals = shuffled_individuals_per_thread[0];
-        auto& parents_ordered = parents_ordered_per_thread[0];
-        auto& offspring = offspring_per_thread[0];
-        auto& rng = rng_per_thread[0];
+            auto& shuffled_individuals = shuffled_individuals_per_thread[0];
+            auto& parents_ordered = parents_ordered_per_thread[0];
+            auto& offspring = offspring_per_thread[0];
+            auto& rng = rng_per_thread[0];
+        #endif
+
+        #ifdef MATING_SEED_ONLY
+        // Reseed the RNG to guarantee reproducibility.
+        rng.seed(mating_seeds[chr - elite_size]);
         #endif
 
         // First, we shuffled the elite set and non-elite set indices,
@@ -2188,10 +2329,10 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 
         if(OPT_SENSE == Sense::MAXIMIZE)
             std::sort(parents_ordered.begin(), parents_ordered.end(),
-                      std::greater<std::pair<double, unsigned>>());
+                      std::greater<std::pair<fitness_t, unsigned>>());
         else
             std::sort(parents_ordered.begin(), parents_ordered.end(),
-                      std::less<std::pair<double, unsigned>>());
+                      std::less<std::pair<fitness_t, unsigned>>());
 
         // Performs the mate.
         for(unsigned allele = 0; allele < CHROMOSOME_SIZE; ++allele) {
@@ -2216,15 +2357,17 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     }
 
     // To finish, we fill up the remaining spots with mutants.
+    #ifndef MATING_SEQUENTIAL
     #ifdef _OPENMP
         #pragma omp parallel for num_threads(MAX_THREADS) schedule(static, 1)
+    #endif
     #endif
     for(unsigned chr = params.population_size - num_mutants;
         chr < params.population_size; ++chr) {
         #ifdef _OPENMP
-        auto& rng = rng_per_thread[omp_get_thread_num()];
+            auto& rng = rng_per_thread[omp_get_thread_num()];
         #else
-        auto& rng = rng_per_thread[0];
+            auto& rng = rng_per_thread[0];
         #endif
         for(auto& allele : next.population[chr])
             allele = rand01(rng);
@@ -2243,7 +2386,7 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
                     PathRelinking::Type pr_type,
                     PathRelinking::Selection pr_selection,
@@ -2269,7 +2412,6 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
     // Perform path relinking between elite chromosomes from different
     // populations. This is done in a circular fashion.
-
     bool path_relinking_possible = false;
     std::deque<std::pair<std::size_t, std::size_t>> index_pairs;
 
@@ -2349,12 +2491,15 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             continue;
 
         // Create a empty solution.
-        std::pair<double, Chromosome> best_found;
+        std::pair<fitness_t, Chromosome> best_found;
         best_found.second.resize(current[0]->getChromosomeSize(), 0.0);
 
         const bool sense = OPT_SENSE == Sense::MAXIMIZE;
-        best_found.first = sense? std::numeric_limits<double>::lowest():
-                                  std::numeric_limits<double>::max();
+        if(sense)
+            best_found.first = FITNESS_T_MIN;
+        else
+            best_found.first = FITNESS_T_MAX;
+
         const auto fence = best_found.first;
 
         // Perform the path relinking.
@@ -2369,7 +2514,12 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         }
 
         final_status |= PR::NO_IMPROVEMENT;
-        if(abs(best_found.first - fence) < 1e-6)
+
+        // **NOTE:** is fitness_t contains float types, so the comparison
+        // `best_found.first == fence` may be unfase. Therefore, we use
+        // helper functions that define the correct behavior at compilation
+        // time.
+        if(close_enough(best_found.first, fence))
             continue;
 
         // Re-decode and apply local search if the decoder are able to do it.
@@ -2427,7 +2577,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             std::shared_ptr<DistanceFunctionBase> dist,
             long max_time) {
@@ -2447,11 +2597,11 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
 // This is a multi-thread version. For small chromosomes, it may be slower than
 // single thread version.
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::directPathRelink(
             const Chromosome& chr1, const Chromosome& chr2,
             std::shared_ptr<DistanceFunctionBase> dist,
-            std::pair<double, Chromosome>& best_found,
+            std::pair<fitness_t, Chromosome>& best_found,
             std::size_t block_size, long max_time, double percentage) {
 
     const std::size_t NUM_BLOCKS =
@@ -2467,9 +2617,9 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
     struct Triple {
     public:
         Chromosome chr;
-        double fitness;
+        fitness_t fitness;
         std::size_t block_index;
-        Triple(): chr(), fitness(0.0), block_index(0) {}
+        Triple(): chr(), fitness(FITNESS_T_MAX), block_index(0) {}
     };
 
     // Allocate memory for the candidates.
@@ -2542,9 +2692,10 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
                 schedule(static, 1)
         #endif
         for(std::size_t i = 0; i < remaining_blocks.size(); ++i) {
-            (*candidates_base)[i].fitness =
-                    (sense)? std::numeric_limits<double>::lowest() :
-                             std::numeric_limits<double>::max();
+            if(sense)
+                (*candidates_base)[i].fitness = FITNESS_T_MIN;
+            else
+                (*candidates_base)[i].fitness = FITNESS_T_MAX;
 
             if(times_up) continue;
 
@@ -2562,8 +2713,11 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
         std::size_t best_index = 0;
         std::size_t best_block_index = 0;
 
-        double best_value = (sense)? std::numeric_limits<double>::lowest() :
-                                     std::numeric_limits<double>::max();
+        fitness_t best_value;
+        if(sense)
+            best_value = FITNESS_T_MIN;
+        else
+            best_value = FITNESS_T_MAX;
 
         for(std::size_t i = 0; i < remaining_blocks.size(); ++i) {
             if((best_value < (*candidates_base)[i].fitness && sense) ||
@@ -2622,11 +2776,11 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
                 Chromosome& chr1, Chromosome& chr2,
                 std::shared_ptr<DistanceFunctionBase> /*non-used*/,
-                std::pair<double, Chromosome>& best_found,
+                std::pair<fitness_t, Chromosome>& best_found,
                 std::size_t /*non-used block_size*/,
                 long max_time, double percentage) {
 
@@ -2639,11 +2793,11 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
     struct DecodeStruct {
     public:
         Chromosome chr;
-        double fitness;
+        fitness_t fitness;
         std::size_t key_index;
         std::size_t pos1;
         std::size_t pos2;
-        DecodeStruct(): chr(), fitness(0.0),
+        DecodeStruct(): chr(), fitness(FITNESS_T_MAX),
                         key_index(0), pos1(0), pos2(0) {}
     };
 
@@ -2722,10 +2876,11 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
             (*candidates_base)[i].key_index = *it_idx;
             (*candidates_base)[i].pos1 = position_in_base;
             (*candidates_base)[i].pos2 = position_in_guide;
-            (*candidates_base)[i].fitness =
-                    (sense)? std::numeric_limits<double>::lowest() :
-                             std::numeric_limits<double>::max();
 
+            if(sense)
+                (*candidates_base)[i].fitness = FITNESS_T_MIN;
+            else
+                (*candidates_base)[i].fitness = FITNESS_T_MAX;
             ++it_idx;
         }
 
@@ -2759,10 +2914,13 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
 
         // Locate the best candidate
         std::size_t best_key_index = 0;
-
         std::size_t best_index;
-        double best_value = (sense)? std::numeric_limits<double>::lowest() :
-                                     std::numeric_limits<double>::max();
+
+        fitness_t best_value;
+        if(sense)
+            best_value = FITNESS_T_MIN;
+        else
+            best_value = FITNESS_T_MAX;
 
         for(std::size_t i = 0; i < remaining_indices.size(); ++i) {
             if((best_value < (*candidates_base)[i].fitness && sense) ||
@@ -2810,27 +2968,25 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 inline double BRKGA_MP_IPR<Decoder>::rand01(std::mt19937& rng) {
     // **NOTE:** instead to use std::generate_canonical<> (which can be
     // a little bit slow), we may use
     //    rng() * (1.0 / std::numeric_limits<std::mt19937::result_type>::max());
     // However, this approach has some precision problems on some platforms
     // (notably Linux).
-
     return std::generate_canonical<double, std::numeric_limits<double>::digits>
           (rng);
 }
 
 //----------------------------------------------------------------------------//
 
-template<class Decoder>
+template <class Decoder>
 inline uint_fast32_t BRKGA_MP_IPR<Decoder>::randInt(const uint_fast32_t n,
                                                     std::mt19937& rng) {
     // This code was adapted from Magnus Jonsson (magnus@smartelectronix.com)
     // Find which bits are used in n. Note that this is specific
     // for uint_fast32_t types.
-
     uint_fast32_t used = n;
     used |= used >> 1;
     used |= used >> 2;
