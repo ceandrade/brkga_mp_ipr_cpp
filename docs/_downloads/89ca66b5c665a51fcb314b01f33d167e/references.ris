@@ -1,0 +1,54 @@
+TY  - JOUR
+AU  - Andrade, Carlos E
+AU  - Toso, Rodrigo F
+AU  - Gonçalves, José F
+AU  - Resende, Mauricio G C
+TI  - The Multi-Parent Biased Random-Key Genetic Algorithm with Implicit
+      Path-Relinking and its real-world applications
+T2  - European Journal of Operational Research
+VL  - 289
+IS  - 1
+SP  - 17-30
+PY  - 2021
+DA  - 2021
+SN  - 0377-2217
+DO  - 10.1016/j.ejor.2019.11.037
+UR  - http://dx.doi.org/10.1016/j.ejor.2019.11.037
+KW  - Genetic Algorithms
+KW  - Path-relinking algorithms
+KW  - Hybrid heuristics
+ER  -
+
+TY  - JOUR
+AU  - Andrade, Carlos E
+AU  - Pessoa, Luciana S
+AU  - Stawiarski, Slawomir
+TI  - The Physical Cell Identity Assignment Problem: a Multi-objective
+      Optimization Approach
+T2  - IEEE Transactions on Evolutionary Computation
+PY  - 2022
+DA  - 2022
+SN  - 1089-778X
+KW  - Physical Cell Identity
+KW  - 5G
+KW  - Multi-objective Optimization
+ER  -
+
+TY  - CPAPER
+AU  - N., Alberto F Kummer
+AU  - de Araújo, Luciana S Buriol Olinto C B
+TI  - A Biased Random Key Genetic Algorithm Applied to the VRPTW with Skill
+      Requirements and Synchronization Constraints
+T2  - Proceedings of the 2020 Genetic and Evolutionary Computation Conference
+J2  - GECCO '20
+SP  - 717-724
+PY  - 2020
+DA  - 2020
+PB  - Association for Computing Machinery
+DO  - 10.1145/3377930.3390209
+C1  - New York, NY, USA
+UR  - http://dx.doi.org/10.1145/3377930.3390209
+KW  - Biased random key genetic algorithm
+KW  - Route synchronization constraints
+KW  - Vehicle routing problem with time windows
+ER  -
