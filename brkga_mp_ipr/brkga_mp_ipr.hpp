@@ -3,7 +3,7 @@
  *                   with Implict Path Relinking.
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: Dec 07, 2021 by andrade.
+ * Last update: May 18, 2022 by andrade.
  *
  * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
  * All Rights Reserved.
@@ -89,7 +89,7 @@
 //----------------------------------------------------------------------------//
 
 // These preprocessor flags determine how the mating process will happen
-// regarding reproducibility.  One of the following options should be used.
+// regarding reproducibility. One of the following options should be used.
 // If more than one is given, MATING_FULL_SPEED takes priority over
 // MATING_SEED_ONLY, which takes priority over MATING_SEQUENTIAL. If no option
 // is supplied, BRKGA-MP-IPR assume MATING_FULL_SPEED.
@@ -791,13 +791,15 @@ readConfiguration(const std::string& filename) {
 
         std::transform(token.begin(), token.end(), token.begin(), toupper);
         if(tokens.find(token) == tokens.end()) {
-            error_msg << "Invalid token on line " << line_count
+            error_msg << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                      << "Invalid token on line " << line_count
                       << ": " << token;
             throw std::fstream::failure(error_msg.str());
         }
 
         if(tokens[token]) {
-            error_msg << "Duplicate attribute on line " << line_count
+            error_msg << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                      << "Duplicate attribute on line " << line_count
                       << ": " << token << " already read!";
             throw std::fstream::failure(error_msg.str());
         }
@@ -855,7 +857,8 @@ readConfiguration(const std::string& filename) {
             fail = !bool(data_stream >> control_params.reset_interval);
 
         if(fail) {
-            error_msg << "Invalid value for '" << token
+            error_msg << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                      << "Invalid value for '" << token
                       << "' on line "<< line_count
                       << ": '" << data << "'";
             throw std::fstream::failure(error_msg.str());
@@ -866,7 +869,8 @@ readConfiguration(const std::string& filename) {
 
     for(const auto& attribute_flag : tokens) {
         if(!attribute_flag.second) {
-            error_msg << "Argument '" << attribute_flag.first
+            error_msg << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                      << "Argument '" << attribute_flag.first
                       << "' was not supplied in the config file";
             throw std::fstream::failure(error_msg.str());
         }
@@ -898,7 +902,8 @@ INLINE void writeConfiguration(const std::string& filename,
     std::ofstream output(filename, std::ios::out);
     if(!output) {
         std::stringstream error_msg;
-        error_msg << "File '" << filename << "' cannot be opened!";
+        error_msg << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                  << "File '" << filename << "' cannot be opened!";
         throw std::fstream::failure(error_msg.str());
     }
 
@@ -1775,49 +1780,65 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
     using std::range_error;
     std::stringstream ss;
 
-    if(CHROMOSOME_SIZE == 0)
-        ss << "Chromosome size must be larger than zero: " << CHROMOSOME_SIZE;
+    if(CHROMOSOME_SIZE < 2)
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Chromosome size must be larger than one. Current size: "
+           << CHROMOSOME_SIZE;
     else
     if(params.population_size == 0)
-        ss << "Population size must be larger than zero: " << params.population_size;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Population size must be larger than zero. Current size: "
+           << params.population_size;
     else
     if(elite_size == 0)
-        ss << "Elite-set size equals zero.";
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Elite-set size equals zero.";
     else
     if(elite_size > params.population_size)
-        ss << "Elite-set size (" << elite_size
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Elite-set size (" << elite_size
            << ") greater than population size (" << params.population_size << ")";
     else
     if(num_mutants > params.population_size)
-        ss << "Mutant-set size (" << num_mutants
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Mutant-set size (" << num_mutants
            << ") greater than population size (" << params.population_size << ")";
     else
     if(elite_size + num_mutants > params.population_size)
-        ss << "Elite (" << elite_size << ") + mutant sets (" << num_mutants
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Elite (" << elite_size << ") + mutant sets (" << num_mutants
            << ") greater than population size (" << params.population_size << ")";
     else
     if(params.num_elite_parents < 1)
-        ss << "num_elite_parents must be at least 1: " << params.num_elite_parents;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "num_elite_parents must be at least 1. Current: "
+           << params.num_elite_parents;
     else
     if(params.total_parents < 2)
-        ss << "Total_parents must be at least 2: " << params.total_parents;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Total_parents must be at least 2. Current: " << params.total_parents;
     else
     if(params.num_elite_parents >= params.total_parents)
-        ss << "Num_elite_parents (" << params.num_elite_parents << ") "
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Num_elite_parents (" << params.num_elite_parents << ") "
            << "is greater than total_parents (" << params.total_parents << ")";
     else
     if(params.num_elite_parents > elite_size)
-        ss << "Num_elite_parents (" << params.num_elite_parents
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Num_elite_parents (" << params.num_elite_parents
            << ") is greater than elite set (" << elite_size << ")";
     else
     if(params.num_independent_populations == 0)
-        ss << "Number of parallel populations cannot be zero.";
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Number of independent/parallel populations cannot be zero.";
     else
     if(params.alpha_block_size < 1e-6)
-        ss << "(alpha) block size <= 0.0";
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "(alpha) block size <= 0.0";
     else
     if(params.pr_percentage < 1e-6 || params.pr_percentage > 1.0)
-        ss << "Path relinking percentage (" << params.pr_percentage
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Path relinking percentage (" << params.pr_percentage
            << ") is not in the range (0, 1].";
 
     const auto str_error = ss.str();
@@ -1933,12 +1954,19 @@ const Chromosome& BRKGA_MP_IPR<Decoder>::getBestChromosome() const {
 template <class Decoder>
 fitness_t BRKGA_MP_IPR<Decoder>::getFitness(unsigned population_index,
                                             unsigned position) const {
-    if(population_index >= current.size())
-        throw std::range_error("The population index is larger than number of "
-                               "populations");
-    if(position >= params.population_size)
-        throw std::range_error("The chromosome position is larger than number "
-                               "of populations");
+    if(population_index >= current.size()) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The population index is larger than number of populations";
+        throw std::range_error(ss.str());
+    }
+
+    if(position >= params.population_size) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The chromosome position is larger than number of populations";
+        throw std::range_error(ss.str());
+    }
 
     return current[population_index]->fitness[position].first;
 }
@@ -1948,12 +1976,19 @@ fitness_t BRKGA_MP_IPR<Decoder>::getFitness(unsigned population_index,
 template <class Decoder>
 const Chromosome& BRKGA_MP_IPR<Decoder>::getChromosome(
         unsigned population_index, unsigned position) const {
-    if(population_index >= current.size())
-        throw std::range_error("The population index is larger than number of "
-                               "populations");
-    if(position >= params.population_size)
-        throw std::range_error("The chromosome position is larger than number "
-                               "of populations");
+    if(population_index >= current.size()) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The population index is larger than number of populations";
+        throw std::range_error(ss.str());
+    }
+
+    if(position >= params.population_size) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The chromosome position is larger than number of populations";
+        throw std::range_error(ss.str());
+    }
 
     return current[population_index]->getChromosome(position);
 }
@@ -1963,16 +1998,27 @@ const Chromosome& BRKGA_MP_IPR<Decoder>::getChromosome(
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
         unsigned population_index, unsigned position) {
-    if(population_index >= current.size())
-        throw std::range_error("The population index is larger than number of "
-                               "populations");
+    if(population_index >= current.size()) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The population index is larger than number of populations";
+        throw std::range_error(ss.str());
+    }
 
-    if(position >= params.population_size)
-        throw std::range_error("The chromosome position is larger than number "
-                               "of populations");
+    if(position >= params.population_size) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The chromosome position is larger than number of populations";
+        throw std::range_error(ss.str());
+    }
 
-    if(chromosome.size() != CHROMOSOME_SIZE)
-        throw std::range_error("Wrong chromosome size");
+    if(chromosome.size() != CHROMOSOME_SIZE) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Wrong chromosome size. It should be " << CHROMOSOME_SIZE
+           << " but get " << chromosome.size();
+        throw std::range_error(ss.str());
+    }
 
     auto& pop = current[population_index];
     auto& local_chr = pop->population[pop->fitness[position].second];
@@ -1994,9 +2040,12 @@ void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
                    bias_values.begin(), func);
 
     // If it is not non-increasing, throw an error.
-    if(!std::is_sorted(bias_values.rbegin(), bias_values.rend()))
-        throw std::runtime_error("The bias function must be positive "
-                                 "non-decreasing");
+    if(!std::is_sorted(bias_values.rbegin(), bias_values.rend())) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The bias function must be positive non-decreasing";
+        throw std::range_error(ss.str());
+    }
 
     if(bias_function)
         params.bias_type = BiasFunctionType::CUSTOM;
@@ -2011,8 +2060,11 @@ void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::reset() {
     if(!initialized) {
-        throw std::runtime_error("The algorithm hasn't been initialized. "
-                                 "Don't forget to call initialize() method");
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The algorithm hasn't been initialized. "
+              "Don't forget to call initialize() method";
+        throw std::range_error(ss.str());
     }
     initialize(true);
 }
@@ -2021,12 +2073,20 @@ void BRKGA_MP_IPR<Decoder>::reset() {
 
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolve(unsigned generations) {
-    if(!initialized)
-        throw std::runtime_error("The algorithm hasn't been initialized. "
-                                 "Don't forget to call initialize() method");
+    if(!initialized) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The algorithm hasn't been initialized. "
+              "Don't forget to call initialize() method";
+        throw std::range_error(ss.str());
+    }
 
-    if(generations == 0)
-        throw std::range_error("Cannot evolve for 0 generations.");
+    if(generations == 0) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Cannot evolve for 0 generations.";
+        throw std::range_error(ss.str());
+    }
 
     for(unsigned i = 0; i < generations; ++i) {
         for(unsigned j = 0; j < params.num_independent_populations; ++j) {
@@ -2049,7 +2109,8 @@ void BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned num_immigrants) {
 
     if(num_immigrants < 1 || num_immigrants >= immigrants_threshold) {
         std::stringstream ss;
-        ss << "Number of immigrants (" << num_immigrants << ") less than one, "
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Number of immigrants (" << num_immigrants << ") less than one, "
               "or larger than or equal to population size / "
               "num_independent_populations (" << immigrants_threshold << ")";
         throw std::range_error(ss.str());
@@ -2106,7 +2167,8 @@ void BRKGA_MP_IPR<Decoder>::setInitialPopulation(
     while(it_init_chr != chromosomes.end()) {
         if(it_init_chr->size() != CHROMOSOME_SIZE) {
             std::stringstream ss;
-            ss << "Error on setting initial population: chromosome " << counter
+            ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+               << "Error on setting initial population: chromosome " << counter
                << " does not have the required dimension"
                << " (actual size: " << it_init_chr->size()
                << ", required size: " << CHROMOSOME_SIZE << ")";
@@ -2183,9 +2245,13 @@ template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
                                   ShakingType shaking_type,
                                   unsigned population_index) {
-    if(!initialized)
-        throw std::runtime_error("The algorithm hasn't been initialized. "
-                                 "Don't forget to call initialize() method");
+    if(!initialized) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "The algorithm hasn't been initialized. "
+              "Don't forget to call initialize() method";
+        throw std::range_error(ss.str());
+    }
 
     auto& rng = rng_per_thread[0];
 
@@ -2401,8 +2467,13 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
     auto& rng = rng_per_thread[0];
 
-    if(percentage < 1e-6 || percentage > 1.0)
-        throw std::range_error("Percentage/size of path relinking invalid.");
+    if(percentage < 1e-6 || percentage > 1.0) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "Percentage/size of path relinking invalid. Current: "
+           << percentage;
+        throw std::range_error(ss.str());
+    }
 
     if(max_time <= 0)
         max_time = std::numeric_limits<long>::max();
