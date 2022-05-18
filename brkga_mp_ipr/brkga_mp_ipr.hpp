@@ -1782,12 +1782,12 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
 
     if(CHROMOSOME_SIZE < 2)
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "Chromosome size must be larger than one. Current size: "
+           << "Chromosome size must be larger than one, current size: "
            << CHROMOSOME_SIZE;
     else
     if(params.population_size == 0)
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "Population size must be larger than zero. Current size: "
+           << "Population size must be larger than zero, current size: "
            << params.population_size;
     else
     if(elite_size == 0)
@@ -1811,12 +1811,12 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
     else
     if(params.num_elite_parents < 1)
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "num_elite_parents must be at least 1. Current: "
+           << "num_elite_parents must be at least 1, current: "
            << params.num_elite_parents;
     else
     if(params.total_parents < 2)
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "Total_parents must be at least 2. Current: " << params.total_parents;
+           << "Total_parents must be at least 2, current: " << params.total_parents;
     else
     if(params.num_elite_parents >= params.total_parents)
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
@@ -2470,7 +2470,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
     if(percentage < 1e-6 || percentage > 1.0) {
         std::stringstream ss;
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "Percentage/size of path relinking invalid. Current: "
+           << "Percentage/size of path relinking invalid, current: "
            << percentage;
         throw std::range_error(ss.str());
     }
