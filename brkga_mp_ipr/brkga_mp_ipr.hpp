@@ -2756,6 +2756,10 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
             ++it_block_idx;
         }
 
+        if (remaining_blocks.empty()) {
+            break;
+        }
+
         // Decode the candidates.
         volatile bool times_up = false;
         #ifdef _OPENMP
