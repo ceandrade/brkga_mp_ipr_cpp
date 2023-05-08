@@ -3,9 +3,9 @@
  *                   with Implict Path Relinking.
  *
  * Created on : Jan 06, 2015 by andrade.
- * Last update: May 18, 2022 by andrade.
+ * Last update: May 08, 2023 by andrade.
  *
- * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2023, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  * This code is released under BRKGA-MP-IPR License:
@@ -25,7 +25,9 @@
  * - The above copyright notice and this permission notice shall be included
  *   in all copies or substantial portions of the Software.
  *
- * Collaborators: Alberto Kummer, 2021 (parallel mating).
+ * Collaborators:
+ *  - Alberto Kummer, 2021 (parallel mating).
+ *  - Daniele Ferone, 2023 (bug fix on IPR).
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -2483,7 +2485,6 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
     // Perform path relinking between elite chromosomes from different
     // populations. This is done in a circular fashion.
-    bool path_relinking_possible = false;
     std::deque<std::pair<std::size_t, std::size_t>> index_pairs;
 
     // Keep track of the time.
@@ -2553,8 +2554,6 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
                 (std::chrono::system_clock::now() - pr_start_time).count();
         }
-
-        path_relinking_possible |= found_pair;
 
         // The elite sets are too homogeneous, we cannot do
         // a good path relinking. Let's try other populations.
@@ -2642,7 +2641,6 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         }
     }
 
-    //return path_relinking_possible;
     return final_status;
 }
 

@@ -442,6 +442,12 @@ files.
 
 [Check it out the full license.](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md)
 
+:muscle: Collaborators
+--------------------------------------------------------------------------------
+
+- Alberto Kummer, 2021 (parallel mating).
+- Daniele Ferone, 2023 (bug fix on IPR).
+
 :construction_worker: TODO
 --------------------------------------------------------------------------------
 
@@ -456,3 +462,4 @@ CI and tests side:
 --------------------------------------------------------------------------------
 
 [Contribution guidelines for this project](CONTRIBUTING.md)
+
