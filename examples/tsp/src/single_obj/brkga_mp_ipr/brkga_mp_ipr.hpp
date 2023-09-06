@@ -698,7 +698,7 @@ public:
  * relinking. However, they are loaded from the configuration file and can be
  * called by the user to perform out-loop controlling.
  */
-class ExternalControlParams {
+class ControlParams {
 public:
     /// Interval at which elite chromosomes are exchanged (0 means no exchange).
     unsigned exchange_interval;
@@ -713,17 +713,17 @@ public:
     /** \name Default operators */
     //@{
     /// Default constructor.
-    ExternalControlParams():
+    ControlParams():
         exchange_interval(0),
         num_exchange_indivuduals(0),
         reset_interval(0)
     {}
 
     /// Assignment operator for complaince.
-    ExternalControlParams& operator=(const ExternalControlParams&) = default;
+    ControlParams& operator=(const ControlParams&) = default;
 
     /// Destructor.
-    ~ExternalControlParams() = default;
+    ~ControlParams() = default;
     //@}
 };
 
@@ -741,7 +741,7 @@ public:
  *   from C++17. We would like achieve a code similar to the
  *   [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
  */
-INLINE std::pair<BrkgaParams, ExternalControlParams>
+INLINE std::pair<BrkgaParams, ControlParams>
 readConfiguration(const std::string& filename) {
     std::ifstream input(filename, std::ios::in);
     std::stringstream error_msg;
@@ -771,7 +771,7 @@ readConfiguration(const std::string& filename) {
     });
 
     BrkgaParams brkga_params;
-    ExternalControlParams control_params;
+    ControlParams control_params;
 
     std::string line;
     unsigned line_count = 0;
@@ -893,7 +893,7 @@ readConfiguration(const std::string& filename) {
  */
 INLINE void writeConfiguration(const std::string& filename,
         const BrkgaParams& brkga_params,
-        const ExternalControlParams& control_params = ExternalControlParams()) {
+        const ControlParams& control_params = ControlParams()) {
 
     std::ofstream output(filename, std::ios::out);
     if(!output) {

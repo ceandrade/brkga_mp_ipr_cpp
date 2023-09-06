@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 
 
         algorithm.setBiasCustomFunction(
-                [](const double x) { return 1 / (x * x);}
+            [](const double x) { return 1 / (x * x);}
         );
 
         vector<Chromosome> initial_chromosomes(algorithm.getChromosomeSize());

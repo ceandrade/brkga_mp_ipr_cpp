@@ -1,5 +1,5 @@
 #OPT = opt
-USER_FLAGS += -std=c++14
+USER_FLAGS += -std=c++17
 ifneq ($(OPT), opt)
 	USER_FLAGS += -ggdb3 -fexceptions -fno-omit-frame-pointer \
 		-fno-optimize-sibling-calls -fno-inline
@@ -28,7 +28,6 @@ USER_FLAGS += -Wpacked
 CXX = g++
 #CXX = clang++ -fopenmp
 
-
 COMMON_OBJS = decoders.o
 
 .PHONY: all
@@ -52,8 +51,7 @@ test-read: clean $(COMMON_OBJS)
 	./test-read 100 brkga_mp_ipr.conf 2700001
 
 test-params: clean $(COMMON_OBJS)
-	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_params.cpp -o test-brkga
-	./test-params 100 brkga_mp_ipr.conf 2700001
+	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_params.cpp -o test-params
 
 check:
 	cppcheck --enable=all ../brkga_mp_ipr/brkga_mp_ipr.hpp

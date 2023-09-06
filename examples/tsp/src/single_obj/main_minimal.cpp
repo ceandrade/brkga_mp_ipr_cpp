@@ -93,10 +93,10 @@ int main(int argc, char* argv[]) {
     }
     catch(exception& e) {
         cerr << "\n***********************************************************"
-             << "\n****  Exception Occured: " << e.what()
+             << "\n**** Exception Occurred: " << e.what()
              << "\n***********************************************************"
              << endl;
-        return 70; // BSD software internal error code
+        return 1;
     }
     return 0;
 }
