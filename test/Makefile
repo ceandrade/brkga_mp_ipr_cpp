@@ -23,21 +23,24 @@
 # POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 
-#OPT = opt
+# OPT = opt
 USER_FLAGS += -std=c++20
-ifneq ($(OPT), opt)
+
+# Compiler flags for debugging
+ifeq ($(OPT), opt)
+	USER_FLAGS += -O3 -fomit-frame-pointer -funroll-loops
+	ifeq ($(CXX), g++)
+		USER_FLAGS += -ftracer -fpeel-loops -fprefetch-loop-arrays
+	endif
+else
 	USER_FLAGS += -ggdb3 -fexceptions -fno-omit-frame-pointer \
 		-fno-optimize-sibling-calls -fno-inline
-else
-	USER_FLAGS += -O3 -fomit-frame-pointer -ftracer -funroll-loops \
-		-fpeel-loops -fprefetch-loop-arrays
 endif
 
-USER_FLAGS += -m64 -pthread -fexceptions
-
-USER_FLAGS += -Wall -Wextra -Wcast-align -Wcast-qual -Wdisabled-optimization \
-	-Wformat=2 -Winit-self -Wmissing-format-attribute -Wshadow \
-	-Wpointer-arith -Wredundant-decls -Wstrict-aliasing=2 \
+# Flags
+USER_FLAGS += -pthread -Wall -Wextra -Wcast-align -Wcast-qual \
+	-Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-format-attribute \
+	-Wshadow -Wpointer-arith -Wredundant-decls -Wstrict-aliasing=2 \
 	-Wfloat-equal -Weffc++
 
 USER_FLAGS += -Winline

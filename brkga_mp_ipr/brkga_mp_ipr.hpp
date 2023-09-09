@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 07, 2023 by ceandrade.
+ * Last update: Sep 09, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -74,7 +74,7 @@
 
 /** This includes helpers to read and write enums.
  *
- * NOTE: due to some weird scope resolution within clang compilers,
+ * \note Due to some weird scope resolution within clang compilers,
  *       we must imbue the enum facilities into namespace BRKGA.
  *       This does not happen with g++. We have not test to MSVC.
  */
@@ -172,6 +172,18 @@ enum class Selection {
     RANDOMELITE
 };
 
+/// Specifies the distance function between two chromosomes during IPR.
+enum class DistanceFunctionType {
+    /// Uses the default Hamming distance calculator.
+    HAMMING,
+
+    /// Uses the default KendallTau distance calculator.
+    KENDALLTAU,
+
+    /// Indicates a custom function supplied by the user.
+    CUSTOM
+};
+
 /// Specifies the result type/status of path relink procedure.
 enum class PathRelinkingResult {
     /** The chromosomes among the populations are too homogeneous and the path
@@ -264,18 +276,12 @@ enum class ShakingType {
 // I/O helpers
 //----------------------------------------------------------------------------//
 
-/** \name I/O help functions
- * Define some helpers for enumarations to work in conjuction with EnumIO.
- * Also defines streaming operators for some types.
-*/
-//@{
-
 //----------------------------------------//
 // Template specializations for enum I/O
 //----------------------------------------//
 
 /**
- * \defgroup template_specs Template specializations for enum I/O.
+ * \name Template specializations for enum I/O.
  *
  * Using slightly modified template class provided by Bradley Plohr
  * (https://codereview.stackexchange.com/questions/14309/conversion-between-enum-and-string-in-c-class-header)
@@ -332,6 +338,18 @@ EnumIO<BRKGA::PathRelinking::Selection>::enum_names() {
     return enum_names_;
 }
 
+/// Template specialization to BRKGA::PathRelinking::DistanceFunctionType.
+template <>
+INLINE const std::vector<std::string>&
+EnumIO<BRKGA::PathRelinking::DistanceFunctionType>::enum_names() {
+    static std::vector<std::string> enum_names_ {
+        "HAMMING",
+        "KENDALLTAU",
+        "CUSTOM"
+    };
+    return enum_names_;
+}
+
 /// Template specialization to BRKGA::BiasFunctionType.
 template <>
 INLINE const std::vector<std::string>&
@@ -352,12 +370,14 @@ EnumIO<BRKGA::BiasFunctionType>::enum_names() {
 //----------------------------------------//
 // Streaming operators
 //----------------------------------------//
-/**
- * \defgroup streaming_opers Streaming operators.
- */
+
+/** \name I/O help functions
+ * Define some helpers for enumarations to work in conjuction with EnumIO.
+ * Also defines streaming operators for some types.
+*/
 //@{
 
-/// Helper concept to only accept std::duration types.
+/// Helper concept that only accept std::duration types.
 template<typename T>
 concept DurationType =
     std::is_convertible_v <
@@ -391,528 +411,6 @@ operator<<(std::ostream& os, const std::chrono::duration<double>& dur) {
 }
 #endif
 //@}
-//@}
-
-//----------------------------------------------------------------------------//
-// BRKGA Params class.
-//----------------------------------------------------------------------------//
-
-/**
- * \brief Represents the BRKGA and IPR hyper-parameters.
- */
-class BrkgaParams {
-public:
-    /** \name BRKGA Hyper-parameters */
-    //@{
-    /// Number of elements in the population.
-    unsigned population_size {0};
-
-    /// Percentage of individuals to become the elite set (0, 1].
-    double elite_percentage {0.0};
-
-    /// Percentage of mutants to be inserted in the population.
-    double mutants_percentage {0.0};
-
-    /// Number of elite parents for mating.
-    unsigned num_elite_parents {0};
-
-    /// Number of total parents for mating.
-    unsigned total_parents {0};
-
-    /// Type of bias that will be used.
-    BiasFunctionType bias_type {BiasFunctionType::CONSTANT};
-
-    /// Number of independent parallel populations.
-    unsigned num_independent_populations {0};
-    //@}
-
-    /** \name Path Relinking parameters */
-    //@{
-    /// Number of pairs of chromosomes to be tested to path relinking.
-    unsigned pr_number_pairs {0};
-
-    /// Mininum distance between chromosomes selected to path-relinking.
-    double pr_minimum_distance {0.0};
-
-    /// Path relinking type.
-    PathRelinking::Type pr_type {PathRelinking::Type::DIRECT};
-
-    /// Individual selection to path-relinking.
-    PathRelinking::Selection pr_selection {PathRelinking::Selection::BESTSOLUTION};
-
-    /// Defines the block size based on the size of the population.
-    double alpha_block_size {0.0};
-
-    /// Percentage / path size to be computed. Value in (0, 1].
-    double pr_percentage {0.0};
-    //@}
-};
-
-//----------------------------------------------------------------------------//
-// External Control Params class.
-//----------------------------------------------------------------------------//
-
-/**
- * \brief Represents additional control parameters that can be used outside this
- * framework.
- *
- * These parameters are not used directly in the BRKGA nor in the path
- * relinking. However, they are loaded from the configuration file and can be
- * called by the user to perform out-loop controlling.
- */
-class ControlParams {
-public:
-    /// Maximum running time.
-    std::chrono::seconds maximum_running_time {std::chrono::seconds::max()};
-
-    /** Interval / number of interations without improvement in the best
-     * solution at which elite chromosomes are exchanged (0 means no exchange).
-     */
-    unsigned exchange_interval {0};
-
-    /// Number of elite chromosomes exchanged from each population.
-    unsigned num_exchange_individuals {0};
-
-    /** Interval / number of interations without improvement in the best
-     * solution at which the Implicit Path Relink is called (0 means no IPR).
-     */
-    unsigned ipr_interval {0};
-
-    /** Interval / number of interations without improvement in the best
-     * solution at which the populations are shaken (0 means no shake).
-     */
-    unsigned shake_interval {0};
-
-    /** Interval / number of interations without improvement in the best
-     * solution at which the populations are reset (0 means no reset).
-     */
-    unsigned reset_interval {0};
-
-    /** Defines the numbers iterations to stop when the best solution is not
-     * improved, i.e., the algorithm converged (0 means don't stop by stall).
-     */
-    unsigned stall_offset {0};
-};
-
-//----------------------------------------------------------------------------//
-// Loading the parameters from file
-//----------------------------------------------------------------------------//
-
-/**
- * \brief Reads the parameters from an input stream.
- *
- * \param input the input stream. It can be a file or a string stream.
- * \param logger a output stream to log some information such as missing
- *               no-required parameters. It does not log errors.
- * \returns a tuple containing the BRKGA and external control parameters.
- * \throw std::fstream::failure in case of errors in the file.
- * \todo (ceandrade) This method can beneficiate from introspection tools
- *       from C++17. We would like achieve a code similar to the
- *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
- */
-INLINE std::pair<BrkgaParams, ControlParams>
-readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
-
-    // A simple struct to verify whether the parameter was correct loaded.
-    class AuxParam {
-    public:
-        // Indicates if the param is required.
-        bool required {false};
-
-        // Indicates if the param was supplied.
-        bool supplied {false};
-
-        // This wil be a wrapper lambda function to set the parameter.
-        std::function<void()> setter {};
-
-        // Constructor.
-        AuxParam(bool _required, std::function<void()> _setter):
-            required(_required),
-            supplied(false),
-            setter(_setter)
-            {}
-
-        // Just call `setter()` and adjust the supplied flag.
-        // Note that `setter()` will handle the errors.
-        void set() {
-            setter();
-            supplied = true;
-        }
-    };
-
-    // We have to declare here so that this variables are captured by
-    // the following lambda functions.
-    std::string token, data;
-    unsigned line_count;
-
-    // This is a setter function used to parse and test each parameter.
-    auto set_param = [&](auto& param_value) {
-        std::stringstream data_stream(data);
-        if(!(data_stream >> param_value)) {
-            std::stringstream error_msg;
-            error_msg
-            << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-            << "Invalid value for '" << token << "' on config line "
-            << line_count << ": '" << data;
-            throw std::fstream::failure(error_msg.str());
-        }
-    };
-
-    // Now, we build the full parameter map.
-    BrkgaParams brkga_params;
-    ControlParams control_params;
-
-    std::unordered_map<std::string, AuxParam> token_map {{
-        { "population_size", AuxParam {true, [&]() { set_param(brkga_params.population_size); }} },
-        { "elite_percentage", AuxParam {true, [&]() { set_param(brkga_params.elite_percentage); }} },
-        { "mutants_percentage", AuxParam {true, [&]() { set_param(brkga_params.mutants_percentage); }} },
-        { "population_size", AuxParam {true, [&] { set_param(brkga_params.population_size); }} },
-        { "elite_percentage", AuxParam {true, [&] { set_param(brkga_params.elite_percentage); }} },
-        { "mutants_percentage", AuxParam {true, [&] { set_param(brkga_params.mutants_percentage); }} },
-        { "num_elite_parents", AuxParam {true, [&] { set_param(brkga_params.num_elite_parents); }} },
-        { "total_parents", AuxParam {true, [&] { set_param(brkga_params.total_parents); }} },
-        { "bias_type", AuxParam {true, [&] { set_param(brkga_params.bias_type); }} },
-        { "num_independent_populations", AuxParam {true, [&] { set_param(brkga_params.num_independent_populations); }} },
-        { "pr_number_pairs", AuxParam {true, [&] { set_param(brkga_params.pr_number_pairs); }} },
-        { "pr_minimum_distance", AuxParam {true, [&] { set_param(brkga_params.pr_minimum_distance); }} },
-        { "pr_type", AuxParam {true, [&] { set_param(brkga_params.pr_type); }} },
-        { "pr_selection", AuxParam {true, [&] { set_param(brkga_params.pr_selection); }} },
-        { "alpha_block_size", AuxParam {true, [&] { set_param(brkga_params.alpha_block_size); }} },
-        { "pr_percentage", AuxParam {true, [&] { set_param(brkga_params.pr_percentage); }} },
-        { "maximum_running_time", AuxParam {false, [&] { set_param(control_params.maximum_running_time); }} },
-        { "exchange_interval", AuxParam {false, [&] { set_param(control_params.exchange_interval); }} },
-        { "num_exchange_individuals", AuxParam {false, [&] { set_param(control_params.num_exchange_individuals); }} },
-        { "shake_interval", AuxParam {false, [&] { set_param(control_params.shake_interval); }} },
-        { "ipr_interval", AuxParam {false, [&] { set_param(control_params.ipr_interval); }} },
-        { "reset_interval", AuxParam {false, [&] { set_param(control_params.reset_interval); }} },
-        { "stall_offset", AuxParam {false, [&] { set_param(control_params.stall_offset); }} }
-    }};
-
-    std::string line;
-    line_count = 0;
-    while(std::getline(input, line)) {
-        ++line_count;
-        std::string::size_type pos = line.find_first_not_of(" \t\n\v");
-
-        // Ignore all comments and blank lines.
-        if(pos == std::string::npos || line[pos] == '#')
-            continue;
-
-        std::stringstream line_stream(line);
-        line_stream >> token >> data;
-
-        std::transform(token.begin(), token.end(), token.begin(), tolower);
-
-        if(auto it_token = token_map.find(token); it_token != token_map.end()) {
-            if(it_token->second.supplied) {
-                std::stringstream error_msg;
-                error_msg
-                << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-                << "Duplicate attribute on config line " << line_count
-                << ": '" << token << "' already read";
-                throw std::fstream::failure(error_msg.str());
-            }
-
-            it_token->second.set();
-        }
-        else {
-            std::stringstream error_msg;
-            error_msg
-            << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-            << "Invalid token on config line " << line_count
-            << ": '" << token << "'";
-            throw std::fstream::failure(error_msg.str());
-        }
-    }
-
-    for(const auto& param : token_map) {
-        if(!param.second.supplied) {
-            if(param.second.required) {
-                std::stringstream error_msg;
-                error_msg
-                << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-                << "Parameter '" << param.first
-                << "' is required but it was not supplied in the config file";
-                throw std::fstream::failure(error_msg.str());
-            }
-            else {
-                std::stringstream error_msg;
-                error_msg
-                << "Warning: parameter '" << param.first
-                << "' was not supplied in the config file. Using default value.";
-                logger << error_msg.str() << "\n";
-            }
-        }
-    }
-
-    return std::make_pair(std::move(brkga_params), std::move(control_params));
-}
-
-//----------------------------------------------------------------------------//
-
-/**
- * \brief Reads the parameters from a configuration file.
- *
- * \param filename the configuration file.
- * \param logger a output stream to log some information such as missing
- *               no-required parameters. It does not log errors.
- * \returns a tuple containing the BRKGA and external control parameters.
- * \throw std::fstream::failure in case of errors in the file.
- */
-INLINE std::pair<BrkgaParams, ControlParams>
-readConfiguration(const std::string& filename,
-                  std::ostream& logger = std::cout) {
-
-    std::ifstream input(filename, std::ios::in);
-    if(!input) {
-        std::stringstream error_msg;
-        error_msg << "File '" << filename << "' cannot be opened!";
-        throw std::fstream::failure(error_msg.str());
-    }
-    return readConfiguration(input, logger);
-}
-
-//----------------------------------------------------------------------------//
-// Writing the parameters into file
-//----------------------------------------------------------------------------//
-
-/**
- * \brief Writes the parameters into a output stream.
- *
- * \note All floating point parameters are written with two point precision.
- *
- * \param filename the configuration file.
- * \param brkga_params the BRKGA parameters.
- * \param control_params the external control parameters. Default is an empty
- *        object.
- * \throw std::fstream::failure in case of errors in the file.
- * \todo (ceandrade) This method can beneficiate from introspection tools
- *       from C++17. We would like achieve a code similar to the
- *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
- */
-INLINE void writeConfiguration(std::ostream& output,
-        const BrkgaParams& brkga_params,
-        const ControlParams& control_params = ControlParams{}) {
-
-    output
-    << "population_size " << brkga_params.population_size << "\n"
-    << std::setiosflags(std::ios::fixed) << std::setprecision(2)
-    << "elite_percentage " << brkga_params.elite_percentage << "\n"
-    << "mutants_percentage " << brkga_params.mutants_percentage << "\n"
-    << "num_elite_parents " << brkga_params.num_elite_parents << "\n"
-    << "total_parents " << brkga_params.total_parents << "\n"
-    << "bias_type " << brkga_params.bias_type << "\n"
-    << "num_independent_populations "
-    << brkga_params.num_independent_populations << "\n"
-    << "pr_number_pairs " << brkga_params.pr_number_pairs << "\n"
-    << "pr_minimum_distance " << brkga_params.pr_minimum_distance << "\n"
-    << "pr_type " << brkga_params.pr_type << "\n"
-    << "pr_selection " << brkga_params.pr_selection << "\n"
-    << "alpha_block_size " << brkga_params.alpha_block_size << "\n"
-    << "pr_percentage " << brkga_params.pr_percentage << "\n"
-    << "maximum_running_time " << control_params.maximum_running_time << "\n"
-    << "exchange_interval " << control_params.exchange_interval << "\n"
-    << "num_exchange_individuals "
-    << control_params.num_exchange_individuals << "\n"
-    << "shake_interval " << control_params.shake_interval << "\n"
-    << "ipr_interval " << control_params.ipr_interval << "\n"
-    << "reset_interval " << control_params.reset_interval << "\n"
-    << "stall_offset " << control_params.stall_offset
-    << std::endl;
-}
-
-//----------------------------------------------------------------------------//
-
-/**
- * \brief Writes the parameters into a configuration file.
- *
- * \note All floating point parameters are written with two point precision.
- *
- * \param filename the configuration file.
- * \param brkga_params the BRKGA parameters.
- * \param control_params the external control parameters. Default is an empty
- *        object.
- * \throw std::fstream::failure in case of errors in the file.
- */
-INLINE void writeConfiguration(const std::string& filename,
-        const BrkgaParams& brkga_params,
-        const ControlParams& control_params = ControlParams{}) {
-
-    std::ofstream output(filename, std::ios::out);
-    if(!output) {
-        std::stringstream error_msg;
-        error_msg << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-                  << "File '" << filename << "' cannot be opened!";
-        throw std::fstream::failure(error_msg.str());
-    }
-
-    writeConfiguration(output, brkga_params, control_params);
-    output.close();
-}
-
-//----------------------------------------------------------------------------//
-// Algorithm status
-//----------------------------------------------------------------------------//
-
-/**
- * \brief Defines the current status of the algorithm.
- */
-class AlgorithmStatus {
-public:
-    /** \name Best current solution */
-    //@{
-    /// Current best fitness value.
-    fitness_t best_fitness {};
-
-    /// A pointer to the current best chromosome.
-    Chromosome best_chromosome {};
-    //@}
-
-    /** \name General iteration counters */
-    //@{
-    /// The current algorithm iteration / generation.
-    unsigned current_iteration {0};
-
-    /// The iteration of the last update.
-    unsigned last_update_iteration {0};
-
-    /// The time of the last update (in seconds).
-    std::chrono::duration<double> current_time {0.0};
-
-    /// The time of the last update (in seconds).
-    std::chrono::duration<double> last_update_time {0.0};
-
-    /// The largest number of iterations between two updates.
-    unsigned largest_iteration_offset {0};
-
-    /// Last number of iterations without improvement in the best solution.
-    unsigned stalled_iterations {0};
-    //@}
-
-    /** \name Path relinking counters */
-    //@{
-    /// Total time spent on path relinking so far (in seconds).
-    std::chrono::duration<double> path_relink_time {0.0};
-
-    /// Number of call to path relinking.
-    unsigned num_path_relink_calls {0};
-
-    /** Number of homogenities, i.e., number of times that the populations are
-     * too homogenious and the path reliking could not be performed.
-     */
-    unsigned num_homogenities {0};
-
-    /// Number of improvements in the best solution by the path reliking.
-    unsigned num_best_improvements {0};
-
-    /** Number of improvements in elite individuals, but not the best one,
-     * by path reliking.
-     */
-    unsigned num_elite_improvements {0};
-    //@}
-
-    /** \name Exchange, reset, and shake counters */
-    //@{
-    /** Number of exchange between populations performed
-     * (not number of individuals).
-     */
-    unsigned num_exchanges {0};
-
-    /// Number of shakes performed.
-    unsigned num_shakes {0};
-
-    /// Number of population resets performed.
-    unsigned num_resets {0};
-    //@}
-};
-
-//----------------------------------------------------------------------------//
-
-/**
- * Streaming operator for AlgorithmStatus.
- * \todo Clang fails printing chrono times. When they fix it, please, revise
- *       this function.
- */
-std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
-    output
-    << "\nbest_fitness: " << status.best_fitness
-    << "\ncurrent_iteration:" << status.current_iteration
-    << "\nlast_update_iteration: " << status.last_update_iteration
-    << "\ncurrent_time: " << status.current_time
-    << "\nlast_update_time: " << status.last_update_time
-    << "\nlargest_offset: " << status.largest_iteration_offset
-    << "\nstall: " << status.stalled_iterations
-    << "\npath_relink_time: " << status.path_relink_time
-    << "\nnum_path_relink_calls: " << status.num_path_relink_calls
-    << "\nnum_homogenities: " << status.num_homogenities
-    << "\nnum_best_improvements: " << status.num_best_improvements
-    << "\nnum_elite_improvements: " << status.num_elite_improvements
-    << "\nnum_exchanges: " << status.num_exchanges
-    << "\nnum_shakes: " << status.num_shakes
-    << "\nnum_resets: " << status.num_resets;
-
-    return output;
-}
-
-//----------------------------------------------------------------------------//
-// Functions for equality comparisons
-//----------------------------------------------------------------------------//
-
-namespace {
-
-/** \name Functions for equality comparisons
- *
- * This is a helper function that, at compiler time, detect if the `fitness_t`
- * is a floating point type, and applies the absolute diference. Otherwise,
- * the compiler generates the equality comparison.
- */
-//@{
-
-/**
- * \brief Compare two values to equality.
- *
- * If these values are real numbers, we compare their absolute difference with
- * `EQUALITY_THRESHOLD`, i.e., \f$|a - b| < EQUALITY\_THRESHOLD\f$. In other
- * cases (except tuples, which have a specialization), we use the `operator==`
- * directly. Therefore, `fitness_t` must define `operator==`.
- *
- * \param a First item to be compared.
- * \param b Second item to be compared.
- * \return true if a and b are equal.
- */
-template <class T>
-constexpr bool close_enough(T a, T b) {
-   if constexpr (std::is_floating_point_v<T>)
-      return fabs(a - b) < EQUALITY_THRESHOLD;
-   else
-      return a == b;
-}
-
-/**
- * \brief Compare two tuples to equality.
- *
- * This specialization iterates, recursively, of each tuples' members and
- * compares them. Note that this is done in compilation time, with no impact at
- * running time.
- *
- * \todo Could we implement this using C++17 template folding?
- *
- * \param a First tuple to be compared.
- * \param b Second tuple to be compared.
- * \return true if a and b are equal.
- */
-template <size_t I = 0, typename T, typename... Ts>
-constexpr bool close_enough(std::tuple<T, Ts...> a, std::tuple<T, Ts...> b)
-{
-    // If we have iterated through all elements, just return true.
-    if constexpr(I == sizeof...(Ts) + 1)
-        return true;
-    else
-        return close_enough(std::get<I>(a), std::get<I>(b)) &&
-               close_enough<I + 1>(a, b);
-}
-//@}
-}
 
 //----------------------------------------------------------------------------//
 // Distance functions
@@ -1130,6 +628,559 @@ public:
     }
 };
 //@}
+
+//----------------------------------------------------------------------------//
+// BRKGA Params class.
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Represents the BRKGA and IPR hyper-parameters.
+ */
+class BrkgaParams {
+public:
+    /** \name BRKGA Hyper-parameters */
+    //@{
+    /// Number of elements in the population.
+    unsigned population_size {0};
+
+    /// Percentage of individuals to become the elite set (0, 1].
+    double elite_percentage {0.0};
+
+    /// Percentage of mutants to be inserted in the population.
+    double mutants_percentage {0.0};
+
+    /// Number of elite parents for mating.
+    unsigned num_elite_parents {0};
+
+    /// Number of total parents for mating.
+    unsigned total_parents {0};
+
+    /// Type of bias that will be used.
+    BiasFunctionType bias_type {BiasFunctionType::CONSTANT};
+
+    /// Number of independent parallel populations.
+    unsigned num_independent_populations {0};
+    //@}
+
+    /** \name Path Relinking parameters */
+    //@{
+    /// Number of pairs of chromosomes to be tested to path relinking.
+    unsigned pr_number_pairs {0};
+
+    /// Mininum distance between chromosomes selected to path-relinking.
+    double pr_minimum_distance {0.0};
+
+    /// Path relinking type.
+    PathRelinking::Type pr_type {PathRelinking::Type::DIRECT};
+
+    /// Individual selection to path-relinking.
+    PathRelinking::Selection pr_selection {PathRelinking::Selection::BESTSOLUTION};
+
+    /// Type of the distance function used on path-relinking.
+    PathRelinking::DistanceFunctionType pr_distance_function_type
+        {PathRelinking::DistanceFunctionType::CUSTOM};
+
+    /// The distance function used on path-relinking.
+    std::shared_ptr<DistanceFunctionBase> pr_distance_function {};
+
+    /// Defines the block size based on the size of the population.
+    double alpha_block_size {0.0};
+
+    /// Percentage / path size to be computed. Value in (0, 1].
+    double pr_percentage {0.0};
+    //@}
+};
+
+//----------------------------------------------------------------------------//
+// External Control Params class.
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Represents additional control parameters that can be used outside this
+ * framework.
+ *
+ * These parameters are not used directly in the BRKGA nor in the path
+ * relinking. However, they are loaded from the configuration file and can be
+ * called by the user to perform out-loop controlling.
+ */
+class ControlParams {
+public:
+    /// Maximum running time.
+    std::chrono::seconds maximum_running_time {0};
+
+    /** Interval / number of interations without improvement in the best
+     * solution at which elite chromosomes are exchanged (0 means no exchange).
+     */
+    unsigned exchange_interval {0};
+
+    /// Number of elite chromosomes exchanged from each population.
+    unsigned num_exchange_individuals {0};
+
+    /** Interval / number of interations without improvement in the best
+     * solution at which the Implicit Path Relink is called (0 means no IPR).
+     */
+    unsigned ipr_interval {0};
+
+    /** Interval / number of interations without improvement in the best
+     * solution at which the populations are shaken (0 means no shake).
+     */
+    unsigned shake_interval {0};
+
+    /** Interval / number of interations without improvement in the best
+     * solution at which the populations are reset (0 means no reset).
+     */
+    unsigned reset_interval {0};
+
+    /** Defines the numbers iterations to stop when the best solution is not
+     * improved, i.e., the algorithm converged (0 means don't stop by stall).
+     */
+    unsigned stall_offset {0};
+};
+
+//----------------------------------------------------------------------------//
+// Loading the parameters from file
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Reads the parameters from an input stream.
+ *
+ * \param input the input stream. It can be a file or a string stream.
+ * \param logger a output stream to log some information such as missing
+ *               no-required parameters. It does not log errors.
+ * \returns a tuple containing the BRKGA and external control parameters.
+ * \throw std::fstream::failure in case of errors in the file.
+ * \todo (ceandrade) This method can beneficiate from introspection tools
+ *       from C++17. We would like achieve a code similar to the
+ *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
+ */
+INLINE std::pair<BrkgaParams, ControlParams>
+readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
+
+    // A simple struct to verify whether the parameter was correct loaded.
+    class AuxParam {
+    public:
+        // Indicates if the param is required.
+        bool required {false};
+
+        // Indicates if the param was supplied.
+        bool supplied {false};
+
+        // This wil be a wrapper lambda function to set the parameter.
+        std::function<void()> setter {};
+
+        // Constructor.
+        AuxParam(bool _required, std::function<void()> _setter):
+            required(_required),
+            supplied(false),
+            setter(_setter)
+            {}
+
+        // Just call `setter()` and adjust the supplied flag.
+        // Note that `setter()` will handle the errors.
+        void set() {
+            setter();
+            supplied = true;
+        }
+    };
+
+    // We have to declare here so that this variables are captured by
+    // the following lambda functions.
+    std::string token, data;
+    unsigned line_count;
+
+    // This is a setter function used to parse and test each parameter.
+    auto set_param = [&](auto& param_value) {
+        std::stringstream data_stream(data);
+        if(!(data_stream >> param_value)) {
+            std::stringstream error_msg;
+            error_msg
+            << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+            << "Invalid value for '" << token << "' on config line "
+            << line_count << ": '" << data;
+            throw std::fstream::failure(error_msg.str());
+        }
+    };
+
+    // Now, we build the full parameter map.
+    BrkgaParams brkga_params;
+    ControlParams control_params;
+
+    std::unordered_map<std::string, AuxParam> token_map {{
+        { "population_size", AuxParam {true, [&]() { set_param(brkga_params.population_size); }} },
+        { "elite_percentage", AuxParam {true, [&]() { set_param(brkga_params.elite_percentage); }} },
+        { "mutants_percentage", AuxParam {true, [&]() { set_param(brkga_params.mutants_percentage); }} },
+        { "population_size", AuxParam {true, [&] { set_param(brkga_params.population_size); }} },
+        { "elite_percentage", AuxParam {true, [&] { set_param(brkga_params.elite_percentage); }} },
+        { "mutants_percentage", AuxParam {true, [&] { set_param(brkga_params.mutants_percentage); }} },
+        { "num_elite_parents", AuxParam {true, [&] { set_param(brkga_params.num_elite_parents); }} },
+        { "total_parents", AuxParam {true, [&] { set_param(brkga_params.total_parents); }} },
+        { "bias_type", AuxParam {true, [&] { set_param(brkga_params.bias_type); }} },
+        { "num_independent_populations", AuxParam {true, [&] { set_param(brkga_params.num_independent_populations); }} },
+        { "pr_number_pairs", AuxParam {true, [&] { set_param(brkga_params.pr_number_pairs); }} },
+        { "pr_minimum_distance", AuxParam {true, [&] { set_param(brkga_params.pr_minimum_distance); }} },
+        { "pr_type", AuxParam {true, [&] { set_param(brkga_params.pr_type); }} },
+        { "pr_selection", AuxParam {true, [&] { set_param(brkga_params.pr_selection); }} },
+        { "pr_distance_function_type", AuxParam {true, [&] { set_param(brkga_params.pr_distance_function_type); }} },
+        { "alpha_block_size", AuxParam {true, [&] { set_param(brkga_params.alpha_block_size); }} },
+        { "pr_percentage", AuxParam {true, [&] { set_param(brkga_params.pr_percentage); }} },
+        { "maximum_running_time", AuxParam {false, [&] { set_param(control_params.maximum_running_time); }} },
+        { "exchange_interval", AuxParam {false, [&] { set_param(control_params.exchange_interval); }} },
+        { "num_exchange_individuals", AuxParam {false, [&] { set_param(control_params.num_exchange_individuals); }} },
+        { "shake_interval", AuxParam {false, [&] { set_param(control_params.shake_interval); }} },
+        { "ipr_interval", AuxParam {false, [&] { set_param(control_params.ipr_interval); }} },
+        { "reset_interval", AuxParam {false, [&] { set_param(control_params.reset_interval); }} },
+        { "stall_offset", AuxParam {false, [&] { set_param(control_params.stall_offset); }} }
+    }};
+
+    std::string line;
+    line_count = 0;
+    while(std::getline(input, line)) {
+        ++line_count;
+        std::string::size_type pos = line.find_first_not_of(" \t\n\v");
+
+        // Ignore all comments and blank lines.
+        if(pos == std::string::npos || line[pos] == '#')
+            continue;
+
+        std::stringstream line_stream(line);
+        line_stream >> token >> data;
+
+        std::transform(token.begin(), token.end(), token.begin(), tolower);
+
+        if(auto it_token = token_map.find(token); it_token != token_map.end()) {
+            if(it_token->second.supplied) {
+                std::stringstream error_msg;
+                error_msg
+                << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                << "Duplicate attribute on config line " << line_count
+                << ": '" << token << "' already read";
+                throw std::fstream::failure(error_msg.str());
+            }
+
+            it_token->second.set();
+        }
+        else {
+            std::stringstream error_msg;
+            error_msg
+            << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+            << "Invalid token on config line " << line_count
+            << ": '" << token << "'";
+            throw std::fstream::failure(error_msg.str());
+        }
+    }
+
+    // Check requeriments.
+    for(const auto& param : token_map) {
+        if(!param.second.supplied) {
+            if(param.second.required) {
+                std::stringstream error_msg;
+                error_msg
+                << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                << "Parameter '" << param.first
+                << "' is required but it was not supplied in the config file";
+                throw std::fstream::failure(error_msg.str());
+            }
+            else {
+                std::stringstream error_msg;
+                error_msg
+                << "Warning: parameter '" << param.first
+                << "' was not supplied in the config file. Using default value.";
+                logger << error_msg.str() << "\n";
+            }
+        }
+    }
+
+    // Check distance function.
+    switch(brkga_params.pr_distance_function_type) {
+    case PathRelinking::DistanceFunctionType::HAMMING:
+        brkga_params.pr_distance_function =
+            std::shared_ptr<DistanceFunctionBase> {new HammingDistance};
+        break;
+
+    case PathRelinking::DistanceFunctionType::KENDALLTAU:
+        brkga_params.pr_distance_function =
+            std::shared_ptr<DistanceFunctionBase> {new KendallTauDistance};
+        break;
+
+    default:
+        std::stringstream error_msg;
+        error_msg
+        << "Warning: distance function set to '"
+        << brkga_params.pr_distance_function_type << "'. "
+        << "The user must supply his/her own distance functor if using IPR.";
+        logger << error_msg.str() << "\n";
+        break;
+    }
+
+    return std::make_pair(std::move(brkga_params), std::move(control_params));
+}
+
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Reads the parameters from a configuration file.
+ *
+ * \param filename the configuration file.
+ * \param logger a output stream to log some information such as missing
+ *               no-required parameters. It does not log errors.
+ * \returns a tuple containing the BRKGA and external control parameters.
+ * \throw std::fstream::failure in case of errors in the file.
+ */
+INLINE std::pair<BrkgaParams, ControlParams>
+readConfiguration(const std::string& filename,
+                  std::ostream& logger = std::cout) {
+
+    std::ifstream input(filename, std::ios::in);
+    if(!input) {
+        std::stringstream error_msg;
+        error_msg << "File '" << filename << "' cannot be opened!";
+        throw std::fstream::failure(error_msg.str());
+    }
+    return readConfiguration(input, logger);
+}
+
+//----------------------------------------------------------------------------//
+// Writing the parameters into file
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Writes the parameters into a output stream.
+ *
+ * \note All floating point parameters are written with two point precision.
+ *
+ * \param output the output stream.
+ * \param brkga_params the BRKGA parameters.
+ * \param control_params the external control parameters. Default is an empty
+ *        object.
+ * \throw std::fstream::failure in case of errors in the file.
+ * \todo This method can beneficiate from introspection tools.
+ *       We would like achieve a code similar to the
+ *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
+ */
+INLINE void writeConfiguration(std::ostream& output,
+        const BrkgaParams& brkga_params,
+        const ControlParams& control_params = ControlParams{}) {
+
+    output
+    << "population_size " << brkga_params.population_size << "\n"
+    << std::setiosflags(std::ios::fixed) << std::setprecision(2)
+    << "elite_percentage " << brkga_params.elite_percentage << "\n"
+    << "mutants_percentage " << brkga_params.mutants_percentage << "\n"
+    << "num_elite_parents " << brkga_params.num_elite_parents << "\n"
+    << "total_parents " << brkga_params.total_parents << "\n"
+    << "bias_type " << brkga_params.bias_type << "\n"
+    << "num_independent_populations "
+    << brkga_params.num_independent_populations << "\n"
+    << "pr_number_pairs " << brkga_params.pr_number_pairs << "\n"
+    << "pr_minimum_distance " << brkga_params.pr_minimum_distance << "\n"
+    << "pr_type " << brkga_params.pr_type << "\n"
+    << "pr_selection " << brkga_params.pr_selection << "\n"
+    << "pr_distance_function_type " << brkga_params.pr_distance_function_type << "\n"
+    << "alpha_block_size " << brkga_params.alpha_block_size << "\n"
+    << "pr_percentage " << brkga_params.pr_percentage << "\n"
+    << "maximum_running_time " << control_params.maximum_running_time << "\n"
+    << "exchange_interval " << control_params.exchange_interval << "\n"
+    << "num_exchange_individuals "
+    << control_params.num_exchange_individuals << "\n"
+    << "shake_interval " << control_params.shake_interval << "\n"
+    << "ipr_interval " << control_params.ipr_interval << "\n"
+    << "reset_interval " << control_params.reset_interval << "\n"
+    << "stall_offset " << control_params.stall_offset
+    << std::endl;
+}
+
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Writes the parameters into a configuration file.
+ *
+ * \note All floating point parameters are written with two point precision.
+ *
+ * \param filename the configuration file.
+ * \param brkga_params the BRKGA parameters.
+ * \param control_params the external control parameters. Default is an empty
+ *        object.
+ * \throw std::fstream::failure in case of errors in the file.
+ */
+INLINE void writeConfiguration(const std::string& filename,
+        const BrkgaParams& brkga_params,
+        const ControlParams& control_params = ControlParams{}) {
+
+    std::ofstream output(filename, std::ios::out);
+    if(!output) {
+        std::stringstream error_msg;
+        error_msg << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                  << "File '" << filename << "' cannot be opened!";
+        throw std::fstream::failure(error_msg.str());
+    }
+
+    writeConfiguration(output, brkga_params, control_params);
+    output.close();
+}
+
+//----------------------------------------------------------------------------//
+// Algorithm status
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief Defines the current status of the algorithm.
+ */
+class AlgorithmStatus {
+public:
+    /** \name Best current solution */
+    //@{
+    /// Current best fitness value.
+    fitness_t best_fitness {};
+
+    /// A pointer to the current best chromosome.
+    Chromosome best_chromosome {};
+    //@}
+
+    /** \name General iteration counters */
+    //@{
+    /// The current algorithm iteration / generation.
+    unsigned current_iteration {0};
+
+    /// The iteration of the last update.
+    unsigned last_update_iteration {0};
+
+    /// The time of the last update (in seconds).
+    std::chrono::duration<double> current_time {0.0};
+
+    /// The time of the last update (in seconds).
+    std::chrono::duration<double> last_update_time {0.0};
+
+    /// The largest number of iterations between two updates.
+    unsigned largest_iteration_offset {0};
+
+    /// Last number of iterations without improvement in the best solution.
+    unsigned stalled_iterations {0};
+    //@}
+
+    /** \name Path relinking counters */
+    //@{
+    /// Total time spent on path relinking so far (in seconds).
+    std::chrono::duration<double> path_relink_time {0.0};
+
+    /// Number of call to path relinking.
+    unsigned num_path_relink_calls {0};
+
+    /** Number of homogenities, i.e., number of times that the populations are
+     * too homogenious and the path reliking could not be performed.
+     */
+    unsigned num_homogenities {0};
+
+    /// Number of improvements in the best solution by the path reliking.
+    unsigned num_best_improvements {0};
+
+    /** Number of improvements in elite individuals, but not the best one,
+     * by path reliking.
+     */
+    unsigned num_elite_improvements {0};
+    //@}
+
+    /** \name Exchange, reset, and shake counters */
+    //@{
+    /** Number of exchange between populations performed
+     * (not number of individuals).
+     */
+    unsigned num_exchanges {0};
+
+    /// Number of shakes performed.
+    unsigned num_shakes {0};
+
+    /// Number of population resets performed.
+    unsigned num_resets {0};
+    //@}
+};
+
+//----------------------------------------------------------------------------//
+
+/**
+ * Streaming operator for AlgorithmStatus.
+ * \todo Clang fails printing chrono times. When they fix it, please, revise
+ *       this function.
+ */
+std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
+    output
+    << "\nbest_fitness: " << status.best_fitness
+    << "\ncurrent_iteration:" << status.current_iteration
+    << "\nlast_update_iteration: " << status.last_update_iteration
+    << "\ncurrent_time: " << status.current_time
+    << "\nlast_update_time: " << status.last_update_time
+    << "\nlargest_offset: " << status.largest_iteration_offset
+    << "\nstall: " << status.stalled_iterations
+    << "\npath_relink_time: " << status.path_relink_time
+    << "\nnum_path_relink_calls: " << status.num_path_relink_calls
+    << "\nnum_homogenities: " << status.num_homogenities
+    << "\nnum_best_improvements: " << status.num_best_improvements
+    << "\nnum_elite_improvements: " << status.num_elite_improvements
+    << "\nnum_exchanges: " << status.num_exchanges
+    << "\nnum_shakes: " << status.num_shakes
+    << "\nnum_resets: " << status.num_resets;
+
+    return output;
+}
+
+//----------------------------------------------------------------------------//
+// Functions for equality comparisons
+//----------------------------------------------------------------------------//
+
+namespace {
+
+/** \name Functions for equality comparisons
+ *
+ * This is a helper function that, at compiler time, detect if the `fitness_t`
+ * is a floating point type, and applies the absolute diference. Otherwise,
+ * the compiler generates the equality comparison.
+ */
+//@{
+
+/**
+ * \brief Compare two values to equality.
+ *
+ * If these values are real numbers, we compare their absolute difference with
+ * `EQUALITY_THRESHOLD`, i.e., \f$|a - b| < EQUALITY\_THRESHOLD\f$. In other
+ * cases (except tuples, which have a specialization), we use the `operator==`
+ * directly. Therefore, `fitness_t` must define `operator==`.
+ *
+ * \param a First item to be compared.
+ * \param b Second item to be compared.
+ * \return true if a and b are equal.
+ */
+template <class T>
+constexpr bool close_enough(T a, T b) {
+   if constexpr (std::is_floating_point_v<T>)
+      return fabs(a - b) < EQUALITY_THRESHOLD;
+   else
+      return a == b;
+}
+
+/**
+ * \brief Compare two tuples to equality.
+ *
+ * This specialization iterates, recursively, of each tuples' members and
+ * compares them. Note that this is done in compilation time, with no impact at
+ * running time.
+ *
+ * \todo Could we implement this using C++17 template folding?
+ *
+ * \param a First tuple to be compared.
+ * \param b Second tuple to be compared.
+ * \return true if a and b are equal.
+ */
+template <size_t I = 0, typename T, typename... Ts>
+constexpr bool close_enough(std::tuple<T, Ts...> a, std::tuple<T, Ts...> b)
+{
+    // If we have iterated through all elements, just return true.
+    if constexpr(I == sizeof...(Ts) + 1)
+        return true;
+    else
+        return close_enough(std::get<I>(a), std::get<I>(b)) &&
+               close_enough<I + 1>(a, b);
+}
+//@}
+}
 
 //----------------------------------------------------------------------------//
 // Population class.
@@ -1565,11 +1616,18 @@ public:
     void initialize(bool reset = false);
     //@}
 
-    /** \name Evolution */
+    /** \name Full algorithm runner */
     //@{
     /**
      * \brief Runs the full framework performing evolution, path-reliking,
      *        exchanges, shakes, and resets according to the parameters.
+     *
+     * \todo Add more documentation.
+     *
+     * \note The algorithm alwyas test for maximum running time given by
+     *       `ControlParams` indenpendently of the stopping criteria function
+     *       supplied by the user. This is especially important when activating
+     *       the implicit path reliking which is very timing consuming.
      *
      * \warning
      *     The decoding is done in parallel using threads, and the user **must
@@ -1580,9 +1638,10 @@ public:
      *        such as calling exchanges, shakes, and IPR.
      *
      * \param stopping_criteria a callback function to determine is the
-     *        algorithm must stop. For instance
+     *        algorithm must stop. For instance, the following lambda
+     *        function tests either for stalling or time experiration.
      * \code{.cpp}
-     *      bool stopping_criteria(const AlgorithmStatus& status) {
+     *      bool [](const AlgorithmStatus& status) {
      *          using namespace std::chrono_literals;
      *          return
      *              // No updates for 100 iterations...
@@ -1603,7 +1662,10 @@ public:
         const std::function<bool(const AlgorithmStatus&)>& stopping_criteria,
         std::ostream* logger = &std::cout
     );
+    //@}
 
+    /** \name Evolution */
+    //@{
     /**
      * \brief Evolves the current populations following the guidelines of
      *        Multi-parent BRKGAs.
@@ -1682,7 +1744,7 @@ public:
      *        BRKGA::DistanceFunctionBase and implement its methods.
      * \param number_pairs number of chromosome pairs to be tested.
      *        If 0, all pairs are tested.
-     * \param minimum_distance between two chromosomes computed byt `dist`.
+     * \param minimum_distance between two chromosomes computed by `dist`.
      * \param block_size number of alleles to be exchanged at once in each
      *        iteration. If one, the traditional path relinking is performed.
      * \param max_time aborts path relinking when reach `max_time`.
@@ -1703,7 +1765,7 @@ public:
         unsigned number_pairs,
         double minimum_distance,
         std::size_t block_size = 1,
-        long max_time = 0,
+        std::chrono::seconds max_time = std::chrono::seconds{0},
         double percentage = 1.0
     );
 
@@ -1735,7 +1797,7 @@ public:
      */
     PathRelinking::PathRelinkingResult pathRelink(
         std::shared_ptr<DistanceFunctionBase> dist,
-        long max_time = 0
+        std::chrono::seconds max_time = std::chrono::seconds{0}
     );
     //@}
 
@@ -1998,7 +2060,7 @@ protected:
                           std::shared_ptr<DistanceFunctionBase> dist,
                           std::pair<fitness_t, Chromosome>& best_found,
                           std::size_t block_size,
-                          long max_time,
+                          std::chrono::seconds max_time,
                           double percentage);
 
     /**
@@ -2034,7 +2096,7 @@ protected:
                                    std::shared_ptr<DistanceFunctionBase> dist,
                                    std::pair<fitness_t, Chromosome>& best_found,
                                    std::size_t block_size,
-                                   long max_time,
+                                   std::chrono::seconds max_time,
                                    double percentage);
     //@}
 
@@ -2423,7 +2485,7 @@ void BRKGA_MP_IPR<Decoder>::reset() {
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
            << "The algorithm hasn't been initialized. "
               "Don't forget to call initialize() method";
-        throw std::range_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
     initialize(true);
 }
@@ -2437,7 +2499,7 @@ void BRKGA_MP_IPR<Decoder>::evolve(unsigned generations) {
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
            << "The algorithm hasn't been initialized. "
               "Don't forget to call initialize() method";
-        throw std::range_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     if(generations == 0) {
@@ -2609,7 +2671,7 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
            << "The algorithm hasn't been initialized. "
               "Don't forget to call initialize() method";
-        throw std::range_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     auto& rng = rng_per_thread[0];
@@ -2824,12 +2886,21 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
         const ControlParams& control_params,
         const std::function<bool(const AlgorithmStatus&)>& stopping_criteria,
         std::ostream* logger) {
+
     if(!initialized) {
         std::stringstream ss;
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
            << "The algorithm hasn't been initialized. "
               "Don't forget to call initialize() method";
-        throw std::range_error(ss.str());
+        throw std::runtime_error(ss.str());
+    }
+
+    if(control_params.ipr_interval > 0 && !params.pr_distance_function) {
+        std::stringstream ss;
+        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+           << "IPR is active (ipr_interval = " << control_params.ipr_interval
+           << ") but the distance function is not set.";
+        throw std::runtime_error(ss.str());
     }
 
     AlgorithmStatus status;
@@ -2845,6 +2916,16 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
 
     const auto start_time = std::chrono::system_clock::now();
     bool run = true;
+
+    // Add expiration time to the user's stopping criteria.
+    const auto local_stopping_criteria = [&]() {
+        return
+            (std::chrono::system_clock::now() - start_time >=
+             control_params.maximum_running_time)
+            ||
+            stopping_criteria(status);
+    };
+
     while(run) {
         status.current_iteration++;
 
@@ -2884,10 +2965,11 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
         // may be expired and we cannot proceed.
 
         //----------------------------------------//
-        // Call the implicit path relinking for search intersification.
+        // Call the implicit path relinking
+        // for search intersification.
         //----------------------------------------//
 
-        if(!stopping_criteria(status) &&
+        if(!local_stopping_criteria() &&
            (control_params.ipr_interval > 0) &&
            (status.stalled_iterations > 0) &&
            (status.stalled_iterations % control_params.ipr_interval == 0)) {
@@ -2905,6 +2987,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                 << "Path relink at " << status.current_iteration << " iteration. "
                 << "Block size: " << block_size << ". "
                 << "Type: " << params.pr_type << ". "
+                << "Distance: " << params.pr_distance_function_type << ". "
                 << "Current time: " << status.current_time
                 << std::endl;
             }
@@ -2912,25 +2995,94 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
             status.num_path_relink_calls++;
             pr_start_time = std::chrono::system_clock::now();
 
-            // auto result = algorithm.pathRelink(
-            //     brkga_params.pr_type,
-            //     brkga_params.pr_selection,
-            //     dist_func,
-            //     brkga_params.pr_number_pairs,
-            //     brkga_params.pr_minimum_distance * instance->num_nodes,
-            //     block_size,
-            //     maximum_time - cea::ExecutionStopper::elapsed(),
-            //     brkga_params.pr_percentage
-            // );
+            auto result = pathRelink(
+                params.pr_type,
+                params.pr_selection,
+                params.pr_distance_function,
+                params.pr_number_pairs,
+                params.pr_minimum_distance,
+                block_size,
+                std::chrono::duration_cast<std::chrono::seconds>
+                    (control_params.maximum_running_time - status.current_time),
+                params.pr_percentage
+            );
 
             status.path_relink_time +=
                 std::chrono::system_clock::now() - pr_start_time;
+
+            status.current_time = std::chrono::system_clock::now() - start_time;
+
+            using BRKGA::PathRelinking::PathRelinkingResult;
+            switch(result) {
+                case PathRelinkingResult::TOO_HOMOGENEOUS:
+                    status.num_homogenities++;
+                    if(logger) {
+                        *logger
+                        << "- Populations are too too homogeneous. "
+                        << "Current time: " << status.current_time
+                        << std::endl;
+                    }
+                    break;
+
+                case PathRelinkingResult::NO_IMPROVEMENT:
+                    if(logger) {
+                        *logger
+                        << "- No improvement found. "
+                        << "Current time: " << status.current_time
+                        << std::endl;
+                    }
+                    break;
+
+                case PathRelinkingResult::ELITE_IMPROVEMENT:
+                    status.num_elite_improvements++;
+                    if(logger) {
+                        *logger
+                        << "- Improvement on the elite set but not in "
+                           "the best individual. "
+                        << "Current time: " << status.current_time
+                        << std::endl;
+                    }
+                    break;
+
+                case PathRelinkingResult::BEST_IMPROVEMENT:
+                    status.num_best_improvements++;
+                    if(logger) {
+                        *logger
+                        << "- Improvement in the best individual. "
+                        << "Current time: " << status.current_time
+                        << std::endl;
+                    }
+
+                    // Check for improvements in the best solution.
+                    if(const auto fitness = getBestFitness();
+                       betterThan(fitness, status.best_fitness)){
+
+                        status.current_time =
+                            std::chrono::system_clock::now() - start_time;
+                        status.last_update_time = status.current_time;
+
+                        status.best_fitness = fitness;
+                        status.best_chromosome = getBestChromosome();
+                        status.last_update_iteration = status.current_iteration;
+
+                        if(status.largest_iteration_offset < status.stalled_iterations)
+                            status.largest_iteration_offset = status.stalled_iterations;
+
+                        status.stalled_iterations = 0;
+
+                        for(auto& callback : callbacks)
+                            run &= callback(status);
+                    }
+                    break;
+
+                default:;
+            } // end switch
         }
 
         //----------------------------------------//
         // Should we exchange individuals?
         //----------------------------------------//
-        if(!stopping_criteria(status) &&
+        if(!local_stopping_criteria() &&
            (control_params.exchange_interval > 0) &&
            (status.stalled_iterations > 0) &&
            (status.stalled_iterations % control_params.exchange_interval == 0)) {
@@ -2952,7 +3104,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
         //----------------------------------------//
         // Time to reset?
         //----------------------------------------//
-        if(!stopping_criteria(status) &&
+        if(!local_stopping_criteria() &&
            (control_params.reset_interval > 0) &&
            (status.stalled_iterations > 0) &&
            (status.stalled_iterations % control_params.reset_interval == 0)) {
@@ -2972,7 +3124,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
         } // End of reset.
 
         // Check the stopping cirteria.
-        run &= !stopping_criteria(status);
+        run &= !local_stopping_criteria();
     }
 
     status.current_time = std::chrono::system_clock::now() - start_time;
@@ -2989,7 +3141,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
                     unsigned number_pairs,
                     double minimum_distance,
                     std::size_t block_size,
-                    long max_time,
+                    std::chrono::seconds max_time,
                     double percentage) {
 
     using PR = PathRelinking::PathRelinkingResult;
@@ -3003,9 +3155,6 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
            << percentage;
         throw std::range_error(ss.str());
     }
-
-    if(max_time <= 0)
-        max_time = std::numeric_limits<long>::max();
 
     Chromosome initial_solution(chromosome_size);
     Chromosome guiding_solution(chromosome_size);
@@ -3021,9 +3170,10 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
     for(unsigned pop_count = 0; pop_count < params.num_independent_populations;
         ++pop_count) {
-        auto elapsed_seconds =
+        std::chrono::seconds elapsed_seconds =
             std::chrono::duration_cast<std::chrono::seconds>
-            (std::chrono::system_clock::now() - pr_start_time).count();
+            (std::chrono::system_clock::now() - pr_start_time);
+
         if(elapsed_seconds > max_time)
             break;
 
@@ -3078,8 +3228,9 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
             index_pairs.erase(begin(index_pairs) + index);
             ++tested_pairs_count;
-            elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
-                (std::chrono::system_clock::now() - pr_start_time).count();
+            elapsed_seconds =
+                std::chrono::duration_cast<std::chrono::seconds>
+                (std::chrono::system_clock::now() - pr_start_time);
         }
 
         // The elite sets are too homogeneous, we cannot do
@@ -3092,10 +3243,8 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         best_found.second.resize(current[0]->getChromosomeSize(), 0.0);
 
         const bool sense = optimization_sense == Sense::MAXIMIZE;
-        if(sense)
-            best_found.first = FITNESS_T_MIN;
-        else
-            best_found.first = FITNESS_T_MAX;
+
+        best_found.first = sense? FITNESS_T_MIN : FITNESS_T_MAX;
 
         const auto fence = best_found.first;
 
@@ -3176,7 +3325,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 template <class Decoder>
 PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             std::shared_ptr<DistanceFunctionBase> dist,
-            long max_time) {
+            std::chrono::seconds max_time) {
 
     size_t block_size = ceil(params.alpha_block_size *
                              sqrt(params.population_size));
@@ -3198,15 +3347,17 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
             const Chromosome& chr1, const Chromosome& chr2,
             std::shared_ptr<DistanceFunctionBase> dist,
             std::pair<fitness_t, Chromosome>& best_found,
-            std::size_t block_size, long max_time, double percentage) {
+            std::size_t block_size,
+            std::chrono::seconds max_time,
+            double percentage) {
 
-    const std::size_t NUM_BLOCKS =
+    const std::size_t num_blocks =
             std::size_t(ceil((double)chr1.size() / block_size));
-    const std::size_t PATH_SIZE = std::size_t(percentage * NUM_BLOCKS);
+    const std::size_t path_size = std::size_t(percentage * num_blocks);
 
     // Create the set of indices to test.
     std::set<std::size_t> remaining_blocks;
-    for(std::size_t i = 0; i < NUM_BLOCKS; ++i)
+    for(std::size_t i = 0; i < num_blocks; ++i)
         remaining_blocks.insert(i);
     Chromosome old_keys(chr1.size());
 
@@ -3219,8 +3370,8 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
     };
 
     // Allocate memory for the candidates.
-    std::vector<Triple> candidates_left(NUM_BLOCKS);
-    std::vector<Triple> candidates_right(NUM_BLOCKS);
+    std::vector<Triple> candidates_left(num_blocks);
+    std::vector<Triple> candidates_right(num_blocks);
 
     for(auto &cand : candidates_left)
         cand.chr.resize(chr1.size());
@@ -3304,7 +3455,7 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
 
             const auto elapsed_seconds =
                  std::chrono::duration_cast<std::chrono::seconds>
-                 (std::chrono::system_clock::now() - pr_start_time).count();
+                 (std::chrono::system_clock::now() - pr_start_time);
             if(elapsed_seconds > max_time)
                 times_up = true;
         }
@@ -3367,9 +3518,9 @@ void BRKGA_MP_IPR<Decoder>::directPathRelink(
 
         const auto elapsed_seconds =
             std::chrono::duration_cast<std::chrono::seconds>
-            (std::chrono::system_clock::now() - pr_start_time).count();
+            (std::chrono::system_clock::now() - pr_start_time);
 
-        if((elapsed_seconds > max_time) || (iterations++ > PATH_SIZE))
+        if((elapsed_seconds > max_time) || (iterations++ > path_size))
             break;
     } // end while
 }
@@ -3382,9 +3533,10 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
                 std::shared_ptr<DistanceFunctionBase> /*non-used*/,
                 std::pair<fitness_t, Chromosome>& best_found,
                 std::size_t /*non-used block_size*/,
-                long max_time, double percentage) {
+                std::chrono::seconds max_time,
+                double percentage) {
 
-    const std::size_t PATH_SIZE = std::size_t(percentage * chromosome_size);
+    const std::size_t path_size = std::size_t(percentage * chromosome_size);
 
     std::set<std::size_t> remaining_indices;
     for(std::size_t i = 0; i < chr1.size(); ++i)
@@ -3507,7 +3659,7 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
 
             const auto elapsed_seconds =
                     std::chrono::duration_cast<std::chrono::seconds>
-                    (std::chrono::system_clock::now() - pr_start_time).count();
+                    (std::chrono::system_clock::now() - pr_start_time);
             if(elapsed_seconds > max_time)
                 times_up = true;
         }
@@ -3517,10 +3669,7 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
         std::size_t best_index = 0;
 
         fitness_t best_value;
-        if(sense)
-            best_value = FITNESS_T_MIN;
-        else
-            best_value = FITNESS_T_MAX;
+        best_value = sense? FITNESS_T_MIN : FITNESS_T_MAX;
 
         for(std::size_t i = 0; i < remaining_indices.size(); ++i) {
             if((best_value < (*candidates_base)[i].fitness && sense) ||
@@ -3559,9 +3708,9 @@ void BRKGA_MP_IPR<Decoder>::permutatioBasedPathRelink(
         // Is time to stop?
         const auto elapsed_seconds =
             std::chrono::duration_cast<std::chrono::seconds>
-            (std::chrono::system_clock::now() - pr_start_time).count();
+            (std::chrono::system_clock::now() - pr_start_time);
 
-        if((elapsed_seconds > max_time) || (iterations++ > PATH_SIZE))
+        if((elapsed_seconds > max_time) || (iterations++ > path_size))
             break;
     }
 }
