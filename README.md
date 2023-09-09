@@ -421,9 +421,8 @@ If you are using the multi-objective version, you must also cite this paper:
 
 > C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
 > Assignment Problem: a Multi-objective Optimization Approach.
-> _IEEE Transactions on Evolutionary Computation_, volume XXX, number X,
-> pages XX–XX, 2022.
-> DOI: [10.1016/j.ejor.2019.11.037](https://doi.org/10.1016/j.ejor.2019.11.037).
+> _IEEE Transactions on Evolutionary Computation_, to appear, 2022.
+> DOI: [10.1109/TEVC.2022.3185927](https://doi.org/10.1109/TEVC.2022.3185927).
 
 You may also consider to cite the following papers from people that helped
 to find bugs and develop new features for BRKGA-MP-IPR 2.0:

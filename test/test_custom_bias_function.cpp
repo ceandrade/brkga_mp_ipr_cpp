@@ -1,11 +1,11 @@
 /******************************************************************************
- * test_brkga_mp_ipr.cpp: test implicit path relinking on BRKGA_IPR.
+ * test_custom_bias_function.cpp: test bias functions.
  *
- * (c) Copyright 2015-2019, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2023, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  *  Created on : Jan 06, 2015 by andrade
- *  Last update: Feb 21, 2018 by andrade
+ *  Last update: Sep 07, 2023 by andrade
  *
  * This code is released under LICENSE.md.
  *
@@ -47,73 +47,65 @@ using namespace BRKGA;
 //-------------------------------[ Main ]------------------------------------//
 
 int main(int argc, char* argv[]) {
-    if(argc < 4) {
-        cerr << "Usage: "<< argv[0]
-             << " <chromosome-size> <block_size> <seed>" << endl;
-        return 1;
-    }
-
     try {
-        const unsigned chr_size = atoi(argv[1]);
-        size_t block_size = atoi(argv[2]);
-        const unsigned seed = atoi(argv[3]);
-
-        if(block_size > chr_size)
-            block_size = chr_size;
-
-        cout << "\n> chr_size " << chr_size
-             << "\n> block_size " << block_size
-             << endl;
-
-        auto params = readConfiguration("config.conf");
-        auto& brkga_params = params.first;
-
+        const unsigned chr_size = 1000;
+        const unsigned seed = 270001;
         const bool evolutionary_mechanism_on = true;
         const unsigned max_threads = 1;
 
-//        Sum_Decoder decoder;
-        Sum_Decoder decoder;
+        auto [brkga_params, _] = readConfiguration("config_full.conf");
 
         // The BRKGA_MP_IPR algorithm object.
+        Sum_Decoder decoder;
         BRKGA_MP_IPR<Sum_Decoder> algorithm(decoder, BRKGA::Sense::MINIMIZE,
-                seed, chr_size, brkga_params, evolutionary_mechanism_on,
-                max_threads);
+            seed, chr_size, brkga_params, evolutionary_mechanism_on,
+            max_threads
+        );
 
-        cout << "log\n";
+        cout
+        << "\nAlgorithm bias function type: "
+        << algorithm.getBrkgaParams().bias_type << endl;
+
+        cout << "LOG";
         algorithm.setBiasCustomFunction(
             [](const unsigned r) { return 1.0 / log1p(r); }
         );
         cout << endl;
 
-        cout << "LINEAR\n";
+        cout << "LINEAR";
         algorithm.setBiasCustomFunction(
             [](const unsigned r) { return 1.0 / r; }
         );
         cout << endl;
 
-        cout << "QUADRATIC\n";
+        cout << "QUADRATIC";
         algorithm.setBiasCustomFunction(
-            [](const unsigned r) { return pow(r, -2); }        );
+            [](const unsigned r) { return pow(r, -2); }
+        );
         cout << endl;
 
-        cout << "CUBIC\n";
+        cout << "CUBIC";
         algorithm.setBiasCustomFunction(
-            [](const unsigned r) { return pow(r, -3); }        );
+            [](const unsigned r) { return pow(r, -3); }
+        );
         cout << endl;
 
-        cout << "EXPONENTIAL\n";
+        cout << "EXPONENTIAL";
         algorithm.setBiasCustomFunction(
-                [](const unsigned r) { return exp(-1.0 * r); }                );
+            [](const unsigned r) { return exp(-1.0 * r); }
+        );
         cout << endl;
 
-        cout << "CONSTANT\n";
+        cout << "CONSTANT";
         algorithm.setBiasCustomFunction(
-                [&](const unsigned) { return 1.0 / brkga_params.total_parents; }        );
+            [&](const unsigned) { return 1.0 / brkga_params.total_parents; }
+        );
         cout << endl;
 
-        cout << "ERROR\n";
+        cout << "ERROR";
         algorithm.setBiasCustomFunction(
-                [&](const unsigned r) { return 2.0 * r; }        );
+            [&](const unsigned r) { return 2.0 * r; }
+        );
         cout << endl;
     }
     catch(exception& e) {

@@ -26,7 +26,13 @@
 #include "brkga_mp_ipr.hpp"
 #include "decoders.hpp"
 
+#include <chrono>
+#include <thread>
+
 using namespace std;
+using namespace std::chrono;
+using namespace std::chrono_literals;
+
 using namespace BRKGA;
 
 //-------------------------------[ Main ]------------------------------------//
@@ -38,8 +44,15 @@ int main(int argc, char* argv[]) {
     }
 
     try {
+        // auto start = high_resolution_clock::now();
+
         auto [brkga_params, control_params] = readConfiguration(argv[1]);
         writeConfiguration(cout, brkga_params, control_params);
+
+        // std::this_thread::sleep_for(2s);
+
+        // auto stop = high_resolution_clock::now();
+        // cout << "Time: " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start) << endl;
     }
     catch(exception& e) {
         cerr << "\n***********************************************************"
