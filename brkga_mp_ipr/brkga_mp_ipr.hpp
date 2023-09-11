@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 09, 2023 by ceandrade.
+ * Last update: Sep 11, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -29,7 +29,7 @@
  * - Alberto Kummer, 2021 (parallel mating).
  * - Daniele Ferone, 2023 (bug fix on IPR).
  *
- * THIS SOFTWARE IS PROVIDEDBY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
@@ -142,6 +142,12 @@ namespace BRKGA {
 namespace BRKGA {
 
 //----------------------------------------------------------------------------//
+// Forward declarations
+//----------------------------------------------------------------------------//
+
+class Population;
+
+//----------------------------------------------------------------------------//
 // Enumerations
 //----------------------------------------------------------------------------//
 
@@ -251,7 +257,7 @@ enum class BiasFunctionType {
     /// \f$r^{-2}\f$
     QUADRATIC,
 
-    /// Indicates a custom function supplied by the user.
+    /// Indicates a custom bias function supplied by the user.
     CUSTOM
 };
 
@@ -262,14 +268,17 @@ enum class ShakingType {
      *     `1 - value`;
      *  2. Assigns a random value to a random key.
      */
-    CHANGE = 0,
+    CHANGE,
 
     /** Applies two swap perturbations:
      *  1. Swaps the values of a randomly chosen key `i` and its
      *     neighbor `i + 1`;
      *  2. Swaps values of two randomly chosen keys.
      */
-    SWAP = 1
+    SWAP,
+
+    /// Indicates a custom shaking procedure supplied by the user.
+    CUSTOM
 };
 
 //----------------------------------------------------------------------------//
@@ -361,6 +370,18 @@ EnumIO<BRKGA::BiasFunctionType>::enum_names() {
         "LINEAR",
         "LOGINVERSE",
         "QUADRATIC",
+        "CUSTOM"
+    };
+    return enum_names_;
+}
+
+/// Template specialization to BRKGA::ShakingType.
+template <>
+INLINE const std::vector<std::string>&
+EnumIO<BRKGA::ShakingType>::enum_names() {
+    static std::vector<std::string> enum_names_ {
+        "CHANGE",
+        "SWAP",
         "CUSTOM"
     };
     return enum_names_;
@@ -640,34 +661,36 @@ class BrkgaParams {
 public:
     /** \name BRKGA Hyper-parameters */
     //@{
-    /// Number of elements in the population.
+    /// Number of elements in the population (> 0).
     unsigned population_size {0};
 
-    /// Percentage of individuals to become the elite set (0, 1].
+    /// Percentage of individuals to become the elite set (0.0, 1.0].
     double elite_percentage {0.0};
 
-    /// Percentage of mutants to be inserted in the population.
+    /// Percentage of mutants to be inserted in the population (0.0, 1.0].
     double mutants_percentage {0.0};
 
-    /// Number of elite parents for mating.
+    /// Number of elite parents for mating (> 0).
     unsigned num_elite_parents {0};
 
-    /// Number of total parents for mating.
+    /// Number of total parents for mating (> 0).
     unsigned total_parents {0};
 
     /// Type of bias that will be used.
     BiasFunctionType bias_type {BiasFunctionType::CONSTANT};
 
-    /// Number of independent parallel populations.
+    /// Number of independent parallel populations (> 0).
     unsigned num_independent_populations {0};
     //@}
 
     /** \name Path Relinking parameters */
     //@{
-    /// Number of pairs of chromosomes to be tested to path relinking.
+    /// Number of pairs of chromosomes to be tested to path relinking (> 0).
     unsigned pr_number_pairs {0};
 
-    /// Mininum distance between chromosomes selected to path-relinking.
+    /** Mininum distance between chromosomes selected to path-relinking.
+     * Value range depends on the used distance function.
+     */
     double pr_minimum_distance {0.0};
 
     /// Path relinking type.
@@ -680,14 +703,72 @@ public:
     PathRelinking::DistanceFunctionType pr_distance_function_type
         {PathRelinking::DistanceFunctionType::CUSTOM};
 
-    /// The distance function used on path-relinking.
+    /// The distance functor used on path-relinking.
     std::shared_ptr<DistanceFunctionBase> pr_distance_function {};
 
-    /// Defines the block size based on the size of the population.
+    /// Defines the block size based on the size of the population (> 0).
     double alpha_block_size {0.0};
 
-    /// Percentage / path size to be computed. Value in (0, 1].
+    /// Percentage / path size to be computed (0.0, 1.0].
     double pr_percentage {0.0};
+    //@}
+
+    /** \name Population exchange parameters */
+    //@{
+    /// Number of elite chromosomes exchanged from each population (> 0).
+    unsigned num_exchange_individuals {0};
+    //@}
+
+    /** \name Shaking parameters */
+    //@{
+    /// Type of the shaking procedure.
+    ShakingType shaking_type {ShakingType::CHANGE};
+
+    /** \brief Shaking intensity lower bound (0.0, 1.0].
+     *
+     * For default CHANGE and SWAP
+     * procedures, this value is a percentage of the chromosome size.
+     * If `shaking_intensity_lower_bound < shaking_intensity_upper_bound`,
+     * we uniformly draw a random intensity between these bounds on each
+     * shaking call.
+     * If `shaking_intensity_lower_bound = shaking_intensity_upper_bound`,
+     * then a fixed intensity is always used.
+     * See \ref BrkgaParams.shaking_intensity_upper_bound.
+     */
+    double shaking_intensity_lower_bound {0.0};
+
+    /** \brief Shaking intensity upper bound (0.0, 1.0].
+     *
+     * For default CHANGE and SWAP
+     * procedures, this value is a percentage of the chromosome size.
+     * If `shaking_intensity_lower_bound < shaking_intensity_upper_bound`,
+     * we uniformly draw a random intensity between these bounds on each
+     * shaking call.
+     * If `shaking_intensity_lower_bound = shaking_intensity_upper_bound`,
+     * then a fixed intensity is always used.
+     * See \ref BrkgaParams.shaking_intensity_lower_bound.
+     */
+    double shaking_intensity_upper_bound {0.0};
+
+    /** \brief This is the custom shaking procedure given by the user.
+     * Parameters `lower_bound` and `upper_bound` is the shaking intensity
+     * bounds to be applied. Parameter `populations` are the current BRKGA
+     * populations. Parameter `shaken` is a list of
+     * `<population index, chromosome index>` pairs indicating which chromosomes
+     * were shaken on which population, so that they got re-decoded.
+     *
+     * \warning
+     *      This procedure can be very intrusive since it must manipulate
+     *      the population. So, the user must make sure that BRKGA invariants
+     *      are kept, such as chromosome size and population size.
+     *      Otherwise, the overall functionaly may be compromised.
+     */
+    std::function<void(
+        double lower_bound,
+        double upper_bound,
+        std::vector<std::shared_ptr<Population>>& populations,
+        std::vector<std::pair<unsigned, unsigned>>& shaken
+    )> custom_shaking {};
     //@}
 };
 
@@ -708,31 +789,28 @@ public:
     /// Maximum running time.
     std::chrono::seconds maximum_running_time {0};
 
-    /** Interval / number of interations without improvement in the best
+    /** \brief Interval / number of interations without improvement in the best
      * solution at which elite chromosomes are exchanged (0 means no exchange).
      */
     unsigned exchange_interval {0};
 
-    /// Number of elite chromosomes exchanged from each population.
-    unsigned num_exchange_individuals {0};
-
-    /** Interval / number of interations without improvement in the best
+    /** \brief Interval / number of interations without improvement in the best
      * solution at which the Implicit Path Relink is called (0 means no IPR).
      */
     unsigned ipr_interval {0};
 
-    /** Interval / number of interations without improvement in the best
+    /** \brief Interval / number of interations without improvement in the best
      * solution at which the populations are shaken (0 means no shake).
      */
     unsigned shake_interval {0};
 
-    /** Interval / number of interations without improvement in the best
+    /** \brief Interval / number of interations without improvement in the best
      * solution at which the populations are reset (0 means no reset).
      */
     unsigned reset_interval {0};
 
-    /** Defines the numbers iterations to stop when the best solution is not
-     * improved, i.e., the algorithm converged (0 means don't stop by stall).
+    /** \brief Defines the numbers iterations to stop when the best solution is
+     * not improved, i.e., the algorithm converged (0 means don't stop by stall).
      */
     unsigned stall_offset {0};
 };
@@ -806,6 +884,7 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
     ControlParams control_params;
 
     std::unordered_map<std::string, AuxParam> token_map {{
+        // Required.
         { "population_size", AuxParam {true, [&]() { set_param(brkga_params.population_size); }} },
         { "elite_percentage", AuxParam {true, [&]() { set_param(brkga_params.elite_percentage); }} },
         { "mutants_percentage", AuxParam {true, [&]() { set_param(brkga_params.mutants_percentage); }} },
@@ -823,9 +902,13 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
         { "pr_distance_function_type", AuxParam {true, [&] { set_param(brkga_params.pr_distance_function_type); }} },
         { "alpha_block_size", AuxParam {true, [&] { set_param(brkga_params.alpha_block_size); }} },
         { "pr_percentage", AuxParam {true, [&] { set_param(brkga_params.pr_percentage); }} },
+        // Optional.
+        { "num_exchange_individuals", AuxParam {false, [&] { set_param(brkga_params.num_exchange_individuals); }} },
+        { "shaking_type", AuxParam {false, [&] { set_param(brkga_params.shaking_type); }} },
+        { "shaking_intensity_lower_bound", AuxParam {false, [&] { set_param(brkga_params.shaking_intensity_lower_bound); }} },
+        { "shaking_intensity_upper_bound", AuxParam {false, [&] { set_param(brkga_params.shaking_intensity_upper_bound); }} },
         { "maximum_running_time", AuxParam {false, [&] { set_param(control_params.maximum_running_time); }} },
         { "exchange_interval", AuxParam {false, [&] { set_param(control_params.exchange_interval); }} },
-        { "num_exchange_individuals", AuxParam {false, [&] { set_param(control_params.num_exchange_individuals); }} },
         { "shake_interval", AuxParam {false, [&] { set_param(control_params.shake_interval); }} },
         { "ipr_interval", AuxParam {false, [&] { set_param(control_params.ipr_interval); }} },
         { "reset_interval", AuxParam {false, [&] { set_param(control_params.reset_interval); }} },
@@ -978,10 +1061,13 @@ INLINE void writeConfiguration(std::ostream& output,
     << "pr_distance_function_type " << brkga_params.pr_distance_function_type << "\n"
     << "alpha_block_size " << brkga_params.alpha_block_size << "\n"
     << "pr_percentage " << brkga_params.pr_percentage << "\n"
+    << "num_exchange_individuals "
+    << brkga_params.num_exchange_individuals << "\n"
+    << "shaking_type " << brkga_params.shaking_type << "\n"
+    << "shaking_intensity_lower_bound " << brkga_params.shaking_intensity_lower_bound << "\n"
+    << "shaking_intensity_upper_bound " << brkga_params.shaking_intensity_upper_bound << "\n"
     << "maximum_running_time " << control_params.maximum_running_time << "\n"
     << "exchange_interval " << control_params.exchange_interval << "\n"
-    << "num_exchange_individuals "
-    << control_params.num_exchange_individuals << "\n"
     << "shake_interval " << control_params.shake_interval << "\n"
     << "ipr_interval " << control_params.ipr_interval << "\n"
     << "reset_interval " << control_params.reset_interval << "\n"
@@ -1582,6 +1668,15 @@ public:
      *          return false; // Don't stop the optimization.
      *      }
      * \endcode
+     * or a lambda function such as
+     * \code{.cpp}
+     *      algorithm.addNewSolutionObserver(
+     *          [](const AlgorithmStatus& status) {
+     *              cout << "\n" << status.best_fitness;
+     *              return false; // Don't stop the optimization.
+     *           }
+     *      );
+     * \endcode
      */
     void addNewSolutionObserver(
         const std::function<bool(const AlgorithmStatus&)>& func
@@ -1811,7 +1906,7 @@ public:
      * only one population, nothing is done.
 
      * \param num_immigrants number of elite chromosomes to select from each
-     *      population.
+     *        population.
      * \throw std::range_error if the number of immigrants less than one or
      *        it is larger than or equal to the population size divided by
      *        the number of populations minus one, i.e. \f$\lceil
@@ -1944,8 +2039,9 @@ protected:
     /// Number of mutants introduced at each generation into the population.
     unsigned num_mutants;
 
-    /// If false, no evolution is performed but only chromosome decoding.
-    /// Very useful to emulate a multi-start algorithm.
+    /** \brief If false, no evolution is performed but only chromosome decoding.
+     * Very useful to emulate a multi-start algorithm.
+     */
     bool evolutionary_mechanism_on;
     //@}
 
@@ -1960,10 +2056,11 @@ protected:
     /// Reference to the problem-dependent Decoder.
     Decoder& decoder;
 
-    /// Mersenne twister random number generators. For parallel mating, we must
-    /// have one RNG per thread so that we can reproduce the results of an
-    /// experiment. We use the first RNG as the main generator in several parts
-    /// of the code. The other RNGs are used only during mating.
+    /** \brief Mersenne twister random number generators. For parallel mating,
+     * we must have one RNG per thread so that we can reproduce the results of
+     * an experiment. We use the first RNG as the main generator in
+     * several parts of the code. The other RNGs are used only during mating.
+     */
     std::vector<std::mt19937> rng_per_thread;
     //@}
 
@@ -1978,8 +2075,9 @@ protected:
     /// Reference for the bias function.
     std::function<double(const unsigned)> bias_function;
 
-    /// Holds the sum of the results of each raking given a bias function.
-    /// This value is needed to normalization.
+    /** \brief Holds the sum of the results of each raking given a bias function.
+     * This value is needed to normalization.
+     */
     double total_bias_weight;
 
     #ifdef MATING_SEED_ONLY
@@ -1989,17 +2087,20 @@ protected:
     std::vector<std::mt19937::result_type> mating_seeds;
     #endif
 
-    /// Used to shuffled individual/chromosome indices during the mate.
-    /// We have one for each thread during parallel mating.
+    /** \brief Used to shuffled individual/chromosome indices during the mate.
+     * We have one for each thread during parallel mating.
+     */
     std::vector<std::vector<unsigned>> shuffled_individuals_per_thread;
 
-    /// Defines the order of parents during the mating.
-    /// We have one for each thread during parallel mating.
+    /** \brief Defines the order of parents during the mating.
+     * We have one for each thread during parallel mating.
+     */
     std::vector<std::vector<std::pair<fitness_t, unsigned>>>
     parents_ordered_per_thread;
 
-    /// Temporary structures that hold the offsrping per thread. Used
-    /// to reduce the caching missing, and speed up the mating.
+    /** \brief Temporary structures that hold the offsrping per thread.
+     * Used to reduce the caching missing, and speed up the mating.
+     */
     std::vector<std::vector<double>> offspring_per_thread;
 
     /// Indicates if a initial population is set.
@@ -2011,7 +2112,7 @@ protected:
     /// Holds the start time for a call of the path relink procedure.
     std::chrono::system_clock::time_point pr_start_time;
 
-    /** Callback functions called when the best solution is improved.
+    /** \brief Callback functions called when the best solution is improved.
      * It must take a reference to `AlgorithmStatus` and return `true`
      * if the algorithm should stop immediately.
      */
@@ -2056,12 +2157,14 @@ protected:
      * \param percentage define the size, in percentage, of the path to
      *        build. Default: 1.0 (100%).
      */
-    void directPathRelink(const Chromosome& chr1, const Chromosome& chr2,
-                          std::shared_ptr<DistanceFunctionBase> dist,
-                          std::pair<fitness_t, Chromosome>& best_found,
-                          std::size_t block_size,
-                          std::chrono::seconds max_time,
-                          double percentage);
+    void directPathRelink(
+        const Chromosome& chr1, const Chromosome& chr2,
+        std::shared_ptr<DistanceFunctionBase> dist,
+        std::pair<fitness_t, Chromosome>& best_found,
+        std::size_t block_size,
+        std::chrono::seconds max_time,
+        double percentage
+    );
 
     /**
      * \brief Performs the permutation-based path relinking.
@@ -2092,12 +2195,14 @@ protected:
      * \param percentage define the size, in percentage, of the path to
      *        build. Default: 1.0 (100%)
      */
-    void permutatioBasedPathRelink(Chromosome& chr1, Chromosome& chr2,
-                                   std::shared_ptr<DistanceFunctionBase> dist,
-                                   std::pair<fitness_t, Chromosome>& best_found,
-                                   std::size_t block_size,
-                                   std::chrono::seconds max_time,
-                                   double percentage);
+    void permutatioBasedPathRelink(
+        Chromosome& chr1, Chromosome& chr2,
+        std::shared_ptr<DistanceFunctionBase> dist,
+        std::pair<fitness_t, Chromosome>& best_found,
+        std::size_t block_size,
+        std::chrono::seconds max_time,
+        double percentage
+    );
     //@}
 
     /** \name Helper functions */
@@ -2903,6 +3008,41 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
         throw std::runtime_error(ss.str());
     }
 
+    if(control_params.shake_interval > 0) {
+        if(params.shaking_type == ShakingType::CUSTOM && !params.custom_shaking) {
+            std::stringstream ss;
+            ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+               << "Shaking is active (shake_interval = "
+               << control_params.shake_interval << ") and it is set as 'CUSTOM'. "
+               << "However the custom shaking procedure was not supplied.";
+            throw std::runtime_error(ss.str());
+        }
+
+        if(params.shaking_type != ShakingType::CUSTOM) {
+            if((params.shaking_intensity_lower_bound < 1e-6 ||
+                params.shaking_intensity_lower_bound > 1) ||
+               (params.shaking_intensity_upper_bound < 1e-6 ||
+                params.shaking_intensity_upper_bound > 1) ||
+               (params.shaking_intensity_lower_bound >
+                params.shaking_intensity_upper_bound)) {
+
+                std::stringstream ss;
+                ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
+                   << "Shaking is active (shake_interval = "
+                   << control_params.shake_interval << ") and it is set as '"
+                   << params.shaking_type << "'. "
+                   << "However, the intensity bounds are out of range. "
+                      "Should be (0.0, 1.0] and 'shaking_intensity_lower_bound "
+                      "<= shaking_intensity_upper_bound' but "
+                      "shaking_intensity_lower_bound = "
+                   << params.shaking_intensity_lower_bound
+                   << " and shaking_intensity_upper_bound = "
+                   << params.shaking_intensity_upper_bound;
+                throw std::runtime_error(ss.str());
+            }
+        }
+    }
+
     AlgorithmStatus status;
     status.best_fitness = (
         optimization_sense == Sense::MINIMIZE?
@@ -2914,10 +3054,27 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
     status.last_update_iteration = 0;
     status.largest_iteration_offset = 0;
 
+    // This is the shaking multiplier, that generates a random number
+    // within the bounds given by the user. Only used during shaking.
+    auto random_shaking_multiplier = std::bind(
+        std::uniform_real_distribution<double>(
+            params.shaking_intensity_lower_bound,
+            params.shaking_intensity_upper_bound
+        ),
+        rng_per_thread[0]   // We just use the first RNG.
+    );
+
+    // If using shaking, we reserve some space for the indices of
+    // to-be-decoded chromosomes (num. of pops X size of a pop)
+    std::vector<std::pair<unsigned, unsigned>> shaken {};
+    if(control_params.shake_interval > 0)
+        shaken.reserve(current.size() * current[0]->population.size());
+
     const auto start_time = std::chrono::system_clock::now();
     bool run = true;
 
     // Add expiration time to the user's stopping criteria.
+    // Note that if it returns true, we stop the optimization.
     const auto local_stopping_criteria = [&]() {
         return
             (std::chrono::system_clock::now() - start_time >=
@@ -3087,19 +3244,81 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
            (status.stalled_iterations > 0) &&
            (status.stalled_iterations % control_params.exchange_interval == 0)) {
 
-            exchangeElite(control_params.num_exchange_individuals);
+            exchangeElite(params.num_exchange_individuals);
             status.num_exchanges++;
             status.current_time = std::chrono::system_clock::now() - start_time;
 
             if(logger) {
                 *logger
-                << "Exchanged " << control_params.num_exchange_individuals
+                << "Exchanged " << params.num_exchange_individuals
                 << " solutions from each population. "
                 << "Iteration " << status.current_iteration << ". "
                 << "Current time: " << status.current_time
                 << std::endl;
             }
         } // End of exchange.
+
+        //----------------------------------------//
+        // Should we shake the populations?
+        //----------------------------------------//
+
+        if(!local_stopping_criteria() &&
+           (control_params.shake_interval > 0) &&
+           (status.stalled_iterations > 0) &&
+           (status.stalled_iterations % control_params.shake_interval == 0)) {
+
+            const double perc_intensity = random_shaking_multiplier();
+            const unsigned intensity = perc_intensity * chromosome_size;
+
+            if(params.shaking_type != ShakingType::CUSTOM) {
+                shake(intensity, params.shaking_type,
+                      params.num_independent_populations);
+            }
+            else {
+                shaken.clear();
+                params.custom_shaking(
+                    params.shaking_intensity_lower_bound,
+                    params.shaking_intensity_upper_bound,
+                    current,     // The current population.
+                    shaken       // Indices to be re-decoded.
+                );
+
+                // Re-decode only the needed chromosomes.
+                #ifdef _OPENMP
+                    #pragma omp parallel for num_threads(max_threads) schedule(static,1)
+                #endif
+                for(unsigned i = 0; i < shaken.size(); ++i) {
+                    const auto [pop_idx, chr_idx] = shaken[i];
+                    current[pop_idx]->setFitness(
+                        chr_idx,
+                        decoder.decode((*current[pop_idx])(chr_idx), true)
+                    );
+                }
+
+                // Now we must sort by fitness, since things might have changed.
+                #ifdef _OPENMP
+                    #pragma omp parallel for num_threads(max_threads) schedule(static,1)
+                #endif
+                for(unsigned i = 0; i < current.size(); ++i)
+                    current[i]->sortFitness(optimization_sense);
+            }
+
+            if(logger) {
+                if(params.shaking_type != ShakingType::CUSTOM)
+                    *logger << "Shaking with intensity "
+                            << perc_intensity << ". ";
+                else
+                    *logger << "Shaking. ";
+
+                *logger
+                << "Type " << params.shaking_type << ". "
+                << "Iteration " << status.current_iteration << ". "
+                << "Current time: " << status.current_time
+                << std::endl;
+            }
+
+            status.num_shakes++;
+        } // End of shaking.
 
         //----------------------------------------//
         // Time to reset?
@@ -3170,7 +3389,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
     for(unsigned pop_count = 0; pop_count < params.num_independent_populations;
         ++pop_count) {
-        std::chrono::seconds elapsed_seconds =
+        auto elapsed_seconds =
             std::chrono::duration_cast<std::chrono::seconds>
             (std::chrono::system_clock::now() - pr_start_time);
 
