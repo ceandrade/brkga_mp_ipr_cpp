@@ -751,11 +751,19 @@ public:
     double shaking_intensity_upper_bound {0.0};
 
     /** \brief This is the custom shaking procedure given by the user.
-     * Parameters `lower_bound` and `upper_bound` is the shaking intensity
-     * bounds to be applied. Parameter `populations` are the current BRKGA
-     * populations. Parameter `shaken` is a list of
-     * `<population index, chromosome index>` pairs indicating which chromosomes
-     * were shaken on which population, so that they got re-decoded.
+     *
+     * - Parameters `lower_bound` and `upper_bound` is the shaking intensity
+     *   bounds to be applied.
+     *
+     * - Parameter `populations` are the current BRKGA populations.
+     *
+     * - Parameter `shaken` is a list of `<population index, chromosome index>`
+     *   pairs indicating which chromosomes were shaken on which population,
+     *   so that they got re-decoded.
+     *
+     * \note If `shaken` is empty, all chromosomes of all populations are
+     *       re-decoded. This may be slow. Even if you intention is to do so,
+     *       it is faster to populate `shaken`.
      *
      * \warning
      *      This procedure can be very intrusive since it must manipulate
@@ -1658,7 +1666,62 @@ public:
         const std::function<double(const unsigned)>& func
     );
 
-    /** Adds a callback function called when the best solution is improved.
+    /** \brief Sets a custom shaking procedure.
+     *
+     * For more details, see \ref BrkgaParams::custom_shaking.
+     *
+     * \param func a callback function. For example, the code below implements
+     *        the standard mutation:
+     * \code{.cpp}
+     *  // A random number generator.
+     *  std::mt19937 rng(2700001);
+     *  rng.discard(rng.state_size);
+     *
+     *  // Change some values from elite chromosomes from all populations.
+     *  // Similar to a standard mutation.
+     *  algorithm.setShakingMethod(
+     *      [&](double lower_bound, double upper_bound,
+     *          std::vector<std::shared_ptr<Population>>& populations,
+     *          std::vector<std::pair<unsigned, unsigned>>& shaken) {
+     *
+     *          // Determines whether we change the allele or not.
+     *          std::bernoulli_distribution must_change(0.50);
+     *
+     *          // Determines the value of the allele.
+     *          std::uniform_real_distribution<> allele_value(lower_bound, upper_bound);
+     *
+     *          for(unsigned pop_idx = 0; pop_idx < populations.size(); ++pop_idx) {
+     *              auto& population = populations[0]->population;
+     *              for(unsigned chr_idx = 0; chr_idx < population.size(); ++chr_idx) {
+     *                  auto& chromosome = population[chr_idx];
+     *
+     *                  bool change = false;
+     *                  for(unsigned i = 0; i < chromosome.size(); ++i) {
+     *                      if(must_change(rng)) {
+     *                          chromosome[i] = allele_value(rng);
+     *                          change = true;
+     *                      }
+     *                  }
+     *
+     *                  if(change)
+     *                      shaken.push_back({pop_idx, chr_idx});
+     *              }
+     *          }
+     *      };
+     * );
+     * \endcode
+     */
+    void setShakingMethod(
+        const std::function<void(
+            double lower_bound,
+            double upper_bound,
+            std::vector<std::shared_ptr<Population>>& populations,
+            std::vector<std::pair<unsigned, unsigned>>& shaken
+        )>& func
+    );
+
+    /** \brief Adds a callback function called when the best solution is improved.
+     *
      * It must take a reference to `AlgorithmStatus` and return `true`
      * if the algorithm should stop immediately.
      * \param func a callback function such as
@@ -1673,7 +1736,7 @@ public:
      *      algorithm.addNewSolutionObserver(
      *          [](const AlgorithmStatus& status) {
      *              cout << "\n" << status.best_fitness;
-     *              return false; // Don't stop the optimization.
+     *              return true; // Stop the optimization.
      *           }
      *      );
      * \endcode
@@ -2979,6 +3042,22 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 //----------------------------------------------------------------------------//
 
 template <class Decoder>
+void BRKGA_MP_IPR<Decoder>::setShakingMethod(
+        const std::function<void(
+            double lower_bound,
+            double upper_bound,
+            std::vector<std::shared_ptr<Population>>& populations,
+            std::vector<std::pair<unsigned, unsigned>>& shaken
+        )>& func
+    ) {
+
+    params.custom_shaking = func;
+    params.shaking_type = ShakingType::CUSTOM;
+}
+
+//----------------------------------------------------------------------------//
+
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::addNewSolutionObserver(
         const std::function<bool(const AlgorithmStatus&)>& func) {
     callbacks.push_back(func);
@@ -3282,6 +3361,15 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                     current,     // The current population.
                     shaken       // Indices to be re-decoded.
                 );
+
+                // If shaken is empty, force the re-decode
+                // of all chromosomes of all populations.
+                if(shaken.empty()) {
+                    std::cout << "\n\ntest\n\n";
+                    for(unsigned i = 0; i < current.size(); ++i)
+                        for(unsigned j = 0; j < current[i]->population.size(); ++j)
+                            shaken.push_back({i, j});
+                }
 
                 // Re-decode only the needed chromosomes.
                 #ifdef _OPENMP
