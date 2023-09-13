@@ -37,7 +37,7 @@ else
 		-fno-optimize-sibling-calls -fno-inline
 endif
 
-# Flags
+# Flags for debugging
 USER_FLAGS += -pthread -Wall -Wextra -Wcast-align -Wcast-qual \
 	-Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-format-attribute \
 	-Wshadow -Wpointer-arith -Wredundant-decls -Wstrict-aliasing=2 \
@@ -49,8 +49,11 @@ USER_FLAGS += -Wpacked
 #USER_FLAGS += -Wconversion
 #USER_FLAGS += -Wunsafe-loop-optimizations # doesn't work very well with C++11 foreach
 
-# CXX = g++
-CXX = clang++ -fopenmp
+# Flags for covering tests.
+#USER_FLAGS += -fPIC -fprofile-arcs -ftest-coverage
+
+CXX = g++
+# CXX = clang++ -fopenmp
 
 COMMON_OBJS = decoders.o
 
@@ -62,20 +65,16 @@ COMMON_OBJS = decoders.o
 	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr -c $< -o $@
 	@echo
 
-test_ze: clean $(COMMON_OBJS)
-	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) ze.cpp -o test-ze
-	./test-ze
-
 test_params: clean $(COMMON_OBJS)
-	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_params.cpp -o test-params
+	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_params.cpp -o $@
 	./test-params config_full.conf
 
 test_custom_bias_function: clean $(COMMON_OBJS)
 	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_custom_bias_function.cpp -o test-custom_bias_function
 
 test_run: clean $(COMMON_OBJS)
-	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_run.cpp -o test-run
-	./test-run 100 2700001
+	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_run.cpp -o $@
+	./$@ 100 2700001
 
 test_brkga_mp_ipr: clean $(COMMON_OBJS)
 	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_brkga_mp_ipr.cpp -o test-brkga
@@ -92,8 +91,16 @@ test_readfile: clean $(COMMON_OBJS)
 check:
 	cppcheck --enable=all --suppress=missingIncludeSystem ../brkga_mp_ipr/brkga_mp_ipr.hpp
 
+coverage:
+	gcov test_run.cpp test_run-test_run*
+
+lcov-report: coverage
+	mkdir lcov-report
+	lcov --capture --directory . --output-file lcov-report/coverage.info
+	genhtml lcov-report/coverage.info --output-directory lcov-report
+
 clean:
-	rm -rf $(COMMON_OBJS) test-*  *.dSYM
+	rm -rf $(COMMON_OBJS) test-* *.dSYM *.gcno *.gcda *.gcov
 
 docclean:
 	@echo "--> Cleaning doc..."

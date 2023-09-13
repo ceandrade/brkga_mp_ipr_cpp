@@ -148,6 +148,66 @@ namespace BRKGA {
 class Population;
 
 //----------------------------------------------------------------------------//
+// Utility functions
+//----------------------------------------------------------------------------//
+
+namespace {
+
+/** \name Functions for equality comparisons
+ *
+ * This is a helper function that, at compiler time, detect if the `fitness_t`
+ * is a floating point type, and applies the absolute diference. Otherwise,
+ * the compiler generates the equality comparison.
+ */
+//@{
+
+/**
+ * \brief Compare two values to equality.
+ *
+ * If these values are real numbers, we compare their absolute difference with
+ * `EQUALITY_THRESHOLD`, i.e., \f$|a - b| < EQUALITY\_THRESHOLD\f$. In other
+ * cases (except tuples, which have a specialization), we use the `operator==`
+ * directly. Therefore, `fitness_t` must define `operator==`.
+ *
+ * \param a First item to be compared.
+ * \param b Second item to be compared.
+ * \return true if a and b are equal.
+ */
+template <class T>
+constexpr bool close_enough(T a, T b) {
+   if constexpr (std::is_floating_point_v<T>)
+      return fabs(a - b) < EQUALITY_THRESHOLD;
+   else
+      return a == b;
+}
+
+/**
+ * \brief Compare two tuples to equality.
+ *
+ * This specialization iterates, recursively, of each tuples' members and
+ * compares them. Note that this is done in compilation time, with no impact at
+ * running time.
+ *
+ * \todo Could we implement this using C++17 template folding?
+ *
+ * \param a First tuple to be compared.
+ * \param b Second tuple to be compared.
+ * \return true if a and b are equal.
+ */
+template <size_t I = 0, typename T, typename... Ts>
+constexpr bool close_enough(std::tuple<T, Ts...> a, std::tuple<T, Ts...> b)
+{
+    // If we have iterated through all elements, just return true.
+    if constexpr(I == sizeof...(Ts) + 1)
+        return true;
+    else
+        return close_enough(std::get<I>(a), std::get<I>(b)) &&
+               close_enough<I + 1>(a, b);
+}
+//@}
+} // end namespace
+
+//----------------------------------------------------------------------------//
 // Enumerations
 //----------------------------------------------------------------------------//
 
@@ -981,7 +1041,7 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
         }
     }
 
-    // Check distance function.
+    // Check distance function for IPR.
     switch(brkga_params.pr_distance_function_type) {
     case PathRelinking::DistanceFunctionType::HAMMING:
         brkga_params.pr_distance_function =
@@ -1001,6 +1061,12 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
         << "The user must supply his/her own distance functor if using IPR.";
         logger << error_msg.str() << "\n";
         break;
+    }
+
+    // Check shaking procedure.
+    if(brkga_params.shaking_type == ShakingType::CUSTOM) {
+        logger << "Warning: shaking distance set to 'CUSTOM'. "
+                   "The user must supply his/her own if using shaking.";
     }
 
     return std::make_pair(std::move(brkga_params), std::move(control_params));
@@ -1214,66 +1280,6 @@ std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
     << "\nnum_resets: " << status.num_resets;
 
     return output;
-}
-
-//----------------------------------------------------------------------------//
-// Functions for equality comparisons
-//----------------------------------------------------------------------------//
-
-namespace {
-
-/** \name Functions for equality comparisons
- *
- * This is a helper function that, at compiler time, detect if the `fitness_t`
- * is a floating point type, and applies the absolute diference. Otherwise,
- * the compiler generates the equality comparison.
- */
-//@{
-
-/**
- * \brief Compare two values to equality.
- *
- * If these values are real numbers, we compare their absolute difference with
- * `EQUALITY_THRESHOLD`, i.e., \f$|a - b| < EQUALITY\_THRESHOLD\f$. In other
- * cases (except tuples, which have a specialization), we use the `operator==`
- * directly. Therefore, `fitness_t` must define `operator==`.
- *
- * \param a First item to be compared.
- * \param b Second item to be compared.
- * \return true if a and b are equal.
- */
-template <class T>
-constexpr bool close_enough(T a, T b) {
-   if constexpr (std::is_floating_point_v<T>)
-      return fabs(a - b) < EQUALITY_THRESHOLD;
-   else
-      return a == b;
-}
-
-/**
- * \brief Compare two tuples to equality.
- *
- * This specialization iterates, recursively, of each tuples' members and
- * compares them. Note that this is done in compilation time, with no impact at
- * running time.
- *
- * \todo Could we implement this using C++17 template folding?
- *
- * \param a First tuple to be compared.
- * \param b Second tuple to be compared.
- * \return true if a and b are equal.
- */
-template <size_t I = 0, typename T, typename... Ts>
-constexpr bool close_enough(std::tuple<T, Ts...> a, std::tuple<T, Ts...> b)
-{
-    // If we have iterated through all elements, just return true.
-    if constexpr(I == sizeof...(Ts) + 1)
-        return true;
-    else
-        return close_enough(std::get<I>(a), std::get<I>(b)) &&
-               close_enough<I + 1>(a, b);
-}
-//@}
 }
 
 //----------------------------------------------------------------------------//
@@ -3365,7 +3371,6 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                 // If shaken is empty, force the re-decode
                 // of all chromosomes of all populations.
                 if(shaken.empty()) {
-                    std::cout << "\n\ntest\n\n";
                     for(unsigned i = 0; i < current.size(); ++i)
                         for(unsigned j = 0; j < current[i]->population.size(); ++j)
                             shaken.push_back({i, j});
