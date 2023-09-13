@@ -5,7 +5,7 @@
  * All Rights Reserved.
  *
  *  Created on : Sep 07, 2023 by ceandrade
- *  Last update: Sep 07, 2023 by ceandrade
+ *  Last update: Sep 13, 2023 by ceandrade
  *
  * This code is released under LICENSE.md.
  *
@@ -66,6 +66,9 @@ int main(int argc, char* argv[]) {
         // control_params.maximum_running_time = 5s;
         // brkga_params.shaking_intensity_lower_bound = 0.7;
         // brkga_params.shaking_intensity_upper_bound = 0.3;
+        // control_params.maximum_running_time =
+        //     decltype(ControlParams::maximum_running_time)::max();
+        // control_params.stall_offset = 1000;
 
         using MyDecoder = Sum_Decoder;
         // using MyDecoder = Order_Decoder;
@@ -125,8 +128,7 @@ int main(int argc, char* argv[]) {
             return true;    // Don't stop the oiptimization.
         });
 
-        auto final_status = algorithm.run(
-            control_params,
+        algorithm.setStoppingCriteria(
             [](const AlgorithmStatus& status) {
                 return
                     // No updates for 100 iterations...
@@ -134,9 +136,10 @@ int main(int argc, char* argv[]) {
                      ||
                     // ... or maximum time of 10 seconds.
                     (status.current_time > 60s);
-            },
-            &cout
+            }
         );
+
+        auto final_status = algorithm.run(control_params, &cout);
 
         cout
         << final_status

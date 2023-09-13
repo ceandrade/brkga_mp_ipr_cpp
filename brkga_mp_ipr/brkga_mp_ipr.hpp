@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 11, 2023 by ceandrade.
+ * Last update: Sep 13, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -1726,10 +1726,53 @@ public:
         )>& func
     );
 
-    /** \brief Adds a callback function called when the best solution is improved.
+    /**
+     * \brief Set a custom stopping criteria supplied by the user.
+
+     * The algorithm always test for _the maximum running time_ and for
+     * _the maximum stalled iterations/generations_ given by `ControlParams`
+     * indenpendently of the stopping criteria function supplied by the user.
+     * This is especially important when activating the implicit path reliking
+     * which is **very timing consuming**.
+     *
+     * \warning If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM
+     *          TIME** since this is the core stopping criteria on IPR.
+     *
+     * If you really mean to have no maximum time set, we recommend to use
+     * the following code:
+     *
+     * \code{.cpp}
+     * // After reading your parameters, e.g.,
+     * // auto [brkga_params, control_params] = readConfiguration("config.conf");
+     *
+     * // You can set to the max.
+     *  control_params.maximum_running_time = std::chrono::seconds::max();
+     * \endcode
+     *
+     * \param stopping_criteria a callback function to determine is the
+     *        algorithm must stop. For instance, the following lambda
+     *        function tests if the best solution reached a given value:
+     * \code{.cpp}
+     *      fitness_t my_magical_solution = 10;
+     *
+     *      algorithm.setStoppingCriteria(
+     *          [&](const AlgorithmStatus& status) {
+     *              return status.best_fitness == my_magical_solution;
+     *          }
+     *      );
+     * \endcode
+     */
+    void setStoppingCriteria(
+        const std::function<bool(const AlgorithmStatus&)>& stopping_criteria
+    );
+
+    /** \brief Adds a callback function called when the best solution is
+     * improved.
      *
      * It must take a reference to `AlgorithmStatus` and return `true`
-     * if the algorithm should stop immediately.
+     * if the algorithm should stop immediately. You may have as much observers
+     * you want. They will be called in the order they are added.
+     *
      * \param func a callback function such as
      * \code{.cpp}
      *      bool check_solution(const AlgorithmStatus& status) {
@@ -1786,12 +1829,32 @@ public:
      * \brief Runs the full framework performing evolution, path-reliking,
      *        exchanges, shakes, and resets according to the parameters.
      *
-     * \todo Add more documentation.
+     * This method uses all facilities associated with this BRKGA-MP-IPR
+     * library, providing a comprehensive and easy-to-use single-entry point.
+     * The main loop always evolves one generation per iteration and calls
+     * other procedures based on the number of stalled iterations (i.e.,
+     * the number of iterations without improvement in the best solution),
+     * and the given user thresholds in Control Parameters.
+     * _If the thresholds are all the same_, the main loop should be like this:
      *
-     * \note The algorithm alwyas test for maximum running time given by
-     *       `ControlParams` indenpendently of the stopping criteria function
-     *       supplied by the user. This is especially important when activating
-     *       the implicit path reliking which is very timing consuming.
+     * \code{.cpp}
+     *      while(not stopping critera met) {
+     *          evolve(); // One generation
+     *          ipr();
+     *          exchange_elite();
+     *          shake();
+     *          reset();
+     *      }
+     * \endcode
+     *
+     * \note
+     *      The algorithm always test for maximum running time and for the
+     *      maximum stalled iterations/generations given by `ControlParams`
+     *      indenpendently of the stopping criteria function supplied by
+     *      the user. This is especially important when activating the implicit
+     *      path reliking which is **very timing consuming**.
+     *      If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM
+     *      TIME** since this is the core stopping criteria on IPR.
      *
      * \warning
      *     The decoding is done in parallel using threads, and the user **must
@@ -1801,20 +1864,6 @@ public:
      * \param control_params the parameters to control the algorithm flow,
      *        such as calling exchanges, shakes, and IPR.
      *
-     * \param stopping_criteria a callback function to determine is the
-     *        algorithm must stop. For instance, the following lambda
-     *        function tests either for stalling or time experiration.
-     * \code{.cpp}
-     *      bool [](const AlgorithmStatus& status) {
-     *          using namespace std::chrono_literals;
-     *          return
-     *              // No updates for 100 iterations...
-     *              (status.stalled_iterations == 100) ||
-     *              // ... or maximum time of 10 seconds.
-     *              (status.current_time > 10s);
-     *      }
-     * \endcode
-     *
      * \param logger a output stream to log some information.
      *
      * \returns The last algorithm status before the stopping criteria are met.
@@ -1823,7 +1872,6 @@ public:
      */
     AlgorithmStatus run(
         const ControlParams& control_params,
-        const std::function<bool(const AlgorithmStatus&)>& stopping_criteria,
         std::ostream* logger = &std::cout
     );
     //@}
@@ -2181,6 +2229,9 @@ protected:
     /// Holds the start time for a call of the path relink procedure.
     std::chrono::system_clock::time_point pr_start_time;
 
+    /// Defines a custom stopping criteria supplied by the user.
+    std::function<bool(const AlgorithmStatus&)> stopping_criteria;
+
     /** \brief Callback functions called when the best solution is improved.
      * It must take a reference to `AlgorithmStatus` and return `true`
      * if the algorithm should stop immediately.
@@ -2370,6 +2421,7 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         initial_population(false),
         initialized(false),
         pr_start_time(),
+        stopping_criteria(),
         callbacks()
 {
     using std::range_error;
@@ -3064,6 +3116,14 @@ void BRKGA_MP_IPR<Decoder>::setShakingMethod(
 //----------------------------------------------------------------------------//
 
 template <class Decoder>
+void BRKGA_MP_IPR<Decoder>::setStoppingCriteria(
+        const std::function<bool(const AlgorithmStatus&)>& _stopping_criteria) {
+    stopping_criteria = _stopping_criteria;
+}
+
+//----------------------------------------------------------------------------//
+
+template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::addNewSolutionObserver(
         const std::function<bool(const AlgorithmStatus&)>& func) {
     callbacks.push_back(func);
@@ -3074,7 +3134,6 @@ void BRKGA_MP_IPR<Decoder>::addNewSolutionObserver(
 template <class Decoder>
 BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
         const ControlParams& control_params,
-        const std::function<bool(const AlgorithmStatus&)>& stopping_criteria,
         std::ostream* logger) {
 
     if(!initialized) {
@@ -3155,15 +3214,38 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
     if(control_params.shake_interval > 0)
         shaken.reserve(current.size() * current[0]->population.size());
 
+    // We add expiration time and maximum stalled iterations to the user's
+    // stopping criteria. Note that if it returns true, we stop the optimization.
+
+    if(!stopping_criteria) {
+        *logger
+        << "Custom stopping criteria not supplied by the user. "
+        << "Using max. time = " << control_params.maximum_running_time
+        << " and max. stall_offset = " << control_params.stall_offset
+        << std::endl;
+        stopping_criteria = [](const AlgorithmStatus& /*not used*/) {
+            return false;
+        };
+    }
+    else {
+        *logger
+        << "Using custom stopping supplied by the user and "
+        << "max. time = " << control_params.maximum_running_time
+        << " and max. stall_offset = " << control_params.stall_offset
+        << std::endl;
+    }
+
     const auto start_time = std::chrono::system_clock::now();
     bool run = true;
 
-    // Add expiration time to the user's stopping criteria.
-    // Note that if it returns true, we stop the optimization.
     const auto local_stopping_criteria = [&]() {
         return
-            (std::chrono::system_clock::now() - start_time >=
+            (std::chrono::duration_cast<std::chrono::seconds>
+             (std::chrono::system_clock::now() - start_time) >=
              control_params.maximum_running_time)
+            ||
+            (control_params.stall_offset > 0 &&
+             status.stalled_iterations == control_params.stall_offset)
             ||
             stopping_criteria(status);
     };
