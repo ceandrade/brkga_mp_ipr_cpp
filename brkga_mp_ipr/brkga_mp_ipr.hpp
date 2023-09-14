@@ -1656,11 +1656,11 @@ public:
      * \f$i \in [1..total\_parents]\f$.
      * For example
      * \code{.cpp}
-     *      setBiasCustomFunction(
-     *          [](const unsigned x) {
-     *              return 1.0 / (x * x);
-     *          }
-     *      );
+     * setBiasCustomFunction(
+     *     [](const unsigned x) {
+     *         return 1.0 / (x * x);
+     *     }
+     * );
      * \endcode
      * sets an inverse quadratic function.
      *
@@ -1679,41 +1679,41 @@ public:
      * \param func a callback function. For example, the code below implements
      *        the standard mutation:
      * \code{.cpp}
-     *  // A random number generator.
-     *  std::mt19937 rng(2700001);
-     *  rng.discard(rng.state_size);
+     * // A random number generator.
+     * std::mt19937 rng(2700001);
+     * rng.discard(rng.state_size);
      *
-     *  // Change some values from elite chromosomes from all populations.
-     *  // Similar to a standard mutation.
-     *  algorithm.setShakingMethod(
-     *      [&](double lower_bound, double upper_bound,
-     *          std::vector<std::shared_ptr<Population>>& populations,
-     *          std::vector<std::pair<unsigned, unsigned>>& shaken) {
+     * // Change some values from elite chromosomes from all populations.
+     * // Similar to a standard mutation.
+     * algorithm.setShakingMethod(
+     *     [&](double lower_bound, double upper_bound,
+     *         std::vector<std::shared_ptr<Population>>& populations,
+     *         std::vector<std::pair<unsigned, unsigned>>& shaken) {
      *
-     *          // Determines whether we change the allele or not.
-     *          std::bernoulli_distribution must_change(0.50);
+     *         // Determines whether we change the allele or not.
+     *         std::bernoulli_distribution must_change(0.50);
      *
-     *          // Determines the value of the allele.
-     *          std::uniform_real_distribution<> allele_value(lower_bound, upper_bound);
+     *         // Determines the value of the allele.
+     *         std::uniform_real_distribution<> allele_value(lower_bound, upper_bound);
      *
-     *          for(unsigned pop_idx = 0; pop_idx < populations.size(); ++pop_idx) {
-     *              auto& population = populations[0]->population;
-     *              for(unsigned chr_idx = 0; chr_idx < population.size(); ++chr_idx) {
-     *                  auto& chromosome = population[chr_idx];
+     *         for(unsigned pop_idx = 0; pop_idx < populations.size(); ++pop_idx) {
+     *             auto& population = populations[0]->population;
+     *             for(unsigned chr_idx = 0; chr_idx < population.size(); ++chr_idx) {
+     *                 auto& chromosome = population[chr_idx];
      *
-     *                  bool change = false;
-     *                  for(unsigned i = 0; i < chromosome.size(); ++i) {
-     *                      if(must_change(rng)) {
-     *                          chromosome[i] = allele_value(rng);
-     *                          change = true;
-     *                      }
-     *                  }
+     *                 bool change = false;
+     *                 for(unsigned i = 0; i < chromosome.size(); ++i) {
+     *                     if(must_change(rng)) {
+     *                         chromosome[i] = allele_value(rng);
+     *                         change = true;
+     *                     }
+     *                 }
      *
-     *                  if(change)
-     *                      shaken.push_back({pop_idx, chr_idx});
-     *              }
-     *          }
-     *      };
+     *                 if(change)
+     *                     shaken.push_back({pop_idx, chr_idx});
+     *             }
+     *         }
+     *     };
      * );
      * \endcode
      */
@@ -1753,13 +1753,13 @@ public:
      *        algorithm must stop. For instance, the following lambda
      *        function tests if the best solution reached a given value:
      * \code{.cpp}
-     *      fitness_t my_magical_solution = 10;
+     * fitness_t my_magical_solution = 10;
      *
-     *      algorithm.setStoppingCriteria(
-     *          [&](const AlgorithmStatus& status) {
-     *              return status.best_fitness == my_magical_solution;
-     *          }
-     *      );
+     * algorithm.setStoppingCriteria(
+     *     [&](const AlgorithmStatus& status) {
+     *         return status.best_fitness == my_magical_solution;
+     *     }
+     * );
      * \endcode
      */
     void setStoppingCriteria(
@@ -1775,19 +1775,19 @@ public:
      *
      * \param func a callback function such as
      * \code{.cpp}
-     *      bool check_solution(const AlgorithmStatus& status) {
-     *          cout << "\n" << status.best_fitness;
-     *          return false; // Don't stop the optimization.
-     *      }
+     * bool check_solution(const AlgorithmStatus& status) {
+     *     cout << "\n" << status.best_fitness;
+     *     return false; // Don't stop the optimization.
+     * }
      * \endcode
      * or a lambda function such as
      * \code{.cpp}
-     *      algorithm.addNewSolutionObserver(
-     *          [](const AlgorithmStatus& status) {
-     *              cout << "\n" << status.best_fitness;
-     *              return true; // Stop the optimization.
-     *           }
-     *      );
+     * algorithm.addNewSolutionObserver(
+     *     [](const AlgorithmStatus& status) {
+     *         cout << "\n" << status.best_fitness;
+     *         return true; // Stop the optimization.
+     *      }
+     * );
      * \endcode
      */
     void addNewSolutionObserver(
@@ -1838,17 +1838,53 @@ public:
      * _If the thresholds are all the same_, the main loop should be like this:
      *
      * \code{.cpp}
-     *      while(not stopping critera met) {
-     *          evolve(); // One generation
-     *          ipr();
-     *          exchange_elite();
-     *          shake();
-     *          reset();
+     * while(!must_stop) {
+     *     evolve(); // One generation.
+     *     if(best solution improvement) {
+     *         Save best solution;
+     *         Call observer callbacks;
+     *     }
+     *
+     *     if(!must_stop && ipr_interval > 0 && stalled_iterations > 0 &&
+     *        stalled_iterations % ipr_interval == 0) {
+     *          pathRelink();
+     *          if(best solution improvement) {
+     *              Save best solution;
+     *              Call observer callbacks;
+     *          }
      *      }
+     *
+     *     if(!must_stop && exchange_interval > 0 && stalled_iterations > 0 &&
+     *        stalled_iterations % exchange_interval == 0) {
+     *          exchangeElite();
+     *     }
+     *
+     *     if(!must_stop && shake_interval > 0 && stalled_iterations > 0 &&
+     *        stalled_iterations % shake_interval == 0) {
+     *          shake();
+     *     }
+     *
+     *     if(!must_stop && reset_interval > 0 && stalled_iterations > 0 &&
+     *        stalled_iterations % reset_interval == 0) {
+     *          reset();
+     *     }
+     * }
      * \endcode
      *
+     * Therefore, note that the order that `pathRelink()`, `exchangeElite()`,
+     * `shake()`, and `reset()` are called, depends on the thresholds defined
+     * in `ControlParams`.
+     *
+     * For path relinking, the block size is computed by
+     * \f$\lceil \alpha \times \sqrt{p} \rceil\f$
+     * where \f$\alpha\f$ is BrkgaParams#alpha_block_size and
+     * \f$p\f$ is BrkgaParams#population_size.
+     * If the size is larger than the chromosome size, the size is set to
+     * half of the chromosome size. For more details on that, refer to
+     * `pathRelink()`.
+     *
      * \note
-     *      The algorithm always test for maximum running time and for the
+     *      The algorithm always test against maximum running time and for the
      *      maximum stalled iterations/generations given by `ControlParams`
      *      indenpendently of the stopping criteria function supplied by
      *      the user. This is especially important when activating the implicit
