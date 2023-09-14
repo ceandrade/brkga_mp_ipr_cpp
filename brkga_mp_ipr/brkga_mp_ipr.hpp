@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 13, 2023 by ceandrade.
+ * Last update: Sep 14, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -838,6 +838,12 @@ public:
         std::vector<std::pair<unsigned, unsigned>>& shaken
     )> custom_shaking {};
     //@}
+
+    /// Default constructor.
+    BrkgaParams() = default;
+
+    /// Destructor.
+    ~BrkgaParams() __attribute__((noinline)) = default;
 };
 
 //----------------------------------------------------------------------------//
@@ -881,6 +887,12 @@ public:
      * not improved, i.e., the algorithm converged (0 means don't stop by stall).
      */
     unsigned stall_offset {0};
+
+    /// Default constructor.
+    ControlParams() = default;
+
+    /// Destructor.
+    ~ControlParams() __attribute__((noinline)) = default;
 };
 
 //----------------------------------------------------------------------------//
@@ -953,34 +965,61 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
 
     std::unordered_map<std::string, AuxParam> token_map {{
         // Required.
-        { "population_size", AuxParam {true, [&]() { set_param(brkga_params.population_size); }} },
-        { "elite_percentage", AuxParam {true, [&]() { set_param(brkga_params.elite_percentage); }} },
-        { "mutants_percentage", AuxParam {true, [&]() { set_param(brkga_params.mutants_percentage); }} },
-        { "population_size", AuxParam {true, [&] { set_param(brkga_params.population_size); }} },
-        { "elite_percentage", AuxParam {true, [&] { set_param(brkga_params.elite_percentage); }} },
-        { "mutants_percentage", AuxParam {true, [&] { set_param(brkga_params.mutants_percentage); }} },
-        { "num_elite_parents", AuxParam {true, [&] { set_param(brkga_params.num_elite_parents); }} },
-        { "total_parents", AuxParam {true, [&] { set_param(brkga_params.total_parents); }} },
-        { "bias_type", AuxParam {true, [&] { set_param(brkga_params.bias_type); }} },
-        { "num_independent_populations", AuxParam {true, [&] { set_param(brkga_params.num_independent_populations); }} },
-        { "pr_number_pairs", AuxParam {true, [&] { set_param(brkga_params.pr_number_pairs); }} },
-        { "pr_minimum_distance", AuxParam {true, [&] { set_param(brkga_params.pr_minimum_distance); }} },
-        { "pr_type", AuxParam {true, [&] { set_param(brkga_params.pr_type); }} },
-        { "pr_selection", AuxParam {true, [&] { set_param(brkga_params.pr_selection); }} },
-        { "pr_distance_function_type", AuxParam {true, [&] { set_param(brkga_params.pr_distance_function_type); }} },
-        { "alpha_block_size", AuxParam {true, [&] { set_param(brkga_params.alpha_block_size); }} },
-        { "pr_percentage", AuxParam {true, [&] { set_param(brkga_params.pr_percentage); }} },
+        {"population_size",
+          AuxParam {true, [&]() { set_param(brkga_params.population_size); }} },
+        {"elite_percentage",
+         AuxParam {true, [&]() { set_param(brkga_params.elite_percentage); }} },
+        {"mutants_percentage",
+          AuxParam {true, [&]() { set_param(brkga_params.mutants_percentage); }} },
+        {"population_size",
+         AuxParam {true, [&] { set_param(brkga_params.population_size); }} },
+        {"elite_percentage",
+         AuxParam {true, [&] { set_param(brkga_params.elite_percentage); }} },
+        {"mutants_percentage",
+         AuxParam {true, [&] { set_param(brkga_params.mutants_percentage); }} },
+        {"num_elite_parents",
+         AuxParam {true, [&] { set_param(brkga_params.num_elite_parents); }} },
+        {"total_parents",
+         AuxParam {true, [&] { set_param(brkga_params.total_parents); }} },
+        {"bias_type",
+         AuxParam {true, [&] { set_param(brkga_params.bias_type); }} },
+        {"num_independent_populations",
+         AuxParam {true, [&] { set_param(brkga_params.num_independent_populations); }} },
+        {"pr_number_pairs",
+         AuxParam {true, [&] { set_param(brkga_params.pr_number_pairs); }} },
+        {"pr_minimum_distance",
+         AuxParam {true, [&] { set_param(brkga_params.pr_minimum_distance); }} },
+        {"pr_type",
+         AuxParam {true, [&] { set_param(brkga_params.pr_type); }} },
+        {"pr_selection",
+         AuxParam {true, [&] { set_param(brkga_params.pr_selection); }} },
+        {"pr_distance_function_type",
+         AuxParam {true, [&] { set_param(brkga_params.pr_distance_function_type); }} },
+        {"alpha_block_size",
+         AuxParam {true, [&] { set_param(brkga_params.alpha_block_size); }} },
+        {"pr_percentage",
+         AuxParam {true, [&] { set_param(brkga_params.pr_percentage); }} },
         // Optional.
-        { "num_exchange_individuals", AuxParam {false, [&] { set_param(brkga_params.num_exchange_individuals); }} },
-        { "shaking_type", AuxParam {false, [&] { set_param(brkga_params.shaking_type); }} },
-        { "shaking_intensity_lower_bound", AuxParam {false, [&] { set_param(brkga_params.shaking_intensity_lower_bound); }} },
-        { "shaking_intensity_upper_bound", AuxParam {false, [&] { set_param(brkga_params.shaking_intensity_upper_bound); }} },
-        { "maximum_running_time", AuxParam {false, [&] { set_param(control_params.maximum_running_time); }} },
-        { "exchange_interval", AuxParam {false, [&] { set_param(control_params.exchange_interval); }} },
-        { "shake_interval", AuxParam {false, [&] { set_param(control_params.shake_interval); }} },
-        { "ipr_interval", AuxParam {false, [&] { set_param(control_params.ipr_interval); }} },
-        { "reset_interval", AuxParam {false, [&] { set_param(control_params.reset_interval); }} },
-        { "stall_offset", AuxParam {false, [&] { set_param(control_params.stall_offset); }} }
+        {"num_exchange_individuals",
+         AuxParam {false, [&] { set_param(brkga_params.num_exchange_individuals); }} },
+        {"shaking_type",
+         AuxParam {false, [&] { set_param(brkga_params.shaking_type); }} },
+        {"shaking_intensity_lower_bound",
+         AuxParam {false, [&] { set_param(brkga_params.shaking_intensity_lower_bound); }} },
+        {"shaking_intensity_upper_bound",
+         AuxParam {false, [&] { set_param(brkga_params.shaking_intensity_upper_bound); }} },
+        {"maximum_running_time",
+         AuxParam {false, [&] { set_param(control_params.maximum_running_time); }} },
+        {"exchange_interval",
+         AuxParam {false, [&] { set_param(control_params.exchange_interval); }} },
+        {"shake_interval",
+         AuxParam {false, [&] { set_param(control_params.shake_interval); }} },
+        {"ipr_interval",
+         AuxParam {false, [&] { set_param(control_params.ipr_interval); }} },
+        {"reset_interval",
+         AuxParam {false, [&] { set_param(control_params.reset_interval); }} },
+        {"stall_offset",
+         AuxParam {false, [&] { set_param(control_params.stall_offset); }} }
     }};
 
     std::string line;
@@ -1264,7 +1303,7 @@ public:
 std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
     output
     << "\nbest_fitness: " << status.best_fitness
-    << "\ncurrent_iteration:" << status.current_iteration
+    << "\ncurrent_iteration: " << status.current_iteration
     << "\nlast_update_iteration: " << status.last_update_iteration
     << "\ncurrent_time: " << status.current_time
     << "\nlast_update_time: " << status.last_update_time
@@ -1329,6 +1368,9 @@ public:
 
     /// Copy constructor.
     Population(const Population& other) = default;
+
+    /// Destructor.
+    ~Population() __attribute__((noinline)) = default;
 
     /// Assignment operator.
     Population& operator=(const Population&) = default;
@@ -1626,8 +1668,8 @@ public:
         const bool evolutionary_mechanism_on = true
     );
 
-    /// Destructor
-    ~BRKGA_MP_IPR() = default;
+    /// Destructor.
+    ~BRKGA_MP_IPR() __attribute__((noinline)) = default;
     //@}
 
     /** \name Initialization methods */
@@ -2215,6 +2257,9 @@ protected:
      * several parts of the code. The other RNGs are used only during mating.
      */
     std::vector<std::mt19937> rng_per_thread;
+
+    /// Just a uniform distribution to generate integers.
+    std::uniform_int_distribution<unsigned> integer_distribution;
     //@}
 
     /** \name Algorithm data */
@@ -2264,7 +2309,10 @@ protected:
 
     /// Holds the start time for a call of the path relink procedure.
     std::chrono::system_clock::time_point pr_start_time;
+    //@}
 
+    /** \name Callbacks */
+    //@{
     /// Defines a custom stopping criteria supplied by the user.
     std::function<bool(const AlgorithmStatus&)> stopping_criteria;
 
@@ -2272,7 +2320,7 @@ protected:
      * It must take a reference to `AlgorithmStatus` and return `true`
      * if the algorithm should stop immediately.
      */
-    std::vector<std::function<bool(const AlgorithmStatus&)>> callbacks;
+    std::vector<std::function<bool(const AlgorithmStatus&)>> info_callbacks;
     //@}
 
 protected:
@@ -2383,7 +2431,7 @@ protected:
      * \param n The upper bound.
      * \param rng The random number generator to be used.
      */
-    inline uint_fast32_t randInt(const uint_fast32_t n, std::mt19937& rng);
+    inline unsigned randInt(const unsigned n, std::mt19937& rng);
     //@}
 };
 
@@ -2417,6 +2465,7 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         // Internal data.
         decoder(_decoder_reference),
         rng_per_thread(_max_threads),
+        integer_distribution(),
         previous(params.num_independent_populations, nullptr),
         current(params.num_independent_populations, nullptr),
         bias_function(),
@@ -2458,7 +2507,7 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         initialized(false),
         pr_start_time(),
         stopping_criteria(),
-        callbacks()
+        info_callbacks()
 {
     using std::range_error;
     std::stringstream ss;
@@ -3162,7 +3211,7 @@ void BRKGA_MP_IPR<Decoder>::setStoppingCriteria(
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::addNewSolutionObserver(
         const std::function<bool(const AlgorithmStatus&)>& func) {
-    callbacks.push_back(func);
+    info_callbacks.push_back(func);
 }
 
 //----------------------------------------------------------------------------//
@@ -3314,7 +3363,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
 
             status.stalled_iterations = 0;
 
-            for(auto& callback : callbacks)
+            for(auto& callback : info_callbacks)
                 run &= callback(status);
         }
 
@@ -3430,7 +3479,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
 
                         status.stalled_iterations = 0;
 
-                        for(auto& callback : callbacks)
+                        for(auto& callback : info_callbacks)
                             run &= callback(status);
                     }
                     break;
@@ -4151,34 +4200,21 @@ template <class Decoder>
 inline double BRKGA_MP_IPR<Decoder>::rand01(std::mt19937& rng) {
     // **NOTE:** instead to use std::generate_canonical<> (which can be
     // a little bit slow), we may use
-    //    rng() * (1.0 / std::numeric_limits<std::mt19937::result_type>::max());
+    // rng() * (1.0 / std::numeric_limits<std::mt19937::result_type>::max());
     // However, this approach has some precision problems on some platforms
     // (notably Linux).
-    return std::generate_canonical<double, std::numeric_limits<double>::digits>
-          (rng);
+    using std;
+    return generate_canonical<double, numeric_limits<double>::digits>(rng);
 }
 
 //----------------------------------------------------------------------------//
 
 template <class Decoder>
-inline uint_fast32_t BRKGA_MP_IPR<Decoder>::randInt(const uint_fast32_t n,
-                                                    std::mt19937& rng) {
-    // This code was adapted from Magnus Jonsson (magnus@smartelectronix.com)
-    // Find which bits are used in n. Note that this is specific
-    // for uint_fast32_t types.
-    uint_fast32_t used = n;
-    used |= used >> 1;
-    used |= used >> 2;
-    used |= used >> 4;
-    used |= used >> 8;
-    used |= used >> 16;
-
-    // Draw numbers until one is found in [0, n].
-    uint_fast32_t i;
-    do {
-        i = rng() & used;  // Toss unused bits to shorten search.
-    } while(i > n);
-    return i;
+inline unsigned BRKGA_MP_IPR<Decoder>::randInt(const unsigned n,
+                                               std::mt19937& rng) {
+    return integer_distribution(
+        rng, typename decltype(integer_distribution)::param_type (0, n)
+    );
 }
 
 } // end namespace BRKGA

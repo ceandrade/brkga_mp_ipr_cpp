@@ -5,7 +5,7 @@
 # All Rights Reserved.
 #
 # Created on : Mar 05, 2019 by ceandrade
-# Last update: Sep 07, 2023 by ceandrade
+# Last update: Sep 14, 2023 by ceandrade
 #
 # This code is released under BRKGA-MP-IPR License:
 # https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -23,7 +23,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 
-# OPT = opt
+OPT = opt
 USER_FLAGS += -std=c++20
 
 # Compiler flags for debugging
@@ -49,6 +49,9 @@ USER_FLAGS += -Wpacked
 #USER_FLAGS += -Wconversion
 #USER_FLAGS += -Wunsafe-loop-optimizations # doesn't work very well with C++11 foreach
 
+# For inlining debugging
+# USER_FLAGS += -fopt-info-inline
+
 # Flags for covering tests.
 #USER_FLAGS += -fPIC -fprofile-arcs -ftest-coverage
 
@@ -72,10 +75,6 @@ test_params: clean $(COMMON_OBJS)
 test_custom_bias_function: clean $(COMMON_OBJS)
 	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_custom_bias_function.cpp -o test-custom_bias_function
 
-test_run: clean $(COMMON_OBJS)
-	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_run.cpp -o $@
-	./$@ 100 2700001
-
 test_brkga_mp_ipr: clean $(COMMON_OBJS)
 	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_brkga_mp_ipr.cpp -o test-brkga
 	./test-brkga 5 1 2700001
@@ -87,6 +86,14 @@ test_ipr: clean $(COMMON_OBJS)
 test_readfile: clean $(COMMON_OBJS)
 	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_readfile.cpp -o test-read
 	./test-read 100 brkga_mp_ipr.conf 2700001
+
+test_run: clean $(COMMON_OBJS)
+	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) $@.cpp -o $@
+	./$@ 100 2700001
+
+test_speed: clean $(COMMON_OBJS)
+	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_speed.cpp -o $@
+	./$@ 100 2700001
 
 check:
 	cppcheck --enable=all --suppress=missingIncludeSystem ../brkga_mp_ipr/brkga_mp_ipr.hpp

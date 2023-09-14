@@ -22,20 +22,20 @@ met:
    use of this software (as a whole package or any parts of it) and/or the data
    used to test it must cite the following article explicitly:
 
-> C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
-> Biased Random-key Genetic Algorithm with Implicit Path Relinking. _European
-> Journal of Operational Research_, volume 289, number 1, pages 17–30, 2021.
-> DOI [10.1016/j.ejor.2019.11.037](https://doi.org/10.1016/j.ejor.2019.11.037).
+   > C.E. Andrade. R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
+   > Biased Random-key Genetic Algorithm with Implicit Path Relinking. _European
+   > Journal of Operational Research_, volume 289, number 1, pages 17–30, 2021.
+   > DOI [10.1016/j.ejor.2019.11.037](https://doi.org/10.1016/j.ejor.2019.11.037).
 
 5. All publications, softwares, or any other materials mentioning features or
    use of this software (as a whole package or any parts of it) on
    multi-objective mode and/or the data used to test it must also cite the
    following article explicitly:
 
-> C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
-> Assignment Problem: a Multi-objective Optimization Approach.
-> _IEEE Transactions on Evolutionary Computation_, to appear, 2022.
-> DOI: [10.1109/TEVC.2022.3185927](https://doi.org/10.1109/TEVC.2022.3185927).
+   > C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
+   > Assignment Problem: a Multi-objective Optimization Approach.
+   > _IEEE Transactions on Evolutionary Computation_, to appear, 2022.
+   > DOI: [10.1109/TEVC.2022.3185927](https://doi.org/10.1109/TEVC.2022.3185927).
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -47,7 +47,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 
 The MIT License (MIT)
 ========================
@@ -72,4 +71,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
