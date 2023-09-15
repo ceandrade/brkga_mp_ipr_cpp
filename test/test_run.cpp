@@ -79,7 +79,6 @@ int main(int argc, char* argv[]) {
             decoder, BRKGA::Sense::MAXIMIZE, seed, chr_size, brkga_params,
             evolutionary_mechanism_on, max_threads
         );
-        algorithm.initialize();
 
         // A random number generator.
         std::mt19937 rng(2700001);

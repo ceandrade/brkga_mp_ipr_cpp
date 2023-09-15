@@ -74,9 +74,10 @@
 
 /** This includes helpers to read and write enums.
  *
- * \note Due to some weird scope resolution within clang compilers,
- *       we must imbue the enum facilities into namespace BRKGA.
- *       This does not happen with g++. We have not test to MSVC.
+ * \note
+ *     Due to some weird scope resolution within clang compilers,
+ *     we must imbue the enum facilities into namespace BRKGA.
+ *     This does not happen with g++. We have not test to MSVC.
  */
 namespace BRKGA {
 #include "third_part/enum_io.hpp"
@@ -360,9 +361,10 @@ enum class ShakingType {
  * saving time in coding custom solutions. Please, see third_part/enum_io.hpp
  * for complete reference and examples.
  *
-  * \note: due to some weird scope resolution within clang compilers,
- *       we must imbue the enum facilities into namespace BRKGA.
- *       This does not happen with g++. We have not test to MSVC.
+  * \note
+  *     Due to some weird scope resolution within clang compilers,
+  *     we must imbue the enum facilities into namespace BRKGA.
+  *     This does not happen with g++. We have not test to MSVC.
  *
  * \warning The specialization must be inline-d to avoid multiple definitions
  * issues across different modules. However, this can cause "inline" overflow,
@@ -508,7 +510,7 @@ operator<<(std::ostream& os, const std::chrono::duration<double>& dur) {
  * \brief Distance Function Base.
  *
  * This class is a interface for functors that compute the distance between
- * two vectors of double numbers.
+ * two chromosomes.
  */
 class DistanceFunctionBase {
 public:
@@ -520,30 +522,31 @@ public:
 
     /**
      * \brief Computes the distance between two vectors.
-     * \param v1 first vector
-     * \param v2 second vector
+     * \param v1 first chromosome.
+     * \param v2 second chromosome.
      */
-    virtual double distance(const std::vector<double>& v1,
-                            const std::vector<double>& v2) = 0;
+    virtual double distance(const Chromosome& v1,
+                            const Chromosome& v2) = 0;
 
     /**
      * \brief Returns true if the changing of `key1` by `key2` affects
      *        the solution.
-     * \param key1 the first key
-     * \param key2 the second key
+     * \param key1 the first key.
+     * \param key2 the second key.
      */
-    virtual bool affectSolution(const double key1, const double key2) = 0;
+    virtual bool affectSolution(const Chromosome::value_type key1,
+                                const Chromosome::value_type key2) = 0;
 
     /**
      * \brief Returns true if the changing of the blocks of keys `v1` by the
      *        blocks of keys `v2` affects the solution.
-     * \param v1_begin begin of the first blocks of keys
-     * \param v2_begin begin of the first blocks of keys
+     * \param v1_begin begin of the first blocks of keys.
+     * \param v2_begin begin of the first blocks of keys.
      * \param block_size number of keys to be considered.
      */
     virtual bool affectSolution(
-            std::vector<double>::const_iterator v1_begin,
-            std::vector<double>::const_iterator v2_begin,
+            Chromosome::const_iterator v1_begin,
+            Chromosome::const_iterator v2_begin,
             const std::size_t block_size) = 0;
 };
 
@@ -572,19 +575,19 @@ public:
      * \param vector1 first vector
      * \param vector2 second vector
      */
-    virtual double distance(const std::vector<double>& vector1,
-                            const std::vector<double>& vector2) override {
+    virtual double distance(const Chromosome& vector1,
+                            const Chromosome& vector2) override {
         if(vector1.size() != vector2.size())
             throw std::runtime_error("The size of the vector must "
                                      "be the same!");
 
-        int dist = 0;
+        unsigned dist = 0;
         for(std::size_t i = 0; i < vector1.size(); ++i) {
             if((vector1[i] < threshold) != (vector2[i] < threshold))
                 ++dist;
         }
 
-        return dist;
+        return double(dist);
     }
 
     /**
@@ -593,7 +596,8 @@ public:
      * \param key1 the first key
      * \param key2 the second key
      */
-    virtual bool affectSolution(const double key1, const double key2) override {
+    virtual bool affectSolution(const Chromosome::value_type key1,
+                                const Chromosome::value_type key2) override {
         return (key1 < threshold ? 0 : 1) != (key2 < threshold ? 0 : 1);
     }
 
@@ -604,10 +608,9 @@ public:
      * \param v2_begin begin of the first blocks of keys
      * \param block_size number of keys to be considered.
      */
-    virtual bool affectSolution(
-            std::vector<double>::const_iterator v1_begin,
-            std::vector<double>::const_iterator v2_begin,
-            const std::size_t block_size) override {
+    virtual bool affectSolution(Chromosome::const_iterator v1_begin,
+                                Chromosome::const_iterator v2_begin,
+                                const std::size_t block_size) override {
         for(std::size_t i = 0; i < block_size;
             ++i, ++v1_begin, ++v2_begin) {
             if((*v1_begin < threshold) != (*v2_begin < threshold))
@@ -642,8 +645,8 @@ public:
      * \param vector1 first vector
      * \param vector2 second vector
      */
-    virtual double distance(const std::vector<double>& vector1,
-                            const std::vector<double>& vector2) override {
+    virtual double distance(const Chromosome& vector1,
+                            const Chromosome& vector2) override {
         if(vector1.size() != vector2.size())
             throw std::runtime_error("The size of the vector must "
                                      "be the same!");
@@ -686,7 +689,8 @@ public:
      * \param key1 the first key
      * \param key2 the second key
      */
-    virtual bool affectSolution(const double key1, const double key2) override {
+    virtual bool affectSolution(const Chromosome::value_type key1,
+                                const Chromosome::value_type key2) override {
         return fabs(key1 - key2) > 1e-6;
     }
 
@@ -700,10 +704,9 @@ public:
      *
      * \todo (ceandrade): implement this properly.
      */
-    virtual bool affectSolution(
-            std::vector<double>::const_iterator v1_begin,
-            std::vector<double>::const_iterator v2_begin,
-            const std::size_t block_size) override {
+    virtual bool affectSolution(Chromosome::const_iterator v1_begin,
+                                Chromosome::const_iterator v2_begin,
+                                const std::size_t block_size) override {
         return block_size == 1?
               affectSolution(*v1_begin, *v2_begin) : true;
     }
@@ -1454,12 +1457,10 @@ public:
      * \param sense Optimization sense.
      */
     void sortFitness(const Sense sense) {
-        using local_type = decltype(fitness)::value_type;
         if(sense == Sense::MAXIMIZE)
-            std::sort(fitness.begin(), fitness.end(),
-                std::greater<local_type>());
+            std::sort(fitness.begin(), fitness.end(), std::greater<>());
         else
-            std::sort(fitness.begin(), fitness.end(), std::less<local_type>());
+            std::sort(fitness.begin(), fitness.end(), std::less<>());
     }
 
     /**
@@ -1501,7 +1502,7 @@ public:
  *
  * This code also implements the island model, where multiple populations
  * can be evolved in parallel, and migration between individuals between
- * the islands are performed using exchangeElite() method.
+ * the islands are performed using #exchangeElite() method.
  *
  * This code requires the template argument `Decoder` be a class or functor
  * object capable to map a chromosome to a solution for the specific problem,
@@ -1511,8 +1512,8 @@ public:
  *      double decode(Chromosome& chromosome, bool rewrite);
  * \endcode
  *
- * where #Chromosome is a `vector<double>` representing a solution and
- * `rewrite` is a boolean indicating that if the decode should rewrite the
+ * where #Chromosome is a `vector<double>` (in general) representing a solution
+ * and `rewrite` is a boolean indicating that if the decode should rewrite the
  * chromosome in case it implements local searches and modifies the initial
  * solution decoded from the chromosome. Since this API has the capability of
  * decoding several chromosomes in parallel, the user must guarantee that
@@ -1524,7 +1525,7 @@ public:
  * ------------------------
  *
  * This API also implements the Implicit Path Relinking leveraging the decoder
- * capabilities. To perform the path relinking, the user must call pathRelink()
+ * capabilities. To perform the path relinking, the user must call #pathRelink()
  * method, indicating the type of path relinking (direct or permutation-based,
  * see #PathRelinking::Type), the selection criteria (best solution or random
  * elite, see #PathRelinking::Selection), the distance function
@@ -1584,26 +1585,28 @@ public:
  *     parameters. Please, see BRKGA_MP_IPR::BRKGA_MP_IPR for parameter details;
  *
  *      -# (Optional) The user provides the warm start solutions using
- *         setInitialPopulation();
+ *         #setInitialPopulation();
  *
- *  -# The user must call the method initialize() to start the data structures
+ *  -# The user must call the method #initialize() to start the data structures
  *     and perform the decoding of the very first populations;
  *
  *  -# Main evolutionary loop:
  *
- *      -# On each iteration, the method evolve() should be called to perform
+ *      -# On each iteration, the method #evolve() should be called to perform
  *         the evolutionary step (or multi-steps if desired);
  *
- *      -# The user can check the current best chromosome (getBestChromosome())
- *         and its fitness (getBestFitness()) and perform checking and logging
+ *      -# The user can check the current best chromosome (#getBestChromosome())
+ *         and its fitness (#getBestFitness()) and perform checking and logging
  *         operations;
  *
+ *      -# (Optional) The user can perform the path relinking (#pathRelink());
+
  *      -# (Optional) The user can perform the individual migration between
- *         populations (exchangeElite());
+ *         populations (#exchangeElite());
  *
- *      -# (Optional) The user can perform the path relinking (pathRelink());
+ *      -# (Optional) The use can perturb the chromosomes calling #shake();
  *
- *      -# (Optional) The user can reset and start the algorithm over (reset());
+ *      -# (Optional) The user can reset and start the algorithm over (#reset());
  *
  * For a comprehensive and detailed usage, please see the examples that follow
  * this API.
@@ -1716,7 +1719,7 @@ public:
 
     /** \brief Sets a custom shaking procedure.
      *
-     * For more details, see \ref BrkgaParams::custom_shaking.
+     * For more details, see BrkgaParams::custom_shaking.
      *
      * \param func a callback function. For example, the code below implements
      *        the standard mutation:
@@ -1769,7 +1772,7 @@ public:
     );
 
     /**
-     * \brief Set a custom stopping criteria supplied by the user.
+     * \brief Sets a custom stopping criteria supplied by the user.
 
      * The algorithm always test for _the maximum running time_ and for
      * _the maximum stalled iterations/generations_ given by `ControlParams`
@@ -1811,23 +1814,31 @@ public:
     /** \brief Adds a callback function called when the best solution is
      * improved.
      *
-     * It must take a reference to `AlgorithmStatus` and return `true`
+     * It must take a reference to AlgorithmStatus and return `true`
      * if the algorithm should stop immediately. You may have as much observers
      * you want. They will be called in the order they are added.
      *
      * \param func a callback function such as
      * \code{.cpp}
      * bool check_solution(const AlgorithmStatus& status) {
-     *     cout << "\n" << status.best_fitness;
-     *     return false; // Don't stop the optimization.
+     *     std::cout << "\n" << status.best_fitness;
+     *     return true; // Stop the optimization.
      * }
+     * //...
+     * algorithm.addNewSolutionObserver(check_solution);
      * \endcode
+     * \n
      * or a lambda function such as
+     * \n
      * \code{.cpp}
      * algorithm.addNewSolutionObserver(
      *     [](const AlgorithmStatus& status) {
-     *         cout << "\n" << status.best_fitness;
-     *         return true; // Stop the optimization.
+     *         std::cout
+     *         << "> Iter: " << status.current_iteration
+     *         << " | solution: " << status.best_fitness
+     *         << " | time: " << status.current_time
+     *         << std::endl;
+     *         return false; // Dont' stop the optimization.
      *      }
      * );
      * \endcode
@@ -1835,34 +1846,6 @@ public:
     void addNewSolutionObserver(
         const std::function<bool(const AlgorithmStatus&)>& func
     );
-
-    /**
-     * \brief Initializes the populations and others parameters of the
-     *        algorithm.
-     *
-     * If a initial population is supplied, this method completes the remain
-     * individuals, if they do not exist. This method also performs the initial
-     * decoding of the chromosomes. Therefore, depending on the decoder
-     * implementation, this can take a while, and the user may want to time
-     * such procedure in his/her experiments.
-     *
-     * \warning
-     *      This method must be call before any evolutionary or population
-     *      handling method.
-     *
-     * \warning
-     *     As it is in #evolve(), the decoding is done in parallel using
-     *     threads, and the user **must guarantee that the decoder is
-     *     THREAD-SAFE.** If such property cannot be held, we suggest using
-     *     a single thread for optimization.
-     *
-     * \param reset when set true, it ignores all solutions provided
-     *        by `setInitialPopulation()`, and builds a completely random
-     *        population. This parameter is set to true during reset phase.
-     *        When false, `initialize()` considers all solutions given by
-     *        `setInitialPopulation()`.
-     */
-    void initialize(bool reset = false);
     //@}
 
     /** \name Full algorithm runner */
@@ -1913,9 +1896,9 @@ public:
      * }
      * \endcode
      *
-     * Therefore, note that the order that `pathRelink()`, `exchangeElite()`,
-     * `shake()`, and `reset()` are called, depends on the thresholds defined
-     * in `ControlParams`.
+     * Therefore, note that the order that #pathRelink(), #exchangeElite(),
+     * #shake(), and #reset() are called, depends on the thresholds defined
+     * in ControlParams.
      *
      * For path relinking, the block size is computed by
      * \f$\lceil \alpha \times \sqrt{p} \rceil\f$
@@ -1923,11 +1906,11 @@ public:
      * \f$p\f$ is BrkgaParams#population_size.
      * If the size is larger than the chromosome size, the size is set to
      * half of the chromosome size. For more details on that, refer to
-     * `pathRelink()`.
+     * #pathRelink().
      *
      * \note
      *      The algorithm always test against maximum running time and for the
-     *      maximum stalled iterations/generations given by `ControlParams`
+     *      maximum stalled iterations/generations given by ControlParams
      *      indenpendently of the stopping criteria function supplied by
      *      the user. This is especially important when activating the implicit
      *      path reliking which is **very timing consuming**.
@@ -1945,8 +1928,6 @@ public:
      * \param logger a output stream to log some information.
      *
      * \returns The last algorithm status before the stopping criteria are met.
-     *
-     * \throw std::runtime_error if the algorithm is not initialized.
      */
     AlgorithmStatus run(
         const ControlParams& control_params,
@@ -1967,7 +1948,6 @@ public:
      *
      * \param generations number of generations to be evolved. Must be larger
      *        than zero.
-     * \throw std::runtime_error if the algorithm is not initialized.
      * \throw std::range_error if the number of generations is zero.
      */
     void evolve(unsigned generations = 1);
@@ -2015,7 +1995,8 @@ public:
      * decode each chromosome one at a time, the method builds a list of
      * candidates, altering the alleles/keys according to the guide solution,
      * and then decode all candidates in parallel. Note that
-     * `O(chromosome_size^2 / block_size)` additional memory is necessary to
+     * `O(chromosome_size^2 / block_size)`
+     * additional memory is necessary to
      * build the candidates, which can be costly if the `chromosome_size` is
      * very large.
      *
@@ -2113,9 +2094,8 @@ public:
     /**
      * \brief Resets all populations with brand new keys.
      *
-     * All warm-start solutions provided setInitialPopulation() are discarded.
-     * You may use injectChromosome() to insert those solutions again.
-     * \throw std::runtime_error if the algorithm is not initialized.
+     * All warm-start solutions provided #setInitialPopulation() are discarded.
+     * You may use #injectChromosome() to insert those solutions again.
      */
     void reset();
 
@@ -2170,7 +2150,7 @@ public:
     /// all populations.
     const Chromosome& getBestChromosome() const;
 
-    /// Return the best fitness found so far among all populations.
+    /// Returns the best fitness found so far among all populations.
     fitness_t getBestFitness() const;
 
     /**
@@ -2279,9 +2259,10 @@ protected:
     double total_bias_weight;
 
     #ifdef MATING_SEED_ONLY
-    /// During parallel mating, we need to be sure that the same random values
-    /// are generated in each mating, despite the number of threads available.
-    /// Therefore, on each iteration, we generate a set of seeds for each RNG.
+    /** During parallel mating, we need to be sure that the same random values
+     * are generated in each mating, despite the number of threads available.
+     * Therefore, on each iteration, we generate a set of seeds for each RNG.
+     */
     std::vector<std::mt19937::result_type> mating_seeds;
     #endif
 
@@ -2301,7 +2282,7 @@ protected:
      */
     std::vector<std::vector<double>> offspring_per_thread;
 
-    /// Indicates if a initial population is set.
+    /// Indicates whether a initial population is set.
     bool initial_population;
 
     /// Indicates if the algorithm was proper initialized.
@@ -2317,7 +2298,7 @@ protected:
     std::function<bool(const AlgorithmStatus&)> stopping_criteria;
 
     /** \brief Callback functions called when the best solution is improved.
-     * It must take a reference to `AlgorithmStatus` and return `true`
+     * It must take a reference to AlgorithmStatus and return `true`
      * if the algorithm should stop immediately.
      */
     std::vector<std::function<bool(const AlgorithmStatus&)>> info_callbacks;
@@ -2326,6 +2307,33 @@ protected:
 protected:
     /** \name Core local methods */
     //@{
+    /**
+     * \brief Initializes the populations and others parameters of the
+     *        algorithm.
+     *
+     * If a initial population is supplied, this method completes the remain
+     * individuals, if they do not exist. This method also performs the initial
+     * decoding of the chromosomes. Therefore, depending on the decoder
+     * implementation, this can take a while, and the user may want to time
+     * such procedure in his/her experiments.
+     *
+     * \warning
+     *      This method must be call before any population handling method.
+     *
+     * \warning
+     *     As it is in #evolve(), the decoding is done in parallel using
+     *     threads, and the user **must guarantee that the decoder is
+     *     THREAD-SAFE.** If such property cannot be held, we suggest using
+     *     a single thread for optimization.
+     *
+     * \param reset when set true, it ignores all solutions provided
+     *        by #setInitialPopulation(), and builds a completely random
+     *        population. This parameter is set to true during reset phase.
+     *        When false, #initialize() considers all solutions given by
+     *        #setInitialPopulation().
+     */
+    void initialize(bool reset = false);
+
     /**
      * \brief Evolves the current population to the next.
      *
@@ -2351,15 +2359,14 @@ protected:
      * very large.
      *
      * \param chr1 first chromosome.
-     * \param chr2 second chromosome
+     * \param chr2 second chromosome.
      * \param dist distance functor (distance between two chromosomes).
      * \param[out] best_found best solution found in the search.
      * \param block_size number of alleles to be exchanged at once in each
      *        iteration. If one, the traditional path relinking is performed.
      * \param max_time abort path relinking when reach `max_time`.
      *        If `max_time <= 0`, no limit is imposed.
-     * \param percentage define the size, in percentage, of the path to
-     *        build. Default: 1.0 (100%).
+     * \param percentage define the size, in percentage, of the path to build.
      */
     void directPathRelink(
         const Chromosome& chr1, const Chromosome& chr2,
@@ -2415,8 +2422,8 @@ protected:
      * \brief Returns `true` if `a1` is better than `a2`.
      *
      * This method depends on the optimization sense. When the optimization
-     * sense is `Sense::MINIMIZE`, `a1 < a2` will return true, otherwise false.
-     * The opposite happens for `Sense::MAXIMIZE`.
+     * sense is Sense::MINIMIZE, `a1 < a2` will return true, otherwise false.
+     * The opposite happens for Sense::MAXIMIZE.
      */
     inline bool betterThan(const fitness_t& a1, const fitness_t& a2) const;
 
@@ -2578,45 +2585,38 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         throw range_error(str_error);
 
     // Chooses the bias function.
+    std::function<double(unsigned)> local_bias_function;
     switch(params.bias_type) {
     case BiasFunctionType::LOGINVERSE:
         // Same as log(r + 1), but avoids precision loss.
-        setBiasCustomFunction(
-            [](const unsigned r) { return 1.0 / log1p(r); }
-        );
+        local_bias_function = [](const unsigned r) { return 1.0 / log1p(r); };
         break;
 
     case BiasFunctionType::LINEAR:
-        setBiasCustomFunction(
-            [](const unsigned r) { return 1.0 / r; }
-        );
+        local_bias_function = [](const unsigned r) { return 1.0 / r; };
         break;
 
     case BiasFunctionType::QUADRATIC:
-        setBiasCustomFunction(
-            [](const unsigned r) { return pow(r, -2); }
-        );
+        local_bias_function = [](const unsigned r) { return pow(r, -2); };
         break;
 
     case BiasFunctionType::CUBIC:
-        setBiasCustomFunction(
-            [](const unsigned r) { return pow(r, -3); }
-        );
+        local_bias_function = [](const unsigned r) { return pow(r, -3); };
         break;
 
     case BiasFunctionType::EXPONENTIAL:
-        setBiasCustomFunction(
-            [](const unsigned r) { return exp(-1.0 * r); }
-        );
+        local_bias_function = [](const unsigned r) { return exp(-1.0 * r); };
         break;
 
     case BiasFunctionType::CONSTANT:
     default:
-        setBiasCustomFunction(
-            [&](const unsigned) { return 1.0 / params.total_parents; }
-        );
+        local_bias_function = [&](const unsigned) { return 1.0 / params.total_parents; };
         break;
     }
+
+    // We call setBiasCustomFunction() instead to set the bias function directly
+    // because this method computes the `total_bias_weight`.
+    setBiasCustomFunction(local_bias_function);
 
     // We could initialize each RNG with the same seed. However, this can skew
     // the mating process slightly because we would have the same choices for
@@ -2661,8 +2661,9 @@ template <class Decoder>
 fitness_t BRKGA_MP_IPR<Decoder>::getBestFitness() const {
     fitness_t best = current[0]->fitness[0].first;
     for(unsigned i = 1; i < params.num_independent_populations; ++i) {
-        if(betterThan(current[i]->fitness[0].first, best))
-            best = current[i]->fitness[0].first;
+        const auto& curr_fitness = current[i]->fitness[0].first;
+        if(betterThan(curr_fitness, best))
+            best = curr_fitness;
     }
     return best;
 }
@@ -2791,13 +2792,6 @@ void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
 
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::reset() {
-    if(!initialized) {
-        std::stringstream ss;
-        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "The algorithm hasn't been initialized. "
-              "Don't forget to call initialize() method";
-        throw std::runtime_error(ss.str());
-    }
     initialize(true);
 }
 
@@ -2805,20 +2799,15 @@ void BRKGA_MP_IPR<Decoder>::reset() {
 
 template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::evolve(unsigned generations) {
-    if(!initialized) {
-        std::stringstream ss;
-        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "The algorithm hasn't been initialized. "
-              "Don't forget to call initialize() method";
-        throw std::runtime_error(ss.str());
-    }
-
     if(generations == 0) {
         std::stringstream ss;
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
            << "Cannot evolve for 0 generations.";
         throw std::range_error(ss.str());
     }
+
+    if(!initialized)
+        initialize();
 
     for(unsigned i = 0; i < generations; ++i) {
         for(unsigned j = 0; j < params.num_independent_populations; ++j) {
@@ -2836,7 +2825,7 @@ void BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned num_immigrants) {
     if(params.num_independent_populations == 1)
         return;
 
-    unsigned immigrants_threshold =
+    const unsigned immigrants_threshold =
         ceil(params.population_size / (params.num_independent_populations - 1));
 
     if(num_immigrants < 1 || num_immigrants >= immigrants_threshold) {
@@ -2847,6 +2836,9 @@ void BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned num_immigrants) {
               "num_independent_populations (" << immigrants_threshold << ")";
         throw std::range_error(ss.str());
     }
+
+    if(!initialized)
+        initialize();
 
     #ifdef _OPENMP
         #pragma omp parallel for num_threads(max_threads)
@@ -2863,7 +2855,7 @@ void BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned num_immigrants) {
             for(unsigned m = 0; m < num_immigrants; ++m) {
                 // Copy the m-th best of Population j into the 'dest'-th
                 // position of Population i
-                const auto best_of_j = current[j]->getChromosome(m);
+                const auto& best_of_j = current[j]->getChromosome(m);
                 std::copy(best_of_j.begin(), best_of_j.end(),
                           current[i]->getChromosome(dest).begin());
                 current[i]->fitness[dest].first = current[j]->fitness[m].first;
@@ -2977,13 +2969,8 @@ template <class Decoder>
 void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
                                   ShakingType shaking_type,
                                   unsigned population_index) {
-    if(!initialized) {
-        std::stringstream ss;
-        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "The algorithm hasn't been initialized. "
-              "Don't forget to call initialize() method";
-        throw std::runtime_error(ss.str());
-    }
+    if(!initialized)
+        initialize();
 
     auto& rng = rng_per_thread[0];
 
@@ -3221,13 +3208,8 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
         const ControlParams& control_params,
         std::ostream* logger) {
 
-    if(!initialized) {
-        std::stringstream ss;
-        ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
-           << "The algorithm hasn't been initialized. "
-              "Don't forget to call initialize() method";
-        throw std::runtime_error(ss.str());
-    }
+    if(!initialized)
+        initialize();
 
     if(control_params.ipr_interval > 0 && !params.pr_distance_function) {
         std::stringstream ss;
@@ -3625,8 +3607,6 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
 
     using PR = PathRelinking::PathRelinkingResult;
 
-    auto& rng = rng_per_thread[0];
-
     if(percentage < 1e-6 || percentage > 1.0) {
         std::stringstream ss;
         ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
@@ -3635,6 +3615,10 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         throw std::range_error(ss.str());
     }
 
+    if(!initialized)
+        initialize();
+
+    auto& rng = rng_per_thread[0];
     Chromosome initial_solution(chromosome_size);
     Chromosome guiding_solution(chromosome_size);
 
@@ -4203,7 +4187,7 @@ inline double BRKGA_MP_IPR<Decoder>::rand01(std::mt19937& rng) {
     // rng() * (1.0 / std::numeric_limits<std::mt19937::result_type>::max());
     // However, this approach has some precision problems on some platforms
     // (notably Linux).
-    using std;
+    using namespace std;
     return generate_canonical<double, numeric_limits<double>::digits>(rng);
 }
 
