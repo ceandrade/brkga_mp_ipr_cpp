@@ -23,8 +23,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 
-# OPT = opt
-USER_FLAGS += -std=c++20
+OPT = opt
+USER_FLAGS += -std=c++20 -fopenmp
 
 # Compiler flags for debugging
 ifeq ($(OPT), opt)
@@ -56,7 +56,7 @@ USER_FLAGS += -Wpacked
 #USER_FLAGS += -fPIC -fprofile-arcs -ftest-coverage
 
 CXX = g++
-# CXX = clang++ -fopenmp
+# CXX = clang++
 
 COMMON_OBJS = decoders.o
 
@@ -92,8 +92,8 @@ test_run: clean $(COMMON_OBJS)
 	./$@ 100 2700001
 
 test_speed: clean $(COMMON_OBJS)
-	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_speed.cpp -o $@
-	./$@ 100 2700001
+	# $(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_speed.cpp -o test_new_version
+	$(CXX) $(USER_FLAGS) -Ibrkga_mp_ipr_old $(COMMON_OBJS) -DOLD_VERSION test_speed.cpp -o test_old_version
 
 check:
 	cppcheck --enable=all --suppress=missingIncludeSystem ../brkga_mp_ipr/brkga_mp_ipr.hpp

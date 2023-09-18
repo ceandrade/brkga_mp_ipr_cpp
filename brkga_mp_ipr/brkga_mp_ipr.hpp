@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 14, 2023 by ceandrade.
+ * Last update: Sep 15, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -1342,8 +1342,8 @@ class Population {
 public:
     /** \name Data members */
     //@{
-    /// Population as vectors of probabilities.
-    std::vector<Chromosome> population;
+    /// Chromosomes as vectors of probabilities.
+    std::vector<Chromosome> chromosomes;
 
     /// Fitness of each chromosome.
     std::vector<std::pair<fitness_t, unsigned>> fitness;
@@ -1359,7 +1359,7 @@ public:
      * \throw std::range_error if population size or chromosome size is zero.
      */
     Population(const unsigned chr_size, const unsigned pop_size):
-        population(pop_size, Chromosome(chr_size, 0.0)),
+        chromosomes(pop_size, Chromosome(chr_size, 0.0)),
         fitness(pop_size)
     {
         if(pop_size == 0)
@@ -1383,12 +1383,12 @@ public:
     //@{
     /// Returns the size of each chromosome.
     unsigned getChromosomeSize() const {
-        return population[0].size();
+        return chromosomes[0].size();
     }
 
     /// Returns the size of the population.
     unsigned getPopulationSize() const {
-        return population.size();
+        return chromosomes.size();
     };
 
     /**
@@ -1398,7 +1398,7 @@ public:
      * \returns a copy of the allele value.
      */
     double operator()(const unsigned chromosome, const unsigned allele) const {
-        return population[chromosome][allele];
+        return chromosomes[chromosome][allele];
     }
 
     /**
@@ -1410,7 +1410,7 @@ public:
      * \returns a reference of the allele value.
      */
     double& operator()(const unsigned chromosome, const unsigned allele) {
-        return population[chromosome][allele];
+        return chromosomes[chromosome][allele];
     }
 
     /**
@@ -1419,7 +1419,7 @@ public:
      * \returns a reference to chromosome.
      */
     Chromosome& operator()(unsigned chromosome) {
-        return population[chromosome];
+        return chromosomes[chromosome];
     }
     //@}
 
@@ -1441,12 +1441,12 @@ public:
 
     /// Returns a reference to the i-th best chromosome.
     Chromosome& getChromosome(unsigned i) {
-        return population[fitness[i].second];
+        return chromosomes[fitness[i].second];
     }
 
     /// Returns a const reference to the i-th best chromosome.
     const Chromosome& getChromosome(const unsigned i) const {
-        return population[fitness[i].second];
+        return chromosomes[fitness[i].second];
     }
     //@}
 
@@ -2754,7 +2754,7 @@ void BRKGA_MP_IPR<Decoder>::injectChromosome(const Chromosome& chromosome,
     }
 
     auto& pop = current[population_index];
-    auto& local_chr = pop->population[pop->fitness[position].second];
+    auto& local_chr = pop->chromosomes[pop->fitness[position].second];
     local_chr = chromosome;
 
     pop->setFitness(position, decoder.decode(local_chr, true));
@@ -2784,8 +2784,8 @@ void BRKGA_MP_IPR<Decoder>::setBiasCustomFunction(
         params.bias_type = BiasFunctionType::CUSTOM;
 
     bias_function = func;
-    total_bias_weight = std::accumulate(bias_values.begin(),
-                                        bias_values.end(), 0.0);
+    total_bias_weight =
+        std::accumulate(bias_values.begin(), bias_values.end(), 0.0);
 }
 
 //----------------------------------------------------------------------------//
@@ -2811,8 +2811,9 @@ void BRKGA_MP_IPR<Decoder>::evolve(unsigned generations) {
 
     for(unsigned i = 0; i < generations; ++i) {
         for(unsigned j = 0; j < params.num_independent_populations; ++j) {
-            // First evolve the population (current, next).
+            // Evolve the current population to a new one into `previuos` and...
             evolution(*current[j], *previous[j]);
+            //... swap places.
             std::swap(current[j], previous[j]);
         }
     }
@@ -2879,16 +2880,18 @@ void BRKGA_MP_IPR<Decoder>::setInitialPopulation(
                                 const std::vector<Chromosome>& chromosomes) {
     // First, reserve some memory.
     for(auto& pop : current) {
+        // We cannot init a populaiton with zero chromosomes...
         pop.reset(new Population(chromosome_size, 1));
-        pop->population.pop_back();
-        pop->population.reserve(params.population_size);
+        //... so, we add one but remove it immediately.
+        pop->chromosomes.pop_back();
+        pop->chromosomes.reserve(params.population_size);
     }
 
     auto it_init_chr = chromosomes.begin();
     auto it_pop = current.begin();
 
     unsigned counter = 0;
-    while(it_init_chr != chromosomes.end()) {
+    while( it_init_chr != chromosomes.end()) {
         if(it_init_chr->size() != chromosome_size) {
             std::stringstream ss;
             ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
@@ -2899,7 +2902,7 @@ void BRKGA_MP_IPR<Decoder>::setInitialPopulation(
             throw std::runtime_error(ss.str());
         }
 
-        (*it_pop)->population.push_back(*it_init_chr);
+        (*it_pop)->chromosomes.push_back(*it_init_chr);
         ++counter;
         ++it_init_chr;
 
@@ -2931,17 +2934,17 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool reset) {
         }
 
         if(reset)
-            pop->population.clear();
+            pop->chromosomes.clear();
 
-        if(pop->population.size() < params.population_size) {
+        if(pop->chromosomes.size() < params.population_size) {
             Chromosome chromosome(chromosome_size);
-            unsigned last_chromosome = pop->population.size();
+            unsigned last_chromosome = pop->chromosomes.size();
 
-            pop->population.resize(params.population_size);
+            pop->chromosomes.resize(params.population_size);
             for(; last_chromosome < params.population_size; ++last_chromosome) {
                 for(unsigned k = 0; k < chromosome_size; ++k)
                     chromosome[k] = rand01(rng);
-                pop->population[last_chromosome] = chromosome;
+                pop->chromosomes[last_chromosome] = chromosome;
             }
         }
     }
@@ -2982,7 +2985,7 @@ void BRKGA_MP_IPR<Decoder>::shake(unsigned intensity,
     }
 
     for(; pop_start <= pop_end; ++pop_start) {
-        auto& pop = current[pop_start]->population;
+        auto& pop = current[pop_start]->chromosomes;
 
         // Shake the elite set.
         for(unsigned e = 0; e < elite_size; ++e) {
@@ -3048,7 +3051,7 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 
     // First, we copy the elite chromosomes to the next generation.
     for(unsigned chr = 0; chr < elite_size; ++chr) {
-        next.population[chr] = curr.population[curr.fitness[chr].second];
+        next.chromosomes[chr] = curr.chromosomes[curr.fitness[chr].second];
         next.fitness[chr] = std::make_pair(curr.fitness[chr].first, chr);
     }
 
@@ -3154,7 +3157,7 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         #else
             auto& rng = rng_per_thread[0];
         #endif
-        for(auto& allele : next.population[chr])
+        for(auto& allele : next.chromosomes[chr])
             allele = rand01(rng);
     }
 
@@ -3163,7 +3166,7 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         #pragma omp parallel for num_threads(max_threads) schedule(static, 1)
     #endif
     for(unsigned i = elite_size; i < params.population_size; ++i)
-        next.setFitness(i, decoder.decode(next.population[i], true));
+        next.setFitness(i, decoder.decode(next.chromosomes[i], true));
 
     // Now we must sort by fitness, since things might have changed.
     next.sortFitness(optimization_sense);
@@ -3279,7 +3282,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
     // to-be-decoded chromosomes (num. of pops X size of a pop)
     std::vector<std::pair<unsigned, unsigned>> shaken {};
     if(control_params.shake_interval > 0)
-        shaken.reserve(current.size() * current[0]->population.size());
+        shaken.reserve(current.size() * current[0]->chromosomes.size());
 
     // We add expiration time and maximum stalled iterations to the user's
     // stopping criteria. Note that if it returns true, we stop the optimization.
@@ -3519,9 +3522,10 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
 
                 // If shaken is empty, force the re-decode
                 // of all chromosomes of all populations.
+                // TODO: use views::enumerate when C++23 is ready.
                 if(shaken.empty()) {
                     for(unsigned i = 0; i < current.size(); ++i)
-                        for(unsigned j = 0; j < current[i]->population.size(); ++j)
+                        for(unsigned j = 0; j < current[i]->chromosomes.size(); ++j)
                             shaken.push_back({i, j});
                 }
 
@@ -3677,10 +3681,10 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             const auto pos2 = index_pairs[index].second;
 
             const auto& chr1 = current[pop_base]->
-                    population[current[pop_base]->fitness[pos1].second];
+                    chromosomes[current[pop_base]->fitness[pos1].second];
 
             const auto& chr2 = current[pop_guide]->
-                    population[current[pop_base]->fitness[pos2].second];
+                    chromosomes[current[pop_base]->fitness[pos2].second];
 
             if(dist->distance(chr1, chr2) >= minimum_distance - 1e-6) {
                 copy(begin(chr1), end(chr1), begin(initial_solution));
@@ -3758,7 +3762,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
             include_in_population = true;
             for(unsigned i = 0; i < elite_size; ++i) {
                 if(dist->distance(best_found.second, current[pop_base]->
-                            population[current[pop_base]->fitness[i].second])
+                            chromosomes[current[pop_base]->fitness[i].second])
                    < minimum_distance - 1e-6) {
                     include_in_population = false;
                     final_status |= PR::NO_IMPROVEMENT;
@@ -3770,7 +3774,7 @@ PathRelinking::PathRelinkingResult BRKGA_MP_IPR<Decoder>::pathRelink(
         if(include_in_population) {
             std::copy(begin(best_found.second), end(best_found.second),
                       begin(current[pop_base]->
-                                population[current[pop_base]->
+                                chromosomes[current[pop_base]->
                                     fitness.back().second]));
 
             current[pop_base]->fitness.back().first = best_found.first;

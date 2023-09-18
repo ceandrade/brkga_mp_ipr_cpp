@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
         //     decltype(ControlParams::maximum_running_time)::max();
         // control_params.stall_offset = 1000;
 
-        using MyDecoder = Sum_Decoder;
+        using MyDecoder = SumDecoder;
         // using MyDecoder = Order_Decoder;
         MyDecoder decoder;
 
@@ -98,9 +98,9 @@ int main(int argc, char* argv[]) {
                 std::uniform_real_distribution<> allele_value(lower_bound, upper_bound);
 
                 for(unsigned pop_idx = 0; pop_idx < populations.size(); ++pop_idx) {
-                    auto& population = populations[0]->population;
-                    for(unsigned chr_idx = 0; chr_idx < population.size(); ++chr_idx) {
-                        auto& chromosome = population[chr_idx];
+                    auto& chromosomes = populations[0]->chromosomes;
+                    for(unsigned chr_idx = 0; chr_idx < chromosomes.size(); ++chr_idx) {
+                        auto& chromosome = chromosomes[chr_idx];
 
                         bool change = false;
                         for(unsigned i = 0; i < chromosome.size(); ++i) {
