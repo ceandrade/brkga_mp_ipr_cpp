@@ -33,6 +33,9 @@ Table of Contents
 
 - :speech_balloon: [Introduction](#speech_balloon-introduction)
 - :high_brightness: [What is new on version 3.0](#high_brightness-what-is-new-on-version-3.0)
+  - [API enhancements](#api-enhancements)
+  - [BRKGA and control parameters](#brkga-and-control-parameters)
+  - [No more `initialize()`](#no-more-initialize)
 - :high_brightness: [What is new on version 2.0](#high_brightness-what-is-new-on-version-2.0)
   - [Multiples objectives (Lexicographically)](#multiples-objectives-lexicographically)
   - [Multi-thread mating](#multi-thread-mating)
@@ -118,20 +121,20 @@ pipeline using all framework features in a chain-like way, similar to the
 detailed examples. The user may call in this way:
 
 ```cpp
+    //...
     auto [brkga_params, control_params] =
           BRKGA::readConfiguration(config_file);
 
     MyDecoder my_decoder;
 
     BRKGA::BRKGA_MP_IPR<MyDecoder> algorithm(
-        my_decoder, BRKGA::Sense::MINIMIZE, seed, num_chromosomes, brkga_params);
-
+        my_decoder, BRKGA::Sense::MINIMIZE, seed, num_chromosomes, brkga_params
+    );
     // algorithm.initialize(); // No need anymore :-)
 
     auto final_status = algorithm.run(control_params, &cout);
-
     cout << "Final algorithm status\n" << final_status;
-}
+    //...
 ```
 
 where `control_params` is an instance of the new class `ControlParams`
@@ -144,6 +147,86 @@ documentation for that).
 So, users need no more write fine control loops unless they need/want. Just set
 some control parameters (and some other callbacks (described below) if you
 like), and you are good to go!
+
+Supporting `run()`, we have two new methods:
+
+- `setStoppingCriteria()`: while method `run()` sets automatically maximum time
+  or maximum stalled iterations (without improvement in the best solution) as
+  standard stopping criteria, the user can add to these other criteria using
+  this method. For instance, the following lambda function tests if the best
+  solution reached a given value:
+
+  ```cpp
+  fitness_t my_magical_solution = 10;
+  algorithm.setStoppingCriteria(
+      [&](const AlgorithmStatus& status) {
+          return status.best_fitness == my_magical_solution;
+      }
+  );
+  ```
+
+  In this case, the stop criteria become: _Is maximum time reached **OR** Is
+  maximum stalled iterations reached **OR**
+  `best_fitness == my_magical_solution`._
+
+  | :memo: Note                |
+  |:---------------------------|
+  | While we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** (mainly when using IPR), if you really rmean to have no maximum time or maximum stalled iterations set, we recommend to use the following code:|
+
+  ```cpp
+  // After reading your parameters, e.g.,
+  // auto [brkga_params, control_params] = readConfiguration("config.conf");
+  // You can set to the max.
+  control_params.maximum_running_time = std::chrono::seconds::max();
+  control_params.stall_offset = numeric_limits<decltype(control_params.stall_offset)>::max();
+  ```
+
+- `addNewSolutionObserver()`: This method adds a callback that is triggered
+  when an overall improved solution is found by the algorithm. It also
+  adds an additional stop point if the users finds it useful by return `true`.
+  This is very useful for tracking the evolution of the algorithm, for instance:
+
+  ```cpp
+  algorithm.addNewSolutionObserver(
+      [](const AlgorithmStatus& status) {
+          std::cout
+          << "> Iter: " << status.current_iteration
+          << " | solution: " << status.best_fitness
+          << " | time: " << status.current_time
+          << std::endl;
+          return false; // Dont' stop the optimization.
+       }
+  );
+  ```
+
+### BRKGA and control parameters
+
+Although this is part of API enhancement, it deserves special attention. Now,
+we include all BRKGA and IPR parameters into `BrkgaParams`, and all (external)
+control parameters into `ControlParams` (which was renamed from
+`ExternalControlParams`). In doing so, we have a consistent set that can be
+fully loaded from configuration files.
+
+Not all parameters are required, and those not are set to their default values.
+The new reading function `readConfiguration()` will emit a warning when
+no-required parameters are not set.
+
+| :warning: Warning          |
+|:---------------------------|
+| If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is the core stopping criteria on IPR.
+
+### No more `initialize()`
+
+Previously, one must call `initialize()` before any method that manipulated the
+population. Also, since `initialize()` (re)decodes the population, we have to
+measure its running time too. Now, `initialize()` is called on the need by its
+fellow methods internally. This leads to fewer error-prone codes.
+
+### Code modernizing and speed bump
+
+The code has been modernized using C++20 facilities like concepts and ranges.
+Therefore, your compiler must support C++20 now.
+
 
 :high_brightness: What is new on version 2.0
 --------------------------------------------------------------------------------

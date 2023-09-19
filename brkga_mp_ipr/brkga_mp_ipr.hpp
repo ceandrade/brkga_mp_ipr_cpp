@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 15, 2023 by ceandrade.
+ * Last update: Sep 19, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -910,8 +910,8 @@ public:
  *               no-required parameters. It does not log errors.
  * \returns a tuple containing the BRKGA and external control parameters.
  * \throw std::fstream::failure in case of errors in the file.
- * \todo (ceandrade) This method can beneficiate from introspection tools
- *       from C++17. We would like achieve a code similar to the
+ * \todo (ceandrade) This method can beneficiate from introspection tools.
+ *       We would like achieve a code similar to the
  *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
  */
 INLINE std::pair<BrkgaParams, ControlParams>
@@ -1159,7 +1159,6 @@ readConfiguration(const std::string& filename,
 INLINE void writeConfiguration(std::ostream& output,
         const BrkgaParams& brkga_params,
         const ControlParams& control_params = ControlParams{}) {
-
     output
     << "population_size " << brkga_params.population_size << "\n"
     << std::setiosflags(std::ios::fixed) << std::setprecision(2)
@@ -1200,8 +1199,8 @@ INLINE void writeConfiguration(std::ostream& output,
  *
  * \param filename the configuration file.
  * \param brkga_params the BRKGA parameters.
- * \param control_params the external control parameters. Default is an empty
- *        object.
+ * \param control_params the external control parameters.
+ *        Default is an empty object.
  * \throw std::fstream::failure in case of errors in the file.
  */
 INLINE void writeConfiguration(const std::string& filename,
@@ -1791,7 +1790,7 @@ public:
      * // auto [brkga_params, control_params] = readConfiguration("config.conf");
      *
      * // You can set to the max.
-     *  control_params.maximum_running_time = std::chrono::seconds::max();
+     * control_params.maximum_running_time = std::chrono::seconds::max();
      * \endcode
      *
      * \param stopping_criteria a callback function to determine is the
@@ -3286,7 +3285,6 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
 
     // We add expiration time and maximum stalled iterations to the user's
     // stopping criteria. Note that if it returns true, we stop the optimization.
-
     if(!stopping_criteria) {
         *logger
         << "Custom stopping criteria not supplied by the user. "
