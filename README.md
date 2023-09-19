@@ -3,7 +3,7 @@
   <img src="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/src_docs/src/assets/logo_name_300.png">
 </div>
 
-BRKGA-MP-IPR - C++ version 2.0
+BRKGA-MP-IPR - C++ version 3.0
 ================================================================================
 
 <table>
@@ -31,20 +31,21 @@ BRKGA-MP-IPR - C++ version 2.0
 Table of Contents
 --------------------------------------------------------------------------------
 
-* :speech_balloon: [Introduction](#speech_balloon-introduction)
-* :high_brightness: [What is new on version 2.0](#high_brightness-what-is-new-on-version-2.0)
-	* [Multiples objectives (Lexicographically)](#multiples-objectives-lexicographically)
-	* [Multi-thread mating](#multi-thread-mating)
-	* [API changes](#api-changes)
-	* [Bug fixes](#bug-fixes)
-* :computer: [Installation](#computer-installation)
-* :zap: [Usage](#zap-usage---tldr-single-objective)
-	* [TL;DR, Single objective](#zap-usage---tldr-single-objective)
-	* [TL;DR, Multi objective](#zap-usage---tldr-multi-objective)
-* :books: [Tutorial and full documentation](#books-tutorial-and-full-documentation)
-* :black_nib: [License and Citing](#black_nib-license-and-citing)
-* :construction_worker: [TODO](#construction_worker-todo)
-* :pencil2: [Contributing](#pencil2-contributing)
+- :speech_balloon: [Introduction](#speech_balloon-introduction)
+- :high_brightness: [What is new on version 3.0](#high_brightness-what-is-new-on-version-3.0)
+- :high_brightness: [What is new on version 2.0](#high_brightness-what-is-new-on-version-2.0)
+  - [Multiples objectives (Lexicographically)](#multiples-objectives-lexicographically)
+  - [Multi-thread mating](#multi-thread-mating)
+  - [API changes](#api-changes)
+  - [Bug fixes](#bug-fixes)
+- :computer: [Installation](#computer-installation)
+- :zap: [Usage](#zap-usage---tldr-single-objective)
+  - [TL;DR, Single objective](#zap-usage---tldr-single-objective)
+  - [TL;DR, Multi objective](#zap-usage---tldr-multi-objective)
+- :books: [Tutorial and full documentation](#books-tutorial-and-full-documentation)
+- :black_nib: [License and Citing](#black_nib-license-and-citing)
+- :construction_worker: [TODO](#construction_worker-todo)
+- :pencil2: [Contributing](#pencil2-contributing)
 
 :speech_balloon: Introduction
 --------------------------------------------------------------------------------
@@ -61,7 +62,7 @@ BRKGA effectively. We strongly recommend you read the tutorial to make
 your code works at best within BRKGA. Check out the tutorial and API
 documentation: https://ceandrade.github.io/brkga_mp_ipr_cpp
 
-This C++ version provides a fast prototyping API using C++17 standards and
+This C++ version provides a fast prototyping API using C++20 standards and
 libraries. All code was developed as a header-only library, and have no
 external dependencies other than those included in the package. So, you just
 need to copy/check out the files and point your compiler's header path to
@@ -72,8 +73,8 @@ parameter (assuming that your decoder is thread-safe). This leverage the
 parallel decoding nature that BRKGAs offer, compared to other (meta)
 heuristic frameworks.
 
-The code can be compiled using [> GCC 7.2](https://gcc.gnu.org) and [> Clang
-6.0](https://clang.llvm.org), and it is very probable that it can be compiled
+The code can be compiled using [> GCC 9.4](https://gcc.gnu.org) and [> Clang
+10.0](https://clang.llvm.org), and it is very probable that it can be compiled
 using other modern C++ compilers, such as Intel and Microsoft compilers. To
 use multiple threads, your compiler must support
 [OpenMP](https://www.openmp.org). The current version has been long developed,
@@ -85,7 +86,7 @@ If C++ is not suitable to you, we may find useful the [**Julia
 version**](https://github.com/ceandrade/brkga_mp_ipr_julia) of this framework.
 We are also developing a
 [**Python version**](https://github.com/ceandrade/brkga_mp_ipr_python)
-which is in its earlier stages.
+which is in its earlier stages (no IPR yet).
 However, both Julia and Python versions only support single-objective optimization
 at this moment. We have no timeline to implement multi-objective optimization
 in such platforms. Also, at this moment, we have no plans to implement
@@ -100,7 +101,49 @@ documentation practices of your chosen language/framework.
 
 If you are not familiar with how BRKGA works, take a look on
 [Standard BRKGA](http://dx.doi.org/10.1007/s10732-010-9143-1) and
-[Multi-Parent BRKGA](http://dx.doi.org/xxx).
+[Multi-Parent BRKGA](https://doi.org/10.1016/j.ejor.2019.11.037).
+
+:high_brightness: What is new on version 3.0
+--------------------------------------------------------------------------------
+
+### API enhancements
+
+On version 2.0, we claimed that BRKGA-MP-IPR was a very easy-to-use framework.
+But, few people told me this statement was not even true. The main complaint
+was that while the features were very nice, tightening them together was hard,
+even using the provided examples (add a file here).
+
+Now, BRKGA-MP-IPR supplies a method called `run()`. It implements the entire
+pipeline using all framework features in a chain-like way, similar to the
+detailed examples. The user may call in this way:
+
+```cpp
+    auto [brkga_params, control_params] =
+          BRKGA::readConfiguration(config_file);
+
+    MyDecoder my_decoder;
+
+    BRKGA::BRKGA_MP_IPR<MyDecoder> algorithm(
+        my_decoder, BRKGA::Sense::MINIMIZE, seed, num_chromosomes, brkga_params);
+
+    // algorithm.initialize(); // No need anymore :-)
+
+    auto final_status = algorithm.run(control_params, &cout);
+
+    cout << "Final algorithm status\n" << final_status;
+}
+```
+
+where `control_params` is an instance of the new class `ControlParams`
+(explained further), and an optional stream for logging
+(in this example, `cout`).
+`run()` returns an `AlgorithmStatus` object with information about the
+optimization like total time, iteration counting, and more (check the full
+documentation for that).
+
+So, users need no more write fine control loops unless they need/want. Just set
+some control parameters (and some other callbacks (described below) if you
+like), and you are good to go!
 
 :high_brightness: What is new on version 2.0
 --------------------------------------------------------------------------------
@@ -195,14 +238,14 @@ the files were downloaded.
 Quick example (unix): assume we are in an empty folder. So, we copy/clone
 BRKGA-IPR-MP first:
 
-    $ git clone https://github.com/ceandrade/brkga_mp_ipr_cpp
-    Cloning into 'brkga_mp_ipr_cpp'...
-    remote: Enumerating objects: 118, done.
-    remote: Counting objects: 100% (118/118), done.
-    remote: Compressing objects: 100% (112/112), done.
-    remote: Total 118 (delta 24), reused 0 (delta 0)
-    Receiving objects: 100% (118/118), 3.50 MiB | 3.66 MiB/s, done.
-    Resolving deltas: 100% (24/24), done.
+  $ git clone https://github.com/ceandrade/brkga_mp_ipr_cpp
+  Cloning into 'brkga_mp_ipr_cpp'...
+  remote: Enumerating objects: 118, done.
+  remote: Counting objects: 100% (118/118), done.
+  remote: Compressing objects: 100% (112/112), done.
+  remote: Total 118 (delta 24), reused 0 (delta 0)
+  Receiving objects: 100% (118/118), 3.50 MiB | 3.66 MiB/s, done.
+  Resolving deltas: 100% (24/24), done.
 
 Let's write a `test.cpp` with the following code:
 
@@ -218,13 +261,13 @@ int main() {
 
 Then, let's compile and see it works:
 
-    $ g++ --version
-    g++ (MacPorts gcc10 10.3.0_0) 10.3.0
+  $ g++ --version
+  g++ (MacPorts gcc10 10.3.0_0) 10.3.0
 
-    $ g++ -std=c++17 -Ibrkga_mp_ipr/brkga_mp_ipr test.cpp -o test
+  $ g++ -std=c++17 -Ibrkga_mp_ipr/brkga_mp_ipr test.cpp -o test
 
-    $ ./test
-    Testing sense: MINIMIZE
+  $ ./test
+  Testing sense: MINIMIZE
 
 Note the Git clones the whole repository that contains the library code,
 documents, and examples. All the examples were built using
@@ -290,7 +333,7 @@ int main(int argc, char* argv[]) {
     auto instance = TSP_Instance(instance_file);
 
     auto [brkga_params, control_params] =
-	      BRKGA::readConfiguration(config_file);
+          BRKGA::readConfiguration(config_file);
 
     TSP_Decoder decoder(instance);
 
@@ -453,7 +496,6 @@ files.
 CI and tests side:
 
 - Implement unit tests and certify coverage;
-
 - Configure Travis-Ci correctly, such that we can run tests on Mac OSX and
   Windows too.
 
@@ -461,4 +503,3 @@ CI and tests side:
 --------------------------------------------------------------------------------
 
 [Contribution guidelines for this project](CONTRIBUTING.md)
-

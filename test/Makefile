@@ -55,8 +55,9 @@ USER_FLAGS += -Wpacked
 # Flags for covering tests.
 #USER_FLAGS += -fPIC -fprofile-arcs -ftest-coverage
 
-CXX = g++
+#CXX = g++
 # CXX = clang++
+CXX = clang++-10
 
 COMMON_OBJS = decoders.o
 
