@@ -2,6 +2,7 @@
 // members as strings.
 //
 // \author  Bradley Plohr (2017-05-12)
+// \author  Carlos E. Andrade (2023-09-08) C++20 modernization.
 //
 // **Note:**  The idea to keep the enum names as a static member in a
 // template comes from Loki Astari:
@@ -73,11 +74,15 @@
 #define ENUM_IO_HPP_
 
 #include <algorithm>
+#include <concepts>
 #include <ios>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <vector>
+
+template<typename T>
+concept EnumType = std::is_enum_v<T>;
 
 template<typename T>
 class EnumIO
@@ -95,8 +100,7 @@ static inline std::string toUpper(const std::string& input)
     return copy;
 }
 
-template <typename T,
-          typename std::enable_if<std::is_enum<T>::value>::type* = nullptr>
+template <EnumType T>
 T toEnum(const std::string& s) {
     auto input = toUpper(s);
 
@@ -126,8 +130,7 @@ T toEnum(const std::string& s) {
     throw std::range_error("Invalid enum item");
 }
 
-template<typename T,
-         typename std::enable_if<std::is_enum<T>::value>::type* = nullptr>
+template <EnumType T>
 std::ostream&
 operator<<(std::ostream& os, const T& t)
 {
@@ -136,8 +139,7 @@ operator<<(std::ostream& os, const T& t)
     return os;
 }
 
-template<typename T,
-         typename std::enable_if<std::is_enum<T>::value>::type* = nullptr>
+template <EnumType T>
 std::istream&
 operator>>(std::istream& is, T& t)
 {

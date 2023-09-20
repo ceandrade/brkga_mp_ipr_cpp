@@ -1,11 +1,11 @@
 /*******************************************************************************
  * fitness_type.hpp: Interface for fitness_t structure.
  *
- * (c) Copyright 2022, Carlos Eduardo de Andrade.
+ * (c) Copyright 2022-2023, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
- * Created on : May 18, 2021 by andrade.
- * Last update: Dec 03, 2021 by andrade.
+ * Created on : May 18, 2021 by ceandrade.
+ * Last update: Sep 05, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -38,7 +38,7 @@ namespace BRKGA {
  * For instance:
  *
  * \code{.cpp}
- * typedef double fitness_t;
+ * using fitness_t = double;
  * \endcode
  *
  * For multi-objective problems (with dominance/lexicographical sorting), we
@@ -49,7 +49,7 @@ namespace BRKGA {
  * assume we have three minimization objective functions. Then we may have:
  *
  * \code{.cpp}
- * typedef std::tuple<double, double, double> fitness_t;
+ * using fitness_t = std::tuple<double, double, double>;
  * \endcode
  *
  * \note We do recommend use `std::tuple`.
@@ -58,16 +58,16 @@ namespace BRKGA {
  * the custom function `close_enough()`. For fundamental numerical types, it
  * compares the absolute difference with a given #EQUALITY_THRESHOLD, i.e., two
  * numbers \f$a\f$ and \f$b\f$ equal if \f$|a - b| < EQUALITY\_THRESHOLD\f$.
- * For all other types (except `std::tuple`), we use operator==.
- * For `std::tuple`, we have a specialized `close_enough()` that iterates over
- * each element of the tuples calling the base `close_enough()`.
+ * For all other types (except `std::tuple`), we use `operator==`.
+ * For `std::tuple`, we have a specialized function `close_enough()` that
+ * iterates over each element of the tuples calling the base `close_enough()`.
  *
  * \warning
  *      If you are using custom class other than fundamental types or
  *      tuples with fundamental types, you must also provide two const template
  *      expressions #FITNESS_T_MIN and #FITNESS_T_MAX.
  */
-typedef double fitness_t;
+using fitness_t = double;
 
 namespace { // Hide from external usage.
 /**
@@ -94,12 +94,7 @@ constexpr T FITNESS_T_MIN_TEMPLATE = std::numeric_limits<T>::min();
 template <typename... T>
 constexpr std::tuple<T...> FITNESS_T_MIN_TEMPLATE<std::tuple<T...>> =
     std::make_tuple(std::numeric_limits<T>::min()...);
-} // end namespace
 
-/// The actual minimal value to `fitness_t`.
-static constexpr fitness_t FITNESS_T_MIN = FITNESS_T_MIN_TEMPLATE<fitness_t>;
-
-namespace { // Hide from external usage.
 /**
  * \brief Maximum value template of the #fitness_t (generic).
  *
@@ -124,7 +119,10 @@ constexpr T FITNESS_T_MAX_TEMPLATE = std::numeric_limits<T>::max();
 template <typename... T>
 constexpr std::tuple<T...> FITNESS_T_MAX_TEMPLATE<std::tuple<T...>> =
     std::make_tuple(std::numeric_limits<T>::max()...);
-} // end namespace
+} // end hidden namespace
+
+/// The actual minimal value to `fitness_t`.
+static constexpr fitness_t FITNESS_T_MIN = FITNESS_T_MIN_TEMPLATE<fitness_t>;
 
 /// The actual Maximum value to `fitness_t`.
 static constexpr fitness_t FITNESS_T_MAX = FITNESS_T_MAX_TEMPLATE<fitness_t>;

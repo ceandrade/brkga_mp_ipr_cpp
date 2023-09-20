@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 19, 2023 by ceandrade.
+ * Last update: Sep 20, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -136,6 +136,68 @@ namespace BRKGA {
     #define MATING_FULL_SPEED
 #endif
 
+//----------------------------------------------------------------------------//
+// Streaming operators
+//----------------------------------------------------------------------------//
+
+/** \name I/O chrono help functions.
+ * Define some helpers for chrono types.
+ * \todo These functions may not be necessary for C++23,
+ *       since streaming operators for chrono types are defined there.
+ */
+//@{
+#if __cplusplus < 202300L
+
+// For GCC, we must inject these direct into BRKGA namespace.
+#ifndef __clang__
+namespace BRKGA {
+#endif
+
+/// Helper concept that only accept std::duration types.
+template<typename T>
+concept DurationType =
+    std::is_convertible_v <
+        T,
+        std::chrono::duration<typename T::rep, typename T::period>
+    >;
+
+/** To the date, we have no operator>> for reading std::chrono.
+ * So, the following definition is only for reading seconds.
+ * We first read the integer representation of a second,
+ * then convert it to the duration.
+ */
+template<DurationType durantion_t>
+INLINE std::istream&
+operator>>(std::istream& is, durantion_t& duration) {
+    typename durantion_t::rep value;
+    is >> value;
+    duration = durantion_t {value};
+    return is;
+}
+
+/** To the date, libc (clang) has no support to stream chrono objects.
+ * This is a working around only for seconds.
+ * \todo: remove this when clang/libc get the support.
+ */
+#if defined(__clang__) && !defined(_LIBCPP_HAS_NO_LOCALIZATION)
+INLINE std::ostream&
+operator<<(std::ostream& os, const std::chrono::duration<double>& dur) {
+    os << dur.count() << "s";
+    return os;
+}
+#endif // __clang__
+
+#ifndef __clang__
+} // end of namespace BRKGA
+#endif
+
+#endif // __cplusplus
+//@}
+
+//----------------------------------------------------------------------------//
+// Namespace BRKGA: the main namespace
+//----------------------------------------------------------------------------//
+
 /**
  * \brief This namespace contains all stuff related to BRKGA Multi Parent
  * with Implicit Path Relinking.
@@ -145,6 +207,13 @@ namespace BRKGA {
 //----------------------------------------------------------------------------//
 // Forward declarations
 //----------------------------------------------------------------------------//
+
+// Captures the external operators for clang.
+// \todo Remove this when C++23 comes up.
+#if defined(__clang__)
+    using ::operator<<;
+    using ::operator>>;
+#endif
 
 class Population;
 
@@ -448,51 +517,6 @@ EnumIO<BRKGA::ShakingType>::enum_names() {
     };
     return enum_names_;
 }
-//@}
-
-//----------------------------------------//
-// Streaming operators
-//----------------------------------------//
-
-/** \name I/O help functions
- * Define some helpers for enumarations to work in conjuction with EnumIO.
- * Also defines streaming operators for some types.
-*/
-//@{
-
-/// Helper concept that only accept std::duration types.
-template<typename T>
-concept DurationType =
-    std::is_convertible_v <
-        T,
-        std::chrono::duration<typename T::rep, typename T::period>
-    >;
-
-/** To the date, we have no operator>> for reading std::chrono.
- * So, the following definition is only for reading seconds.
- * We first read the integer representation of a second,
- * then convert it to the duration.
- */
-template<DurationType durantion_t>
-INLINE std::istream&
-operator>>(std::istream& is, durantion_t& duration) {
-    typename durantion_t::rep value;
-    is >> value;
-    duration = durantion_t {value};
-    return is;
-}
-
-/** To the date, libc (clang) has no support to stream chrono objects.
- * This is a working around only for seconds.
- * \todo: remove this when clang/libc get the support.
- */
-#if defined(__clang__) && !defined(_LIBCPP_HAS_NO_LOCALIZATION)
-INLINE std::ostream&
-operator<<(std::ostream& os, const std::chrono::duration<double>& dur) {
-    os << dur.count() << "s";
-    return os;
-}
-#endif
 //@}
 
 //----------------------------------------------------------------------------//
@@ -3286,21 +3310,29 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
     // We add expiration time and maximum stalled iterations to the user's
     // stopping criteria. Note that if it returns true, we stop the optimization.
     if(!stopping_criteria) {
-        *logger
-        << "Custom stopping criteria not supplied by the user. "
-        << "Using max. time = " << control_params.maximum_running_time
-        << " and max. stall_offset = " << control_params.stall_offset
-        << std::endl;
+        if(logger) {
+            *logger
+            << "Custom stopping criteria not supplied by the user. "
+            << "Using max. time = " << control_params.maximum_running_time
+            << " and max. stall_offset = " << control_params.stall_offset
+            << std::endl;
+        }
         stopping_criteria = [](const AlgorithmStatus& /*not used*/) {
             return false;
         };
     }
-    else {
+    else
+    if(logger) {
         *logger
         << "Using custom stopping supplied by the user and "
         << "max. time = " << control_params.maximum_running_time
         << " and max. stall_offset = " << control_params.stall_offset
         << std::endl;
+    }
+
+    if(logger) {
+        *logger
+        << "Using " << max_threads << " threads for decoding" << std::endl;
     }
 
     const auto start_time = std::chrono::system_clock::now();

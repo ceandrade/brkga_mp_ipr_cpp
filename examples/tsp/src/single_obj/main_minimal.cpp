@@ -2,11 +2,11 @@
  * main_minimal.cpp: minimal code for calling BRKGA algorithms to solve
  *                   instances of the Traveling Salesman Problem.
  *
- * Created on : Mar 05, 2019 by andrade
- * Last update: Dec 01, 2021 by andrade
- *
- * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2023, Carlos Eduardo de Andrade.
  * All Rights Reserved.
+ *
+ * Created on : Mar 05, 2019 by ceandrade
+ * Last update: Sep 20, 2023 by ceandrade
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -28,6 +28,7 @@
 #include "decoders/tsp_decoder.hpp"
 #include "brkga_mp_ipr.hpp"
 
+#include <chrono>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -38,9 +39,11 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     if(argc < 4) {
-        cerr << "Usage: "<< argv[0]
-             << " <seed> <config-file> <num-generations>"
-                " <tsp-instance-file>" << endl;
+        cerr
+        << "Usage: " << argv[0]
+        << " <seed> <config-file> <maximum-running-time>"
+        << " <tsp-instance-file>"
+        << endl;
         return 1;
     }
 
@@ -51,7 +54,6 @@ int main(int argc, char* argv[]) {
 
         const unsigned seed = stoi(argv[1]);
         const string config_file = argv[2];
-        const unsigned num_generations = stoi(argv[3]);
         const string instance_file = argv[4];
 
         cout << "Reading data..." << endl;
@@ -66,8 +68,11 @@ int main(int argc, char* argv[]) {
         auto [brkga_params, control_params] =
             BRKGA::readConfiguration(config_file);
 
+        // Overwrite the maximum time from the config file.
+        control_params.maximum_running_time = chrono::seconds {stoi(argv[3])};
+
         ////////////////////////////////////////
-        // Build the BRKGA data structures and initialize
+        // Build the BRKGA data structures
         ////////////////////////////////////////
 
         cout << "Building BRKGA data and initializing..." << endl;
@@ -75,27 +80,31 @@ int main(int argc, char* argv[]) {
         TSP_Decoder decoder(instance);
 
         BRKGA::BRKGA_MP_IPR<TSP_Decoder> algorithm(
-                decoder, BRKGA::Sense::MINIMIZE, seed,
-                instance.num_nodes, brkga_params);
-
-        // NOTE: don't forget to initialize the algorithm.
-        algorithm.initialize();
+            decoder, BRKGA::Sense::MINIMIZE, seed,
+            instance.num_nodes, brkga_params, 4
+        );
 
         ////////////////////////////////////////
         // Find good solutions / evolve
         ////////////////////////////////////////
 
-        cout << "Evolving " << num_generations << " generations..." << endl;
-        algorithm.evolve(num_generations);
+        cout << "Running for " << control_params.maximum_running_time << "..."
+             << endl;
 
+        auto final_status = algorithm.run(control_params, &cout);
         auto best_cost = algorithm.getBestFitness();
-        cout << "Best cost: " << best_cost;
+
+        cout
+        << "\nAlgorithm status: " << final_status
+        << "\n\nBest cost: " << best_cost
+        << endl;
     }
     catch(exception& e) {
-        cerr << "\n***********************************************************"
-             << "\n**** Exception Occurred: " << e.what()
-             << "\n***********************************************************"
-             << endl;
+        cerr
+        << "\n***********************************************************"
+        << "\n**** Exception Occurred: " << e.what()
+        << "\n***********************************************************"
+        << endl;
         return 1;
     }
     return 0;

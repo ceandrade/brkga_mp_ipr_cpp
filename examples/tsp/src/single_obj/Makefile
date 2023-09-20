@@ -1,11 +1,11 @@
 ###############################################################################
 # Makefile: building instructions using GNU Make utilities.
 #
-# (c) Copyright 2019-2022, Carlos Eduardo de Andrade.
+# (c) Copyright 2019-2023, Carlos Eduardo de Andrade.
 # All Rights Reserved.
 #
-# Created on : Mar 05, 2019 by andrade
-# Last update: Dec 07, 2021 by andrade
+# Created on : Mar 05, 2019 by ceandrade
+# Last update: Sep 19, 2023 by ceandrade
 #
 # This code is released under BRKGA-MP-IPR License:
 # https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -30,8 +30,8 @@
 # Optimization switch
 OPT = opt
 
-# Determines how the mating process will happen regarding reproducibility.  One
-# of the following options should be used. If more than one is given,
+# Determines how the mating process will happen regarding reproducibility.
+# One of the following options should be used. If more than one is given,
 # MATING_FULL_SPEED takes priority over MATING_SEED_ONLY, which takes priority
 # over MATING_SEQUENTIAL. If no option is supplied, BRKGA-Mp-IPR assume
 # MATING_FULL_SPEED.
@@ -50,8 +50,8 @@ USER_FLAGS += -DMATING_FULL_SPEED
 
 # Using this option, the mating process is completely sequential, as in the
 # original BRKGA. The reproducibility is guaranteed with only the same seed.
-# This option can be very slow for large chromosomes and large populations. But
-# it makes debugging easier.
+# This option can be very slow for large chromosomes and large populations.
+# But it makes debugging easier.
 # USER_FLAGS += -DMATING_SEQUENTIAL
 
 ###############################################################################
@@ -81,10 +81,10 @@ MAIN_MINIMAL_EXE = main_minimal
 ###############################################################################
 
 # C++ Compiler command and flags
-CXX = g++
-# CXX = clang++
+# CXX = g++
+CXX = clang++
 
-USER_FLAGS += -std=c++17
+USER_FLAGS += -std=c++20
 
 # Compiler flags for debugging
 ifneq ($(OPT), opt)
