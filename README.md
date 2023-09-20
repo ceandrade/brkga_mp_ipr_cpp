@@ -227,6 +227,17 @@ fellow methods internally. This leads to fewer error-prone codes.
 The code has been modernized using C++20 facilities like concepts and ranges.
 Therefore, your compiler must support C++20 now.
 
+One notable change was substituting the custom code in `randInt()` for a
+[standard library uniform distribution
+utility](https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution).
+The old code was used when a custom Mersenne Twister RNG code was used (from
+the original BRKGA implementation). The inclusion of the Mersenne Twister in
+the standard library allows us to use all default utilities. Ad hoc tests show
+that the standard library utilities are faster than the old custom code.
+However, the speed-up is marginal when considering the full application of
+BRKGA. But, when we accumulate hundreds or thousands of calls daily, the time
+savings can be considerable in a full year of operation (which usually
+translates into energy savings).
 
 :high_brightness: What is new on version 2.0
 --------------------------------------------------------------------------------
