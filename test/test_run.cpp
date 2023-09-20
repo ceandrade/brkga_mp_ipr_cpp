@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
         // The BRKGA_MP_IPR algorithm object.
         BRKGA_MP_IPR<MyDecoder> algorithm(
             decoder, BRKGA::Sense::MAXIMIZE, seed, chr_size, brkga_params,
-            evolutionary_mechanism_on, max_threads
+            max_threads, evolutionary_mechanism_on
         );
 
         // A random number generator.
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
             << " | time: " << status.current_time
             << endl;
 
-            return true;    // Don't stop the oiptimization.
+            return true;    // Don't stop the optimization.
         });
 
         algorithm.setStoppingCriteria(

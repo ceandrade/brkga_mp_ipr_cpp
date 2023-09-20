@@ -1100,7 +1100,7 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
             else {
                 std::stringstream error_msg;
                 error_msg
-                << "Warning: parameter '" << param.first
+                << "WARNING: parameter '" << param.first
                 << "' was not supplied in the config file. Using default value.";
                 logger << error_msg.str() << "\n";
             }
@@ -1122,7 +1122,7 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
     default:
         std::stringstream error_msg;
         error_msg
-        << "Warning: distance function set to '"
+        << "WARNING: distance function set to '"
         << brkga_params.pr_distance_function_type << "'. "
         << "The user must supply his/her own distance functor if using IPR.";
         logger << error_msg.str() << "\n";
@@ -1131,7 +1131,7 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
 
     // Check shaking procedure.
     if(brkga_params.shaking_type == ShakingType::CUSTOM) {
-        logger << "Warning: shaking distance set to 'CUSTOM'. "
+        logger << "WARNING: shaking distance set to 'CUSTOM'. "
                    "The user must supply his/her own if using shaking.";
     }
 
@@ -1166,24 +1166,9 @@ readConfiguration(const std::string& filename,
 // Writing the parameters into file
 //----------------------------------------------------------------------------//
 
-/**
- * \brief Writes the parameters into a output stream.
- *
- * \note All floating point parameters are written with two point precision.
- *
- * \param output the output stream.
- * \param brkga_params the BRKGA parameters.
- * \param control_params the external control parameters. Default is an empty
- *        object.
- * \throw std::fstream::failure in case of errors in the file.
- * \todo This method can beneficiate from introspection tools.
- *       We would like achieve a code similar to the
- *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
- */
-INLINE void writeConfiguration(std::ostream& output,
-        const BrkgaParams& brkga_params,
-        const ControlParams& control_params = ControlParams{}) {
-    output
+INLINE std::ostream&
+operator<<(std::ostream& os, const BrkgaParams& brkga_params) {
+    os
     << "population_size " << brkga_params.population_size << "\n"
     << std::setiosflags(std::ios::fixed) << std::setprecision(2)
     << "elite_percentage " << brkga_params.elite_percentage << "\n"
@@ -1204,14 +1189,40 @@ INLINE void writeConfiguration(std::ostream& output,
     << brkga_params.num_exchange_individuals << "\n"
     << "shaking_type " << brkga_params.shaking_type << "\n"
     << "shaking_intensity_lower_bound " << brkga_params.shaking_intensity_lower_bound << "\n"
-    << "shaking_intensity_upper_bound " << brkga_params.shaking_intensity_upper_bound << "\n"
+    << "shaking_intensity_upper_bound " << brkga_params.shaking_intensity_upper_bound << "\n";
+    return os;
+}
+
+INLINE std::ostream&
+operator<<(std::ostream& os, const ControlParams& control_params) {
+    os
     << "maximum_running_time " << control_params.maximum_running_time << "\n"
     << "exchange_interval " << control_params.exchange_interval << "\n"
     << "shake_interval " << control_params.shake_interval << "\n"
     << "ipr_interval " << control_params.ipr_interval << "\n"
     << "reset_interval " << control_params.reset_interval << "\n"
-    << "stall_offset " << control_params.stall_offset
-    << std::endl;
+    << "stall_offset " << control_params.stall_offset;
+    return os;
+}
+
+/**
+ * \brief Writes the parameters into a output stream.
+ *
+ * \note All floating point parameters are written with two point precision.
+ *
+ * \param output the output stream.
+ * \param brkga_params the BRKGA parameters.
+ * \param control_params the external control parameters. Default is an empty
+ *        object.
+ * \throw std::fstream::failure in case of errors in the file.
+ * \todo This method can beneficiate from introspection tools.
+ *       We would like achieve a code similar to the
+ *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
+ */
+INLINE void writeConfiguration(std::ostream& output,
+        const BrkgaParams& brkga_params,
+        const ControlParams& control_params = ControlParams{}) {
+    output << brkga_params << control_params << "\n";
 }
 
 //----------------------------------------------------------------------------//
@@ -1333,8 +1344,8 @@ std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
     << "\nlast_update_iteration: " << status.last_update_iteration
     << "\ncurrent_time: " << status.current_time
     << "\nlast_update_time: " << status.last_update_time
-    << "\nlargest_offset: " << status.largest_iteration_offset
-    << "\nstall: " << status.stalled_iterations
+    << "\nlargest_iteration_offset: " << status.largest_iteration_offset
+    << "\nstalled_iterations: " << status.stalled_iterations
     << "\npath_relink_time: " << status.path_relink_time
     << "\nnum_path_relink_calls: " << status.num_path_relink_calls
     << "\nnum_homogenities: " << status.num_homogenities

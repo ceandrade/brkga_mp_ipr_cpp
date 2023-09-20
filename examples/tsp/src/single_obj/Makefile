@@ -5,7 +5,7 @@
 # All Rights Reserved.
 #
 # Created on : Mar 05, 2019 by ceandrade
-# Last update: Sep 19, 2023 by ceandrade
+# Last update: Sep 20, 2023 by ceandrade
 #
 # This code is released under BRKGA-MP-IPR License:
 # https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -27,7 +27,7 @@
 # User Defines
 ###############################################################################
 
-# Optimization switch
+# Optimization switch. If ommitted/commented, the debug mode is used.
 OPT = opt
 
 # Determines how the mating process will happen regarding reproducibility.
@@ -58,31 +58,39 @@ USER_FLAGS += -DMATING_FULL_SPEED
 # Build options
 ###############################################################################
 
-# Include dir
+# Include folders.
 INCLUDES = \
 	-I. \
 	-I./brkga_mp_ipr
 
-# Objects
+# Objects.
 OBJS = \
 	./tsp/tsp_instance.o \
 	./heuristics/greedy_tour.o \
 	./decoders/tsp_decoder.o \
 	./decoders/tsp_decoder_pre_allocating.o
 
+# Helpers.
+UTIL_OBJS = \
+	./third_part/docopt/docopt.o
+
+# Main files.
+MAIN_MINIMAL_OBJ = main_minimal.o
+MAIN_MINIMAL_EXE = main_minimal
+
 MAIN_COMPLETE_OBJ = main_complete.o
 MAIN_COMPLETE_EXE = main_complete
 
-MAIN_MINIMAL_OBJ = main_minimal.o
-MAIN_MINIMAL_EXE = main_minimal
+MAIN_DETAILED_OBJ = main_detailed.o
+MAIN_DETAILED_EXE = main_detailed
 
 ###############################################################################
 # Compiler, linker, and flags
 ###############################################################################
 
 # C++ Compiler command and flags
-# CXX = g++
-CXX = clang++
+CXX = g++
+# CXX = clang++
 
 USER_FLAGS += -std=c++20
 
@@ -131,9 +139,9 @@ main_minimal: $(OBJS) $(MAIN_MINIMAL_OBJ)
 	$(CXX) $(CXXFLAGS) $(OBJS) $(MAIN_MINIMAL_OBJ) -o $(MAIN_MINIMAL_EXE)
 	@echo
 
-main_complete: $(OBJS) $(MAIN_COMPLETE_OBJ)
+main_complete: $(UTIL_OBJS) $(OBJS) $(MAIN_COMPLETE_OBJ)
 	@echo "--> Linking objects... "
-	$(CXX) $(CXXFLAGS) $(OBJS) $(MAIN_COMPLETE_OBJ) -o $(MAIN_COMPLETE_EXE)
+	$(CXX) $(CXXFLAGS) $(UTIL_OBJS) $(OBJS) $(MAIN_COMPLETE_OBJ) -o $(MAIN_COMPLETE_EXE)
 	@echo
 
 .cpp.o:
@@ -143,7 +151,8 @@ main_complete: $(OBJS) $(MAIN_COMPLETE_OBJ)
 
 clean:
 	@echo "--> Cleaning compiled..."
-	rm -rf $(OBJS) $(MAIN_MINIMAL_OBJ) $(MAIN_COMPLETE_OBJ) $(MAIN_MINIMAL_EXE) $(MAIN_COMPLETE_EXE)
+	rm -rf $(UTIL_OBJS) $(OBJS) $(MAIN_MINIMAL_OBJ) $(MAIN_COMPLETE_OBJ) \
+$(MAIN_MINIMAL_EXE) $(MAIN_COMPLETE_EXE)
 	rm -rf *o
 	rm -rf Debug
 	rm -rf *.dSYM

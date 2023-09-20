@@ -3,9 +3,9 @@
  *      thread-safe TSP_Decoder class.
  *
  * Created on : May 03, 2019 by andrade
- * Last update: Nov 30, 2021 by andrade
+ * Last update: Sep 20, 2023 by andrade
  *
- * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2023, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  * This code is released under BRKGA-MP-IPR License:
@@ -64,11 +64,12 @@ public:
 
 protected:
     /// Defines a vector that holds node permutations during the decoding.
-    typedef std::vector<std::pair<double, unsigned>> Permutation;
+    using Permutation = std::vector<std::pair<double, unsigned>>;
 
-    /// For each thread, pre-allocate and hold memory for node permutation
-    /// during the decode. All memory is allocated in the constructor,
-    /// speeding up the decode process.
+    /** For each thread, pre-allocate and hold memory for node permutation
+     * during the decode. All memory is allocated in the constructor,
+     * speeding up the decode process.
+     */
     std::vector<Permutation> permutation_per_thread;
 };
 
