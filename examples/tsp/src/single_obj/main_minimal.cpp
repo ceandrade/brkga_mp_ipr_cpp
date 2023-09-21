@@ -55,6 +55,7 @@ int main(int argc, char* argv[]) {
         const unsigned seed = stoi(argv[1]);
         const string config_file = argv[2];
         const string instance_file = argv[4];
+        const unsigned num_threads = 4;
 
         cout << "Reading data..." << endl;
         auto instance = TSP_Instance(instance_file);
@@ -81,7 +82,7 @@ int main(int argc, char* argv[]) {
 
         BRKGA::BRKGA_MP_IPR<TSP_Decoder> algorithm(
             decoder, BRKGA::Sense::MINIMIZE, seed,
-            instance.num_nodes, brkga_params, 4
+            instance.num_nodes, brkga_params, num_threads
         );
 
         ////////////////////////////////////////
