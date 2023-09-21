@@ -287,7 +287,7 @@ Options:
         log("Optimizing...");
         cout << "* Iteration | Cost | LargestEdge | CurrentTime" << endl;
 
-        auto final_status = algorithm.run(control_params, &cout);
+        const auto final_status = algorithm.run(control_params, &cout);
 
         log("End of optimization");
         cout << "\n> Final status:" << final_status << endl;

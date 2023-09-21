@@ -91,12 +91,11 @@ int main(int argc, char* argv[]) {
         cout << "Running for " << control_params.maximum_running_time << "..."
              << endl;
 
-        auto final_status = algorithm.run(control_params, &cout);
-        auto best_cost = algorithm.getBestFitness();
+        const auto final_status = algorithm.run(control_params, &cout);
 
         cout
         << "\nAlgorithm status: " << final_status
-        << "\n\nBest cost: " << best_cost
+        << "\n\nBest cost: " << final_status.best_fitness
         << endl;
     }
     catch(exception& e) {

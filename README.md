@@ -112,9 +112,9 @@ If you are not familiar with how BRKGA works, take a look on
 ### API enhancements
 
 On version 2.0, we claimed that BRKGA-MP-IPR was a very easy-to-use framework.
-But, few people told me this statement was not even true. The main complaint
+But, few people told me this statement was not even true. The main complaining
 was that while the features were very nice, tightening them together was hard,
-even using the provided examples (add a file here).
+even using the provided examples.
 
 Now, BRKGA-MP-IPR supplies a method called `run()`. It implements the entire
 pipeline using all framework features in a chain-like way, similar to the
@@ -144,11 +144,11 @@ where `control_params` is an instance of the new class `ControlParams`
 optimization like total time, iteration counting, and more (check the full
 documentation for that).
 
-So, users need no more write fine control loops unless they need/want. Just set
-some control parameters (and some other callbacks (described below) if you
-like), and you are good to go!
+So, users need no more write fine control loops unless they need/want.
+Just set some control parameters (and some other callbacks, described below,
+if you like), and you are good to go!
 
-Supporting `run()`, we have two new methods:
+Supporting `run()`, we have three new methods:
 
 - `setStoppingCriteria()`: while method `run()` sets automatically maximum time
   or maximum stalled iterations (without improvement in the best solution) as
@@ -199,6 +199,15 @@ Supporting `run()`, we have two new methods:
   );
   ```
 
+- `setShakingMethod()`: This method adds a custom shaking procedure defined
+  by the user. Please, refer to its documentation for more details.
+
+Less important but still relevant: previously, one must call `initialize()`
+before any method that manipulated the population. Also, since `initialize()`
+(re)decodes the population, we have to measure its running time too. Now,
+`initialize()` is called on the need by its fellow methods internally. This
+leads to fewer error-prone codes.
+
 ### BRKGA and control parameters
 
 Although this is part of API enhancement, it deserves special attention. Now,
@@ -214,13 +223,6 @@ no-required parameters are not set.
 | :warning: Warning          |
 |:---------------------------|
 | If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is the core stopping criteria on IPR.
-
-### No more `initialize()`
-
-Previously, one must call `initialize()` before any method that manipulated the
-population. Also, since `initialize()` (re)decodes the population, we have to
-measure its running time too. Now, `initialize()` is called on the need by its
-fellow methods internally. This leads to fewer error-prone codes.
 
 ### Code modernizing and speed bump
 
@@ -356,16 +358,16 @@ int main() {
 Then, let's compile and see it works:
 
   $ g++ --version
-  g++ (MacPorts gcc10 10.3.0_0) 10.3.0
+  g++ (MacPorts gcc12 12.3.0_0+stdlib_flag) 12.3.0
 
-  $ g++ -std=c++17 -Ibrkga_mp_ipr/brkga_mp_ipr test.cpp -o test
+  $ g++ -std=c++20 -Ibrkga_mp_ipr/brkga_mp_ipr test.cpp -o test
 
   $ ./test
   Testing sense: MINIMIZE
 
 Note the Git clones the whole repository that contains the library code,
 documents, and examples. All the examples were built using
-[GNU/Make](https://www.gnu.org/software/make/) and
+[GNU/Make](https://www.gnu.org/software/make) and
 [GCC toolchain](https://gcc.gnu.org). However, the code is standard C++,
 and we can quickly adapt it to other toolchains such as
 [Clang](https://clang.llvm.org),
@@ -391,7 +393,7 @@ This is a trimmed copy:
 
 namespace BRKGA {
 
-typedef double fitness_t;
+using fitness_t = double;
 
 //...
 } // end namespace BRKGA_MP_IPR
@@ -406,42 +408,83 @@ This is a trimmed copy:
 #include "tsp/tsp_instance.hpp"
 #include "decoders/tsp_decoder.hpp"
 #include "brkga_mp_ipr.hpp"
+
+#include <chrono>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+
 using namespace std;
 
 int main(int argc, char* argv[]) {
     if(argc < 4) {
-        cerr << "Usage: "<< argv[0]
-             << " <seed> <config-file> <num-generations>"
-                " <tsp-instance-file>" << endl;
+        cerr
+        << "Usage: " << argv[0]
+        << " <seed> <config-file> <maximum-running-time>"
+        << " <tsp-instance-file>"
+        << endl;
         return 1;
     }
 
-    const unsigned seed = stoi(argv[1]);
-    const string config_file = argv[2];
-    const unsigned num_generations = stoi(argv[3]);
-    const string instance_file = argv[4];
+    try {
+        ////////////////////////////////////////
+        // Read command-line arguments and the instance
+        ////////////////////////////////////////
 
-    auto instance = TSP_Instance(instance_file);
+        const unsigned seed = stoi(argv[1]);
+        const string config_file = argv[2];
+        const string instance_file = argv[4];
 
-    auto [brkga_params, control_params] =
-          BRKGA::readConfiguration(config_file);
+        cout << "Reading data..." << endl;
+        auto instance = TSP_Instance(instance_file);
 
-    TSP_Decoder decoder(instance);
+        ////////////////////////////////////////
+        // Read algorithm parameters
+        ////////////////////////////////////////
 
-    BRKGA::BRKGA_MP_IPR<TSP_Decoder> algorithm(
+        cout << "Reading parameters..." << endl;
+
+        auto [brkga_params, control_params] =
+            BRKGA::readConfiguration(config_file);
+
+        // Overwrite the maximum time from the config file.
+        control_params.maximum_running_time = chrono::seconds {stoi(argv[3])};
+
+        ////////////////////////////////////////
+        // Build the BRKGA data structures
+        ////////////////////////////////////////
+
+        cout << "Building BRKGA data and initializing..." << endl;
+
+        TSP_Decoder decoder(instance);
+
+        BRKGA::BRKGA_MP_IPR<TSP_Decoder> algorithm(
             decoder, BRKGA::Sense::MINIMIZE, seed,
-            instance.num_nodes, brkga_params);
+            instance.num_nodes, brkga_params, 4
+        );
 
-    algorithm.initialize();
+        ////////////////////////////////////////
+        // Find good solutions / evolve
+        ////////////////////////////////////////
 
-    algorithm.evolve(num_generations);
+        cout << "Running for " << control_params.maximum_running_time << "..."
+             << endl;
 
-    auto best_cost = algorithm.getBestFitness();
-    cout << "Best cost: " << best_cost;
+        const auto final_status = algorithm.run(control_params, &cout);
 
+        cout
+        << "\nAlgorithm status: " << final_status
+        << "\n\nBest cost: " << final_status.best_fitness
+        << endl;
+    }
+    catch(exception& e) {
+        cerr
+        << "\n" << string(40, '*') << "\n"
+        << "Exception Occurred: " << e.what()
+        << "\n" << string(40, '*')
+        << endl;
+        return 1;
+    }
     return 0;
 }
 ```
@@ -456,24 +499,19 @@ You can identify the following basic steps:
    has the correct type;
 
 3. Implement a decoder object/functor. This function translates a chromosome
-   (array of numbers in the interval [0,1]) to a solution for your problem. The
-   decoder must return the solution value or cost to be used as fitness by BRKGA
-   (example
+   (array of numbers in the interval [0, 1]) to a solution for your problem.
+   The decoder must return the solution value or cost to be used as fitness
+   by BRKGA (example
    [`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/decoders/tsp_decoder.hpp));
 
 4. Load the instance and other relevant data;
 
 5. Read the algorithm parameters using `BRKGA::readConfiguration()`; or
-   create a `BRKGA::BrkgaParams` object by hand;
+   create a `BRKGA::BrkgaParams` and `BRKGA::ControlParams` objects by hand;
 
 6. Create an `BRKGA::BRKGA_MP_IPR` algorithm object;
 
-7. Call `BRKGA::BRKGA_MP_IPR::initialize()` to init the BRKGA state;
-
-8. Call `BRKGA::BRKGA_MP_IPR::evolve()` to optimize;
-
-9. Call `BRKGA::BRKGA_MP_IPR::getBestFitness()` and/or
-   `BRKGA::BRKGA_MP_IPR::getBestChromosome()` to retrieve the best solution.
+7. Call `BRKGA::BRKGA_MP_IPR::run()` to optimize.
 
 [`main_minimal.cpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp)
 provides a very minimal example to understand the necessary steps to use the
@@ -511,7 +549,7 @@ to reflect such a thing. In this example, we use the standard `std::tuple`:
 
 namespace BRKGA {
 
-typedef std::tuple<double, double> fitness_t;
+using fitness_t = std::tuple<double, double>;
 
 //...
 } // end namespace BRKGA_MP_IPR
@@ -536,7 +574,7 @@ We provide a very thorough and easy-to-follow tutorial on using BRKGA effectivel
 We strongly recommend you read the tutorial to make your code works at best within BRKGA.
 
 Check out the tutorial and API documentation:
-https://ceandrade.github.io/brkga_mp_ipr_cpp
+<https://ceandrade.github.io/brkga_mp_ipr_cpp>
 
 :black_nib: License and Citing
 --------------------------------------------------------------------------------

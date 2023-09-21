@@ -91,16 +91,15 @@ int main(int argc, char* argv[]) {
         cout << "Running for " << control_params.maximum_running_time << "..."
              << endl;
 
-        auto final_status = algorithm.run(control_params, &cout);
-        auto best_cost = algorithm.getBestFitness();
+        const auto final_status = algorithm.run(control_params, &cout);
 
         // Use the following to print tuples directly.
         // using BRKGA::operator<<;
 
         cout
         << "\nAlgorithm status: " << final_status
-        << "\n\nBest cost: " << get<0>(best_cost)
-        << "\nLargest edge: " << get<1>(best_cost)
+        << "\n\nBest cost: " << get<0>(final_status.best_fitness)
+        << "\nLargest edge: " << get<1>(final_status.best_fitness)
         << endl;
     }
     catch(exception& e) {
