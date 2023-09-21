@@ -35,7 +35,7 @@ Table of Contents
 - :high_brightness: [What is new on version 3.0](#high_brightness-what-is-new-on-version-3.0)
   - [API enhancements](#api-enhancements)
   - [BRKGA and control parameters](#brkga-and-control-parameters)
-  - [No more `initialize()`](#no-more-initialize)
+  - [Code modernizing and speed bump](#code-modernizing-and-speed-bump)
 - :high_brightness: [What is new on version 2.0](#high_brightness-what-is-new-on-version-2.0)
   - [Multiples objectives (Lexicographically)](#multiples-objectives-lexicographically)
   - [Multi-thread mating](#multi-thread-mating)
