@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 20, 2023 by ceandrade.
+ * Last update: Sep 21, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -72,13 +72,11 @@
 #include <utility>
 #include <vector>
 
-/** This includes helpers to read and write enums.
- *
- * \note
- *     Due to some weird scope resolution within clang compilers,
- *     we must imbue the enum facilities into namespace BRKGA.
- *     This does not happen with g++. We have not test to MSVC.
- */
+// This includes helpers to read and write enums.
+//
+// NOTE: Due to some weird scope resolution within clang compilers,
+// we must imbue the enum facilities into namespace BRKGA.
+// This does not happen with g++. We have not test to MSVC.
 namespace BRKGA {
 #include "third_part/enum_io.hpp"
 }
@@ -86,6 +84,18 @@ namespace BRKGA {
 //----------------------------------------------------------------------------//
 
 /**
+ * \defgroup compiler_directives Compiler directives
+ *
+ * Changes the behavior of the code according to the user supplied directives.
+ * Usually, pass by flag `-D` (in GCC and Clang). For instance,
+ *
+ *   $ gcc -DBRKGA_MULTIPLE_INCLUSIONS code.cpp -o code.o
+ */
+///@{
+
+/**
+ * \brief Allows inclusion within multiple translation units.
+ *
  * If we need to include this file in multiple translation units (files) that
  * are compiled separately, we have to `inline` some functions and template
  * definitions to avoid multiple definitions and linking problems. However,
@@ -93,64 +103,117 @@ namespace BRKGA {
  * compiler may complain about too many inline functions, if you are already
  * using several inline functions.
  */
+#ifdef DOXYGEN_DOC_MACROS
+    #define BRKGA_MULTIPLE_INCLUSIONS
+#endif
+
 #ifdef BRKGA_MULTIPLE_INCLUSIONS
+    /// \cond DOXYGEN_IGNORE_THIS
     #define INLINE inline
+    /// \endcond
 #else
+    /// \cond DOXYGEN_IGNORE_THIS
     #define INLINE
+    /// \endcond
 #endif
 
 //----------------------------------------------------------------------------//
 
 /**
+ * \name Mating control directives
  * These preprocessor flags determine how the mating process will happen
  * regarding reproducibility. One of the following options should be used.
  * If more than one is given, MATING_FULL_SPEED takes priority over
- * MATING_SEED_ONLY, which takes priority over MATING_SEQUENTIAL. If no option
- * is supplied, BRKGA-MP-IPR assume MATING_FULL_SPEED.
+ * MATING_SEED_ONLY, which takes priority over MATING_SEQUENTIAL.
+ * If no option is supplied, BRKGA-MP-IPR assume MATING_FULL_SPEED.
+ */
+///@{
+
+/**
+ * \brief Enables full speed parallel mating.
  *
  * At full speed (MATING_FULL_SPEED), the mating process is done in parallel,
  * using independent RNGs. The results are reproducible if and only if you use
  * the same seed and the same number of threads.
+ */
+#ifdef DOXYGEN_DOC_MACROS
+    #define MATING_FULL_SPEED
+#endif
+
+/**
+ * \brief Enables Seed-only parallel mating.
  *
  * Using MATING_SEED_ONLY, the mating is still parallel, but each RNG is
  * seeded on each mating. This is a little bit slower than full speed, but we
  * depend only on the seed, regardless of the number of threads. I.e., Runs
  * with a different number of threads, but the same seed should result in the
  * same sequence of decisions.
+ */
+#ifdef DOXYGEN_DOC_MACROS
+    #define MATING_SEED_ONLY
+#endif
+
+/**
+ * \brief Enables sequential mating.
  *
  * Using MATING_SEQUENTIAL, the mating process is completely sequential,
  * as in the original BRKGA. The reproducibility is guaranteed with only
  * the same seed. This option can be very slow for large chromosomes and
  * large populations. But it makes debugging easier.
  */
-#if defined(MATING_FULL_SPEED)
-    #undef MATING_SEQUENTIAL
-    #undef MATING_SEED_ONLY
-#elif defined(MATING_SEED_ONLY)
-    #undef MATING_SEQUENTIAL
-    #undef MATING_FULL_SPEED
-#elif defined(MATING_SEQUENTIAL)
-    #undef MATING_SEED_ONLY
-    #undef MATING_FULL_SPEED
-#else
-    #define MATING_FULL_SPEED
+#ifdef DOXYGEN_DOC_MACROS
+    #define MATING_SEQUENTIAL
 #endif
+
+#if defined(MATING_FULL_SPEED)
+    #undef MATING_SEED_ONLY
+    #undef MATING_SEQUENTIAL
+#elif defined(MATING_SEED_ONLY)
+    #undef MATING_FULL_SPEED
+    #undef MATING_SEQUENTIAL
+#elif defined(MATING_SEQUENTIAL)
+    #undef MATING_FULL_SPEED
+    #undef MATING_SEED_ONLY
+#else
+    /// \cond DOXYGEN_IGNORE_THIS
+    #define MATING_FULL_SPEED
+    /// \endcond
+#endif
+///@} mating_directives
+///@} compiler_directives
+
+//----------------------------------------------------------------------------//
+// Namespace BRKGA: the main namespace
+//----------------------------------------------------------------------------//
+
+/**
+ * \brief This namespace contains all facilities related to BRKGA Multi Parent
+ * with Implicit Path Relinking.
+ */
+namespace BRKGA {}
+
+/// Holds the enumerations for Path Relinking algorithms.
+namespace BRKGA::PathRelinking {}
 
 //----------------------------------------------------------------------------//
 // Streaming operators
 //----------------------------------------------------------------------------//
 
-/** \name I/O chrono help functions.
- * Define some helpers for chrono types.
+/**
+ * \defgroup chrono_helpers I/O chrono help functions
+ *
+ * Defines some helpers for chrono types.
  * \todo These functions may not be necessary for C++23,
  *       since streaming operators for chrono types are defined there.
  */
-//@{
+///@{
 #if __cplusplus < 202300L
 
 // For GCC, we must inject these direct into BRKGA namespace.
 #ifndef __clang__
+/// \cond DOXYGEN_IGNORE_THIS
 namespace BRKGA {
+/// \endcond
 #endif
 
 /// Helper concept that only accept std::duration types.
@@ -161,10 +224,18 @@ concept DurationType =
         std::chrono::duration<typename T::rep, typename T::period>
     >;
 
-/** To the date, we have no operator>> for reading std::chrono.
+/**
+ * \brief Input stream operator for std::chrono durations.
+ *
+ * Until C++20, we have no operator>> for reading std::chrono.
  * So, the following definition is only for reading seconds.
  * We first read the integer representation of a second,
  * then convert it to the duration.
+ *
+ * \tparam durantion_t a chrono::duration type.
+ * \param is the input stream.
+ * \param duration the duration
+ * \return the input stream.
  */
 template<DurationType durantion_t>
 INLINE std::istream&
@@ -175,79 +246,41 @@ operator>>(std::istream& is, durantion_t& duration) {
     return is;
 }
 
-/** To the date, libc (clang) has no support to stream chrono objects.
+#if defined(__clang__) && !defined(_LIBCPP_HAS_NO_LOCALIZATION)
+/**
+ * \brief Output stream operator for chrono durations (and seconds) for
+ *        Clang/libc.
+ *
+ * To the date, libc (clang) has no support to stream chrono objects.
  * This is a working around only for seconds.
  * \todo: remove this when clang/libc get the support.
+ *
+ * \param os the output operator.
+ * \param dur the duration.
+ * \return the output operator.
  */
-#if defined(__clang__) && !defined(_LIBCPP_HAS_NO_LOCALIZATION)
 INLINE std::ostream&
 operator<<(std::ostream& os, const std::chrono::duration<double>& dur) {
     os << dur.count() << "s";
     return os;
 }
 #endif // __clang__
+
 #ifndef __clang__
-} // end of namespace BRKGA
+} // end of namespace BRKGA for GCC
 #endif
+
 #endif // __cplusplus
-//@}
-
-// /** \name I/O helpers for tuples.
-//  * Define some helpers functions to print tuples.
-//  */
-// //@{
-
-// // For GCC, we must inject these direct into BRKGA namespace.
-// #ifndef __clang__
-// namespace BRKGA {
-// #endif
-
-// /** \brief the "recursive" helper function to print tuples.
-// * \tparam Is the number of types in the tuple template.
-//  * \tparam Ts the tuple types.
-//  * \param os an output stream object.
-//  * \param tp the tuple.
-//  */
-// template <std::size_t... Is, typename... Ts>
-// void print_tuple(std::ostream& os, const std::tuple<Ts...>& tp,
-//                  std::index_sequence<Is...>) {
-//     ((os << (Is == 0 ? "" : ", ") << std::get<Is>(tp)), ...);
-// }
-
-// /** \brief Output streaming operator for tuples.
-//  * \tparam Ts the tuple types.
-//  * \param os an output stream object.
-//  * \param tp the tuple.
-//  * \return a reference to the output stream object.
-//  */
-// template <typename... Ts>
-// std::ostream& operator<<(std::ostream& os, const std::tuple<Ts...>& tp) {
-//     os << "(";
-//     print_tuple(os, tp, std::index_sequence_for<Ts...>());
-//     os << ")";
-//     return os;
-// }
-// #ifndef __clang__
-// } // end of namespace BRKGA
-// #endif
-// //@}
-
-//----------------------------------------------------------------------------//
-// Namespace BRKGA: the main namespace
-//----------------------------------------------------------------------------//
-
-/**
- * \brief This namespace contains all stuff related to BRKGA Multi Parent
- * with Implicit Path Relinking.
- */
-namespace BRKGA {
+///@} chrono_helpers
 
 //----------------------------------------------------------------------------//
 // Forward declarations
 //----------------------------------------------------------------------------//
 
+namespace BRKGA {
+
 // Captures the external operators for clang.
-// \todo Remove this when C++23 comes up.
+// TODO: Remove this when C++23 comes up.
 #if defined(__clang__)
     using ::operator<<;
     using ::operator>>;
@@ -259,18 +292,17 @@ class Population;
 // Utility functions
 //----------------------------------------------------------------------------//
 
-namespace {
-
-/** \name Functions for equality comparisons
+/**
+ * \defgroup utility_functions Functions for equality comparisons
  *
- * This is a helper function that, at compiler time, detect if the `fitness_t`
+ * These are helper functions that, at compiler time, detect if the `fitness_t`
  * is a floating point type, and applies the absolute diference. Otherwise,
  * the compiler generates the equality comparison.
  */
-//@{
+///@{
 
 /**
- * \brief Compare two values to equality.
+ * \brief Compares two values to equality.
  *
  * If these values are real numbers, we compare their absolute difference with
  * `EQUALITY_THRESHOLD`, i.e., \f$|a - b| < EQUALITY\_THRESHOLD\f$. In other
@@ -290,7 +322,7 @@ constexpr bool close_enough(T a, T b) {
 }
 
 /**
- * \brief Compare two tuples to equality.
+ * \brief Compares two tuples to equality.
  *
  * This specialization iterates, recursively, of each tuples' members and
  * compares them. Note that this is done in compilation time, with no impact at
@@ -312,8 +344,7 @@ constexpr bool close_enough(std::tuple<T, Ts...> a, std::tuple<T, Ts...> b)
         return close_enough(std::get<I>(a), std::get<I>(b)) &&
                close_enough<I + 1>(a, b);
 }
-//@}
-} // end namespace
+///@} utility_functions
 
 //----------------------------------------------------------------------------//
 // Enumerations
@@ -325,78 +356,11 @@ enum class Sense {
     MAXIMIZE = true    ///< Maximization.
 };
 
-/// Holds the enumerations for Path Relinking algorithms.
-namespace PathRelinking {
-
-/// Specifies type of path relinking.
-enum class Type {
-    /// Changes each key for the correspondent in the other chromosome.
-    DIRECT,
-
-    /// Switches the order of a key for that in the other chromosome.
-    PERMUTATION
-};
-
-/// Specifies which individuals used to build the path.
-enum class Selection {
-    /// Selects, in the order, the best solution of each population.
-    BESTSOLUTION,
-
-    /// Chooses uniformly random solutions from the elite sets.
-    RANDOMELITE
-};
-
-/// Specifies the distance function between two chromosomes during IPR.
-enum class DistanceFunctionType {
-    /// Uses the default Hamming distance calculator.
-    HAMMING,
-
-    /// Uses the default KendallTau distance calculator.
-    KENDALLTAU,
-
-    /// Indicates a custom function supplied by the user.
-    CUSTOM
-};
-
-/// Specifies the result type/status of path relink procedure.
-enum class PathRelinkingResult {
-    /** The chromosomes among the populations are too homogeneous and the path
-     * relink will not generate improveded solutions.
-     */
-    TOO_HOMOGENEOUS = 0,
-
-    /// Path relink was done but no improveded solution was found.
-    NO_IMPROVEMENT = 1,
-
-    /** An improved solution among the elite set was found, but the best
-     * solution was not improved.
-     */
-    ELITE_IMPROVEMENT = 3,
-
-    /// The best solution was improved.
-    BEST_IMPROVEMENT = 7
-};
-
 /**
- *  \brief Perform bitwise `OR` between two `PathRelinkingResult` returning
- *         the highest rank `PathRelinkingResult`.
+ * \brief Specifies a bias function type when choosing parents to mating
+ * (`r` is a given parameter).
  *
- *  For example
- *  - TOO_HOMOGENEOUS | NO_IMPROVEMENT == NO_IMPROVEMENT
- *  - NO_IMPROVEMENT | ELITE_IMPROVEMENT == ELITE_IMPROVEMENT
- *  - ELITE_IMPROVEMENT | BEST_IMPROVEMENT == BEST_IMPROVEMENT
- */
-inline PathRelinkingResult& operator|=(PathRelinkingResult& lhs,
-                                       PathRelinkingResult rhs) {
-    lhs = PathRelinkingResult(static_cast<unsigned>(lhs) |
-                              static_cast<unsigned>(rhs));
-    return lhs;
-}
-} // namespace PathRelinking
-
-/** Specifies a bias function type when choosing parents to mating
- * (`r` is a given parameter). This function substitutes the `rhoe`
- * parameter from the original BRKGA.
+ * This function substitutes the `rhoe` parameter from the original BRKGA.
  */
 enum class BiasFunctionType {
     // 1 / num. parents for mating
@@ -431,14 +395,16 @@ enum class BiasFunctionType {
 
 /// Specifies the type of shaking to be performed.
 enum class ShakingType {
-    /** Applies the following perturbations:
+    /**
+     * Applies the following perturbations:
      *  1. Inverts the value of a random chosen, i.e., from `value` to
      *     `1 - value`;
      *  2. Assigns a random value to a random key.
      */
     CHANGE,
 
-    /** Applies two swap perturbations:
+    /**
+     * Applies two swap perturbations:
      *  1. Swaps the values of a randomly chosen key `i` and its
      *     neighbor `i + 1`;
      *  2. Swaps values of two randomly chosen keys.
@@ -449,6 +415,81 @@ enum class ShakingType {
     CUSTOM
 };
 
+// Holds the enumerations for Path Relinking algorithms.
+namespace PathRelinking {
+
+/// Specifies type of path relinking.
+enum class Type {
+    /// Changes each key for the correspondent in the other chromosome.
+    DIRECT,
+
+    /// Switches the order of a key for that in the other chromosome.
+    PERMUTATION
+};
+
+/// Specifies which individuals used to build the path.
+enum class Selection {
+    /// Selects, in the order, the best solution of each population.
+    BESTSOLUTION,
+
+    /// Chooses uniformly random solutions from the elite sets.
+    RANDOMELITE
+};
+
+/// Specifies the distance function between two chromosomes during IPR.
+enum class DistanceFunctionType {
+    /// Uses the default Hamming distance calculator.
+    HAMMING,
+
+    /// Uses the default KendallTau distance calculator.
+    KENDALLTAU,
+
+    /// Indicates a custom function supplied by the user.
+    CUSTOM
+};
+
+/// Specifies the result type/status of path relink procedure.
+enum class PathRelinkingResult {
+    /**
+     * The chromosomes among the populations are too homogeneous and the path
+     * relink will not generate improveded solutions.
+     */
+    TOO_HOMOGENEOUS = 0,
+
+    /// Path relink was done but no improveded solution was found.
+    NO_IMPROVEMENT = 1,
+
+    /**
+     * An improved solution among the elite set was found, but the best
+     * solution was not improved.
+     */
+    ELITE_IMPROVEMENT = 3,
+
+    /// The best solution was improved.
+    BEST_IMPROVEMENT = 7
+};
+
+/**
+ * \brief Performs bitwise `OR` between two `PathRelinkingResult` returning
+ *        the highest rank `PathRelinkingResult`.
+ *
+ *  For example
+ *  - TOO_HOMOGENEOUS | NO_IMPROVEMENT == NO_IMPROVEMENT
+ *  - NO_IMPROVEMENT | ELITE_IMPROVEMENT == ELITE_IMPROVEMENT
+ *  - ELITE_IMPROVEMENT | BEST_IMPROVEMENT == BEST_IMPROVEMENT
+ *
+ * \param lhs the left-hand side status (lvalue).
+ * \param rhs the right-hand side status (rvalue).
+ * \return a PathRelinkingResult according to the table above.
+ */
+inline PathRelinkingResult& operator|=(PathRelinkingResult& lhs,
+                                       PathRelinkingResult rhs) {
+    lhs = PathRelinkingResult(static_cast<unsigned>(lhs) |
+                              static_cast<unsigned>(rhs));
+    return lhs;
+}
+} // namespace PathRelinking
+
 //----------------------------------------------------------------------------//
 // I/O helpers
 //----------------------------------------------------------------------------//
@@ -458,7 +499,7 @@ enum class ShakingType {
 //----------------------------------------//
 
 /**
- * \name Template specializations for enum I/O.
+ * \defgroup enum_io_templates Template specializations for enum I/O.
  *
  * Using slightly modified template class provided by Bradley Plohr
  * (https://codereview.stackexchange.com/questions/14309/conversion-between-enum-and-string-in-c-class-header)
@@ -473,15 +514,16 @@ enum class ShakingType {
   *     we must imbue the enum facilities into namespace BRKGA.
   *     This does not happen with g++. We have not test to MSVC.
  *
- * \warning The specialization must be inline-d to avoid multiple definitions
- * issues across different modules. However, this can cause "inline" overflow,
- * and compromise your code. If you include this header only once along with
- * your code, it is safe to remove the `inline`s from the specializations. But,
- * if this is not the case, you should move these specializations to a module
- * you know is included only once, for instance, the `main()` module.
- *
+ * \warning
+ *      The specialization must be inline-d to avoid multiple definitions
+ *      issues across different modules. However, this can cause "inline"
+ *      overflow, and compromise your code. If you include this header only
+ *      once along with your code, it is safe to remove the `inline`s from the
+ *      specializations. But, if this is not the case, you should move these
+ *      specializations to a module you know is included only once, for
+ *      instance, the `main()` module.
  */
-//@{
+///@{
 
 /// Template specialization to BRKGA::Sense.
 template <>
@@ -555,18 +597,19 @@ EnumIO<BRKGA::ShakingType>::enum_names() {
     };
     return enum_names_;
 }
-//@}
+///@} enum_io_templates
 
 //----------------------------------------------------------------------------//
 // Distance functions
 //----------------------------------------------------------------------------//
 
-/** \name Distance functions
+/**
+ * \defgroup distance_functions Distance functions
  *
- * Define some basic distance functions between two vectors/chromosomes.
- * Notably used during the implicity path-reliking.
+ * This is a collection of some basic distance functions/functors between
+ * two vectors/chromosomes. Notably used during the implicity path-reliking.
  */
-//@{
+///@{
 
 /**
  * \brief Distance Function Base.
@@ -664,8 +707,8 @@ public:
     }
 
     /**
-     * \brief Returns true if the changing of the blocks of keys `v1` by the
-     *        blocks of keys `v2` affects the solution.
+     * \brief Returns true if the changing of the blocks of keys `v1` by
+     *        the blocks of keys `v2` affects the solution.
      * \param v1_begin begin of the first blocks of keys
      * \param v2_begin begin of the first blocks of keys
      * \param block_size number of keys to be considered.
@@ -773,11 +816,16 @@ public:
               affectSolution(*v1_begin, *v2_begin) : true;
     }
 };
-//@}
+///@} distance_functions
 
 //----------------------------------------------------------------------------//
 // BRKGA Params class.
 //----------------------------------------------------------------------------//
+
+/**
+ * \defgroup brkga_control_params BRKGA and Control Parameters
+ */
+///@{
 
 /**
  * \brief Represents the BRKGA and IPR hyper-parameters.
@@ -886,6 +934,8 @@ public:
      *   pairs indicating which chromosomes were shaken on which population,
      *   so that they got re-decoded.
      *
+     * See BRKGA_MP_IPR::setShakingMethod() for details and examples.
+     *
      * \note If `shaken` is empty, all chromosomes of all populations are
      *       re-decoded. This may be slow. Even if you intention is to do so,
      *       it is faster to populate `shaken`.
@@ -928,27 +978,32 @@ public:
     /// Maximum running time.
     std::chrono::seconds maximum_running_time {0};
 
-    /** \brief Interval / number of interations without improvement in the best
+    /**
+     * \brief Interval / number of interations without improvement in the best
      * solution at which elite chromosomes are exchanged (0 means no exchange).
      */
     unsigned exchange_interval {0};
 
-    /** \brief Interval / number of interations without improvement in the best
+    /**
+     * \brief Interval / number of interations without improvement in the best
      * solution at which the Implicit Path Relink is called (0 means no IPR).
      */
     unsigned ipr_interval {0};
 
-    /** \brief Interval / number of interations without improvement in the best
+    /**
+     * \brief Interval / number of interations without improvement in the best
      * solution at which the populations are shaken (0 means no shake).
      */
     unsigned shake_interval {0};
 
-    /** \brief Interval / number of interations without improvement in the best
+    /**
+     * \brief Interval / number of interations without improvement in the best
      * solution at which the populations are reset (0 means no reset).
      */
     unsigned reset_interval {0};
 
-    /** \brief Defines the numbers iterations to stop when the best solution is
+    /**
+     * \brief Defines the numbers iterations to stop when the best solution is
      * not improved, i.e., the algorithm converged (0 means don't stop by stall).
      */
     unsigned stall_offset {0};
@@ -1204,6 +1259,13 @@ readConfiguration(const std::string& filename,
 // Writing the parameters into file
 //----------------------------------------------------------------------------//
 
+/**
+ * \brief Output stream operator for BrkgaParams.
+ *
+ * \param os the output stream.
+ * \param brkga_params the parameters.
+ * \return the output stream.
+ */
 INLINE std::ostream&
 operator<<(std::ostream& os, const BrkgaParams& brkga_params) {
     os
@@ -1231,6 +1293,13 @@ operator<<(std::ostream& os, const BrkgaParams& brkga_params) {
     return os;
 }
 
+/**
+ * \brief Output stream operator for ControlParams.
+ *
+ * \param os the output stream.
+ * \param control_params the parameters.
+ * \return the output stream.
+ */
 INLINE std::ostream&
 operator<<(std::ostream& os, const ControlParams& control_params) {
     os
@@ -1291,13 +1360,24 @@ INLINE void writeConfiguration(const std::string& filename,
     writeConfiguration(output, brkga_params, control_params);
     output.close();
 }
+///@} brkga_control_params
 
 //----------------------------------------------------------------------------//
 // Algorithm status
 //----------------------------------------------------------------------------//
 
 /**
- * \brief Defines the current status of the algorithm.
+ * \defgroup algorithm_status Algorithm status utilities
+ */
+///@{
+
+/**
+ * \brief Defines the current status of the algorithm for a given
+ * BRKGA_MP_IPR::run() call.
+ *
+ * \note
+ *      We use `std::chrono::duration<double>` instead `std::chrono::seconds`
+ *      for keep better precision.
  */
 class AlgorithmStatus {
 public:
@@ -1366,12 +1446,23 @@ public:
     /// Number of population resets performed.
     unsigned num_resets {0};
     //@}
+
+    /// Default constructor.
+    AlgorithmStatus() = default;
+
+    /// Destructor.
+    ~AlgorithmStatus() __attribute__((noinline)) = default;
 };
 
 //----------------------------------------------------------------------------//
 
 /**
- * Streaming operator for AlgorithmStatus.
+ * \brief Output streaming operator for AlgorithmStatus.
+ *
+ * \param output the output stream.
+ * \param status the algorithm status.
+ * \return the output stream.
+ *
  * \todo Clang fails printing chrono times. When they fix it, please, revise
  *       this function.
  */
@@ -1392,9 +1483,9 @@ std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
     << "\nnum_exchanges: " << status.num_exchanges
     << "\nnum_shakes: " << status.num_shakes
     << "\nnum_resets: " << status.num_resets;
-
     return output;
 }
+///@}algorithm_status
 
 //----------------------------------------------------------------------------//
 // Population class.
@@ -1406,26 +1497,26 @@ std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
  * Encapsulates a population of chromosomes providing supporting methods for
  * making the implementation easier.
  *
- * \warning All methods and attributes are public and can be manipulated
- * directly from BRKGA algorithms. Note that this class is not meant to be used
- * externally of this unit.
+ * \warning
+ *      All methods and attributes are public and can be manipulated directly
+ *      from BRKGA algorithms. Note that this class is not meant to be used
+ *      externally of this unit.
  */
 class Population {
 public:
     /** \name Data members */
-    //@{
+    ///@{
     /// Chromosomes as vectors of probabilities.
     std::vector<Chromosome> chromosomes;
 
     /// Fitness of each chromosome.
     std::vector<std::pair<fitness_t, unsigned>> fitness;
-    //@}
+    ///@}
 
     /** \name Default constructors and destructor */
-    //@{
+    ///@{
     /**
      * \brief Default constructor.
-     *
      * \param chr_size size of chromosome.
      * \param pop_size size of population.
      * \throw std::range_error if population size or chromosome size is zero.
@@ -1449,10 +1540,10 @@ public:
 
     /// Assignment operator.
     Population& operator=(const Population&) = default;
-    //@}
+    ///@}
 
     /** \name Simple access methods */
-    //@{
+    ///@{
     /// Returns the size of each chromosome.
     unsigned getChromosomeSize() const {
         return chromosomes[0].size();
@@ -1493,14 +1584,14 @@ public:
     Chromosome& operator()(unsigned chromosome) {
         return chromosomes[chromosome];
     }
-    //@}
+    ///@}
 
     /** \name Special access methods
      *
      * These methods REQUIRE fitness to be sorted, and thus a call to
      * `sortFitness()` beforehand.
      */
-    //@{
+    ///@{
     /// Returns the best fitness in this population.
     fitness_t getBestFitness() const {
         return getFitness(0);
@@ -1520,10 +1611,10 @@ public:
     const Chromosome& getChromosome(const unsigned i) const {
         return chromosomes[fitness[i].second];
     }
-    //@}
+    ///@}
 
     /** \name Other methods */
-    //@{
+    ///@{
     /**
      * \brief Sorts `fitness` by its first parameter according to the sense.
      * \param sense Optimization sense.
@@ -1543,7 +1634,7 @@ public:
     void setFitness(const unsigned chromosome, const fitness_t value) {
         fitness[chromosome] = std::make_pair(value, chromosome);
     }
-    //@}
+    ///@}
 };
 
 //----------------------------------------------------------------------------//
@@ -1648,7 +1739,7 @@ public:
  * the algorithm. In general, initial solutions are created using other (fast)
  * heuristics and help the convergence of the BRKGA. To do that, the user must
  * encode the solutions on #Chromosome (`vector<double>`) and pass to the method
- * setInitialPopulation() as a `vector<#Chromosome>`.
+ * `setInitialPopulation()` as a `vector<#Chromosome>`.
  *
  * General Usage {#gen_usage}
  * ========================
@@ -1656,29 +1747,20 @@ public:
  *  -# The user must call the BRKGA_MP_IPR constructor and pass the desired
  *     parameters. Please, see BRKGA_MP_IPR::BRKGA_MP_IPR for parameter details;
  *
- *      -# (Optional) The user provides the warm start solutions using
- *         #setInitialPopulation();
+ *  -# (Optional) The user provides the warm start solutions using
+ *     `setInitialPopulation()`;
  *
- *  -# The user must call the method #initialize() to start the data structures
- *     and perform the decoding of the very first populations;
+ *  -# (Optional) The user provides a callback to track the optimization using
+ *     `addNewSolutionObserver()`;
  *
- *  -# Main evolutionary loop:
+ *  -# (Optional) The user provides custom stopping criteria function using
+ *      `setStoppingCriteria()`;
  *
- *      -# On each iteration, the method #evolve() should be called to perform
- *         the evolutionary step (or multi-steps if desired);
+ *  -# (Optional) The user provides a custom shaking procedure using
+ *     `setShakingMethod()`;
  *
- *      -# The user can check the current best chromosome (#getBestChromosome())
- *         and its fitness (#getBestFitness()) and perform checking and logging
- *         operations;
- *
- *      -# (Optional) The user can perform the path relinking (#pathRelink());
-
- *      -# (Optional) The user can perform the individual migration between
- *         populations (#exchangeElite());
- *
- *      -# (Optional) The use can perturb the chromosomes calling #shake();
- *
- *      -# (Optional) The user can reset and start the algorithm over (#reset());
+ *  -# The user calls `run()` to cary out the optimization; This method returns
+ *     a `AlgorithmStatus` object with the results of the optimization.
  *
  * For a comprehensive and detailed usage, please see the examples that follow
  * this API.
@@ -1712,7 +1794,7 @@ template <class Decoder>
 class BRKGA_MP_IPR {
 public:
     /** \name Constructors and destructor */
-    //@{
+    ///@{
     /**
      * \brief Builds the algorithm and its data strtuctures with the given
      *        arguments.
@@ -1745,10 +1827,10 @@ public:
 
     /// Destructor.
     ~BRKGA_MP_IPR() __attribute__((noinline)) = default;
-    //@}
+    ///@}
 
     /** \name Initialization methods */
-    //@{
+    ///@{
     /**
      * \brief Sets individuals to initial population.
      *
@@ -1789,7 +1871,8 @@ public:
         const std::function<double(const unsigned)>& func
     );
 
-    /** \brief Sets a custom shaking procedure.
+    /**
+     * \brief Sets a custom shaking procedure.
      *
      * For more details, see BrkgaParams::custom_shaking.
      *
@@ -1883,7 +1966,8 @@ public:
         const std::function<bool(const AlgorithmStatus&)>& stopping_criteria
     );
 
-    /** \brief Adds a callback function called when the best solution is
+    /**
+     * \brief Adds a callback function called when the best solution is
      * improved.
      *
      * It must take a reference to AlgorithmStatus and return `true`
@@ -1918,10 +2002,10 @@ public:
     void addNewSolutionObserver(
         const std::function<bool(const AlgorithmStatus&)>& func
     );
-    //@}
+    ///@}
 
     /** \name Full algorithm runner */
-    //@{
+    ///@{
     /**
      * \brief Runs the full framework performing evolution, path-reliking,
      *        exchanges, shakes, and resets according to the parameters.
@@ -2005,10 +2089,10 @@ public:
         const ControlParams& control_params,
         std::ostream* logger = &std::cout
     );
-    //@}
+    ///@}
 
     /** \name Evolution */
-    //@{
+    ///@{
     /**
      * \brief Evolves the current populations following the guidelines of
      *        Multi-parent BRKGAs.
@@ -2023,10 +2107,10 @@ public:
      * \throw std::range_error if the number of generations is zero.
      */
     void evolve(unsigned generations = 1);
-    //@}
+    ///@}
 
     /** \name Path relinking */
-    //@{
+    ///@{
     /**
      * \brief Performs path relinking between elite solutions that are, at least,
      * a given minimum distance between themselves. In this method, the
@@ -2142,10 +2226,10 @@ public:
         std::shared_ptr<DistanceFunctionBase> dist,
         std::chrono::seconds max_time = std::chrono::seconds{0}
     );
-    //@}
+    ///@}
 
     /** \name Population manipulation methods */
-    //@{
+    ///@{
     /**
      * \brief Exchanges elite-solutions between the populations.
 
@@ -2206,10 +2290,10 @@ public:
         unsigned population_index,
         unsigned position
     );
-    //@}
+    ///@}
 
     /** \name Support methods */
-    //@{
+    ///@{
     /**
      * \brief Returns a reference to a current population.
      * \param population_index the population index.
@@ -2218,7 +2302,8 @@ public:
      */
     const Population& getCurrentPopulation(unsigned population_index = 0) const;
 
-    /** \brief Returns a reference to the chromosome with best fitness among
+    /**
+     * \brief Returns a reference to the chromosome with best fitness among
      * all current populations.
      *
      * \warning
@@ -2231,7 +2316,8 @@ public:
      */
     const Chromosome& getBestChromosome() const;
 
-    /** \brief Returns the best fitness among all current populations.
+    /**
+     * \brief Returns the best fitness among all current populations.
      *
      * \warning
      *     Note that this method **does not** return the best fitness but
@@ -2266,10 +2352,10 @@ public:
      *        population size.
      */
     fitness_t getFitness(unsigned population_index, unsigned position) const;
-    //@}
+    ///@}
 
     /** \name Parameter getters */
-    //@{
+    ///@{
     const BrkgaParams& getBrkgaParams() const { return params; }
 
     Sense getOptimizationSense() const { return optimization_sense; }
@@ -2283,11 +2369,11 @@ public:
     bool evolutionaryIsMechanismOn() const { return evolutionary_mechanism_on; }
 
     unsigned getMaxThreads() const { return max_threads; }
-    //@}
+    ///@}
 
 protected:
     /** \name BRKGA Hyper-parameters */
-    //@{
+    ///@{
     /// The BRKGA and IPR hyper-parameters.
     BrkgaParams params;
 
@@ -2303,24 +2389,26 @@ protected:
     /// Number of mutants introduced at each generation into the population.
     unsigned num_mutants;
 
-    /** \brief If false, no evolution is performed but only chromosome decoding.
+    /**
+     * \brief If false, no evolution is performed but only chromosome decoding.
      * Very useful to emulate a multi-start algorithm.
      */
     bool evolutionary_mechanism_on;
-    //@}
+    ///@}
 
     /** \name Parallel computing parameters */
-    //@{
+    ///@{
     /// Number of threads for parallel decoding.
     const unsigned max_threads;
-    //@}
+    ///@}
 
     /** \name Engines */
-    //@{
+    ///@{
     /// Reference to the problem-dependent Decoder.
     Decoder& decoder;
 
-    /** \brief Mersenne twister random number generators. For parallel mating,
+    /**
+     * \brief Mersenne twister random number generators. For parallel mating,
      * we must have one RNG per thread so that we can reproduce the results of
      * an experiment. We use the first RNG as the main generator in
      * several parts of the code. The other RNGs are used only during mating.
@@ -2329,10 +2417,10 @@ protected:
 
     /// Just a uniform distribution to generate integers.
     std::uniform_int_distribution<unsigned> integer_distribution;
-    //@}
+    ///@}
 
     /** \name Algorithm data */
-    //@{
+    ///@{
     /// Previous populations.
     std::vector<std::shared_ptr<Population>> previous;
 
@@ -2342,31 +2430,38 @@ protected:
     /// Reference for the bias function.
     std::function<double(const unsigned)> bias_function;
 
-    /** \brief Holds the sum of the results of each raking given a bias function.
+    /**
+     * \brief Holds the sum of the results of each raking given a bias function.
      * This value is needed to normalization.
      */
     double total_bias_weight;
 
-    #ifdef MATING_SEED_ONLY
-    /** During parallel mating, we need to be sure that the same random values
+    #if defined(MATING_SEED_ONLY) || defined(DOXYGEN_DOC_MACROS)
+    /**
+     * \brief Set of seeds for each RNG if #MATING_SEED_ONLY is enabled.
+     *
+     * During parallel mating, we need to be sure that the same random values
      * are generated in each mating, despite the number of threads available.
      * Therefore, on each iteration, we generate a set of seeds for each RNG.
      */
     std::vector<std::mt19937::result_type> mating_seeds;
     #endif
 
-    /** \brief Used to shuffled individual/chromosome indices during the mate.
+    /**
+     * \brief Used to shuffled individual/chromosome indices during the mate.
      * We have one for each thread during parallel mating.
      */
     std::vector<std::vector<unsigned>> shuffled_individuals_per_thread;
 
-    /** \brief Defines the order of parents during the mating.
+    /**
+     * \brief Defines the order of parents during the mating.
      * We have one for each thread during parallel mating.
      */
     std::vector<std::vector<std::pair<fitness_t, unsigned>>>
     parents_ordered_per_thread;
 
-    /** \brief Temporary structures that hold the offsrping per thread.
+    /**
+     * \brief Temporary structures that hold the offsrping per thread.
      * Used to reduce the caching missing, and speed up the mating.
      */
     std::vector<std::vector<double>> offspring_per_thread;
@@ -2379,10 +2474,10 @@ protected:
 
     /// Holds the start time for a call of the path relink procedure.
     std::chrono::system_clock::time_point pr_start_time;
-    //@}
+    ///@}
 
     /** \name Callbacks */
-    //@{
+    ///@{
     /// Defines a custom stopping criteria supplied by the user.
     std::function<bool(const AlgorithmStatus&)> stopping_criteria;
 
@@ -2391,11 +2486,11 @@ protected:
      * if the algorithm should stop immediately.
      */
     std::vector<std::function<bool(const AlgorithmStatus&)>> info_callbacks;
-    //@}
+    ///@}
 
 protected:
     /** \name Core local methods */
-    //@{
+    ///@{
     /**
      * \brief Initializes the populations and others parameters of the
      *        algorithm.
@@ -2503,10 +2598,10 @@ protected:
         std::chrono::seconds max_time,
         double percentage
     );
-    //@}
+    ///@}
 
     /** \name Helper functions */
-    //@{
+    ///@{
     /**
      * \brief Returns `true` if `a1` is better than `a2`.
      *
@@ -2517,21 +2612,22 @@ protected:
     inline bool betterThan(const fitness_t& a1, const fitness_t& a2) const;
 
     /**
-     * Distributes real values of given precision across [0, 1] evenly.
+     * \brief Distributes real values of given precision across [0, 1] evenly.
      * \param rng The random number generator to be used.
      */
     inline double rand01(std::mt19937& rng);
 
     /**
-     * Returns an integer number between `0` and `n`.
+     * \brief Returns an integer number between `0` and `n`.
      * \param n The upper bound.
      * \param rng The random number generator to be used.
      */
     inline unsigned randInt(const unsigned n, std::mt19937& rng);
-    //@}
+    ///@}
 };
 
 //----------------------------------------------------------------------------//
+/// \cond IGNORE_IMPLEMENTATION
 
 template <class Decoder>
 BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
@@ -4300,7 +4396,7 @@ inline unsigned BRKGA_MP_IPR<Decoder>::randInt(const unsigned n,
         rng, typename decltype(integer_distribution)::param_type (0, n)
     );
 }
-
+/// \endcond IGNORE_IMPLEMENTATION
 } // end namespace BRKGA
 
 #endif // BRKGA_MP_IPR_HPP_
