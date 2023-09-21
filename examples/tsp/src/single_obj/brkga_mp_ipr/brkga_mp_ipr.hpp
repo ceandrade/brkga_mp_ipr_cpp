@@ -186,13 +186,51 @@ operator<<(std::ostream& os, const std::chrono::duration<double>& dur) {
     return os;
 }
 #endif // __clang__
-
 #ifndef __clang__
 } // end of namespace BRKGA
 #endif
-
 #endif // __cplusplus
 //@}
+
+// /** \name I/O helpers for tuples.
+//  * Define some helpers functions to print tuples.
+//  */
+// //@{
+
+// // For GCC, we must inject these direct into BRKGA namespace.
+// #ifndef __clang__
+// namespace BRKGA {
+// #endif
+
+// /** \brief the "recursive" helper function to print tuples.
+// * \tparam Is the number of types in the tuple template.
+//  * \tparam Ts the tuple types.
+//  * \param os an output stream object.
+//  * \param tp the tuple.
+//  */
+// template <std::size_t... Is, typename... Ts>
+// void print_tuple(std::ostream& os, const std::tuple<Ts...>& tp,
+//                  std::index_sequence<Is...>) {
+//     ((os << (Is == 0 ? "" : ", ") << std::get<Is>(tp)), ...);
+// }
+
+// /** \brief Output streaming operator for tuples.
+//  * \tparam Ts the tuple types.
+//  * \param os an output stream object.
+//  * \param tp the tuple.
+//  * \return a reference to the output stream object.
+//  */
+// template <typename... Ts>
+// std::ostream& operator<<(std::ostream& os, const std::tuple<Ts...>& tp) {
+//     os << "(";
+//     print_tuple(os, tp, std::index_sequence_for<Ts...>());
+//     os << ")";
+//     return os;
+// }
+// #ifndef __clang__
+// } // end of namespace BRKGA
+// #endif
+// //@}
 
 //----------------------------------------------------------------------------//
 // Namespace BRKGA: the main namespace
@@ -2180,11 +2218,28 @@ public:
      */
     const Population& getCurrentPopulation(unsigned population_index = 0) const;
 
-    /// Returns a reference to the chromosome with best fitness so far among
-    /// all populations.
+    /** \brief Returns a reference to the chromosome with best fitness among
+     * all current populations.
+     *
+     * \warning
+     *     Note that this method **does not** return the best solution but
+     *     the one within the current population. If a #shake() or #reset()
+     *     is called, the best solution may be lose in the populations.
+     *     However, if you are using #run(), the best solution is returned
+     *     by that method. If not, you must keep track of the best solution.
+     *
+     */
     const Chromosome& getBestChromosome() const;
 
-    /// Returns the best fitness found so far among all populations.
+    /** \brief Returns the best fitness among all current populations.
+     *
+     * \warning
+     *     Note that this method **does not** return the best fitness but
+     *     the one within the current population. If a #shake() or #reset()
+     *     is called, the best fitness may be lose in the populations.
+     *     However, if you are using #run(), the best fitness is returned
+     *     by that method. If not, you must keep track of the best fitness.
+     */
     fitness_t getBestFitness() const;
 
     /**

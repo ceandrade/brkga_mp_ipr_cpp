@@ -5,7 +5,7 @@
  * All Rights Reserved.
  *
  * Created on : May 18, 2021 by ceandrade.
- * Last update: Sep 05, 2023 by ceandrade.
+ * Last update: Sep 20, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -26,8 +26,10 @@
 #ifndef BRKGA_MP_IPR_FITNESS_TYPE_HPP_
 #define BRKGA_MP_IPR_FITNESS_TYPE_HPP_
 
+#include <iostream>
 #include <limits>
 #include <tuple>
+#include <utility>
 
 namespace BRKGA {
 
@@ -44,9 +46,12 @@ namespace BRKGA {
  * For multi-objective problems (with dominance/lexicographical sorting), we
  * need to use multiple values. We can either use a class, structure, or
  * `std::tuple`. Using a custom class or structure, we must provide copy
- * assignment (`operator=`) and comparison operators (`operator<`, `operator>`,
- * and `operator==`). We have all these perks using `std:tuple`. For example,
- * assume we have three minimization objective functions. Then we may have:
+ * assignment (`operator=`), comparison operators (`operator<`, `operator>`,
+ * and `operator==`), and the streaming operator
+ * `std::ostream& operator<<(std::ostream& os, const CustomFitness& fitness)`
+ * where `CustomFitness` is your fitness structure. We have all these perks
+ * using `std:tuple`. For example, assume we have three minimization objective
+ * functions. Then we may have:
  *
  * \code{.cpp}
  * using fitness_t = std::tuple<double, double, double>;
@@ -127,6 +132,8 @@ static constexpr fitness_t FITNESS_T_MIN = FITNESS_T_MIN_TEMPLATE<fitness_t>;
 /// The actual Maximum value to `fitness_t`.
 static constexpr fitness_t FITNESS_T_MAX = FITNESS_T_MAX_TEMPLATE<fitness_t>;
 
+//----------------------------------------------------------------------------//
+
 /**
  * This constant is used to compare floating-point numbers to equality.
  * Therefore, we consider two numbers \f$a\f$ and \f$b\f$ equal
@@ -140,5 +147,49 @@ static constexpr fitness_t FITNESS_T_MAX = FITNESS_T_MAX_TEMPLATE<fitness_t>;
 constexpr double EQUALITY_THRESHOLD = 1e-6;
 
 } // end namespace BRKGA_MP_IPR
+
+//----------------------------------------------------------------------------//
+
+/** \name I/O helpers for tuples.
+ * Define some helpers functions to print tuples.
+ */
+//@{
+
+// For GCC, we must inject these direct into BRKGA namespace.
+#ifndef __clang__
+namespace BRKGA {
+#endif
+
+namespace { // Hide from external usage.
+/** \brief the "recursive" helper function to print tuples.
+* \tparam Is the number of types in the tuple template.
+ * \tparam Ts the tuple types.
+ * \param os an output stream object.
+ * \param tp the tuple.
+ */
+template <std::size_t... Is, typename... Ts>
+void print_tuple(std::ostream& os, const std::tuple<Ts...>& tp,
+                 std::index_sequence<Is...>) {
+    ((os << (Is == 0 ? "" : ", "), os << std::get<Is>(tp)), ...);
+}
+} // end hidden namespace
+
+/** \brief Output streaming operator for tuples.
+ * \tparam Ts the tuple types.
+ * \param os an output stream object.
+ * \param tp the tuple.
+ * \return a reference to the output stream object.
+ */
+template <typename... Ts>
+std::ostream& operator<<(std::ostream& os, const std::tuple<Ts...>& tp) {
+    os << "(";
+    print_tuple(os, tp, std::index_sequence_for<Ts...>());
+    os << ")";
+    return os;
+}
+#ifndef __clang__
+} // end of namespace BRKGA
+#endif
+//@}
 
 #endif // BRKGA_MP_IPR_FITNESS_TYPE_HPP_

@@ -295,19 +295,16 @@ Options:
         // Extracting the best tour
         ////////////////////////////////////////
 
-        const auto best_fitness = algorithm.getBestFitness();
-        const auto best_solution = algorithm.getBestChromosome();
-
         vector<pair<double, unsigned>> tour(instance.num_nodes);
         for(unsigned i = 0; i < instance.num_nodes; ++i)
-            tour[i] = make_pair(best_solution[i], i);
+            tour[i] = make_pair(final_status.best_chromosome[i], i);;
 
         sort(tour.begin(), tour.end());
 
         cout
         << "\n% Best tour cost: "
         << setiosflags(ios::fixed) << setprecision(0)
-        << best_fitness
+        << final_status.best_fitness
         << "\n% Best tour: ";
         for(const auto& kv : tour)
             cout << kv.second << " ";
@@ -349,7 +346,7 @@ Options:
         << instance_name << ","
         << seed << ","
         << setiosflags(ios::fixed) << setprecision(0)
-        << best_fitness << ","
+        << final_status.best_fitness << ","
         << instance.num_nodes << ","
         << final_status.current_iteration << ","
         << final_status.last_update_iteration << ","

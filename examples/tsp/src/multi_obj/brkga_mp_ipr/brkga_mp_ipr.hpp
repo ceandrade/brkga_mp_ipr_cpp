@@ -2218,11 +2218,28 @@ public:
      */
     const Population& getCurrentPopulation(unsigned population_index = 0) const;
 
-    /// Returns a reference to the chromosome with best fitness so far among
-    /// all populations.
+    /** \brief Returns a reference to the chromosome with best fitness among
+     * all current populations.
+     *
+     * \warning
+     *     Note that this method **does not** return the best solution but
+     *     the one within the current population. If a #shake() or #reset()
+     *     is called, the best solution may be lose in the populations.
+     *     However, if you are using #run(), the best solution is returned
+     *     by that method. If not, you must keep track of the best solution.
+     *
+     */
     const Chromosome& getBestChromosome() const;
 
-    /// Returns the best fitness found so far among all populations.
+    /** \brief Returns the best fitness among all current populations.
+     *
+     * \warning
+     *     Note that this method **does not** return the best fitness but
+     *     the one within the current population. If a #shake() or #reset()
+     *     is called, the best fitness may be lose in the populations.
+     *     However, if you are using #run(), the best fitness is returned
+     *     by that method. If not, you must keep track of the best fitness.
+     */
     fitness_t getBestFitness() const;
 
     /**
