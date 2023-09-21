@@ -101,9 +101,9 @@ int main(int argc, char* argv[]) {
     }
     catch(exception& e) {
         cerr
-        << "\n***********************************************************"
-        << "\n**** Exception Occurred: " << e.what()
-        << "\n***********************************************************"
+        << "\n" << string(40, '*') << "\n"
+        << "Exception Occurred: " << e.what()
+        << "\n" << string(40, '*')
         << endl;
         return 1;
     }

@@ -1,11 +1,11 @@
 /******************************************************************************
- * main_brkga.cpp: complete code for calling BRKGA algorithms to solve
- *                 instances of the Traveling Salesman Problem.
+ * main_complete.cpp: complete code for calling BRKGA algorithms to solve
+ *                    instances of the Traveling Salesman Problem.
  *
- * Created on : Mar 06, 2019 by andrade
- * Last update: Dec 02, 2021 by andrade
+ * Created on : Mar 06, 2019 by ceandrade
+ * Last update: Sep 20, 2023 by ceandrade
  *
- * (c) Copyright 2015-2022, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2023, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  * This code is released under BRKGA-MP-IPR License:
@@ -34,7 +34,6 @@
 #include "heuristics/greedy_tour.hpp"
 #include "brkga_mp_ipr.hpp"
 
-#define DOCOPT_HEADER_ONLY
 #include "third_part/docopt/docopt.h"
 
 #include <algorithm>
@@ -67,157 +66,140 @@ void log(const string& message) {
     cout << "\n[" << ss << "] " << message << endl;
 }
 
-//-------------------------[ Compute the elapse time ]------------------------//
-
-double elapsedFrom(const time_point<system_clock>& start_time) {
-    return chrono::duration_cast<milliseconds>(
-        system_clock::now() - start_time
-    ).count() / 1000.0;
-}
-
-//-------------------------------[ Main ]------------------------------------//
+//--------------------------------[ Main ]------------------------------------//
 
 int main(int argc, char* argv[]) {
-    const std::string USAGE =
-    R"(Usage:
-  main_complete -c <config_file> -s <seed> -r <stop_rule> -a <stop_arg> -t <max_time> -i <instance_file> [-n <num_threads>] [--no_evolution]
+    const std::string usage =
+    R"(
+Usage:
+  main_complete
+        --config <config_file>
+        --seed <seed>
+        --stop_rule <stop_rule>
+        --stop_arg <stop_arg>
+        --maxtime <max_time>
+        --instance <instance_file>
+        [--threads <num_threads>]
+        [--no_evolution]
   main_complete (-h | --help)
 
 Options:
-
-    -c <config_file>    Text file with the BRKGA-MP-IPR parameters.
-
-    -s <seed>           Seed for the random number generator.
-
-    -r <stop_rule>      Stop rule where:
-                        - (G)enerations: number of evolutionary generations.
-                        - (I)terations: maximum number of generations without
-                          improvement in the solutions.
-
-    -a <stop_arg>       Argument value for '-r'.
-
-    -t <max_time>       Maximum time in seconds.
-
-    -i <instance_file>  Instance file.
-
-    -n <num_threads>    NUmber of threads to be used during parallel decoding.
-
-    --no_evolution      If supplied, no evolutionary operators are applied. So,
-                        the algorithm becomes a simple multi-start algorithm.
-
-    -h --help           Produce help message.
- )";
+  --config <arg>     Text file with the BRKGA-MP-IPR parameters.
+  --seed <arg>       Seed for the random number generator.
+  --stop_rule <arg>  Stop rule where:
+                     - (G)enerations: number of evolutionary generations.
+                     - (I)terations: maximum number of generations without
+                       improvement in the solutions.
+  --stop_arg <arg>     Argument value for the stopping rule.
+  --maxtime <arg>      Maximum time in seconds.
+  --instance <arg>     Instance file.
+  --threads <arg>    Number of threads to be used during parallel decoding.
+                     It must in the range [1, 64] [default: 1].
+  --no_evolution     If supplied, no evolutionary operators are applied.
+                     So, the algorithm becomes a simple multi-start algorithm.
+  -h --help          Produce help message.
+)";
 
     string config_file;
     unsigned seed = 0;
     StopRule stop_rule = StopRule::UNKNOWN;
     unsigned stop_arg = 0;
-    double max_time = 0.0;
+    chrono::seconds max_time {0};
     string instance_file;
     unsigned num_threads = 1;
     bool perform_evolution = true;
 
     // Parse the command line arguments.
     try {
-        auto args = docopt::docopt(USAGE, { argv + 1, argv + argc }, true);
+        auto args = docopt::docopt(usage, { argv + 1, argv + argc }, true);
 
-        config_file = args["<config_file>"].asString();
-        seed = static_cast<unsigned>(args["<seed>"].asLong());
-        stop_rule = static_cast<StopRule>(toupper(args["<stop_rule>"].
-                                          asString()[0]));
-        stop_arg = static_cast<unsigned>(args["<stop_arg>"].asLong());
-        max_time = stod(args["<max_time>"].asString());
-        instance_file = args["<instance_file>"].asString();
+        #ifdef DEBUG
+        for(auto& [key, value] : args)
+            std::cout << "\n"<< key << " : " << value;
+        #endif
+
+        config_file = args["--config"].asString();
+        seed = static_cast<unsigned>(args["--seed"].asLong());
+        stop_rule = static_cast<StopRule>(
+            toupper(args["--stop_rule"].asString()[0])
+        );
+        stop_arg = static_cast<unsigned>(args["--stop_arg"].asLong());
+        max_time = chrono::seconds {args["--maxtime"].asLong()};
+        instance_file = args["--instance"].asString();
+        num_threads = static_cast<unsigned> (args["--threads"].asLong());
         perform_evolution = !args["--no_evolution"].asBool();
-
-        if(args["-n"].asBool()) {
-            num_threads = static_cast<unsigned>(args["<num_threads>"].asLong());
-        }
 
         if(stop_rule != StopRule::GENERATIONS &&
            stop_rule != StopRule::IMPROVEMENT)
             throw std::logic_error("Incorrect stop rule. Must be either "
                                    "(G)enerations or (I)terations");
 
-        if(max_time < 1e-6) {
+        using namespace std::chrono_literals;
+        if(max_time <= 0s) {
             stringstream ss;
-            ss << "max_time must be > 0. Given '" << max_time << "'";
+            ss << "'maxtime' must be > 0. Given '" << max_time << "'";
+            throw std::logic_error(ss.str());
+        }
+
+        if(num_threads == 0 || num_threads > 64) {
+            stringstream ss;
+            ss
+            << "'num_threads' must be in [1, 64]. Given '"
+            << num_threads << "'";
             throw std::logic_error(ss.str());
         }
     }
     catch(exception& e) {
-        cerr << "Error: " << e.what()
-             << ". Please use -h/--help for correct usage.";
-        return 64;  // BSD usage error code.
+        cerr
+        << '\n' << string(40, '*') << "\n"
+        << "ERROR: " << e.what()
+        << ". Please use -h/--help for correct usage.\n"
+        << string(40, '*')
+        << endl;
+        return 1;
     }
-    catch(...) {
-        std::cerr << "Unknown error!" << "\n";
-        return 64;  // BSD usage error code.
-    }
-
-    /////////////////////////////////////////
-    // Load config file and show basic info.
-    /////////////////////////////////////////
-
-    auto [brkga_params, control_params] = BRKGA::readConfiguration(config_file);
 
     // Main algorithm.
     try {
-        { // Local scope for start_time.
-        auto start_time = system_clock::to_time_t(system_clock::now());
+        log("Experiment started");
 
         cout
-        << "------------------------------------------------------\n"
-        << "> Experiment started at " << ctime(&start_time)
-        << "> Instance: " << instance_file
-        << "\n> Configuration: " << config_file
-        << "\n> Algorithm Parameters";
-        }
+        << "> Instance: '" << instance_file << "'"
+        << "\n> Loading config file: '" << config_file << "'"
+        << endl;
 
-        if(!perform_evolution)
-            cout << ">    - Simple multi-start: on (no evolutionary operators)";
-        else {
-            cout
-            << "\n>   - population_size: " << brkga_params.population_size
-            << "\n>   - elite_percentage: " << brkga_params.elite_percentage
-            << "\n>   - mutants_percentage: " << brkga_params.mutants_percentage
-            << "\n>   - num_elite_parents: " << brkga_params.num_elite_parents
-            << "\n>   - total_parents: " << brkga_params.total_parents
-            << "\n>   - bias_type: " << brkga_params.bias_type
-            << "\n>   - num_independent_populations: "
-            <<     brkga_params.num_independent_populations
-            << "\n>   - pr_number_pairs: " << brkga_params.pr_number_pairs
-            << "\n>   - pr_minimum_distance: "
-            <<     brkga_params.pr_minimum_distance
-            << "\n>   - pr_type: " << brkga_params.pr_type
-            << "\n>   - pr_selection: " << brkga_params.pr_selection
-            << "\n>   - alpha_block_size: " << brkga_params.alpha_block_size
-            << "\n>   - pr_percentage: " << brkga_params.pr_percentage
-            << "\n>   - exchange_interval: " << control_params.exchange_interval
-            << "\n>   - num_exchange_indivuduals: "
-            <<     control_params.num_exchange_indivuduals
-            << "\n>   - reset_interval: " << control_params.reset_interval;
-        }
+        // Load config file and show basic info.
+        auto [brkga_params, control_params] =
+            BRKGA::readConfiguration(config_file);
+
+        // Let's overwrite the maximum time and the stall iterations.
+        control_params.maximum_running_time = max_time;
+        if(stop_rule == StopRule::IMPROVEMENT)
+            control_params.stall_offset = stop_arg;
 
         cout
+        << "> Algorithm parameters:\n"
+        << brkga_params
+        << "> Control parameters:\n"
+        << control_params
         << "\n> Seed: " << seed
         << "\n> Stop rule: "
-        <<     (stop_rule == StopRule::GENERATIONS ? "Generations" :
-                                                     "Improvement")
+        << (stop_rule == StopRule::GENERATIONS ? "Generations" : "Improvement")
         << "\n> Stop argument: " << stop_arg
-        << "\n> Maximum time (s): " << max_time
-        << "\n> Number of parallel threads for decoding: " << num_threads
-        << "\n------------------------------------------------------" << endl;
+        << "\n> Number of threads for decoding: " << num_threads;
+        if(!perform_evolution)
+            cout << "\n> Simple multi-start: on (no evolutionary operators)";
+        cout << endl;
 
         ////////////////////////////////////////
-        // Load instance and adjust BRKGA parameters
+        // Load instance and create an initial solution.
         ////////////////////////////////////////
-        log("Reading TSP data...");
+        log("Reading TSP data");
 
         auto instance = TSP_Instance(instance_file);
         cout << "Number of nodes: " << instance.num_nodes << endl;
 
-        log("Generating initial tour...");
+        log("Generating initial tour");
 
         // Generate a greedy solution to be used as warm start for BRKGA.
         auto initial_solution = greedy_tour(instance);
@@ -226,243 +208,96 @@ Options:
         ////////////////////////////////////////
         // Build the BRKGA data structures
         ////////////////////////////////////////
-        log("Building BRKGA...");
+        log("Building BRKGA");
 
-        brkga_params.population_size = min(brkga_params.population_size,
-                                           10 * instance.num_nodes);
-        cout << "New population size: " << brkga_params.population_size << endl;
+        brkga_params.population_size =
+            min(brkga_params.population_size, 10 * instance.num_nodes);
+
+        const auto chromosome_size = instance.num_nodes;
+
+        cout
+        << "New population size: " << brkga_params.population_size << "\n"
+        << "Chromosome size: " << chromosome_size
+        << endl;
 
         // We may choose the simple thread-safe decoder...
-        // typedef TSP_Decoder LocalDecoder;
+        // using LocalDecoder = TSP_Decoder;
         // TSP_Decoder decoder(instance);
 
         //... or the pre-allocating thread-safe decoder.
-        typedef TSP_Decoder_pre_allocating LocalDecoder;
+        using LocalDecoder = TSP_Decoder_pre_allocating;
         LocalDecoder decoder(instance, num_threads);
 
         BRKGA::BRKGA_MP_IPR<LocalDecoder> algorithm(
-                decoder, BRKGA::Sense::MINIMIZE, seed, instance.num_nodes,
-                brkga_params, num_threads, perform_evolution);
+            decoder, BRKGA::Sense::MINIMIZE, seed, chromosome_size,
+            brkga_params, num_threads, perform_evolution
+        );
+
+        // We add a simple callback to track the best solution evolution.
+        algorithm.addNewSolutionObserver(
+            [](const BRKGA::AlgorithmStatus& status) {
+                cout
+                << "* " << status.current_iteration << " | "
+                << get<0>(status.best_fitness) << " | "
+                << get<1>(status.best_fitness) << " | "
+                << status.current_time
+                << endl;
+                return true;    // Don't stop the optimization.
+            }
+        );
+
+        // Add a callback if we need to stop using the number of generations.
+        if(stop_rule == StopRule::GENERATIONS) {
+            algorithm.setStoppingCriteria(
+                [&](const BRKGA::AlgorithmStatus& status) {
+                    return status.current_iteration == stop_arg;
+                }
+            );
+        }
 
         ////////////////////////////////////////
         // Injecting the initial/incumbent solution
         ////////////////////////////////////////
-        log("Injecting initial solution...");
+        log("Injecting initial solution");
 
         { // local scope to deallocate memory.
         // To inject the initial tour, we need to create chromosome representing
         // that solution. First, we create a set of keys to be used in the
         // chromosome.
         std::mt19937 rng(seed);
-        vector<double> keys(instance.num_nodes);
+        vector<double> keys(chromosome_size);
         for(auto& key : keys)
-            key = generate_canonical<double,
-                                     numeric_limits<double>::digits>(rng);
+            key = generate_canonical<double, numeric_limits<double>::digits>(rng);
 
         sort(keys.begin(), keys.end());
 
         // Then, we visit each node in the tour and assign to it a key.
-        BRKGA::Chromosome initial_chromosome(instance.num_nodes);
+        BRKGA::Chromosome initial_chromosome(chromosome_size);
         auto& initial_tour = initial_solution.second;
         for(size_t i = 0; i < keys.size(); i++)
             initial_chromosome[initial_tour[i]] = keys[i];
 
         algorithm.setInitialPopulation(
             vector<BRKGA::Chromosome>(1, initial_chromosome));
-        }
+        } // end local scope
 
         ////////////////////////////////////////
-        // Initialize BRKGA
+        // Optimizing
         ////////////////////////////////////////
+        log("Optimizing...");
+        cout << "* Iteration | Cost | LargestEdge | CurrentTime" << endl;
 
-        // NOTE: don't forget to initialize the algorithm.
-        log("Initializing BRKGA...");
-        algorithm.initialize();
-
-        ////////////////////////////////////////
-        // Evolving
-        ////////////////////////////////////////
-
-        // Distance functor for path-relink.
-        std::shared_ptr<BRKGA::DistanceFunctionBase> dist_func;
-        if(brkga_params.pr_type == BRKGA::PathRelinking::Type::DIRECT)
-            dist_func.reset(new BRKGA::HammingDistance(0.5));
-        else
-            dist_func.reset(new BRKGA::KendallTauDistance());
-
-        // Optimization info.
-        BRKGA::fitness_t best_fitness = BRKGA::FITNESS_T_MAX;
-        BRKGA::Chromosome best_solution(instance.num_nodes, 0.0);
-
-        unsigned last_update_iteration = 0;
-        double last_update_time;
-        unsigned large_offset = 0;
-
-        double path_relink_time = 0.0;
-        unsigned num_path_relink_calls = 0;
-        unsigned num_homogenities = 0;
-        unsigned num_best_improvements = 0;
-        unsigned num_elite_improvements = 0;
-
-        // For control the optimization
-        unsigned iteration = 0;
-        bool run = true;
-
-        log("Evolving...");
-        cout << "* Iteration | Cost | Largest Edge | CurrentTime" << endl;
-
-        const auto start_time = system_clock::now();
-        while(run) {
-            // Run one iteration
-            algorithm.evolve();
-
-            auto fitness = algorithm.getBestFitness();
-            if(fitness < best_fitness) {
-                last_update_time = elapsedFrom(start_time);
-                best_fitness = fitness;
-
-                auto update_offset = iteration - last_update_iteration;
-                last_update_iteration = iteration;
-
-                if(large_offset < update_offset)
-                    large_offset = update_offset;
-
-                best_solution = algorithm.getBestChromosome();
-
-                cout
-                << "* " << iteration << " | "
-                << setiosflags(ios::fixed) << setprecision(0)
-                << get<0>(best_fitness) << " | "
-                << get<1>(best_fitness) << " | "
-                << setiosflags(ios::fixed) << setprecision(2)
-                << last_update_time
-                << endl;
-            }
-
-            unsigned iters_no_improvement = iteration - last_update_iteration;
-
-            if(false && control_params.exchange_interval > 0 &&
-               iters_no_improvement > 0 &&
-               (iters_no_improvement % control_params.exchange_interval == 0)) {
-
-                cout << "\nPerforming path relink at iteration "
-                     << iteration << endl;
-
-                num_path_relink_calls += 1;
-
-                const auto pr_start_time = system_clock::now();
-                auto result = algorithm.pathRelink(
-                    brkga_params.pr_type,
-                    brkga_params.pr_selection,
-                    dist_func,
-                    brkga_params.pr_number_pairs,
-                    brkga_params.pr_minimum_distance,
-                    1, // block_size doesn't not matter for permutation.
-                    max_time - elapsedFrom(start_time),
-                    brkga_params.pr_percentage);
-
-                const auto pr_time = elapsedFrom(pr_start_time);
-                path_relink_time += pr_time;
-
-                using BRKGA::PathRelinking::PathRelinkingResult;
-                switch(result) {
-                    case PathRelinkingResult::TOO_HOMOGENEOUS:
-                        ++num_homogenities;
-                        cout << "- Populations are too too homogeneous | "
-                                "Elapsed time: " << pr_time << endl;
-                        break;
-
-                    case PathRelinkingResult::NO_IMPROVEMENT:
-                        cout << "- No improvement found | "
-                                "Elapsed time: " << pr_time << endl;
-                        break;
-
-                    case PathRelinkingResult::ELITE_IMPROVEMENT:
-                        ++num_elite_improvements;
-                        cout << "- Improvement on the elite set but not in the "
-                                "best individual | Elapsed time: "
-                             << pr_time << endl;
-                        break;
-
-                    case PathRelinkingResult::BEST_IMPROVEMENT:
-                        ++num_best_improvements;
-                        fitness = algorithm.getBestFitness();
-
-                        cout << "- Best individual improvement: "
-                             << get<0>(fitness) << ", " << get<1>(fitness)
-                             << " | Elapsed time: " << pr_time << endl;
-
-                        if(fitness < best_fitness) {
-                            last_update_time = elapsedFrom(start_time);
-                            best_fitness = fitness;
-
-                            auto update_offset = iteration -
-                                                 last_update_iteration;
-                            last_update_iteration = iteration;
-
-                            if(large_offset < update_offset)
-                                large_offset = update_offset;
-
-                            best_solution = algorithm.getBestChromosome();
-
-                            cout
-                            << "* " << iteration << " | "
-                            << setiosflags(ios::fixed) << setprecision(0)
-                            << get<0>(best_fitness) << " | "
-                            << get<1>(best_fitness) << " | "
-                            << setiosflags(ios::fixed) << setprecision(2)
-                            << last_update_time
-                            << endl;
-                        }
-                        break;
-
-                    default:;
-                } // end switch
-            } // End if IPR
-
-            // Time to stop?
-            switch(stop_rule) {
-                case StopRule::GENERATIONS:
-                    if(iteration == stop_arg)
-                        run = false;
-                    break;
-
-                case StopRule::IMPROVEMENT:
-                    if(iters_no_improvement >= stop_arg)
-                        run = false;
-                    break;
-
-                default:;
-            }
-
-            if(elapsedFrom(start_time) > max_time)
-                run = false;
-            ++iteration;
-        } // end while / main loop
-
-        const auto total_num_iterations = iteration;
-        const auto total_elapsed_time = elapsedFrom(start_time);
+        auto final_status = algorithm.run(control_params, &cout);
 
         log("End of optimization");
-        cout
-        << "\nTotal number of iterations: " << total_num_iterations
-        << "\nLast update iteration: " << last_update_iteration
-        << "\nTotal optimization time: " << total_elapsed_time
-        << "\nLast update time: " << last_update_time
-        << "\nLarge number of iterations between improvements: " << large_offset
-        << "\nTotal path relink time: " << path_relink_time
-        << "\nTotal path relink calls: " << num_path_relink_calls
-        << "\nNumber of homogenities: " << num_homogenities
-        << "\nImprovements in the elite set: " << num_elite_improvements
-        << "\nBest individual improvements: " << num_best_improvements
-        << endl;
+        cout << "\n> Final status:" << final_status << endl;
 
         ////////////////////////////////////////
         // Extracting the best tour
         ////////////////////////////////////////
 
-        best_fitness = algorithm.getBestFitness();
-        best_solution = algorithm.getBestChromosome();
+        const auto best_fitness = algorithm.getBestFitness();
+        const auto best_solution = algorithm.getBestChromosome();
 
         vector<pair<double, unsigned>> tour(instance.num_nodes);
         for(unsigned i = 0; i < instance.num_nodes; ++i)
@@ -470,14 +305,14 @@ Options:
 
         sort(tour.begin(), tour.end());
 
-        cout
-        << "\n% Best tour cost: "
-        << setiosflags(ios::fixed) << setprecision(0)
-        << get<0>(best_fitness)
-        << "\n% Largest edge: "
-        << get<1>(best_fitness)
-        << "\n% Best tour: ";
+        // We need to import operator<< to print tuples.
+        using BRKGA::operator<<;
 
+        cout
+        << "\n% Best tour cost, Largest Edge: "
+        << setiosflags(ios::fixed) << setprecision(0)
+        << best_fitness
+        << "\n% Best tour: ";
         for(const auto& kv : tour)
             cout << kv.second << " ";
 
@@ -490,41 +325,65 @@ Options:
         if(pos != string::npos)
                 instance_name = instance_name.substr(0, pos);
 
+        // We print a one-liner so that we can extract the log's last line
+        // and insert it on a table / CSV file.
         cout <<
-        "\n\nInstance,Seed,NumNodes,TotalIterations,TotalTime,"
-        "TotalPRTime,PRCalls,NumHomogenities,NumPRImprovElite,"
-        "NumPrImprovBest,LargeOffset,LastUpdateIteration,LastUpdateTime,"
-        "Cost,LargestEdge"
+        "\n\nInstance,"
+        "Seed,"
+        "Cost,"
+        "LargestEdge,"
+        "NumNodes,"
+        "TotalIterations,"
+        "LastUpdateIteration,"
+        "TotalTime,"
+        "LastUpdateTime,"
+        "LargestIterationOffset,"
+        "StalledIterations,"
+        "PRTime,"
+        "PRCalls,"
+        "PRNumHomogenities,"
+        "PRNumPrImprovBest,"
+        "PRNumImprovElite,"
+        "NumExchanges,"
+        "NumShakes,"
+        "NumResets"
         << endl;
 
+        // For timers, we use count() to get the absolute number with unit indicator.
         cout
         << instance_name << ","
         << seed << ","
-        << instance.num_nodes << ","
-        << total_num_iterations << ","
-        << setiosflags(ios::fixed) << setprecision(2)
-        << total_elapsed_time << ","
-        << path_relink_time << ","
-        << num_path_relink_calls << ","
-        << num_homogenities << ","
-        << num_elite_improvements << ","
-        << num_best_improvements << ","
-        << large_offset << ","
-        << last_update_iteration << ","
-        << last_update_time << ","
         << setiosflags(ios::fixed) << setprecision(0)
         << get<0>(best_fitness) << ","
-        << get<1>(best_fitness);
-
+        << get<1>(best_fitness) << ","
+        << instance.num_nodes << ","
+        << final_status.current_iteration << ","
+        << final_status.last_update_iteration << ","
+        << setiosflags(ios::fixed) << setprecision(2)
+        << final_status.current_time.count() << ","
+        << final_status.last_update_time.count() << ","
+        << setiosflags(ios::fixed) << setprecision(0)
+        << final_status.largest_iteration_offset << ","
+        << final_status.stalled_iterations << ","
+        << setiosflags(ios::fixed) << setprecision(2)
+        << final_status.path_relink_time.count() << ","
+        << setiosflags(ios::fixed) << setprecision(0)
+        << final_status.num_path_relink_calls << ","
+        << final_status.num_homogenities << ","
+        << final_status.num_best_improvements << ","
+        << final_status.num_elite_improvements << ","
+        << final_status.num_exchanges << ","
+        << final_status.num_shakes << ","
+        << final_status.num_resets;
         cout.flush();
     }
     catch(exception& e) {
         cerr
-        << "\n***********************************************************"
-        << "\n****  Exception Occured: " << e.what()
-        << "\n***********************************************************"
+        << "\n" << string(40, '*') << "\n"
+        << "Exception Occurred: " << e.what()
+        << "\n" << string(40, '*')
         << endl;
-        return 70; // BSD software internal error code
+        return 1;
     }
     return 0;
 }

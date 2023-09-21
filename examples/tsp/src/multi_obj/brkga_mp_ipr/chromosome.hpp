@@ -1,11 +1,11 @@
 /*******************************************************************************
  * chromosome.hpp: Interface for Chromosome class/structure.
  *
- * (c) Copyright 2015-2021, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2023, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
- * Created on : Jan 06, 2015 by andrade.
- * Last update: Jan 05, 2018 by andrade.
+ * Created on : Jan 06, 2015 by ceandrade.
+ * Last update: Sep 07, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -38,7 +38,7 @@ namespace BRKGA {
  * hypercube). We use double precision because float precision maybe not be
  * enough for some applications.
  *
- * We could use `std::vector<double>` directly. However, using `typedef`, we can
+ * We could use `std::vector<double>` directly. However, using an alias, we can
  * add additional capabilities to the Chromosome class in the future, such as
  * parenting track. For example, we may want to do this:
  *
@@ -60,7 +60,7 @@ namespace BRKGA {
  * as long as:
  *
  *   a) We remember that every operation provided by `std::vector` must be a
- *   semantically valid operation on an object of the derived class;
+ *      semantically valid operation on an object of the derived class;
  *
  *   b) We avoid creating derived class objects with dynamic storage duration;
  *
@@ -70,7 +70,7 @@ namespace BRKGA {
  *      delete pt;      // Delete does not call the Chromosome destructor
  *      \endcode
  */
-typedef std::vector<double> Chromosome;
+using Chromosome = std::vector<double>;
 
 } // end namespace BRKGA_MP_IPR
 

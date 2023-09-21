@@ -1,11 +1,11 @@
 ###############################################################################
 # Makefile: building instructions using GNU Make utilities.
 #
-# Created on : Mar 05, 2019 by andrade
-# Last update: Dec 07, 2021 by andrade
-#
-# (c) Copyright 2019-2022, Carlos Eduardo de Andrade.
+# (c) Copyright 2019-2023, Carlos Eduardo de Andrade.
 # All Rights Reserved.
+#
+# Created on : Mar 05, 2019 by ceandrade
+# Last update: Sep 20, 2023 by ceandrade
 #
 # This code is released under BRKGA-MP-IPR License:
 # https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -27,11 +27,11 @@
 # User Defines
 ###############################################################################
 
-# Optimization switch
+# Optimization switch. If ommitted/commented, the debug mode is used.
 OPT = opt
 
-# Determines how the mating process will happen regarding reproducibility.  One
-# of the following options should be used. If more than one is given,
+# Determines how the mating process will happen regarding reproducibility.
+# One of the following options should be used. If more than one is given,
 # MATING_FULL_SPEED takes priority over MATING_SEED_ONLY, which takes priority
 # over MATING_SEQUENTIAL. If no option is supplied, BRKGA-Mp-IPR assume
 # MATING_FULL_SPEED.
@@ -50,31 +50,36 @@ USER_FLAGS += -DMATING_FULL_SPEED
 
 # Using this option, the mating process is completely sequential, as in the
 # original BRKGA. The reproducibility is guaranteed with only the same seed.
-# This option can be very slow for large chromosomes and large populations. But
-# it makes debugging easier.
+# This option can be very slow for large chromosomes and large populations.
+# But it makes debugging easier.
 # USER_FLAGS += -DMATING_SEQUENTIAL
 
 ###############################################################################
 # Build options
 ###############################################################################
 
-# Include dir
+# Include folders.
 INCLUDES = \
 	-I. \
 	-I./brkga_mp_ipr
 
-# Objects
+# Objects.
 OBJS = \
 	./tsp/tsp_instance.o \
 	./heuristics/greedy_tour.o \
 	./decoders/tsp_decoder.o \
 	./decoders/tsp_decoder_pre_allocating.o
 
-MAIN_COMPLETE_OBJ = main_complete.o
-MAIN_COMPLETE_EXE = main_complete
+# Helpers.
+UTIL_OBJS = \
+	./third_part/docopt/docopt.o
 
+# Main files.
 MAIN_MINIMAL_OBJ = main_minimal.o
 MAIN_MINIMAL_EXE = main_minimal
+
+MAIN_COMPLETE_OBJ = main_complete.o
+MAIN_COMPLETE_EXE = main_complete
 
 ###############################################################################
 # Compiler, linker, and flags
@@ -84,7 +89,7 @@ MAIN_MINIMAL_EXE = main_minimal
 CXX = g++
 # CXX = clang++
 
-USER_FLAGS += -std=c++17
+USER_FLAGS += -std=c++20
 
 # Compiler flags for debugging
 ifneq ($(OPT), opt)
@@ -93,7 +98,7 @@ ifneq ($(OPT), opt)
 else
 	USER_FLAGS += -O3 -fomit-frame-pointer -funroll-loops
 	ifeq ($(CXX), g++)
-		USER_FLAGS += -ftracer -fpeel-loops -fprefetch-loop-arrays -flto
+		USER_FLAGS += -ftracer -fpeel-loops -fprefetch-loop-arrays -flto=auto
 	endif
 endif
 
@@ -131,9 +136,9 @@ main_minimal: $(OBJS) $(MAIN_MINIMAL_OBJ)
 	$(CXX) $(CXXFLAGS) $(OBJS) $(MAIN_MINIMAL_OBJ) -o $(MAIN_MINIMAL_EXE)
 	@echo
 
-main_complete: $(OBJS) $(MAIN_COMPLETE_OBJ)
+main_complete: $(UTIL_OBJS) $(OBJS) $(MAIN_COMPLETE_OBJ)
 	@echo "--> Linking objects... "
-	$(CXX) $(CXXFLAGS) $(OBJS) $(MAIN_COMPLETE_OBJ) -o $(MAIN_COMPLETE_EXE)
+	$(CXX) $(CXXFLAGS) $(UTIL_OBJS) $(OBJS) $(MAIN_COMPLETE_OBJ) -o $(MAIN_COMPLETE_EXE)
 	@echo
 
 .cpp.o:
@@ -143,7 +148,8 @@ main_complete: $(OBJS) $(MAIN_COMPLETE_OBJ)
 
 clean:
 	@echo "--> Cleaning compiled..."
-	rm -rf $(OBJS) $(MAIN_MINIMAL_OBJ) $(MAIN_COMPLETE_OBJ) $(MAIN_MINIMAL_EXE) $(MAIN_COMPLETE_EXE)
+	rm -rf $(UTIL_OBJS) $(OBJS) $(MAIN_MINIMAL_OBJ) $(MAIN_COMPLETE_OBJ) \
+$(MAIN_MINIMAL_EXE) $(MAIN_COMPLETE_EXE)
 	rm -rf *o
 	rm -rf Debug
 	rm -rf *.dSYM
