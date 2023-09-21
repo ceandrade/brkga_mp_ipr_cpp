@@ -81,9 +81,6 @@ MAIN_MINIMAL_EXE = main_minimal
 MAIN_COMPLETE_OBJ = main_complete.o
 MAIN_COMPLETE_EXE = main_complete
 
-MAIN_DETAILED_OBJ = main_detailed.o
-MAIN_DETAILED_EXE = main_detailed
-
 ###############################################################################
 # Compiler, linker, and flags
 ###############################################################################
@@ -101,7 +98,7 @@ ifneq ($(OPT), opt)
 else
 	USER_FLAGS += -O3 -fomit-frame-pointer -funroll-loops
 	ifeq ($(CXX), g++)
-		USER_FLAGS += -ftracer -fpeel-loops -fprefetch-loop-arrays -flto
+		USER_FLAGS += -ftracer -fpeel-loops -fprefetch-loop-arrays -flto=auto
 	endif
 endif
 

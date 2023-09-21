@@ -69,7 +69,7 @@ void log(const string& message) {
 //--------------------------------[ Main ]------------------------------------//
 
 int main(int argc, char* argv[]) {
-    const std::string USAGE =
+    const std::string usage =
     R"(
 Usage:
   main_complete
@@ -98,7 +98,7 @@ Options:
   --no_evolution     If supplied, no evolutionary operators are applied.
                      So, the algorithm becomes a simple multi-start algorithm.
   -h --help          Produce help message.
- )";
+)";
 
     string config_file;
     unsigned seed = 0;
@@ -111,7 +111,7 @@ Options:
 
     // Parse the command line arguments.
     try {
-        auto args = docopt::docopt(USAGE, { argv + 1, argv + argc }, true);
+        auto args = docopt::docopt(usage, { argv + 1, argv + argc }, true);
 
         #ifdef DEBUG
         for(auto& [key, value] : args)
@@ -221,11 +221,11 @@ Options:
         << endl;
 
         // We may choose the simple thread-safe decoder...
-        // typedef TSP_Decoder LocalDecoder;
+        // using LocalDecoder = TSP_Decoder;
         // TSP_Decoder decoder(instance);
 
         //... or the pre-allocating thread-safe decoder.
-        typedef TSP_Decoder_pre_allocating LocalDecoder;
+        using LocalDecoder = TSP_Decoder_pre_allocating;
         LocalDecoder decoder(instance, num_threads);
 
         BRKGA::BRKGA_MP_IPR<LocalDecoder> algorithm(
