@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+
+# Tools
+doxyrest-2.1.3
+

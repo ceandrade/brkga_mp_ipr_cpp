@@ -1,9 +1,9 @@
 ################################################################################
-# (c) Copyright 2019, Carlos Eduardo de Andrade.
+# (c) Copyright 2019-2023, Carlos Eduardo de Andrade.
 # All Rights Reserved.
 #
 #  Created on : Mar 08, 2019 by andrade
-#  Last update: Oct 25, 2019 by andrade
+#  Last update: Sep 22, 2023 by andrade
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -43,7 +43,8 @@ doxygen:
 	doxygen Doxyfile
 
 doxyrest:
-	doxyrest -c doxyrest-config.lua
+	./doxyrest-2.1.3/bin/doxyrest -c doxyrest-config.lua
+	cp build/rst_doxyrest/* src/rst/.
 
 sphinx:
 	rm -rf build/rst_tmp
@@ -51,7 +52,7 @@ sphinx:
 	cp -a src/rst build/rst_tmp
 	cp -a src/assets build/.
 	sphinx-build -b html build/rst_tmp build/html_sphinx
-	touch  build/html_sphinx/.nojekyll
+	touch build/html_sphinx/.nojekyll
 	rm -rf ../docs
 	cp -a build/html_sphinx ../docs
 	cp -a src/assets/logo*png ../docs/_static

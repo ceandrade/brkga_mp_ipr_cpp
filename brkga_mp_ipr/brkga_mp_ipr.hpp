@@ -203,6 +203,7 @@ namespace BRKGA::PathRelinking {}
  * \defgroup chrono_helpers I/O chrono help functions
  *
  * Defines some helpers for chrono types.
+ *
  * \todo These functions may not be necessary for C++23,
  *       since streaming operators for chrono types are defined there.
  */
@@ -253,7 +254,8 @@ operator>>(std::istream& is, durantion_t& duration) {
  *
  * To the date, libc (clang) has no support to stream chrono objects.
  * This is a working around only for seconds.
- * \todo: remove this when clang/libc get the support.
+ *
+ * \todo Remove this when clang/libc get the support.
  *
  * \param os the output operator.
  * \param dur the duration.
@@ -327,8 +329,6 @@ constexpr bool close_enough(T a, T b) {
  * This specialization iterates, recursively, of each tuples' members and
  * compares them. Note that this is done in compilation time, with no impact at
  * running time.
- *
- * \todo Could we implement this using C++17 template folding?
  *
  * \param a First tuple to be compared.
  * \param b Second tuple to be compared.
@@ -499,7 +499,7 @@ inline PathRelinkingResult& operator|=(PathRelinkingResult& lhs,
 //----------------------------------------//
 
 /**
- * \defgroup enum_io_templates Template specializations for enum I/O.
+ * \defgroup enum_io_templates Template specializations for enum I/O
  *
  * Using slightly modified template class provided by Bradley Plohr
  * (https://codereview.stackexchange.com/questions/14309/conversion-between-enum-and-string-in-c-class-header)
@@ -509,13 +509,11 @@ inline PathRelinkingResult& operator|=(PathRelinkingResult& lhs,
  * saving time in coding custom solutions. Please, see third_part/enum_io.hpp
  * for complete reference and examples.
  *
-  * \note
-  *     Due to some weird scope resolution within clang compilers,
-  *     we must imbue the enum facilities into namespace BRKGA.
-  *     This does not happen with g++. We have not test to MSVC.
+ * \note Due to some weird scope resolution within clang compilers,
+ *     we must imbue the enum facilities into namespace BRKGA.
+ *     This does not happen with g++. We have not test to MSVC.
  *
- * \warning
- *      The specialization must be inline-d to avoid multiple definitions
+ * \warning The specialization must be inline-d to avoid multiple definitions
  *      issues across different modules. However, this can cause "inline"
  *      overflow, and compromise your code. If you include this header only
  *      once along with your code, it is safe to remove the `inline`s from the
@@ -807,7 +805,8 @@ public:
      * \param v2_begin begin of the first blocks of keys
      * \param block_size number of keys to be considered.
      *
-     * \todo (ceandrade): implement this properly.
+     * \todo This is the same implementation of Hamming. We need to figure out
+     *       how to do it properly.
      */
     virtual bool affectSolution(Chromosome::const_iterator v1_begin,
                                 Chromosome::const_iterator v2_begin,
@@ -937,11 +936,10 @@ public:
      * See BRKGA_MP_IPR::setShakingMethod() for details and examples.
      *
      * \note If `shaken` is empty, all chromosomes of all populations are
-     *       re-decoded. This may be slow. Even if you intention is to do so,
-     *       it is faster to populate `shaken`.
+     *      re-decoded. This may be slow. Even if you intention is to do so,
+     *      it is faster to populate `shaken`.
      *
-     * \warning
-     *      This procedure can be very intrusive since it must manipulate
+     * \warning This procedure can be very intrusive since it must manipulate
      *      the population. So, the user must make sure that BRKGA invariants
      *      are kept, such as chromosome size and population size.
      *      Otherwise, the overall functionaly may be compromised.
@@ -1027,7 +1025,8 @@ public:
  *               no-required parameters. It does not log errors.
  * \returns a tuple containing the BRKGA and external control parameters.
  * \throw std::fstream::failure in case of errors in the file.
- * \todo (ceandrade) This method can beneficiate from introspection tools.
+ *
+ * \todo This method can beneficiate from introspection tools.
  *       We would like achieve a code similar to the
  *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
  */
@@ -1322,6 +1321,7 @@ operator<<(std::ostream& os, const ControlParams& control_params) {
  * \param control_params the external control parameters. Default is an empty
  *        object.
  * \throw std::fstream::failure in case of errors in the file.
+ *
  * \todo This method can beneficiate from introspection tools.
  *       We would like achieve a code similar to the
  *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
@@ -1375,8 +1375,7 @@ INLINE void writeConfiguration(const std::string& filename,
  * \brief Defines the current status of the algorithm for a given
  * BRKGA_MP_IPR::run() call.
  *
- * \note
- *      We use `std::chrono::duration<double>` instead `std::chrono::seconds`
+ * \note We use `std::chrono::duration<double>` instead `std::chrono::seconds`
  *      for keep better precision.
  */
 class AlgorithmStatus {
@@ -1497,7 +1496,7 @@ std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
  * Encapsulates a population of chromosomes providing supporting methods for
  * making the implementation easier.
  *
- * \warning
+ * J
  *      All methods and attributes are public and can be manipulated directly
  *      from BRKGA algorithms. Note that this class is not meant to be used
  *      externally of this unit.
@@ -1936,7 +1935,7 @@ public:
      * which is **very timing consuming**.
      *
      * \warning If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM
-     *          TIME** since this is the core stopping criteria on IPR.
+     *      TIME** since this is the core stopping criteria on IPR.
      *
      * If you really mean to have no maximum time set, we recommend to use
      * the following code:
@@ -2064,19 +2063,17 @@ public:
      * half of the chromosome size. For more details on that, refer to
      * #pathRelink().
      *
-     * \note
-     *      The algorithm always test against maximum running time and for the
+     * \note The algorithm always test against maximum running time and for the
      *      maximum stalled iterations/generations given by ControlParams
-     *      indenpendently of the stopping criteria function supplied by
-     *      the user. This is especially important when activating the implicit
-     *      path reliking which is **very timing consuming**.
-     *      If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM
-     *      TIME** since this is the core stopping criteria on IPR.
+     *      indenpendently of the stopping criteria function supplied by the
+     *      user. This is especially important when activating the implicit path
+     *      reliking which is **very timing consuming**. If you are using IPR,
+     *      we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is
+     *      the core stopping criteria on IPR.
      *
-     * \warning
-     *     The decoding is done in parallel using threads, and the user **must
-     *     guarantee that the decoder is THREAD-SAFE.** If such property cannot
-     *     be held, we suggest using a single thread for optimization.
+     * \warning The decoding is done in parallel using threads, and the user
+     *      **must guarantee that the decoder is THREAD-SAFE.** If such property
+     *      cannot be held, we suggest using a single thread for optimization.
      *
      * \param control_params the parameters to control the algorithm flow,
      *        such as calling exchanges, shakes, and IPR.
@@ -2097,10 +2094,9 @@ public:
      * \brief Evolves the current populations following the guidelines of
      *        Multi-parent BRKGAs.
      *
-     * \warning
-     *     The decoding is done in parallel using threads, and the user **must
-     *     guarantee that the decoder is THREAD-SAFE.** If such property cannot
-     *     be held, we suggest using a single thread for optimization.
+     * \warning The decoding is done in parallel using threads, and the user
+     *      **must guarantee that the decoder is THREAD-SAFE.** If such property
+     *      cannot be held, we suggest using a single thread for optimization.
      *
      * \param generations number of generations to be evolved. Must be larger
      *        than zero.
@@ -2156,11 +2152,10 @@ public:
      * build the candidates, which can be costly if the `chromosome_size` is
      * very large.
      *
-     * \warning
-     *     As it is in #evolve(), the decoding is done in parallel using
-     *     threads, and the user **must guarantee that the decoder is
-     *     THREAD-SAFE.** If such property cannot be held, we suggest using
-     *     a single thread  for optimization.
+     * \warning As it is in #evolve(), the decoding is done in parallel using
+     *      threads, and the user **must guarantee that the decoder is
+     *      THREAD-SAFE.** If such property cannot be held, we suggest using
+     *      a single thread for optimization.
      *
      * \param pr_type type of path relinking to be performed.
      *        See PathRelinking::Type.
@@ -2306,12 +2301,11 @@ public:
      * \brief Returns a reference to the chromosome with best fitness among
      * all current populations.
      *
-     * \warning
-     *     Note that this method **does not** return the best solution but
-     *     the one within the current population. If a #shake() or #reset()
-     *     is called, the best solution may be lose in the populations.
-     *     However, if you are using #run(), the best solution is returned
-     *     by that method. If not, you must keep track of the best solution.
+     * \warning Note that this method **does not** return the best solution but
+     *      the one within the current population. If a #shake() or #reset()
+     *      is called, the best solution may be lose in the populations.
+     *      However, if you are using #run(), the best solution is returned
+     *      by that method. If not, you must keep track of the best solution.
      *
      */
     const Chromosome& getBestChromosome() const;
@@ -2319,12 +2313,11 @@ public:
     /**
      * \brief Returns the best fitness among all current populations.
      *
-     * \warning
-     *     Note that this method **does not** return the best fitness but
-     *     the one within the current population. If a #shake() or #reset()
-     *     is called, the best fitness may be lose in the populations.
-     *     However, if you are using #run(), the best fitness is returned
-     *     by that method. If not, you must keep track of the best fitness.
+     * \warning Note that this method **does not** return the best fitness but
+     *      the one within the current population. If a #shake() or #reset()
+     *      is called, the best fitness may be lose in the populations.
+     *      However, if you are using #run(), the best fitness is returned
+     *      by that method. If not, you must keep track of the best fitness.
      */
     fitness_t getBestFitness() const;
 
@@ -2501,14 +2494,12 @@ protected:
      * implementation, this can take a while, and the user may want to time
      * such procedure in his/her experiments.
      *
-     * \warning
-     *      This method must be call before any population handling method.
+     * \warning This method must be call before any population handling method.
      *
-     * \warning
-     *     As it is in #evolve(), the decoding is done in parallel using
-     *     threads, and the user **must guarantee that the decoder is
-     *     THREAD-SAFE.** If such property cannot be held, we suggest using
-     *     a single thread for optimization.
+     * \warning As it is in #evolve(), the decoding is done in parallel using
+     *      threads, and the user **must guarantee that the decoder is
+     *      THREAD-SAFE.** If such property cannot be held, we suggest using
+     *      a single thread for optimization.
      *
      * \param reset when set true, it ignores all solutions provided
      *        by #setInitialPopulation(), and builds a completely random

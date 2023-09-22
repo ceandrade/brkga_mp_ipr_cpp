@@ -1,4 +1,23 @@
 --------------------------------------------------------------------------------
+-- (c) Copyright 2019-2023, Carlos Eduardo de Andrade.
+-- All Rights Reserved.
+--
+--  Created on : Jun 27, 2019 by andrade
+--  Last update: Sep 22, 2023 by andrade
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+-- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+-- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+-- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+-- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-- POSSIBILITY OF SUCH DAMAGE.
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --
 --  This file is part of the Doxyrest toolkit.
 --
@@ -29,8 +48,8 @@
 --! searched in directories -- and in the sequence -- specified here.
 --!
 
-FRAME_DIR_LIST = { "./doxyrest-2.0.0-mac/share/doxyrest/frame/cfamily",
-                   "./doxyrest-2.0.0-mac/share/doxyrest/frame/common" }
+FRAME_DIR_LIST = { "./doxyrest-2.1.3/share/doxyrest/frame/cfamily",
+                   "./doxyrest-2.1.3/share/doxyrest/frame/common" }
 
 --!
 --! The output master (index) reStructuredText file. Usually, the index frame
@@ -40,7 +59,7 @@ FRAME_DIR_LIST = { "./doxyrest-2.0.0-mac/share/doxyrest/frame/cfamily",
 --! used as the default frame file.
 --!
 
-FRAME_FILE = "./doxyrest-new/frame/cfamily/index.rst.in"
+FRAME_FILE = nil
 
 --!
 --! The input master (index) XML file. Specifying it here allows calling
@@ -49,7 +68,7 @@ FRAME_FILE = "./doxyrest-new/frame/cfamily/index.rst.in"
 --! specified, the command line takes precedence.
 --!
 
-INPUT_FILE = "build/xml/index.xml"
+INPUT_FILE = "build/xml_doxygen/index.xml"
 
 --!
 --! The output master (index) reStructuredText file. Usually, the index frame
@@ -59,7 +78,7 @@ INPUT_FILE = "build/xml/index.xml"
 --! the default output master file.
 --!
 
-OUTPUT_FILE = "build/rst/index.rst"
+OUTPUT_FILE = "build/rst_doxyrest/index.rst"
 
 --!
 --! File with project-specific reStructuredText definitions. When non``nil``,
