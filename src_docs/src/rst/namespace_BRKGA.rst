@@ -12,17 +12,12 @@ namespace BRKGA
 	enum_BRKGA_Sense.rst
 	enum_BRKGA_ShakingType.rst
 	class_BRKGA_BRKGA_MP_IPR.rst
-	class_BRKGA_BrkgaParams.rst
-	class_BRKGA_DistanceFunctionBase.rst
-	class_BRKGA_ExternalControlParams.rst
-	class_BRKGA_HammingDistance.rst
-	class_BRKGA_KendallTauDistance.rst
 	class_BRKGA_Population.rst
 
 Overview
 ~~~~~~~~
 
-This namespace contains all stuff related to :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` Multi Parent with Implicit Path Relinking. :ref:`More...<details-namespace_b_r_k_g_a>`
+This namespace contains all facilities related to :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` Multi Parent with Implicit Path Relinking. :ref:`More...<details-namespace_b_r_k_g_a>`
 
 
 .. ref-code-block:: cpp
@@ -37,8 +32,8 @@ This namespace contains all stuff related to :ref:`BRKGA <doxid-namespace_b_r_k_
 
 	// typedefs
 
-	typedef std::vector<double> :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`;
-	typedef double :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>`;
+	typedef std::vector<double> :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`;
+	typedef double :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>`;
 
 	// enums
 
@@ -48,31 +43,78 @@ This namespace contains all stuff related to :ref:`BRKGA <doxid-namespace_b_r_k_
 
 	// classes
 
+	class :ref:`AlgorithmStatus<doxid-class_b_r_k_g_a_1_1_algorithm_status>`;
+
 	template <class Decoder>
 	class :ref:`BRKGA_MP_IPR<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r>`;
 
 	class :ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`;
+	class :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`;
 	class :ref:`DistanceFunctionBase<doxid-class_b_r_k_g_a_1_1_distance_function_base>`;
-	class :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`;
 	class :ref:`HammingDistance<doxid-class_b_r_k_g_a_1_1_hamming_distance>`;
 	class :ref:`KendallTauDistance<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance>`;
 	class :ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`;
 
 	// global variables
 
-	static constexpr :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` :ref:`FITNESS_T_MIN<doxid-namespace_b_r_k_g_a_1a27f915fd21c02aee1097135954420ebb>`;
-	static constexpr :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` :ref:`FITNESS_T_MAX<doxid-namespace_b_r_k_g_a_1aa4eaa93f02c949d7af918598c606402f>`;
-	constexpr double :ref:`EQUALITY_THRESHOLD<doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>`;
+	static constexpr :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` :ref:`FITNESS_T_MIN<doxid-namespace_b_r_k_g_a_1a27f915fd21c02aee1097135954420ebb>` = FITNESS_T_MIN_TEMPLATE<:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>`>;
+	static constexpr :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` :ref:`FITNESS_T_MAX<doxid-namespace_b_r_k_g_a_1aa4eaa93f02c949d7af918598c606402f>` = FITNESS_T_MAX_TEMPLATE<:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>`>;
+	constexpr double :ref:`EQUALITY_THRESHOLD<doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>` = 1e-6;
 
 	// global functions
 
-	:ref:`INLINE<doxid-brkga__mp__ipr_8hpp_1a2eb6f9e0395b47b8d5e3eeae4fe0c116>` std::pair<:ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`, :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`> :ref:`readConfiguration<doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>`(const std::string& filename);
+	template <class T>
+	constexpr bool :ref:`close_enough<doxid-group__utility__functions_1gae3eb0d56b561126f23ebd26ec556ac29>`(
+		T a,
+		T b
+	);
 
-	:ref:`INLINE<doxid-brkga__mp__ipr_8hpp_1a2eb6f9e0395b47b8d5e3eeae4fe0c116>` void :ref:`writeConfiguration<doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>`(
+	template <
+		size_t I = 0,
+		typename T,
+		typename... Ts
+	>
+	constexpr bool :ref:`close_enough<doxid-group__utility__functions_1ga9e9de825b93fe16fe20dfee5b91c9690>`(
+		std::tuple<T, Ts...> a,
+		std::tuple<T, Ts...> b
+	);
+
+	INLINE std::pair<:ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`, :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`> :ref:`readConfiguration<doxid-group__brkga__control__params_1ga1c8b456ad75a3b522d315d4167546ae6>`(
+		std::istream& input,
+		std::ostream& logger = std::cout
+	);
+
+	INLINE std::pair<:ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`, :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`> :ref:`readConfiguration<doxid-group__brkga__control__params_1gac3cde9b5ca694e672bc52408f6381c4c>`(
+		const std::string& filename,
+		std::ostream& logger = std::cout
+	);
+
+	INLINE std::ostream& :ref:`operator <<<doxid-group__brkga__control__params_1gac2e90febdb3186e786a71ef60950f04f>` (
+		std::ostream& os,
+		const :ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`& brkga_params
+	);
+
+	INLINE std::ostream& :ref:`operator <<<doxid-group__brkga__control__params_1ga1eb95713847bf695dd70c5cb4edc5aab>` (
+		std::ostream& os,
+		const :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`& control_params
+	);
+
+	INLINE void :ref:`writeConfiguration<doxid-group__brkga__control__params_1ga758c489d2f6291cf80a78ca6765b856e>`(
+		std::ostream& output,
+		const :ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`& brkga_params,
+		const :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`& control_params = :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`{}
+	);
+
+	INLINE void :ref:`writeConfiguration<doxid-group__brkga__control__params_1ga03609eb993f479e801c4b30d794b6203>`(
 		const std::string& filename,
 		const :ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`& brkga_params,
-		const :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`& control_params = :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`()
-		);
+		const :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`& control_params = :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`{}
+	);
+
+	std::ostream& :ref:`operator <<<doxid-group__algorithm__status_1gacd174acb61b2b339b678c6c2020316b0>` (
+		std::ostream& output,
+		const :ref:`AlgorithmStatus<doxid-class_b_r_k_g_a_1_1_algorithm_status>`& status
+	);
 
 	} // namespace BRKGA
 .. _details-namespace_b_r_k_g_a:
@@ -80,13 +122,13 @@ This namespace contains all stuff related to :ref:`BRKGA <doxid-namespace_b_r_k_
 Detailed Documentation
 ~~~~~~~~~~~~~~~~~~~~~~
 
-This namespace contains all stuff related to :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` Multi Parent with Implicit Path Relinking.
+This namespace contains all facilities related to :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` Multi Parent with Implicit Path Relinking.
 
 Typedefs
 --------
 
 .. index:: pair: typedef; Chromosome
-.. _doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4:
+.. _doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
@@ -97,13 +139,13 @@ Chromosone representation.
 
 The chromosome is represented using a vector in the unitary hypercube, i.e., :math:`v \in [0,1]^n` where :math:`n` is the size of the array (dimensions of the hypercube). We use double precision because float precision maybe not be enough for some applications.
 
-We could use ``std::vector<double>`` directly. However, using ``typedef``, we can add additional capabilities to the Chromosome class in the future, such as parenting track. For example, we may want to do this:
+We could use ``std::vector<double>`` directly. However, using an alias, we can add additional capabilities to the Chromosome class in the future, such as parenting track. For example, we may want to do this:
 
 .. ref-code-block:: cpp
 
-	class :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`: public std::vector<double> {
+	class :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`: public std::vector<double> {
 	    public:
-	        :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`() :
+	        :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`() :
 	            std::vector<double>(), my_personal_data(0.0)
 	            {}
 	    public:
@@ -122,11 +164,11 @@ c) We **DO AVOID** polymorphism:
 
 .. ref-code-block:: cpp
 
-	std::vector<double>* pt = new :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`();     // Bad idea
+	std::vector<double>* pt = new :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`();     // Bad idea
 	delete pt;      // Delete does not call the Chromosome destructor
 
 .. index:: pair: typedef; fitness_t
-.. _doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e:
+.. _doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
@@ -139,19 +181,23 @@ In general, fitness_t is a single number for single-objective problems. For inst
 
 .. ref-code-block:: cpp
 
-	typedef double :ref:`fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>`;
+	using :ref:`fitness_t <doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` = double;
 
-For multi-objective problems (with dominance/lexicographical sorting), we need to use multiple values. We can either use a class, structure, or ``std::tuple``. Using a custom class or structure, we must provide copy assignment (``operator=``) and comparison operators (``operator<``, ``operator>``, and ``operator==``). We have all these perks using ``std:tuple``. For example, assume we have three minimization objective functions. Then we may have:
+For multi-objective problems (with dominance/lexicographical sorting), we need to use multiple values. We can either use a class, structure, or ``std::tuple``. Using a custom class or structure, we must provide copy assignment (``operator=``), comparison operators (``operator<``, ``operator>``, and ``operator==``), and the streaming operator ``std::ostream& operator<<(std::ostream& os, const CustomFitness& fitness)`` where ``CustomFitness`` is your fitness structure. We have all these perks using ``std:tuple``. For example, assume we have three minimization objective functions. Then we may have:
 
 .. ref-code-block:: cpp
 
-	typedef std::tuple<double, double, double> :ref:`fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>`;
+	using :ref:`fitness_t <doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` = std::tuple<double, double, double>;
 
-We do recommend use ``std::tuple``.
+.. note::
 
-Internally, BRKGA-MP-IPR doesn't use ``operator==`` directly. :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` implements the custom function ``close_enough()``. For fundamental numerical types, it compares the absolute difference with a given :ref:`EQUALITY_THRESHOLD <doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>`, i.e., two numbers :math:`a` and :math:`b` equal if :math:`|a - b| < EQUALITY\_THRESHOLD`. For all other types (except ``std::tuple``), we use operator==. For ``std::tuple``, we have a specialized ``close_enough()`` that iterates over each element of the tuples calling the base ``close_enough()``.
+	We do recommend use ``std::tuple``.
 
-If you are using custom class other than fundamental types or tuples with fundamental types, you must also provide two const template expressions :ref:`FITNESS_T_MIN <doxid-namespace_b_r_k_g_a_1a27f915fd21c02aee1097135954420ebb>` and :ref:`FITNESS_T_MAX <doxid-namespace_b_r_k_g_a_1aa4eaa93f02c949d7af918598c606402f>`.
+Internally, BRKGA-MP-IPR doesn't use ``operator==`` directly. :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` implements the custom function ``:ref:`close_enough() <doxid-group__utility__functions_1gae3eb0d56b561126f23ebd26ec556ac29>```. For fundamental numerical types, it compares the absolute difference with a given :ref:`EQUALITY_THRESHOLD <doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>`, i.e., two numbers :math:`a` and :math:`b` equal if :math:`|a - b| < EQUALITY\_THRESHOLD`. For all other types (except ``std::tuple``), we use ``operator==``. For ``std::tuple``, we have a specialized function ``:ref:`close_enough() <doxid-group__utility__functions_1gae3eb0d56b561126f23ebd26ec556ac29>``` that iterates over each element of the tuples calling the base ``:ref:`close_enough() <doxid-group__utility__functions_1gae3eb0d56b561126f23ebd26ec556ac29>```.
+
+.. warning::
+
+	If you are using custom class other than fundamental types or tuples with fundamental types, you must also provide two const template expressions :ref:`FITNESS_T_MIN <doxid-namespace_b_r_k_g_a_1a27f915fd21c02aee1097135954420ebb>` and :ref:`FITNESS_T_MAX <doxid-namespace_b_r_k_g_a_1aa4eaa93f02c949d7af918598c606402f>`.
 
 Global Variables
 ----------------
@@ -162,7 +208,7 @@ Global Variables
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
-	static constexpr :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` FITNESS_T_MIN
+	static constexpr :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` FITNESS_T_MIN = FITNESS_T_MIN_TEMPLATE<:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>`>
 
 The actual minimal value to ``fitness_t``.
 
@@ -172,7 +218,7 @@ The actual minimal value to ``fitness_t``.
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
-	static constexpr :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` FITNESS_T_MAX
+	static constexpr :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` FITNESS_T_MAX = FITNESS_T_MAX_TEMPLATE<:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>`>
 
 The actual Maximum value to ``fitness_t``.
 
@@ -182,90 +228,9 @@ The actual Maximum value to ``fitness_t``.
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
-	constexpr double EQUALITY_THRESHOLD
+	constexpr double EQUALITY_THRESHOLD = 1e-6
 
 This constant is used to compare floating-point numbers to equality. Therefore, we consider two numbers :math:`a` and :math:`b` equal if :math:`|a - b| < EQUALITY\_THRESHOLD`.
 
-Currently, this constant is only used during IPR procedures to compare fitness with fundamental types (int, flot, char, etc), either single type or embedded in a tuple. If your ``fitness_t`` has a custom type, this is not applied, as explained in :ref:`fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>`.
-
-Global Functions
-----------------
-
-.. index:: pair: function; readConfiguration
-.. _doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f:
-
-.. ref-code-block:: cpp
-	:class: doxyrest-title-code-block
-
-	:ref:`INLINE<doxid-brkga__mp__ipr_8hpp_1a2eb6f9e0395b47b8d5e3eeae4fe0c116>` std::pair<:ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`, :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`> readConfiguration(const std::string& filename)
-
-Reads the parameters from a configuration file.
-
-Todo (ceandrade) This method can beneficiate from introspection tools from C++17. We would like achieve a code similar to the `Julia counterpart <https://github.com/ceandrade/brkga_mp_ipr_julia>`__.
-
-
-
-.. rubric:: Parameters:
-
-.. list-table::
-	:widths: 20 80
-
-	*
-		- filename
-
-		- the configuration file.
-
-	*
-		- std::fstream::failure
-
-		- in case of errors in the file.
-
-
-
-.. rubric:: Returns:
-
-a tuple containing the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and external control parameters.
-
-.. index:: pair: function; writeConfiguration
-.. _doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4:
-
-.. ref-code-block:: cpp
-	:class: doxyrest-title-code-block
-
-	:ref:`INLINE<doxid-brkga__mp__ipr_8hpp_1a2eb6f9e0395b47b8d5e3eeae4fe0c116>` void writeConfiguration(
-		const std::string& filename,
-		const :ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`& brkga_params,
-		const :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`& control_params = :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`()
-		)
-
-Writes the parameters into a file..
-
-Todo (ceandrade) This method can beneficiate from introspection tools from C++17. We would like achieve a code similar to the `Julia counterpart <https://github.com/ceandrade/brkga_mp_ipr_julia>`__.
-
-
-
-.. rubric:: Parameters:
-
-.. list-table::
-	:widths: 20 80
-
-	*
-		- filename
-
-		- the configuration file.
-
-	*
-		- brkga_params
-
-		- the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` parameters.
-
-	*
-		- control_params
-
-		- the external control parameters. Default is an empty object.
-
-	*
-		- std::fstream::failure
-
-		- in case of errors in the file.
+Currently, this constant is only used during IPR procedures to compare fitness with fundamental types (int, flot, char, etc), either single type or embedded in a tuple. If your ``fitness_t`` has a custom type, this is not applied, as explained in :ref:`fitness_t <doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>`.
 

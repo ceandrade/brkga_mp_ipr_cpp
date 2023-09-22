@@ -1,6 +1,5 @@
 .. index:: pair: class; BRKGA::ExternalControlParams
 .. _doxid-class_b_r_k_g_a_1_1_external_control_params:
-.. _cid-brkga.externalcontrolparams:
 
 class BRKGA::ExternalControlParams
 ==================================
@@ -11,29 +10,15 @@ class BRKGA::ExternalControlParams
 Overview
 ~~~~~~~~
 
-Represents additional control parameters that can be used outside this framework. :ref:`More...<details-doxid-class_b_r_k_g_a_1_1_external_control_params>`
+Represents additional control parameters that can be used outside this framework. :ref:`More...<details-class_b_r_k_g_a_1_1_external_control_params>`
 
-
-
-
-
-
-
-
-
-
-
-.. index:: pair: function; ~ExternalControlParams
-.. _doxid-class_b_r_k_g_a_1_1_external_control_params_1a66bdd4268523ddeca03bc3a02ba80423:
-.. _cid-brkga.externalcontrolparams.~externalcontrolparams:
 
 .. ref-code-block:: cpp
-	:class: overview-code-block
+	:class: doxyrest-overview-code-block
 
 	#include <brkga_mp_ipr.hpp>
 	
-	class ExternalControlParams
-	{
+	class ExternalControlParams {
 	public:
 		// fields
 	
@@ -43,9 +28,9 @@ Represents additional control parameters that can be used outside this framework
 
 		// methods
 	
-		:ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`& :ref:`operator =<doxid-class_b_r_k_g_a_1_1_external_control_params_1a5bcad4c748fddaec8f5213259c4ee734>` (const :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`&);
+		ExternalControlParams& :ref:`operator =<doxid-class_b_r_k_g_a_1_1_external_control_params_1a8aa8eeab7c828ea34add9686a6c90730>` (const ExternalControlParams&);
 	};
-.. _details-doxid-class_b_r_k_g_a_1_1_external_control_params:
+.. _details-class_b_r_k_g_a_1_1_external_control_params:
 
 Detailed Documentation
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -59,10 +44,9 @@ Fields
 
 .. index:: pair: variable; exchange_interval
 .. _doxid-class_b_r_k_g_a_1_1_external_control_params_1a9f8c1c5b517d319c0d5713b9c77efa95:
-.. _cid-brkga.externalcontrolparams.exchange_interval:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	unsigned exchange_interval
 
@@ -70,10 +54,9 @@ Interval at which elite chromosomes are exchanged (0 means no exchange).
 
 .. index:: pair: variable; num_exchange_indivuduals
 .. _doxid-class_b_r_k_g_a_1_1_external_control_params_1a43d831d93698b1f982b6d0cdbed0ae12:
-.. _cid-brkga.externalcontrolparams.num_exchange_indivuduals:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	unsigned num_exchange_indivuduals
 
@@ -81,10 +64,9 @@ Number of elite chromosomes exchanged from each population.
 
 .. index:: pair: variable; reset_interval
 .. _doxid-class_b_r_k_g_a_1_1_external_control_params_1ae9be7649e2a9c0803ed58385c9208dc3:
-.. _cid-brkga.externalcontrolparams.reset_interval:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	unsigned reset_interval
 
@@ -94,13 +76,12 @@ Methods
 -------
 
 .. index:: pair: function; operator=
-.. _doxid-class_b_r_k_g_a_1_1_external_control_params_1a5bcad4c748fddaec8f5213259c4ee734:
-.. _cid-brkga.externalcontrolparams.operator:
+.. _doxid-class_b_r_k_g_a_1_1_external_control_params_1a8aa8eeab7c828ea34add9686a6c90730:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	:ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`& operator = (const :ref:`ExternalControlParams<doxid-class_b_r_k_g_a_1_1_external_control_params>`&)
+	ExternalControlParams& operator = (const ExternalControlParams&)
 
 Assignment operator for complaince.
 

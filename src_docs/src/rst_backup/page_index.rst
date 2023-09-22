@@ -18,7 +18,7 @@ partial ordering of the values of the solutions (composed of several values,
 each one from one objective function). So, we have the following definition
 (abusing a little bit of notation).
 
-  .. admonition:: Definition
+.. admonition:: Definition
 
     Let :math:`A = (f_1, f_2, \ldots, f_n)` and
     :math:`A' = (f'_1, f'_2, \ldots, f'_n)`
@@ -33,7 +33,7 @@ each one from one objective function). So, we have the following definition
 For instance, let's assume we have three minimizing objective functions and
 four solutions described in the following table:
 
-  .. table::
+.. table::
 
     ======== =========== =========== ===========
     Solution :math:`f_1` :math:`f_2` :math:`f_3`
@@ -51,7 +51,7 @@ Solution C is better B because, although :math:`f_1(B) = f_1(C),` we have that
 has the best value for all objective functions. Therefore :math:`D < C < B <
 A.`
 
- .. warning::
+.. warning::
 
     If you really want an algorithm to produce a **non-dominated set of
     solutions (Pareto frontier)**, this is **not** the right algorithm for you.
@@ -61,7 +61,7 @@ A.`
 
 If you are not familiar with how BRKGA works, take a look on `Standard BRKGA
 <http://dx.doi.org/10.1007/s10732-010-9143-1>`_ and `Multi-Parent BRKGA
-<https://doi.org/10.1016/j.ejor.2019.11.037>`_. 
+<https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 If you know what *elite set*, *decoder*,
 and so means, we can get to the guts on the :ref:`Guide <doxid-guide>`.
 
@@ -69,7 +69,7 @@ and so means, we can get to the guts on the :ref:`Guide <doxid-guide>`.
 The implementation
 -------------------------------------------------------------------------------
 
-This C++ version provides a fast prototyping API using C++14 standards and
+This C++ version provides a fast prototyping API using C++17 standards and
 libraries. All code was developed as a header-only library, and have no
 external dependencies other than those included in the package. So, you just
 need to copy/check out the files and point your compiler's header path to
@@ -93,11 +93,13 @@ If C++ is not suitable to you, we may find useful the
 We are also developing a
 `Python version <https://github.com/ceandrade/brkga_mp_ipr_python>`_
 which is in its earlier stages.
-At this moment, we have no plans to implement the BRKGA-MP-IPR in other
-languages such as Java or C#. But if you want to do so, you are must welcome.
-But please, keep the API as close as possible to the C++ API (or Julia API in
-case you decide go C), and use the best coding and documentation practices of
-your chosen language/framework.
+However, both Julia and Python versions only support single-objective
+optimization at this moment. We have no timeline to implement multi-objective
+optimization in such platforms.  At this moment, we have no plans to implement
+the BRKGA-MP-IPR in other languages such as Java or C#. But if you want to do
+so, you are must welcome.  But please, keep the API as close as possible to the
+C++ API (or Julia API in case you decide go C), and use the best coding and
+documentation practices of your chosen language/framework.
 
 
 License and Citing
@@ -111,13 +113,17 @@ materials mentioning features or use of this software (as a whole package or
 any parts of it) and/or the data used to test it must cite the following
 article explicitly":
 
+.. admonition:: Reference
+
     C.E. Andrade, R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
     Biased Random-key Genetic Algorithm with Implicit Path Relinking. *European
     Journal of Operational Research*, volume 289, number 1, pages 17–30, 2021.
     DOI:
     `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 
-If you are using the multi-objective version, you also should cite this paper:
+If you are using the multi-objective version, you must also cite this paper:
+
+.. admonition:: Reference
 
     C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
     Assignment Problem: a Multi-objective Optimization Approach.
@@ -129,12 +135,14 @@ If you are using the multi-objective version, you also should cite this paper:
 You may also consider to cite the following papers from people that helped
 to find bugs and develop new features for BRKGA-MP-IPR 2.0:
 
-    C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
-    Assignment Problem: a Multi-objective Optimization Approach.
-    *IEEE Transactions on Evolutionary Computation*, volume XXX, number X,
-    pages XX–XX, 2022.
+.. admonition:: Reference
+
+    A.F. Kummer N., L.S. Buriol, O.C.B. de Araujo. A biased random key genetic
+    algorithm applied to the VRPTW with skill requirements and synchronization
+    constraints. *Proceedings of the 2020 Genetic and Evolutionary Computation
+    Conference (GECCO '20)*, pages 717-724, 2020.
     DOI:
-    `10.1016/j.ejor.2019.11.037 <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+    `10.1145/3377930.3390209 <https://doi.org/10.1145/3377930.3390209>`_.
 
 You can download all references for this
 :download:`Bibtex <../assets/references.bib>`, or this

@@ -1,6 +1,5 @@
 .. index:: pair: class; BRKGA::Population
 .. _doxid-class_b_r_k_g_a_1_1_population:
-.. _cid-brkga.population:
 
 class BRKGA::Population
 =======================
@@ -11,56 +10,59 @@ class BRKGA::Population
 Overview
 ~~~~~~~~
 
-Encapsulates a population of chromosomes. :ref:`More...<details-doxid-class_b_r_k_g_a_1_1_population>`
+Encapsulates a population of chromosomes. :ref:`More...<details-class_b_r_k_g_a_1_1_population>`
 
-
-
-
-
-
-
-
-
-
-
-.. index:: pair: function; ~Population
-.. _doxid-class_b_r_k_g_a_1_1_population_1a3d6fdd4cf00ab477910a6597655fafc6:
-.. _cid-brkga.population.~population:
 
 .. ref-code-block:: cpp
-	:class: overview-code-block
+	:class: doxyrest-overview-code-block
 
 	#include <brkga_mp_ipr.hpp>
 	
-	class Population
-	{
+	class Population {
 	public:
 		// fields
 	
 		std::vector<:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`> :ref:`population<doxid-class_b_r_k_g_a_1_1_population_1a6c7b2ab4336c57d4659f09ca0c324a64>`;
-		std::vector<std::pair<double, unsigned>> :ref:`fitness<doxid-class_b_r_k_g_a_1_1_population_1aae21b41493146e6d64ee39973b168dda>`;
+		std::vector<std::pair<:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>`, unsigned>> :ref:`fitness<doxid-class_b_r_k_g_a_1_1_population_1a2c64d275b924bb8acdb4574f3dec98da>`;
 
 		// construction
 	
-		:ref:`Population<doxid-class_b_r_k_g_a_1_1_population_1a19bd527e27e46bf18a1cfa3663f9f080>`(const unsigned chr_size, const unsigned pop_size);
-		:ref:`Population<doxid-class_b_r_k_g_a_1_1_population_1acad8426e87b3d2f7b1c62852f8dca67b>`(const :ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`& other);
+		:ref:`Population<doxid-class_b_r_k_g_a_1_1_population_1a19bd527e27e46bf18a1cfa3663f9f080>`(
+			const unsigned chr_size,
+			const unsigned pop_size
+			);
+	
+		:ref:`Population<doxid-class_b_r_k_g_a_1_1_population_1acad8426e87b3d2f7b1c62852f8dca67b>`(const Population& other);
 
 		// methods
 	
-		:ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`& :ref:`operator =<doxid-class_b_r_k_g_a_1_1_population_1ac5f739b17b2bcf6db820f4bcd5a2fbcb>` (const :ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`&);
+		Population& :ref:`operator =<doxid-class_b_r_k_g_a_1_1_population_1a187d3a40748d877ca2df4e22f1f2b1aa>` (const Population&);
 		unsigned :ref:`getChromosomeSize<doxid-class_b_r_k_g_a_1_1_population_1a856736e44609a0f652fcd4f19fbbf8e0>`() const;
 		unsigned :ref:`getPopulationSize<doxid-class_b_r_k_g_a_1_1_population_1a0be8c63eeca28c5c43386d4b6a999375>`() const;
-		double :ref:`operator ()<doxid-class_b_r_k_g_a_1_1_population_1a8994402e065ce2f327d565ce49dc320f>` (const unsigned chromosome, const unsigned allele) const;
-		double& :ref:`operator ()<doxid-class_b_r_k_g_a_1_1_population_1a86d677ddf7dcbb89753c99222d97095a>` (const unsigned chromosome, const unsigned allele);
-		:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& :ref:`operator ()<doxid-class_b_r_k_g_a_1_1_population_1ae1d8028f658ed1009b379650f3182c46>` (unsigned chromosome);
-		double :ref:`getBestFitness<doxid-class_b_r_k_g_a_1_1_population_1a55cccc61fa2ca7f131dd0361ed6f9f0c>`() const;
-		double :ref:`getFitness<doxid-class_b_r_k_g_a_1_1_population_1a9b0cdd9402ff3682e106717630175431>`(const unsigned i) const;
-		:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& :ref:`getChromosome<doxid-class_b_r_k_g_a_1_1_population_1a6ed0c28c9dd264620c8bd7cd356c6022>`(unsigned i);
-		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& :ref:`getChromosome<doxid-class_b_r_k_g_a_1_1_population_1a9df2d69c9fbf43309b0671d4047045df>`(const unsigned i) const;
+	
+		double :ref:`operator ()<doxid-class_b_r_k_g_a_1_1_population_1a8994402e065ce2f327d565ce49dc320f>` (
+			const unsigned chromosome,
+			const unsigned allele
+			) const;
+	
+		double& :ref:`operator ()<doxid-class_b_r_k_g_a_1_1_population_1a8dff4e162325b46658757fc9f6154c13>` (
+			const unsigned chromosome,
+			const unsigned allele
+			);
+	
+		:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& :ref:`operator ()<doxid-class_b_r_k_g_a_1_1_population_1a8deb224899de974e727a36435e864d21>` (unsigned chromosome);
+		:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` :ref:`getBestFitness<doxid-class_b_r_k_g_a_1_1_population_1a6a2fb67c7023720559c206495a1854fc>`() const;
+		:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` :ref:`getFitness<doxid-class_b_r_k_g_a_1_1_population_1a339ab8b3ee1573fe6ce7274e8f6ff730>`(const unsigned i) const;
+		:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& :ref:`getChromosome<doxid-class_b_r_k_g_a_1_1_population_1adce0928054001cba9b995176bd89fc81>`(unsigned i);
+		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& :ref:`getChromosome<doxid-class_b_r_k_g_a_1_1_population_1ab3f9b7450892a43556e215f2714ae1a4>`(const unsigned i) const;
 		void :ref:`sortFitness<doxid-class_b_r_k_g_a_1_1_population_1a76fb0dc9cde602acbbaa2897326c3d1b>`(const :ref:`Sense<doxid-namespace_b_r_k_g_a_1af28538be111c8320b2fec44b77ec5e9b>` sense);
-		void :ref:`setFitness<doxid-class_b_r_k_g_a_1_1_population_1a56eb4c547d2580ab4fd152713149a5d8>`(const unsigned chromosome, const double value);
+	
+		void :ref:`setFitness<doxid-class_b_r_k_g_a_1_1_population_1a9d65efb0bf4271fd08b2315e3b7675bb>`(
+			const unsigned chromosome,
+			const :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` value
+			);
 	};
-.. _details-doxid-class_b_r_k_g_a_1_1_population:
+.. _details-class_b_r_k_g_a_1_1_population:
 
 Detailed Documentation
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -76,37 +78,37 @@ Fields
 
 .. index:: pair: variable; population
 .. _doxid-class_b_r_k_g_a_1_1_population_1a6c7b2ab4336c57d4659f09ca0c324a64:
-.. _cid-brkga.population.population:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	std::vector<:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`> population
 
 :ref:`Population <doxid-class_b_r_k_g_a_1_1_population>` as vectors of probabilities.
 
 .. index:: pair: variable; fitness
-.. _doxid-class_b_r_k_g_a_1_1_population_1aae21b41493146e6d64ee39973b168dda:
-.. _cid-brkga.population.fitness:
+.. _doxid-class_b_r_k_g_a_1_1_population_1a2c64d275b924bb8acdb4574f3dec98da:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	std::vector<std::pair<double, unsigned>> fitness
+	std::vector<std::pair<:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>`, unsigned>> fitness
 
-Fitness (double) of a each chromosome.
+Fitness of each chromosome.
 
 Construction
 ------------
 
 .. index:: pair: function; Population
 .. _doxid-class_b_r_k_g_a_1_1_population_1a19bd527e27e46bf18a1cfa3663f9f080:
-.. _cid-brkga.population.population-2:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	Population(const unsigned chr_size, const unsigned pop_size)
+	Population(
+		const unsigned chr_size,
+		const unsigned pop_size
+		)
 
 Default constructor.
 
@@ -134,12 +136,11 @@ Default constructor.
 
 .. index:: pair: function; Population
 .. _doxid-class_b_r_k_g_a_1_1_population_1acad8426e87b3d2f7b1c62852f8dca67b:
-.. _cid-brkga.population.population-3:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	Population(const :ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`& other)
+	Population(const Population& other)
 
 Copy constructor.
 
@@ -147,22 +148,20 @@ Methods
 -------
 
 .. index:: pair: function; operator=
-.. _doxid-class_b_r_k_g_a_1_1_population_1ac5f739b17b2bcf6db820f4bcd5a2fbcb:
-.. _cid-brkga.population.operator:
+.. _doxid-class_b_r_k_g_a_1_1_population_1a187d3a40748d877ca2df4e22f1f2b1aa:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	:ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`& operator = (const :ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`&)
+	Population& operator = (const Population&)
 
 Assignment operator for complaince.
 
 .. index:: pair: function; getChromosomeSize
 .. _doxid-class_b_r_k_g_a_1_1_population_1a856736e44609a0f652fcd4f19fbbf8e0:
-.. _cid-brkga.population.getchromosomesize:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	unsigned getChromosomeSize() const
 
@@ -170,10 +169,9 @@ Returns the size of each chromosome.
 
 .. index:: pair: function; getPopulationSize
 .. _doxid-class_b_r_k_g_a_1_1_population_1a0be8c63eeca28c5c43386d4b6a999375:
-.. _cid-brkga.population.getpopulationsize:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	unsigned getPopulationSize() const
 
@@ -181,12 +179,14 @@ Returns the size of the population.
 
 .. index:: pair: function; operator()
 .. _doxid-class_b_r_k_g_a_1_1_population_1a8994402e065ce2f327d565ce49dc320f:
-.. _cid-brkga.population.operator-2:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	double operator () (const unsigned chromosome, const unsigned allele) const
+	double operator () (
+		const unsigned chromosome,
+		const unsigned allele
+		) const
 
 Returns a copy of an allele for a given chromosome.
 
@@ -214,13 +214,15 @@ Returns a copy of an allele for a given chromosome.
 a copy of the allele value.
 
 .. index:: pair: function; operator()
-.. _doxid-class_b_r_k_g_a_1_1_population_1a86d677ddf7dcbb89753c99222d97095a:
-.. _cid-brkga.population.operator-3:
+.. _doxid-class_b_r_k_g_a_1_1_population_1a8dff4e162325b46658757fc9f6154c13:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	double& operator () (const unsigned chromosome, const unsigned allele)
+	double& operator () (
+		const unsigned chromosome,
+		const unsigned allele
+		)
 
 Returns a reference for an allele for a given chromosome.
 
@@ -250,11 +252,10 @@ Usually used to set the allele value.
 a reference of the allele value.
 
 .. index:: pair: function; operator()
-.. _doxid-class_b_r_k_g_a_1_1_population_1ae1d8028f658ed1009b379650f3182c46:
-.. _cid-brkga.population.operator-4:
+.. _doxid-class_b_r_k_g_a_1_1_population_1a8deb224899de974e727a36435e864d21:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& operator () (unsigned chromosome)
 
@@ -279,44 +280,40 @@ Returns a reference to a chromosome.
 a reference to chromosome.
 
 .. index:: pair: function; getBestFitness
-.. _doxid-class_b_r_k_g_a_1_1_population_1a55cccc61fa2ca7f131dd0361ed6f9f0c:
-.. _cid-brkga.population.getbestfitness:
+.. _doxid-class_b_r_k_g_a_1_1_population_1a6a2fb67c7023720559c206495a1854fc:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	double getBestFitness() const
+	:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` getBestFitness() const
 
 Returns the best fitness in this population.
 
 .. index:: pair: function; getFitness
-.. _doxid-class_b_r_k_g_a_1_1_population_1a9b0cdd9402ff3682e106717630175431:
-.. _cid-brkga.population.getfitness:
+.. _doxid-class_b_r_k_g_a_1_1_population_1a339ab8b3ee1573fe6ce7274e8f6ff730:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	double getFitness(const unsigned i) const
+	:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` getFitness(const unsigned i) const
 
 Returns the fitness of chromosome i.
 
 .. index:: pair: function; getChromosome
-.. _doxid-class_b_r_k_g_a_1_1_population_1a6ed0c28c9dd264620c8bd7cd356c6022:
-.. _cid-brkga.population.getchromosome:
+.. _doxid-class_b_r_k_g_a_1_1_population_1adce0928054001cba9b995176bd89fc81:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getChromosome(unsigned i)
 
 Returns a reference to the i-th best chromosome.
 
 .. index:: pair: function; getChromosome
-.. _doxid-class_b_r_k_g_a_1_1_population_1a9df2d69c9fbf43309b0671d4047045df:
-.. _cid-brkga.population.getchromosome-2:
+.. _doxid-class_b_r_k_g_a_1_1_population_1ab3f9b7450892a43556e215f2714ae1a4:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getChromosome(const unsigned i) const
 
@@ -324,10 +321,9 @@ Returns a const reference to the i-th best chromosome.
 
 .. index:: pair: function; sortFitness
 .. _doxid-class_b_r_k_g_a_1_1_population_1a76fb0dc9cde602acbbaa2897326c3d1b:
-.. _cid-brkga.population.sortfitness:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
 	void sortFitness(const :ref:`Sense<doxid-namespace_b_r_k_g_a_1af28538be111c8320b2fec44b77ec5e9b>` sense)
 
@@ -346,13 +342,15 @@ Sorts ``fitness`` by its first parameter according to the sense.
 		- Optimization sense.
 
 .. index:: pair: function; setFitness
-.. _doxid-class_b_r_k_g_a_1_1_population_1a56eb4c547d2580ab4fd152713149a5d8:
-.. _cid-brkga.population.setfitness:
+.. _doxid-class_b_r_k_g_a_1_1_population_1a9d65efb0bf4271fd08b2315e3b7675bb:
 
 .. ref-code-block:: cpp
-	:class: title-code-block
+	:class: doxyrest-title-code-block
 
-	void setFitness(const unsigned chromosome, const double value)
+	void setFitness(
+		const unsigned chromosome,
+		const :ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>` value
+		)
 
 Sets the fitness of chromosome.
 
