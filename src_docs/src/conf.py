@@ -1,5 +1,24 @@
 # -*- coding: utf-8 -*-
+###############################################################################
+# (c) Copyright 2019-2023 Carlos Eduardo de Andrade.
+# All Rights Reserved.
 #
+#  Created on : Jul 08, 2019 by andrade
+#  Last update: Sep 22, 2023 by andrade
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+###############################################################################
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file does only contain a selection of the most common options. For a
@@ -15,19 +34,19 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
-# sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-2.0.0-mac/share/doxyrest/sphinx'))
-sys.path.insert(1, os.path.abspath('/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-new/sphinx'))
+doxyrest_folder = "/Users/cea/projects/brkga_ipr/implementation/src/cpp/src_docs/doxyrest-2.1.3/share/doxyrest/sphinx"
+sys.path.insert(1, doxyrest_folder)
 
 # -- Project information ----------------------------------------------------
 
 project = 'BRKGA-MP-IPR'
-copyright = '2019-2022, Carlos E. Andrade'
+copyright = '2019-2023, Carlos E. Andrade'
 author = 'Carlos E. Andrade'
 
 # The short X.Y version
-version = '2.0'
+version = '3.0'
 # The full version, including alpha/beta/rc tags
-release = '2.0.0'
+release = '3.0.0'
 
 html_logo = "../assets/logo.png"
 html_favicon = "../assets/favicon.ico"
@@ -65,7 +84,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -78,7 +97,7 @@ pygments_style = None
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
+# The theme to use for HTML and HTML Help pages. See the documentation for
 # a list of builtin themes.
 #
 #html_theme = 'alabaster'
