@@ -11,7 +11,6 @@ namespace BRKGA
 	enum_BRKGA_BiasFunctionType.rst
 	enum_BRKGA_Sense.rst
 	enum_BRKGA_ShakingType.rst
-	class_BRKGA_BRKGA_MP_IPR.rst
 	class_BRKGA_Population.rst
 
 Overview

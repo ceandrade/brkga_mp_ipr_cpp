@@ -1,7 +1,7 @@
 .. index:: pair: class; EnumIO
 .. _doxid-class_enum_i_o:
 
-Template class EnumIO
+template class EnumIO
 =====================
 
 .. toctree::
@@ -17,12 +17,12 @@ Overview
 	:class: doxyrest-overview-code-block
 
 	#include <enum_io.hpp>
-
+	
 	template <typename T>
 	class EnumIO {
 	public:
 		// methods
-
+	
 		static const std::vector<std::string>& :target:`enum_names<doxid-class_enum_i_o_1a353b9bde60f27b4f568ccdafcb23a03e>`();
 		INLINE const std::vector<std::string>& :ref:`enum_names<doxid-class_enum_i_o_1a3450c04ef9478e356ff1faf64c150301>`();
 		INLINE const std::vector<std::string>& :ref:`enum_names<doxid-class_enum_i_o_1a92e9d7a29956b49dad51788581862b4d>`();

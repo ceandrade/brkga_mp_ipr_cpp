@@ -1,7 +1,7 @@
-.. index:: pair: page; BRKGA-MP-IPR Guide and Documentation - C++ Version
+.. index:: pair: page; BRKGA-MP-IPR Guide and Documentation - C++ Version 3.0
 .. _doxid-indexpage:
 
-BRKGA-MP-IPR Guide and Documentation - C++ Version
+BRKGA-MP-IPR Guide and Documentation - C++ Version 3.0
 ===============================================================================
 
 BRKGA-MP-IPR provides a *very easy-to-use* framework for the Multi-Parent
@@ -9,6 +9,96 @@ Biased Random-Key Genetic Algorithm with Implict Path Relink
 (**BRKGA-MP-IPR**). Assuming that your have a *decoder* to your problem, we can
 setup, run, and extract the value of the best solution in less than 5 commands
 (obvisiously, you may need few other lines fo code to do a proper test).
+
+This C++ version provides a fast prototyping API using C++20 standards and
+libraries. All code was developed as a header-only library, and have no
+external dependencies other than those included in the package. So, you just
+need to copy/check out the files and point your compiler's header path to
+BRKGA-MP-IPR folder (`-I` on `GCC <https://gcc.gnu.org>`_ and
+`Clang <https://clang.llvm.org>`_).
+
+This framework can use multiple threads of modern CPUs, by setting a single
+parameter (assuming that your decoder is thread-safe). This leverage the
+parallel decoding nature that BRKGAs offer, compared to other (meta)
+heuristic frameworks.
+
+The code can be compiled using `> GCC 9.4 <https://gcc.gnu.org>`_ and `> Clang
+10.0 <https://clang.llvm.org>`_, and it is very probable that it can be
+compiled using other modern C++ compilers, such as Microsoft and Intel
+compilers. To use multiple threads, your compiler must support
+`OpenMP <https://www.openmp.org>`_. The current version has been long developed,
+and it is a very mature code used in production in several companies.
+However, it lacks of a proper unit and coverage testing.
+
+If C++ is not suitable to you, we may find useful the
+`Julia version <https://github.com/ceandrade/brkga_mp_ipr_julia>`_.
+We are also developing a
+`Python version <https://github.com/ceandrade/brkga_mp_ipr_python>`_
+which is in its earlier stages.
+However, both Julia and Python versions only support single-objective
+optimization at this moment. We have no timeline to implement multi-objective
+optimization in such platforms. At this moment, we have no plans to implement
+the BRKGA-MP-IPR in other languages such as Java or C#. But if you want to do
+so, you are must welcome. But please, keep the API as close as possible to the
+C++ API (or Julia API in case you decide go C), and use the best coding and
+documentation practices of your chosen language/framework.
+
+* `Julia version (https://github.com/ceandrade/brkga_mp_ipr_julia) <https://github.com/ceandrade/brkga_mp_ipr_julia>`_
+* `Python version (https://github.com/ceandrade/brkga_mp_ipr_python) <https://github.com/ceandrade/brkga_mp_ipr_python>`_
+
+If you are not familiar with how BRKGA works, take a look on
+`Multi-Parent BRKGA <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+
+
+What is new on version 3.0
+-------------------------------------------------------------------------------
+
+API enhancements
+~~~~~~~~~~~~~~~~
+
+On version 2.0, we claimed that BRKGA-MP-IPR was a very easy-to-use framework.
+But, few people told me this statement was not even true. The main complaining
+was that while the features were very nice, tightening them together was hard,
+even using the provided examples.
+
+Now, BRKGA-MP-IPR supplies a method called
+``:ref:`run() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```.
+It implements the entire
+pipeline using all framework features in a chain-like way, similar to the
+detailed examples. The user may call in this way:
+
+.. ref-code-block:: cpp
+
+    //...
+    auto [brkga_params, control_params] =
+          BRKGA::readConfiguration(config_file);
+
+    MyDecoder my_decoder;
+
+    BRKGA::BRKGA_MP_IPR<MyDecoder> algorithm(
+        my_decoder, BRKGA::Sense::MINIMIZE, seed, num_chromosomes, brkga_params
+    );
+    // algorithm.initialize(); // No need anymore :-)
+
+    auto final_status = algorithm.run(control_params, &cout);
+    cout << "Final algorithm status\n" << final_status;
+    //...
+
+where ``control_params`` is an instance of the new class
+``:ref:`ControlParams <doxid-class_b_r_k_g_a_1_1_control__params>```.
+(explained further), and an optional stream for logging
+(in this example, `cout`).
+`run()` returns an `AlgorithmStatus` object with information about the
+optimization like total time, iteration counting, and more (check the full
+documentation for that).
+
+So, users need no more write fine control loops unless they need/want.
+Just set some control parameters (and some other callbacks, described below,
+if you like), and you are good to go!
+
+
+What is new on version 2.0
+-------------------------------------------------------------------------------
 
 In version 2.0, BRKGA-MP-IPR also deals with multiple objectives in a
 lexicographical or priority dominance order. Differing from classical
@@ -59,47 +149,10 @@ A.`
     <https://doi.org/10.1109/4235.996017>`_ and `MOAB
     <https://en.wikipedia.org/wiki/MOEA_Framework>`_.
 
-If you are not familiar with how BRKGA works, take a look on `Standard BRKGA
-<http://dx.doi.org/10.1007/s10732-010-9143-1>`_ and `Multi-Parent BRKGA
-<https://doi.org/10.1016/j.ejor.2019.11.037>`_.
+If you are not familiar with how BRKGA works, take a look on
+`Multi-Parent BRKGA <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
 If you know what *elite set*, *decoder*,
 and so means, we can get to the guts on the :ref:`Guide <doxid-guide>`.
-
-
-The implementation
--------------------------------------------------------------------------------
-
-This C++ version provides a fast prototyping API using C++17 standards and
-libraries. All code was developed as a header-only library, and have no
-external dependencies other than those included in the package. So, you just
-need to copy/check out the files and point your compiler's header path to
-BRKGA-MP-IPR folder (``-I`` on G++ and CLANG++).
-
-This framework can use multiple threads of modern CPUs, by setting a single
-parameter (assuming that your decoder is thread-safe). This leverage the
-parallel decoding nature that BRKGAs offer, compared to other (meta) heuristic
-frameworks.
-
-The code can be compiled using `> GCC 7.2 <https://gcc.gnu.org>`_ and `> Clang
-6.0 <https://clang.llvm.org>`_, and it is very probable that it can be
-compiled using other modern C++ compilers, such as Intel and Microsoft
-compilers. To use multiple threads, your compiler must support `OpenMP
-<https://www.openmp.org>`_. The current version has been long developed, and
-it is a very mature code used in production in several companies. However, it
-lacks of a proper unit and coverage testing. Such tests are in the TODO list.
-
-If C++ is not suitable to you, we may find useful the
-`Julia version <https://github.com/ceandrade/brkga_mp_ipr_julia>`_.
-We are also developing a
-`Python version <https://github.com/ceandrade/brkga_mp_ipr_python>`_
-which is in its earlier stages.
-However, both Julia and Python versions only support single-objective
-optimization at this moment. We have no timeline to implement multi-objective
-optimization in such platforms.  At this moment, we have no plans to implement
-the BRKGA-MP-IPR in other languages such as Java or C#. But if you want to do
-so, you are must welcome.  But please, keep the API as close as possible to the
-C++ API (or Julia API in case you decide go C), and use the best coding and
-documentation practices of your chosen language/framework.
 
 
 License and Citing

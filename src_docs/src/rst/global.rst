@@ -8,6 +8,7 @@ API documentation
 	:hidden:
 
 	namespace_BRKGA.rst
+	group_main_algorithms.rst
 	group_brkga_control_params.rst
 	group_algorithm_status.rst
 	group_distance_functions.rst
@@ -19,6 +20,11 @@ API documentation
 
 Overview
 ~~~~~~~~
+
+All BRKGA-MP-IPR algorithms and facilities are within
+namespace ``:ref:`BRKGA<doxid-namespace_b_r_k_g_a>```. Some helper are in
+the general scope, such general streaming operator and enumaratio manipulation.
+
 
 .. ref-code-block:: cpp
 	:class: doxyrest-overview-code-block
