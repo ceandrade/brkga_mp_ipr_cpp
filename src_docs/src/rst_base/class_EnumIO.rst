@@ -1,7 +1,7 @@
 .. index:: pair: class; EnumIO
 .. _doxid-class_enum_i_o:
 
-Template class EnumIO
+template class EnumIO
 =====================
 
 .. toctree::

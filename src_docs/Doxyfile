@@ -897,6 +897,7 @@ WARN_LOGFILE           =
 INPUT                  = src/markdown/index.md \
                          src/markdown/guide.md \
                          src/markdown/contributing.md \
+                         src/markdown/building_references.md \
                          ../brkga_mp_ipr
 
 # This tag can be used to specify the character encoding of the source files

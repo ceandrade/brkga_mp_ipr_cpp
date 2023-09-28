@@ -1,0 +1,992 @@
+%-----------------------------------------------------------------------------%
+% personal_entries.bib: List of personal entries.
+%
+% Author: Carlos Eduardo de Andrade <ce.andrade at gmail.com>
+%
+% Created in Apr 11, 2016
+% Modified in Sep 27, 2023
+%-----------------------------------------------------------------------------%
+
+%-----------------------------------------------------------------------------%
+% Thesis
+%-----------------------------------------------------------------------------%
+
+@PhdThesis{Andrade2015:Evolutionary_Algs_Telecomm,
+  author = {Carlos Eduardo de Andrade},
+  title  = {Evolutionary Algorithms for some Problems in Telecommunications},
+  school = {University of Campinas},
+  year   = {2015},
+  url    = {http://www.repositorio.unicamp.br/handle/REPOSIP/275653},
+  keywords = {Combinatorial Optimization; Network Design;
+              Biased Random-Key Genetic Algorithms},
+  abstract = {In last twenty years, telecommunication networks have experienced
+    a huge increase in data utilization. From massive on-demand video to
+    uncountable mobile devices exchanging text and video, traffic reached
+    scales that overcame the network capacities. Therefore, telecommunication
+    companies around the world have been forced to increase their capacity to
+    serve this increasing demand. As the cost to deploy network infrastructure
+    is usually very large, the design of a network heavily uses optimization
+    tools to keep costs as low as possible. In this thesis, we analyze several
+    aspects of the design and deployment of communication networks.},
+}
+
+@MastersThesis{Andrade2006_masterthesis,
+  author  = {Carlos Eduardo de Andrade},
+  title   = {{Um algoritmo exato para o Problema de Empacotamento Bidimensional
+              em Faixas}},
+  school  = {University of Campinas},
+  year    = {2006},
+  url     = {http://repositorio.unicamp.br/handle/REPOSIP/276270},
+  keywords = {Cut and Packing Problem; Branch-and-Price; Column Generation},
+  abstract = {Cutting and packing problems are common problems that occur in
+    many industry and business process. Their optimized resolution leads to
+    great profits in several sectors. A common problem, that occur in textile
+    and paper industries, is to cut a strip of some material to obtain
+    several small items, using the minimum length of material. This problem,
+    known by Two Dimensional Strip Packing Problem (2SP), is a hard
+    combinatorial optimization problem. In this work, we present an exact
+    algorithm to 2SP, restricted to two staged cuts (known by Two Dimensional
+    Level Strip Packing, 2LSP). The algorithm uses the branch-and-price
+    technique, and heuristics based on approximation algorithms to obtain
+    upper bounds. The algorithm obtained optimal or almost optimal for small
+    and moderate sized instances.},
+}
+
+%-----------------------------------------------------------------------------%
+% Journals - Full papers
+%-----------------------------------------------------------------------------%
+
+@Article{Andrade2022:PCI_MO,
+  author  = {Carlos E. Andrade and Lucia S. Pessoa and Slawomir Stawiarski},
+  title   = {The Physical Cell Identity Assignment Problem: a Practical
+             Optimization Approach},
+  journal = {IEEE Transactions on Evolutionary Computation},
+  volume  = {},
+  number  = {},
+  pages   = {1--1},
+  year    = {2022},
+  issn    = {1089-778X},
+  doi     = {10.1109/TEVC.2022.3185927},
+  keywords = {Physical Cell Identity; 5G; Multi-objective Optimization},
+  note    = {To appear},
+  abstract = {The Physical Cell Identity (PCI) is a critical parameter to
+      radio access networks used by the user equipment, like a smartphone, to
+      identify the cell to connect. The PCI misassignment leads to call drops,
+      no voice/data connections, and other sorts of impairments. Many works in
+      the literature only treat the PCI assignment problem from the
+      technological constraints viewpoint. In this work, we take a realistic
+      approach and incorporate several operational constraints found daily in
+      carrier-grade networks. For that, we model the problem with multiple
+      objectives with a strict lexicographical dominance relation. We solve it
+      using a hybrid memetic algorithm with warm start solutions obtained by a
+      constraint programming solver and intensification with path-relinking and
+      custom local search procedures. The experimental results suggest that our
+      approach is superior to commercial solver packages in several scenarios.
+  },
+}
+
+@Article{Londe2022:RSI,
+  author   = {Mariana A. Londe and Carlos E. Andrade and Luciana S. Pessoa},
+  title    = {Exact and heuristic approaches for the root sequence index
+              allocation problem},
+  journal  = {Applied Soft Computing},
+  volume   = {130},
+  pages    = {109634},
+  year     = {2022},
+  issn     = {1568-4946},
+  doi      = {10.1016/j.asoc.2022.109634},
+  keywords = {Root Sequence Index, Mathematical Models, Biased Random-Key
+              Genetic Algorithm},
+  abstract = {In mobile wireless networks, the Root Sequence Index (RSI) is
+      used to allocate uplink channels between the user equipment and the base
+      station. The assignment of RSIs close-in-range to neighbor radios may
+      cause collisions leading to failures on service establishment and
+      performance degradation.  In this paper, we model the RSI allocation as a
+      generalization of the classical Graph Coloring Problem, indicating that
+      there must be a minimum distance for the assigned colors of two
+      neighbors. For the RSI allocation, a maximal distance is also needed.
+      We develop methods for allocating the RSI, while minimizing the risk of
+      collisions, for two different operation modes found on carrier-grade
+      networks.  Both exact and heuristic methods are explored and compared.
+      We test the proposed approaches on instances obtained from real-life
+      context.
+  },
+}
+
+@Article{Paula2022:ML_biochar,
+  author  = {Amauri J. Paula and Odair P. Ferreira and Antonio G. {Souza Filho}
+             and Francisco {Nepomuceno Filho} and Carlos E. Andrade and
+             Andreia F. Faria},
+  title   = {Machine Learning and Natural Language Processing Enable a
+             Data-Oriented Experimental Design Approach for Producing Biochar
+             and Hydrochar from Biomass},
+  journal = {Chemistry of Materials},
+  volume  = {34},
+  number  = {3},
+  pages   = {979--990},
+  year    = {2022},
+  issn     = {0897-4756},
+  doi     = {10.1021/acs.chemmater.1c02961},
+  keywords = {Machine learning; Natural language processing; Nanotechnology;
+              Carbon materials; Biochar; Hydrochar},
+  abstract = {Carbon Functional Materials (CFMs) such as biochar and hydrochar
+    can be obtained from hundreds of biomass precursors varying from urban
+      sludge to agriculture wastes. They can be produced through tens of
+      synthesis methods and post-synthesis processing steps tuned each at
+      specific conditions (e.g., temperature, time, and chemicals
+          concentration). To achieve a “rational design” platform for a system
+      with a high dimensional parameter space such as CFMs, we processed 10,975
+      scientific articles (from years 2000 to 2020) related to the subject with
+      automatic reading-interpreting-extracting computational routines (namely
+          a.RIX engine). The a.RIX engine automatically recognized more than a
+      hundred precursors, among which wheat straw, rice husk, and rice straw
+      were the most studied for CFMs synthesis and application in agriculture
+      (e.g., as an amendment), as a fuel (energy generation), and as an
+      adsorbent. Parameters related to the CFMs synthesis conditions such as
+      carbonization temperature and time, and parameters related to CFMs
+      properties such as surface area and heavy metals adsorption capacity, can
+      also be extracted from the articles. Correlations between the CFMs
+      precursors and synthesis conditions indicated very little statistical
+      difference between the carbonization temperature and time used for the
+      CFMs synthesis from different precursors. Essentially, precursors are
+      carbonized at temperatures varying from 100 to 900 oC for 30 min to six
+      hours using pyrolysis, hydrothermal carbonization, and gasification. When
+      focusing the analysis just on CFMs produced by pyrolysis (biochar), we
+      observed that peanut shells can produce materials with higher surface
+      areas than other precursors (p < 0.05). When performing correlations
+      between biochar synthesis conditions and their properties, general trends
+      can be confirmed: (i) the higher the carbonization temperature, the lower
+      the H/C and O/C ratios, and (ii) the increase in the surface area can be
+      achieved by preserving a high aromatic degree (low H/C ratio) and a low
+      oxidation level (low O/C ratio). However, a deeper understanding of the
+      relation between CFMs synthesis/post-synthesis methods and the resulting
+      properties can only be achieved using clustering algorithms (e.g.,
+          k-means) and complex network analysis. The a.RIX engine groups
+      articles describing optimized synthesis conditions and CFMs properties
+      (e.g., low carbonization temperature, low carbonization time, and large
+       surface area and adsorption capacity) and automatically recognizes the
+      synthesis/post-synthesis steps used for these groups. The program
+      efficiently recognized that precursors such as peanut shells can be
+      converted into highly porous biochar by using experimental routes such as
+      “pyrolysis” -> “activation” -> “drying” -> “ashing” -> “washing” ->
+      “filtration.” With this approach, we show that a non-computational review
+      of scientific articles for materials with a huge parameter space such as
+      CFMs is largely obsolete. Finally, taken together, the results provide a
+      powerful platform for data-oriented experimental design of CFMs produced
+      from biomass.},
+}
+
+@Article{Andrade2021:BRKGA_MP_IPR,
+  author   = {Carlos E. Andrade and Rodrigo F. Toso and Jos\'e F. Gon\c{c}alves
+              and Mauricio G. C. Resende},
+  title    = {The Multi-Parent Biased Random-Key Genetic Algorithm with
+              Implicit Path-Relinking and its real-world applications},
+  journal  = {European Journal of Operational Research},
+  volume   = {289},
+  number   = {1},
+  pages    = {17--30},
+  year     = {2021},
+  issn     = {0377-2217},
+  doi      = {10.1016/j.ejor.2019.11.037},
+  keywords = {Genetic Algorithms; Path-relinking algorithms; Hybrid heuristics},
+  abstract = {In this paper, we present the Multi-Parent Biased Random-Key
+  Genetic Algorithm with Implicit Path-Relinking (BRKGA-MP-IPR), a variant of
+  the Biased Random-Key Genetic Algorithm that employs multiple (biased)
+  parents to generate offspring instead of the usual two, and is hybridized
+  with a novel, implicit path-relinking local search procedure. By operating
+  over the standard unit hypercube, such path-relinking mechanism leverages
+  the population representation of the BRKGA and thus provides complete
+  independence between the local search procedure and the problem definition
+  and implementation. This approach contrasts with traditional path-relinking
+  procedures that are tied to the problem structure. Having both BRKGA and
+  IPR operate over the same solution space not only makes the
+  intensification/diversification paradigm more natural but also greatly
+  simplifies the development effort from the perspective of the practitioner,
+  as one only needs to develop a decoder to map unit random-key vectors to
+  the solution space of the problem on hand. Apart from such key benefits,
+  extensive computational experiments solving real-world problems, such as
+  over-the-air software upgrade scheduling, network design problems, and
+  combinatorial auctions, show that the BRKGA-MP-IPR offers performance
+  benefits over the standard BRKGA as well as the BRKGA with multiple
+  parents.},
+}
+
+@Article{Londe2021:Evolutionary_algs_for_p_next,
+  author   = {Mariana A. Londe and Carlos E. Andrade and Luciana S. Pessoa},
+  title    = {An evolutionary approach for the p-next center problem},
+  journal  = {Expert Systems with Applications},
+  volume   = {175},
+  pages    = {114728},
+  year     = {2021},
+  issn     = {0957-4174},
+  doi      = {10.1016/j.eswa.2021.114728},
+  keywords = {Facility location, Biased Random-Key Genetic Algorithm,
+              Metaheuristics},
+  abstract = {The p-next center problem is an extension of the classical
+    p-center problem, in which a backup center must be assigned to welcome
+      users from a suddenly unavailable center. Usually, users tend to seek
+      help in the closest facility they can find. However, during a significant
+      event or crisis, one only realizes that the closest facility has been
+      disrupted upon his/her arrival. Therefore, the user seeks help in the
+      next closest center from the one that has failed to provide service.
+      Therefore, the objective of the p-next center problem is to minimize the
+      path of any user, which is made by the distance from this origin to its
+      closest installed facility, plus the distance from this facility to its
+      backup. We propose an evolutionary approach for the p-next center problem
+      and an extension for the current benchmark instances. The proposed
+      methods are built on the Multi-Parent Biased Random-Key Genetic Algorithm
+      with Implicit Path-Relinking. Computational experiments carried out on
+      416 test instances show, experimentally, the outstanding performance of
+      the developed algorithms and their flexibility to reach a good
+      quality-speed trade-off.},
+}
+
+@Article{Andrade2019:Scheduling_Fota,
+  author   = {Carlos E. Andrade and Simon D. Byers and Vijay Gopalakrishnan and
+              Emir Halepovic and David J. Poole and Lien K. Tran and
+              Christopher T. Volinsky},
+  title    = {Scheduling software updates for connected cars with limited
+              availability},
+  journal  = {Applied Soft Computing},
+  volume   = {82},
+  pages    = {105575},
+  year     = {2019},
+  issn     = {1568-4946},
+  doi      = {10.1016/j.asoc.2019.105575},
+  keywords = {Connected cars; Internet of Things; Scheduling;
+              Time- and machine-dependent scheduling;
+              Biased random-key genetic algorithm},
+  abstract = {The current and the new generation of Internet of Things (IoT)
+    devices present several challenges, among them the software update of
+    legacy and new devices using wireless connections. In this paper, we
+    study a problem of scheduling massive Firmware-Over-The-Air updates for
+    millions of connected cars. We model this problem as a new generic
+    problem called Time- and Machine-Dependent Scheduling Problem (TMDSP)
+    that resembles project scheduling problems with variable-intensity
+    activities. In the TMDSP, jobs, machine utilization, and production rates
+    vary over time. In each period, a given job can be executed by a subset
+    of machines with different capacities and production rates. The objective
+    is to deploy a feasible schedule with minimum total completion time. We
+    explore solving the problem using several approaches among than Biased
+    Random-Key Genetic Algorithm (BRKGA), Iterated Local Search (ILS),
+    Simulating Annealing (SA), two variations of Tabu Search (TB), and
+    traditional genetic algorithms (TGA), in addition to a Mixed Integer
+    Programming (MIP) model. We test the proposed approaches on a synthetic
+    benchmark and very large real instances in IoT space. While using a
+    commercial solver and the MIP model, we are able to solve only a few real
+    instances (with, at most, 1,976 cars and 9,116 sectors); on the other
+    hand, BRKGA presents significantly better results when compared to ILS,
+    MIP solver and a simple multi-start heuristic.},
+}
+
+@Article{Andrade2019:PFSP_brkga_shaking,
+  author  = {Carlos E. Andrade and Thuener Silva and Luciana S. Pessoa},
+  title   = {Minimizing flowtime in a flowshop scheduling problem with
+             a biased random-key genetic algorithm},
+  journal = {Expert Systems with Applications},
+  volume  = {128},
+  pages   = {67--80},
+  day     = {15},
+  month   = {Aug},
+  year    = {2019},
+  issn    = {0957-4174},
+  doi     = {10.1016/j.eswa.2019.03.007},
+  keywords = {Flowshop scheduling; Biased Random-Key Genetic Algorithm;
+              Metaheuristics},
+  abstract = {In this paper, we advance the state of the art for solving the
+    Permutation Flowshop Scheduling Problem with total flowtime minimization.
+    For this purpose, we propose a Biased Random-Key Genetic Algorithm
+    (BRKGA) introducing on it a new feature called shaking. With the shaking,
+    instead to full reset the population to escape from local optima, the
+    shaking procedure perturbs all individuals from the elite set and resets
+    the remaining population. We compare results for the standard and the
+    shaking BRKGA with results from the Iterated Greedy Search, the Iterated
+    Local Search, and a commercial mixed integer programming solver, in 120
+    traditional instances. For all algorithms, we use warm start solutions
+    produced by the state-of-the-art Beam-Search procedure. Computational
+    experiments show the efficiency of proposed BRKGA, in addition to
+    identify lower and upper bounds, as well as some optimal values, among
+    the solutions.},
+}
+
+@Article{Pessoa2018:Heuristics_flowshop_stepwise,
+  author  = {Luciana S. Pessoa and Carlos E. Andrade},
+  title   = {Heuristics for a flowshop scheduling problem with stepwise job
+             objective function},
+  journal = {European Journal of Operational Research},
+  volume  = {266},
+  number  = {3},
+  pages   = {950--962},
+  year    = {2018},
+  issn    = {0377-2217},
+  doi     = {10.1016/j.ejor.2017.10.045},
+  keywords = {Flowshop scheduling; Heuristics; Metaheuristics},
+  abstract = {In this work, we introduce the Flowshop Scheduling Problem with
+    Delivery Dates and Cumulative Payoffs. This problem is a variation of the
+    flowshop scheduling problem with job release dates that maximizes the
+    total payoff with a stepwise job objective function. This paper
+    contributes towards proposing a mathematical formulation for this new
+    problem and an original constructive heuristic. Additionally, we develop
+    a new benchmark of 300 hard instances which are available in a public
+    repository. Besides, we provide primal and dual bounds for them.
+    Extensive computational experiments were carried out taking into account
+    classical constructive heuristics and hybrid local searches. Results show
+    the merit of the FF heuristic when compared to other classical heuristics
+    for flowshop scheduling problems. Additionally, we compare an Iterated
+    Local Search (ILS), an Iterated Greedy Search (IGS), and a Biased
+    Random-Key Genetic Algorithm (BRKGA), both customized for the studied
+    problem, and a commercial mixed integer programming solver. The
+    comparison between these methods showed that the BRKGA starting with
+    a solution from FF heuristic is able to find the best solutions in a
+    very short period of time. Iterated local Search and the commercial
+    solver presented significantly worse results than the aforementioned
+    methods.},
+}
+
+@Article{Andrade2017:Hybrid_heuristic_feasibility,
+  author  = {Carlos E. Andrade and Shabbir Ahmed and George L. Nemhauser and
+             Yufen Shao},
+  title   = {A hybrid primal heuristic for finding feasible solutions to
+             mixed integer programs},
+  journal = {European Journal of Operational Research},
+  volume  = {263},
+  number  = {1},
+  pages   = {62--71},
+  year    = {2017},
+  issn    = {0377-2217},
+  doi     = {10.1016/j.ejor.2017.05.003},
+  keywords = {Integer programming; Primal heuristics; Feasibility},
+  abstract = {We present a new framework for finding feasible solutions to
+    mixed integer programs (MIP). We use the feasibility pump heuristic coupled
+    to a biased random-key genetic algorithm (BRKGA). The feasibility pump
+    heuristic attempts to find a feasible solution to a MIP by first rounding
+    a solution to the linear programming (LP) relaxation to an integer (but
+    not necessarily feasible) solution and then projecting it to a
+    feasible solution to the LP relaxation. The BRKGA is able to build a pool
+    of projected and rounded but not necessarily feasible solutions and to
+    combine them using information from previous projections. This
+    information is also used to fix variables during the process to speed up
+    the solution of the LP relaxations, and to reduce the problem size in
+    enumeration phases. Experimental results show that this approach is able
+    to find feasible solutions for instances where the original feasibility
+    pump or a commercial mixed integer programming solver often fail.},
+}
+
+@Article{Lopes2016:Heuristics_hub_location,
+  author      = {Mauro C. Lopes and Carlos E. Andrade and Thiago A. Queiroz and
+                 Mauricio G. C. Resende and Fl{\'a}vio K. Miyazawa},
+  title       = {Heuristics for a Hub Location-Routing Problem},
+  journal     = {Networks},
+  volume      = {68},
+  number      = {1},
+  pages       = {54-90},
+  year        = {2016},
+  issn        = {1097-0037},
+  doi         = {10.1002/net.21685},
+  keywords    = {Hub location-routing problem; Heuristics;
+                 Variable neighborhood descent; Biased random‐key genetic
+                 algorithm; Integer formulation},
+  abstract = {We investigate a variant of the many-to-many hub location‐routing
+    problem which consists in partitioning the set of nodes of a graph into
+    routes containing exactly one hub each, and determining an extra route
+    interconnecting all hubs. A variable neighborhood descent with
+    neighborhood structures based on remove/add, swap and exchange moves
+    nested with routing and location operations is used as a local search
+    procedure in a multistart algorithm. We also consider a sequential
+    version of this local search in the multistart. In addition, a biased
+    random‐key genetic algorithm working with a local search routine, which
+    also considers routing and location operations, is applied to the
+    problem. To compare the heuristic solutions, we develop an integer
+    programming formulation which is solved with a branch‐and‐cut algorithm.
+    Capacity and path elimination constraints are added in a cutting plane
+    fashion. The separation algorithms are based on the computation of
+    min‐cut trees and on the connected components of a support graph.
+    Computational experiments were conducted on several benchmark instances
+    of routing problems and show that the heuristics are effective on medium
+    to large‐sized instances, while the branch‐and‐cut algorithm solves small
+    to medium sized problems to optimality. These algorithms were also
+    compared with a commercial hybrid solver showing that the heuristics are
+    quite competitive.},
+}
+
+@Article{Andrade2015:BRKGA_CA,
+  author      = {Carlos E. Andrade and Rodrigo F. Toso and Mauricio G. C.
+                 Resende and Fl{\'a}vio K. Miyazawa},
+  title       = {Biased random-key genetic algorithms for the winner
+                 determination problem in combinatorial auctions},
+  journal     = {Evolutionary Computation},
+  volume      = {23},
+  issue       = {2},
+  pages       = {279--307},
+  year        = {2015},
+  doi         = {10.1162/EVCO_a_00138},
+  keywords    = {Combinatorial auctions; Winner determination problem;
+                 Genetic algorithms; Biased random-key genetic algorithms},
+  abstract    = {In this paper we address the problem of picking a subset of
+    bids in a general combinatorial auction so as to maximize the overall profit
+    using the first-price model. This winner determination problem assumes
+    that a single bidding round is held to determine both the winners and
+    prices to be paid. We introduce six variants of biased random-key genetic
+    algorithms for this problem. Three of them use a novel initialization
+    technique that makes use of solutions of intermediate linear programming
+    relaxations of an exact mixed integer linear programming model as initial
+    chromosomes of the population. An experimental evaluation compares the
+    effectiveness of the proposed algorithms with the standard mixed linear
+    integer programming formulation, a specialized exact algorithm, and the
+    best-performing heuristics proposed for this problem. The proposed
+    algorithms are competitive and offer strong results, mainly for
+    large-scale auctions.},
+}
+
+@Article{Andrade2015:BRKGA_wireless_backhaul_design,
+  author  = {Carlos E. Andrade and Mauricio G. C. Resende and Weiyi Zhang and
+             Rakesh K. Sinha and Kenneth C. Reichmann and Robert D. Doverspike
+             and Fl{\'a}vio K. Miyazawa},
+  title   = {A biased random-key genetic algorithm for wireless backhaul
+             network design},
+  journal = {Applied Soft Computing},
+  volume  = {33},
+  pages   = {150--169},
+  year    = {2015},
+  doi     = {10.1016/j.asoc.2015.04.016},
+
+  keywords = {Wireless backhaul network design; Small cells; Genetic algorithm;
+              Mixed integer programming model},
+  abstract = {This paper describes a biased random-key genetic algorithm for a
+    real-world wireless backhaul network design problem. This is a novel
+    problem, closely related to variants of the Steiner tree problem and the
+    facility location problem. Given a parameter h, we want to build a forest
+    where each tree has at most h hops from the demand nodes, where traffic
+    originates, to the root nodes where each tree is rooted. Candidate
+    Steiner nodes do not have any demand but represent locations where we can
+    install cellsites to cover the traffic and equipment to backhaul the
+    traffic to the cellular core network. Each Steiner node can cover demand
+    nodes within a given distance, subject to a capacity constraint. The
+    aggregate set of constraints may make it impossible to cover or backhaul
+    all demands. A revenue function computes the revenue associated with the
+    total amount of traffic covered and backhauled to the root nodes. The
+    objective of the problem is to build a forest that maximizes the
+    difference between the total revenue and the cost associated with the
+    installed equipment. Although we will have a forest when we consider only
+    the backhaul links and root nodes, the addition of demand vertices can
+    induce undirected cycles, resulting in a directed acyclic graph. We
+    consider instances of this problem with several additional constraints
+    that are motivated by the requirements of real-world telecommunication
+    networks.},
+}
+
+%-----------------------------------------------------------------------------%
+% Conferences - Full papers
+%-----------------------------------------------------------------------------%
+
+@InProceedings{Londe2022:Pnext_center_capacity,
+  author    = {Mariana A. Londe and Carlos E. Andrade and Luciana S. Pessoa},
+  title     = {The p-next center problem with capacity and coverage radius
+               constraints: model and heuristics},
+  booktitle = {Proceedings of the 14th Metaheuristics International Conference},
+  series    = {MIC 2022},
+  year      = {2022},
+  location  = {Siracusa, Italy},
+  keywords  = {Facility location; Biased Random-Key Genetic Algorithm;
+               Metaheuristics},
+  abstract  = {This paper introduces a novel problem of facility location,
+    called the p-next center problem with capacity and coverage radius
+    constraints. We formulate a mixed integer programming model for this
+    problem, and compare the results found by CPLEX with three Biased
+    Random-Key Genetic Algorithms variants. We also propose several instances
+    for this problem, based on existing ones for the p-next center problem.
+    Additionally, we analyze the effect of the radius and demand on
+    instance difficulty. We also observe the performance gains with a
+    relaxed capacity and demand constraint, i.e., permitting demand to be
+    unmet by the model. Results point that the BRKGA variants had
+    significantly better performance than CPLEX, and similar performances
+    among themselves. Of those, BRKGA-FI was shown to have slightly
+    better results than the other variants.},
+}
+
+@InProceedings{Londe2022:RSI_exact_heuristic,
+  author    = {Mariana A. Londe and Carlos E. Andrade and Luciana S. Pessoa},
+  title     = {The RSI Allocation Problem: exact and heuristic methods},
+  booktitle = {Proceedings of the 54th Brazilian Operational Research Symposium},
+  series    = {LIV SBPO},
+  year      = {2022},
+  pages     = {1--13},
+  url       = {https://ceandrade.github.io/files/publications/londe2022_the_rsi_allocation_problem_exact_and_heuristic_methods.pdf},
+  keywords  = {RSI Assignment problem; Graph coloring; Exact models},
+  abstract = {In mobile wireless networks, the Root Sequence Index (RSI) is
+    used to allocate uplink channels between the user equipment and the base
+    station. The assignment of RSIs close-in-range to neighbor radios may
+    cause collisions leading to failures on service establishment and
+    performance degradation. In this study, we model the RSI allocation as a
+    generalization of the classical Graph Coloring Problem, indicating that
+    there must be a minimum distance for the assigned colors of two
+    neighbors. For the RSI allocation, a maximal distance is also needed. We
+    develop methods for allocating the RSI, while minimizing the risk of
+    collisions, for two different operation modes found on carrier-grade
+    networks. Both exact and heuristic methods are explored and compared. We
+    test the proposed approaches on instances obtained from real-life context.
+  },
+}
+
+@InProceedings{Andrade2021:Minimizing_Effort_Risk_Change_Deployment,
+  author    = {Carlos E. Andrade and Ajay Mahimkar and Rakesh Sinha and
+               Weiyi Zhang and Andre Cir\'{e} and Giritharan Rana and Zihui Ge
+               and Sarat Puthenpura and Jennifer Yates and Robert Riding},
+  title     = {Minimizing Effort and Risk with Network Change Deployment
+               Planning},
+  booktitle = {Proceedings of 20th International {IFIP} Networking Conference},
+  series    = {IFIP '21},
+  pages     = {1--9},
+  numpages  = {9},
+  year      = {2021},
+  location  = {Espoo, Finland},
+  publisher = {IEEE},
+  address   = {Piscataway, NJ, USA},
+  url       = {http://dl.ifip.org/db/conf/networking/networking2021/1570688607.pdf},
+  keywords = {Change management; Combinatorial optimization; Scheduling problems},
+  abstract = {Networks undergo continuous changes to introduce new services
+    and improve existing ones. Network change deployment involves carefully
+    deciding when each change activity will be executed and who will be
+    executing the change. This is a complex process because each service
+    group has to plan its activities following a set of operational and
+    technological constraints. Besides, multiple groups may be working on the
+    same or dependent nodes at the same time, and they must co-ordinate their
+    deployment plans. If they do not co-ordinate, conflicting change
+    execution could result in unexpected impacts. Traditionally, change
+    deployment has been a tedious and time-consuming task. To address this,
+    we propose an innovative solution Zapper that aims for minimal human effort
+    to coordinate the changes, minimal risk to service quality, and efficient
+    plans to rapidly deploy the changes. Zapper maps change scheduling
+    constraints into mathematical equations and then uses optimization
+    algorithms to generate conflict-free change plans that satisfy all
+    constraints across service groups. We have deployed Zapper at a large
+    service provider and it is being used regularly by the network operations
+    teams for more than two years to schedule over 4.5 million change
+    activities.}
+}
+
+@InProceedings{Londe2020:Exact_models_for_rsi,
+  author    = {Mariana A. Londe and Carlos E. Andrade and Luciana S. Pessoa},
+  title     = {Some extensions of biased random-key genetic algorithms},
+  booktitle = {Proceedings of the 52nd Brazilian Operational Research Symposium},
+  series    = {LII SBPO},
+  year      = {2020},
+  pages     = {1--13},
+  url       = {https://ceandrade.github.io/files/publications/londe2020_modelos_exatos_rsi.pdf},
+  keywords  = {RSI Assignment problem; Graph coloring; Exact models},
+  abstract = {Since its introduction, mobile wireless communication has grown
+  and changed substantially. This massive growth leads to different levels of
+  complexity, mainly concerned with the assignment of different parameters to
+  antennas or base stations. One parameter is the Root Sequence Index (RSI),
+  related to the Physical Random Access Channel (PRACH) preambles, used to
+  allocate uplink channels between the user equipment and the base station.
+  The assignment of RSIs close-in-range to neighbor antennas may cause
+  collisions, which are responsible for failures on service establishment,
+  and therefore, performance degradation. Such allocation problems can be
+  modeled as Graph Coloring Problems, including several additional
+  constraints. However, few studies focus on RSI allocation and collisions
+  from the optimization perspective. The objective of this study is to
+  develop a method for allocating the RSI, trying to lessen the risk of
+  collision and obeying other constraints. In this paper, we introduce an
+  exact model for this problem alongside several instances extracted from a
+  large carrier.},
+}
+
+@InProceedings{Andrade2017:Managing_fota,
+  author    = {Carlos E. Andrade and Simon D. Byers and Vijay Gopalakrishnan
+               and Emir Halepovic and Milap Majmundar and David J. Poole and
+               Lien K. Tran and Christopher T. Volinsky},
+  title     = {Managing massive firmware-over-the-air updates for connected
+               cars in cellular networks},
+  booktitle = {Proceedings of the 2nd ACM International Workshop on Smart,
+               Autonomous, and Connected Vehicular Systems and Services},
+  series    = {CarSys '17},
+  year      = {2017},
+  pages     = {65--72},
+  location = {Snowbird, Utah, USA},
+  publisher = {ACM},
+  isbn      = {978-1-4503-5146-1},
+  doi       = {10.1145/3131944.3131953},
+  keywords  = {Connected cars; LTE; Firmware over the air},
+  abstract  = {We consider the problem of managing Firmware Over-The-Air (FOTA)
+    updates for cars at a massive scale over a cellular network. This problem
+    is constrained by factors like large number of cars, a need to perform
+    updates quickly and securely, ability to do the update anywhere and any
+    time, and delivering the often large update without harming the network.
+    We present a scheduling approach for managing large FOTA downloads in a
+    cellular network that combines historical network load with car usage and
+    location analytics. The proposed approach uses a combination of
+    heuristics and an optimized scheduler and applies them to schedule the
+    admission of cars to download FOTA. Using real network data from a large
+    cellular provider that includes a million cars and nearly a billion
+    radio-level network connections, we show that our scheduling approach is
+    feasible and practical. We also show that it is possible to manage FOTA
+    even when device and network models use high levels of aggregation over
+    time. Simulation results show that our method improves over random
+    uncontrolled approaches by (i) reducing median download startup delay by
+    48\%, (ii) reducing the number of cars that don't complete the update by
+    10\% and most importantly, (iii) reducing the load in busy cells by up to
+    37\%.},
+}
+
+@InProceedings{Andrade2017:ConnectedCars_Measurement,
+  author    = {Carlos E. Andrade and Simon D. Byers and Vijay Gopalakrishnan
+               and Emir Halepovic and David J. Poole and Lien K. Tran and
+               Christopher T. Volinsky},
+  title     = {Connected cars in a cellular network: A measurement study},
+  booktitle = {Proceedings of the 2017 Internet Measurement Conference},
+  series    = {IMC '17},
+  pages     = {235--241},
+  numpages  = {7},
+  year      = {2017},
+  location  = {London, England},
+  publisher = {ACM},
+  address   = {New York, NY, USA},
+  doi       = {10.1145/3131365.3131403},
+  keywords  = {Connected car; Internet of Things; IoT; LTE;
+               Firmware over the air},
+  abstract  = {Connected cars are a rapidly growing segment of Internet of
+    Things (IoT). While they already use cellular networks to support emergency
+    response, in-car WiFi hotspots and infotainment, there is also a push
+    towards updating their firmware over-the-air (FOTA). With millions of
+    connected cars expected to be deployed over the next several years, and
+    more importantly persist in the network for a long time, it is important
+    to understand their behavior, usage patterns, and impact - both in
+    terms of their experience, as well as other users. Using one million
+    connected cars on a production cellular network, we conduct network-scale
+    measurements of over one billion radio connections to understand various
+    aspects including their spatial and temporal connectivity patterns, the
+    network conditions they face, use and handovers across various radio
+    frequencies and mobility patterns. Our measurement study reveals that
+    connected cars have distinct sets of characteristics, including those
+    similar to regular smartphones (e.g. overall diurnal pattern), those
+    similar to IoT devices (e.g. mostly short network sessions), but also
+    some that belong to neither type (e.g. high mobility). These insights are
+    invaluable in understanding and modeling connected cars in a cellular
+    network and in designing strategies to manage their data demand.},
+}
+
+@InProceedings{Andrade2014:Evol_Alg_Overlapping_Correlation_Clustering,
+  author    = {Carlos E. Andrade and Mauricio G. C. Resende and Howard J.
+               Karloff and Fl{\'a}vio K. Miyazawa},
+  title     = {Evolutionary algorithms for overlapping correlation clustering},
+  booktitle = {Proceedings of the 16th Conference on Genetic and Evolutionary
+               Computation},
+  series    = {{GECCO}'14},
+  year      = {2014},
+  isbn      = {978-1-4503-2662-9},
+  location  = {Vancouver, BC, Canada},
+  pages     = {405--412},
+  doi       = {10.1145/2576768.2598284},
+  publisher = {ACM},
+  address   = {New York, NY, USA},
+  keywords  = {Data mining; Correlation Clustering; Biased Random-Key Genetic
+               Algorithm},
+  abstract  = {In Overlapping Correlation Clustering (OCC), a number of objects
+    are assigned to clusters. Two objects in the same cluster have correlated
+    characteristics. As opposed to traditional clustering where objects are
+    assigned to a single cluster, in OCC objects may be assigned to one or
+    more clusters. In this paper, we present Biased Random-Key Genetic
+    Algorithms for OCC. We present computational experiments such results
+    outperformed the state of art methods for OCC.},
+}
+
+@InProceedings{Lucena2014:Extensions_BRKGA,
+  author    = {Marina L. Lucena and Carlos E. Andrade and Mauricio G. C.
+               Resende and Fl{\'a}vio K. Miyazawa},
+  title     = {Some extensions of biased random-key genetic algorithms},
+  booktitle = {Proceedings of the 46th Brazilian Symposium of
+               Operational Research},
+  series    = {XLVI SBPO},
+  year      = {2014},
+  pages     = {2469--2480},
+  url       = {https://ceandrade.github.io/files/publications/lucena2014_extensions_of_brkga.pdf},
+  keywords  = {Genetic Algorithms; Crossover; Combinatorial optimization},
+  abstract  = {In this paper, we propose two new variants of the Biased
+    Random-Key Genetic Algorithm.  In the first, the algorithm assigns a gender
+    to each chromosome and only allows crossover between chromosomes of
+    different gender. In the second variant, more than two parents are used
+    to generate a new offspring. Computational experiments are conducted on
+    instances of set covering and set packing problems. We empirically show
+    that the multi-parent modification is able to overcome the original
+    biased random-key genetic algorithm although it requires slightly more
+    time and iterations to converge.},
+}
+
+@InProceedings{Andrade2013:Evolutionary_Algorithm_kIMDMTSP,
+  author    = {Carlos E. Andrade and Fl{\'a}vio K. Miyazawa and Mauricio G. C.
+               Resende},
+  title     = {Evolutionary algorithm for the $k$-interconnected multi-depot
+               multi-traveling salesmen problem},
+  booktitle  = {Proceedings of the 15th Annual Conference on Genetic and
+                Evolutionary Computation},
+  series    = {GECCO'13},
+  year      = {2013},
+  isbn      = {978-1-4503-1963-8},
+  location  = {Amsterdam, The Netherlands},
+  pages     = {463--470},
+  doi       = {10.1145/2463372.2463434},
+  publisher = {ACM},
+  address   = {New York, NY, USA},
+  keywords  = {Network Design; Routing Problems; Traveling Salesman Problem;
+               Genetic Algorithms},
+  abstract  = {We introduce the $k$-Interconnected Multi-Depot Multi-Traveling
+    Salesmen Problem, a new problem that resembles some network design and
+    location routing problems but carries the inherent difficulty of not
+    having a fixed set of depots or terminals. We propose a heuristic based
+    on a biased random-key genetic algorithm to solve it. This heuristic uses
+    local search procedures to best choose the terminal vertices and improve
+    the tours of a given solution. We compare our heuristic with a
+    multi-start procedure using the same local improvements and we show that
+    the proposed algorithm is competitive.},
+}
+
+@InProceedings{Andrade2006:Branch_and_price,
+  author    = {Carlos E. Andrade and  Fl{\'a}vio K. Miyazawa and
+               Eduardo C. Xavier},
+  title     = {Um algoritmo exato para o Problema de Empacotamento
+               Bidimensional em Faixas},
+  booktitle = {Proceedings of the 38th Brazilian Symposium of
+               Operational Research},
+  series    = {XXXVIII SBPO},
+  year      = {2006},
+  pages     = {1701--1712},
+  url       = {http://www.ic.unicamp.br/~andrade/publications/andrade2006_bnp_pebf.pdf},
+  keywords  = {Cut and Packing Problem; Branch-and-Price; Column Generation.},
+  abstract  = {Neste artigo apresentamos um algoritmo branch-and-price para o
+    Problema de EmpacotamentoBidimensional em Faixas. O problema consiste em
+    cortar uma faixa retangular em itens retangulares menores, utilizando a
+    menor extens\tilde{a}o da faixa poss\'ivel. Utilizamos a regra de
+    ramifica\cedil{c}\tilde{a}o proposta por Vance (1994) e implementamos
+    duas estrat\'egias para geração de colunas. O algoritmo implementado foi
+    testado em diversas inst\^ancias conhecidas na literatura e apresentou
+    resultados satisfat\'orios.},
+}
+
+%-----------------------------------------------------------------------------%
+% Conferences - Abstracts
+%-----------------------------------------------------------------------------%
+
+@InProceedings{Andrade2017:Scheduling_connected_cars,
+  author    = {Carlos E. Andrade and Simon D. Byers and Vijay Gopalakrishnan
+               and Emir Halepovic and Milap Majmundar and David J. Poole and
+               Lien K. Tran and Christopher T. Volinsky},
+  title     = {Scheduling Software Updates for Connected Cars with Limited
+               Availability},
+  year      = {2017},
+  booktitle = {INFORMS Annual Meeting},
+  location  = {Houston, TX, USA},
+  keywords  = {Connected cars; LTE; Firmware over the air},
+}
+
+@InProceedings{Andrade2016:Scheduling_IoT,
+  author    = {Carlos E. Andrade},
+  title     = {Large Scale Scheduling Problems on Internet of Things},
+  year      = {2016},
+  booktitle = {INFORMS Annual Meeting},
+  location  = {Nashville, TN, USA},
+  keywords  = {Internet of Things; 4G/LTE; Firmware over the air},
+}
+
+@InProceedings{Andrade2016:Heuristics_for_wireless_backhaul,
+  author    = {Carlos E. Andrade},
+  title     = {Heuristics for the Wireless Backhaul Network Design Problem},
+  year      = {2016},
+  booktitle = {INFORMS Optimization Society Conference},
+  location  = {Princeton, NJ, USA},
+  keywords  = {Wireless backhaul network design; Small cells; Genetic
+               algorithm; Mixed integer programming model},
+}
+
+@InProceedings{Andrade2015:Learning_feasibility_pump,
+  author    = {Carlos E. Andrade and George L. Nemhauser and Shabbir Ahmed and
+               Yufen Shao},
+  title     = {A Learning Framework for Feasibility Pump},
+  year      = {2015},
+  booktitle = {INFORMS Annual Meeting},
+  location  = {Philadelphia, PA, USA},
+  keywords  = {Integer programming; Primal heuristics; Feasibility},
+}
+
+@InProceedings{Resende2015:BRKGA_prize_collecting_steiner,
+  author    = {Mauricio C. G. Resende and Carlos E. Andrade and Fl{\'a}vio K.
+               Miyazawa and Robert D. Doverspike and Kenneth C. Reichmann and
+               Rakesh K. Sinha and Weiyi Zhang},
+  title     = {A biased random-key genetic algorithm for a prize-collecting
+               directed Steiner forest network design problem},
+  year      = {2014},
+  booktitle = {12th INFORMS Telecommunications Conference},
+  location  = {Lisbon, Portugal},
+  keywords  = {Prize-collecting Steiner problem; Biased Random-Key Genetic
+               Algorithm},
+}
+
+@InProceedings{Lopes2014:Solving_hub_location_routing,
+  author    = {Mauro C. Lopes and Thiago A. Queiroz and Carlos E. Andrade
+               and Fl{\'a}vio K. Miyazawa},
+  title     = {Solving a variant of the (hub) location-routing problem},
+  booktitle = {Proceedings of 2014 International Conference on Logistics,
+               Informatics and Service Science},
+  editor    = {Z. Zhang and Z. M. Shen and J. Zhang and R. Zhang},
+  series    = {{LISS 2014}},
+  year      = {2014},
+  isbn      = {978-3-662-43870-1},
+  pages     = {1--1},
+  address   = {New York, NY, USA},
+  keywords  = {Location-routing problem; Branch-and-cut; Local search},
+  abstract  = {We investigate a variant of the many-to-many (hub)
+    location-routing problem, which consists in partitioning the set of
+    vertices of a graph into cycles containing exactly one hub each, and
+    determining an extra cycle interconnecting all hubs. A local search
+    heuristic that considers add/remove and swap operations is
+    developed.Also, a branch-and-cut approach that solves an integer
+    formulation is investigated.Computational experiments on several
+    instances adapted from literature show that our algorithms are good to
+    deal with small to medium-sized instances.},
+}
+
+@InProceedings{Andrade2013:Evol_Alg_Overlapping_Correlation_Clustering,
+  author    = {Carlos E. Andrade and Mauricio G. C. Resende and Howard J.
+               Karloff and Fl{\'a}vio K. Miyazawa},
+  title     = {Evolutionary algorithms for overlapping correlation clustering},
+  year      = {2013},
+  booktitle = {INFORMS Annual Meeting},
+  location  = {Minneapolis, MN, USA},
+  keywords  = {Data mining; Correlation Clustering; Biased Random-Key Genetic
+               Algorithm},
+}
+
+@InProceedings{Andrade2012:Solving_WDP_BRKGA,
+  author    = {Carlos E. Andrade and Fl{\'a}vio K. Miyazawa and
+               Mauricio G. C. Resende and Rodrigo F. Toso},
+  title     = {Solving the winner determination problem by biased random-key
+               genetic algorithms},
+  year      = {2012},
+  booktitle = {{XVI} Latin American Operations Research Summer School},
+  location  = {Beto Gon\cedil{c}alves, Brazil},
+  keywords  = {Combinatorial auctions; Winner determination problem;
+               Genetic algorithms; Biased random-key genetic algorithms},
+}
+
+%-----------------------------------------------------------------------------%
+% Book chapters
+%-----------------------------------------------------------------------------%
+
+@InCollection{Londe2023:Pnext_center_capacity,
+  author    = {Mariana A. Londe and Carlos E. Andrade and Luciana S. Pessoa},
+  title     = {The p-next center problem with capacity and coverage radius
+               constraints: model and heuristics},
+  booktitle = {Metaheuristics},
+  editor    = {Luca Di Gaspero and Paola Festa and Amir Nakib and Mario Pavone},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {13838},
+  pages     = {335--349},
+  isbn      = {978-3-031-26504-4},
+  publisher = {Springer International Publishing},
+  year      = {2023},
+  location  = {Siracusa, Italy},
+  doi       = {10.1007/978-3-031-26504-4_24},
+  keywords  = {Facility location; Biased Random-Key Genetic Algorithm;
+               Metaheuristics},
+  abstract  = {This paper introduces a novel problem of facility location,
+    called the p-next center problem with capacity and coverage radius
+    constraints. We formulate a mixed integer programming model for this
+    problem, and compare the results found by CPLEX with three Biased
+    Random-Key Genetic Algorithms variants. We also propose several instances
+    for this problem, based on existing ones for the p-next center problem.
+    Additionally, we analyze the effect of the radius and demand on
+    instance difficulty. We also observe the performance gains with a
+    relaxed capacity and demand constraint, i.e., permitting demand to be
+    unmet by the model. Results point that the BRKGA variants had
+    significantly better performance than CPLEX, and similar performances
+    among themselves. Of those, BRKGA-FI was shown to have slightly
+    better results than the other variants.},
+}
+
+@InCollection{Lopes2015:Solving_hub_location_routing,
+  author    = {Mauro C. Lopes and Thiago A. Queiroz and Carlos E. {de Andrade}
+               and Fl{\'a}vio K. Miyazawa},
+  title     = {Solving a Variant of the Hub Location-Routing Problem},
+  booktitle = {LISS 2014},
+  editor    = {Zhang, Zhenji and Shen, Zuojun Max and Zhang, Juliang and
+               Zhang, Runtong},
+  year      = {2015},
+  pages     = {395--400},
+  publisher = {Springer Berlin Heidelberg},
+  isbn      = {978-3-662-43870-1},
+  doi       = {10.1007/978-3-662-43871-8_58},
+  keywords  = {Location-routing problem; Branch-and-cut; Local search},
+  abstract  = {We investigate a variant of the many-to-many (hub)
+    location-routing problem, which consists in partitioning the set of
+    vertices of a graph into cycles containing exactly one hub each, and
+    determining an extra cycle interconnecting all hubs. A local search
+    heuristic that considers add/remove and swap operations is
+    developed.Also, a branch-and-cut approach that solves an integer
+    formulation is investigated.Computational experiments on several
+    instances adapted from literature show that our algorithms are good to
+    deal with small to medium-sized instances.},
+}
+
+%-----------------------------------------------------------------------------%
+% Technical reports
+%-----------------------------------------------------------------------------%
+
+@TechReport{Andrade2011:Leiloes_Algos,
+  author      = {Carlos E. Andrade and Fl{\'a}vio K. Miyazawa},
+  title       = {Leilões e Algoritmos},
+  booktitle   = {{Anais do VI Workshop de Teses, Dissertações e Trabalhos de
+                  Iniciação Cient{\'i}fica em Andamento do IC-UNICAMP}},
+  editor      = {Jefferson  L.  M. da Silveira and Ana C. C. R{\'a}zio and
+                 Ariadne  M. B. R. Carvalho and F{\'a}bio A. Faria and
+                 Bruno.  C.  M.  Vilar  and Gustavo P. Alkimin and
+                 Roberto Pereira and Tiago R. C. Falcão},
+  institution = {Institute of Computing, University of Campinas},
+  month       = {June},
+  year        = {2011},
+  number      = {IC-11-13},
+  pages       = {6--7},
+  url         = {http://www.ic.unicamp.br/~reltech/2011/11-13.pdf},
+  keywords    = {Combinatorial auctions; Winner determination problem;
+                 Genetic algorithms; Biased random-key genetic algorithms},
+}
+
+
+
+@article{Matsumoto2007:Common_defects_rngs,
+  author     = {Makoto Matsumoto and Isaku Wada and Ai Kuramoto and Hyo Ashihara},
+  title      = {Common Defects in Initialization of Pseudorandom Number Generators},
+  year       = {2007},
+  issue_date = {September 2007},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {17},
+  number     = {4},
+  issn       = {1049-3301},
+  doi        = {10.1145/1276927.1276928},
+  abstract   = {We demonstrate that a majority of modern random number
+    generators, such as the newest version of rand.c, ranlux, and combined
+      multiple recursive generators, have some manifest correlations in their
+      outputs if the initial state is filled up using another linear recurrence
+      with similar modulus. Among 58 available generators in the GNU scientific
+      library, 40 show such defects. This is not because of the recursion, but
+      because of carelessly chosen initialization schemes in the
+      implementations. A good initialization scheme eliminates this
+      phenomenon.},
+  journal    = {ACM Trans. Model. Comput. Simul.},
+  month      = {sep},
+  pages      = {15--es},
+  numpages   = {20},
+  keywords   = {Difference collision, nearly affine dependence, pseudorandom
+                number generator, Monte-Carlo simulation, interstream
+                correlation}
+}
+
+@article{Higino2018:BRKGA_VRP_Private,
+  title   = {Biased Random-Key Genetic Algorithm Applied to the Vehicle Routing
+             Problem with Private Fleet and Common Carrier},
+  author  = {William Higino and Ant{\^o}nio Augusto Chaves and Vinicius Veloso de Melo},
+  journal = {2018 IEEE Congress on Evolutionary Computation (CEC)},
+  year    = {2018},
+  pages   = {1--8},
+  doi     = {10.1109/CEC.2018.8477905}
+}

@@ -69,7 +69,7 @@ This C++ version provides a fast prototyping API using C++20 standards and
 libraries. All code was developed as a header-only library, and have no
 external dependencies other than those included in the package. So, you just
 need to copy/check out the files and point your compiler's header path to
-BRKGA-MP-IPR folder (`-I` on G++ and CLANG++).
+BRKGA-MP-IPR folder (`-I` on GCC and Clang).
 
 This framework can use multiple threads of modern CPUs, by setting a single
 parameter (assuming that your decoder is thread-safe). This leverage the
@@ -103,7 +103,6 @@ documentation practices of your chosen language/framework.
 - [**Python version**](https://github.com/ceandrade/brkga_mp_ipr_python)
 
 If you are not familiar with how BRKGA works, take a look on
-[Standard BRKGA](http://dx.doi.org/10.1007/s10732-010-9143-1) and
 [Multi-Parent BRKGA](https://doi.org/10.1016/j.ejor.2019.11.037).
 
 :high_brightness: What is new on version 3.0
@@ -205,6 +204,7 @@ Supporting `run()`, we have three new methods:
 Less important but still relevant: previously, one must call `initialize()`
 before any method that manipulated the population. Also, since `initialize()`
 (re)decodes the population, we have to measure its running time too. Now,
+the user **do not need to call `initialize()` anymore!!**.
 `initialize()` is called on the need by its fellow methods internally. This
 leads to fewer error-prone codes.
 

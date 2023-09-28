@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 22, 2023 by ceandrade.
+ * Last update: Sep 27, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -925,7 +925,8 @@ public:
     /** \brief This is the custom shaking procedure given by the user.
      *
      * - Parameters `lower_bound` and `upper_bound` is the shaking intensity
-     *   bounds to be applied.
+     *   bounds to be applied. Usually, the define a range where the intensity
+     *   is sampled.
      *
      * - Parameter `populations` are the current BRKGA populations.
      *
@@ -960,7 +961,7 @@ public:
 };
 
 //----------------------------------------------------------------------------//
-// External Control Params class.
+// Control Parameters class.
 //----------------------------------------------------------------------------//
 
 /**
@@ -1024,7 +1025,7 @@ public:
  * \param logger a output stream to log some information such as missing
  *               no-required parameters. It does not log errors.
  * \returns a tuple containing the BRKGA and external control parameters.
- * \throw std::fstream::failure in case of errors in the file.
+ * \throws std::fstream::failure in case of errors in the file.
  *
  * \todo This method can beneficiate from introspection tools.
  *       We would like achieve a code similar to the
@@ -1239,7 +1240,7 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
  * \param logger a output stream to log some information such as missing
  *               no-required parameters. It does not log errors.
  * \returns a tuple containing the BRKGA and external control parameters.
- * \throw std::fstream::failure in case of errors in the file.
+ * \throws std::fstream::failure in case of errors in the file.
  */
 INLINE std::pair<BrkgaParams, ControlParams>
 readConfiguration(const std::string& filename,
@@ -1320,7 +1321,7 @@ operator<<(std::ostream& os, const ControlParams& control_params) {
  * \param brkga_params the BRKGA parameters.
  * \param control_params the external control parameters. Default is an empty
  *        object.
- * \throw std::fstream::failure in case of errors in the file.
+ * \throws std::fstream::failure in case of errors in the file.
  *
  * \todo This method can beneficiate from introspection tools.
  *       We would like achieve a code similar to the
@@ -1343,7 +1344,7 @@ INLINE void writeConfiguration(std::ostream& output,
  * \param brkga_params the BRKGA parameters.
  * \param control_params the external control parameters.
  *        Default is an empty object.
- * \throw std::fstream::failure in case of errors in the file.
+ * \throws std::fstream::failure in case of errors in the file.
  */
 INLINE void writeConfiguration(const std::string& filename,
         const BrkgaParams& brkga_params,
@@ -1518,7 +1519,7 @@ public:
      * \brief Default constructor.
      * \param chr_size size of chromosome.
      * \param pop_size size of population.
-     * \throw std::range_error if population size or chromosome size is zero.
+     * \throws std::range_error if population size or chromosome size is zero.
      */
     Population(const unsigned chr_size, const unsigned pop_size):
         chromosomes(pop_size, Chromosome(chr_size, 0.0)),
@@ -1641,6 +1642,10 @@ public:
 // Path Relinking
 //----------------------------------------------------------------------------//
 
+/**
+ * \defgroup main_algorithms Main BRKGA-MP-IPR algorithms
+ */
+///@{
 /**
  * \brief This class represents a Multi-Parent Biased Random-key Genetic
  * Algorithm with Implicit Path Relinking (BRKGA-MP-IPR).
@@ -1811,8 +1816,8 @@ public:
      *        but only chromosome decoding. Very useful to emulate a
      *        multi-start algorithm.
      *
-     * \throw std::range_error if some parameter or combination of parameters
-     *        does not fit.
+     * \throws std::range_error if some parameter or combination of parameters
+     *         does not fit.
      */
     BRKGA_MP_IPR(
         Decoder& decoder_reference,
@@ -1851,7 +1856,7 @@ public:
      * It must be a **positive non-increasing function**, i.e.
      * \f$ f: \mathbb{N}^+ \to \mathbb{R}^+\f$ such that
      * \f$f(i) \ge 0\f$ and \f$f(i) \ge f(i+1)\f$ for
-     * \f$i \in [1..total\_parents]\f$.
+     * \f$i \in [1, \ldots, total\_parents]\f$.
      * For example
      * \code{.cpp}
      * setBiasCustomFunction(
@@ -1863,8 +1868,8 @@ public:
      * sets an inverse quadratic function.
      *
      * \param func a reference to a unary positive non-increasing function.
-     * \throw std::runtime_error in case the function is not a non-decreasing
-     *        positive function.
+     * \throws std::runtime_error in case the function is not a non-decreasing
+     *         positive function.
      */
     void setBiasCustomFunction(
         const std::function<double(const unsigned)>& func
@@ -1937,8 +1942,8 @@ public:
      * \warning If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM
      *      TIME** since this is the core stopping criteria on IPR.
      *
-     * If you really mean to have no maximum time set, we recommend to use
-     * the following code:
+     * If you really mean to have no maximum time and/or maximum stalled
+     * iterations set, we recommend to use the following code:
      *
      * \code{.cpp}
      * // After reading your parameters, e.g.,
@@ -1946,17 +1951,20 @@ public:
      *
      * // You can set to the max.
      * control_params.maximum_running_time = std::chrono::seconds::max();
+     *
+     * control_params.stalled_iterations = numeric_limits<unsigned>::max();
      * \endcode
      *
      * \param stopping_criteria a callback function to determine is the
      *        algorithm must stop. For instance, the following lambda
-     *        function tests if the best solution reached a given value:
+     *        function tests if the best solution reached a given value for
+     *        a minimization problem:
      * \code{.cpp}
      * fitness_t my_magical_solution = 10;
      *
      * algorithm.setStoppingCriteria(
      *     [&](const AlgorithmStatus& status) {
-     *         return status.best_fitness == my_magical_solution;
+     *         return status.best_fitness <= my_magical_solution;
      *     }
      * );
      * \endcode
@@ -1970,8 +1978,8 @@ public:
      * improved.
      *
      * It must take a reference to AlgorithmStatus and return `true`
-     * if the algorithm should stop immediately. You may have as much observers
-     * you want. They will be called in the order they are added.
+     * if the algorithm should stop immediately. You may have as many observers
+     * as you want. They will be called in the order they are added.
      *
      * \param func a callback function such as
      * \code{.cpp}
@@ -2081,6 +2089,15 @@ public:
      * \param logger a output stream to log some information.
      *
      * \returns The last algorithm status before the stopping criteria are met.
+     *
+     * \throws std::runtime_error in the following cases:
+     *      -# IPR is active (ipr_interva > 0) but the distance function is
+     *         not set;
+     *      -# Shaking is active (shake_interval > 0) and it is set as 'CUSTOM'.
+     *         However the custom shaking procedure was not supplied.
+     *      -# Shaking is active (shake_interval > 0). However, the intensity
+     *         bounds are out of range. Should be (0.0, 1.0] and
+     *         'shaking_intensity_lower_bound <= shaking_intensity_upper_bound'.
      */
     AlgorithmStatus run(
         const ControlParams& control_params,
@@ -2100,7 +2117,7 @@ public:
      *
      * \param generations number of generations to be evolved. Must be larger
      *        than zero.
-     * \throw std::range_error if the number of generations is zero.
+     * \throws std::range_error if the number of generations is zero.
      */
     void evolve(unsigned generations = 1);
     ///@}
@@ -2177,8 +2194,8 @@ public:
      * \returns A PathRelinking::PathRelinkingResult depending on the relink
      *          status.
      *
-     * \throw std::range_error if the percentage or size of the path is
-     *        not in (0, 1].
+     * \throws std::range_error if the percentage or size of the path is
+     *         not in (0, 1].
      */
     PathRelinking::PathRelinkingResult pathRelink(
         PathRelinking::Type pr_type,
@@ -2214,8 +2231,8 @@ public:
      * \returns A PathRelinking::PathRelinkingResult depending on the relink
      *          status.
      *
-     * \throw std::range_error if the percentage or size of the path is
-     *        not in (0, 1].
+     * \throws std::range_error if the percentage or size of the path is
+     *         not in (0, 1].
      */
     PathRelinking::PathRelinkingResult pathRelink(
         std::shared_ptr<DistanceFunctionBase> dist,
@@ -2234,10 +2251,10 @@ public:
 
      * \param num_immigrants number of elite chromosomes to select from each
      *        population.
-     * \throw std::range_error if the number of immigrants less than one or
-     *        it is larger than or equal to the population size divided by
-     *        the number of populations minus one, i.e. \f$\lceil
-     *        \frac{population\_size}{num\_independent\_populations} \rceil
+     * \throws std::range_error if the number of immigrants less than one or
+     *         it is larger than or equal to the population size divided by
+     *         the number of populations minus one, i.e. \f$\lceil
+     *         \frac{population\_size}{num\_independent\_populations} \rceil
      *         - 1\f$.
      */
     void exchangeElite(unsigned num_immigrants);
@@ -2276,9 +2293,9 @@ public:
      * \param population_index the population index.
      * \param position the chromosome position.
      *
-     * \throw std::range_error eitheir if `population_index` is larger
-     *        than number of populations; or `position` is larger than the
-     *        population size; or ` chromosome.size() != chromosome_size`
+     * \throws std::range_error eitheir if `population_index` is larger
+     *         than number of populations; or `position` is larger than the
+     *         population size; or ` chromosome.size() != chromosome_size`
      */
     void injectChromosome(
         const Chromosome& chromosome,
@@ -2292,8 +2309,8 @@ public:
     /**
      * \brief Returns a reference to a current population.
      * \param population_index the population index.
-     * \throw std::range_error if the index is larger than number of
-     *        populations.
+     * \throws std::range_error if the index is larger than number of
+     *         populations.
      */
     const Population& getCurrentPopulation(unsigned population_index = 0) const;
 
@@ -2326,9 +2343,9 @@ public:
      * \param population_index the population index.
      * \param position the chromosome position, ordered by fitness.
      *        The best chromosome is located in position 0.
-     * \throw std::range_error eitheir if `population_index` is larger
-     *        than number of populations, or `position` is larger than the
-     *        population size.
+     * \throws std::range_error eitheir if `population_index` is larger
+     *         than number of populations, or `position` is larger than the
+     *         population size.
      */
     const Chromosome& getChromosome(
         unsigned population_index,
@@ -2340,9 +2357,9 @@ public:
      * \param population_index the population index.
      * \param position the chromosome position, ordered by fitness.
      *        The best chromosome is located in position 0.
-     * \throw std::range_error eitheir if `population_index` is larger
-     *        than number of populations, or `position` is larger than the
-     *        population size.
+     * \throws std::range_error eitheir if `population_index` is larger
+     *         than number of populations, or `position` is larger than the
+     *         population size.
      */
     fitness_t getFitness(unsigned population_index, unsigned position) const;
     ///@}
@@ -2616,6 +2633,7 @@ protected:
     inline unsigned randInt(const unsigned n, std::mt19937& rng);
     ///@}
 };
+///@} main_algorithms
 
 //----------------------------------------------------------------------------//
 /// \cond IGNORE_IMPLEMENTATION

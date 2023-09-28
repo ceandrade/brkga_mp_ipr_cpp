@@ -36,15 +36,16 @@
 
 .PHONY: all clean
 
-all: sphinx
+all: doxygen doxyrest sphinx
 	echo
 
 doxygen:
 	doxygen Doxyfile
 
 doxyrest:
+	DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/local/lib \
 	./doxyrest-2.1.3/bin/doxyrest -c doxyrest-config.lua
-	cp build/rst_doxyrest/* src/rst/.
+	# cp build/rst_doxyrest/* src/rst/.
 
 sphinx:
 	rm -rf build/rst_tmp

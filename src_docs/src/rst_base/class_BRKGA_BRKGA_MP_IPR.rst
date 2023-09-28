@@ -345,7 +345,7 @@ We assign as many individuals as possible across all populations. Extra individu
 
 Sets a custom bias function used to build the probabilities.
 
-It must be a **positive non-increasing function**, i.e. :math:`f: \mathbb{N}^+ \to \mathbb{R}^+` such that :math:`f(i) \ge 0` and :math:`f(i) \ge f(i+1)` for :math:`i \in [1, \ldots, total\_parents]`. For example
+It must be a **positive non-increasing function**, i.e. :math:`f: \mathbb{N}^+ \to \mathbb{R}^+` such that :math:`f(i) \ge 0` and :math:`f(i) \ge f(i+1)` for :math:`i \in [1..total\_parents]`. For example
 
 .. ref-code-block:: cpp
 
@@ -454,7 +454,7 @@ The algorithm always test for *the maximum running time* and for *the maximum st
 
 	If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is the core stopping criteria on IPR.
 
-If you really mean to have no maximum time and/or maximum stalled iterations set, we recommend to use the following code:
+If you really mean to have no maximum time set, we recommend to use the following code:
 
 .. ref-code-block:: cpp
 
@@ -463,8 +463,6 @@ If you really mean to have no maximum time and/or maximum stalled iterations set
 	
 	// You can set to the max.
 	control_params.maximum_running_time = std::chrono::seconds::max();
-	
-	control_params.stalled_iterations = numeric_limits<unsigned>::max();
 
 
 
@@ -477,7 +475,7 @@ If you really mean to have no maximum time and/or maximum stalled iterations set
 		- stopping_criteria
 
 		- 
-		  a callback function to determine is the algorithm must stop. For instance, the following lambda function tests if the best solution reached a given value for a minimization problem:
+		  a callback function to determine is the algorithm must stop. For instance, the following lambda function tests if the best solution reached a given value:
 		  
 		  .. ref-code-block:: cpp
 		  
@@ -485,7 +483,7 @@ If you really mean to have no maximum time and/or maximum stalled iterations set
 		  	
 		  	algorithm.setStoppingCriteria(
 		  	    [&](const AlgorithmStatus& status) {
-		  	        return status.best_fitness <= my_magical_solution;
+		  	        return status.best_fitness == my_magical_solution;
 		  	    }
 		  	);
 
@@ -499,7 +497,7 @@ If you really mean to have no maximum time and/or maximum stalled iterations set
 
 Adds a callback function called when the best solution is improved.
 
-It must take a reference to :ref:`AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>` and return ``true`` if the algorithm should stop immediately. You may have as many observers as you want. They will be called in the order they are added.
+It must take a reference to :ref:`AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>` and return ``true`` if the algorithm should stop immediately. You may have as much observers you want. They will be called in the order they are added.
 
 
 
@@ -621,18 +619,6 @@ For path relinking, the block size is computed by :math:`\lceil \alpha \times \s
 		- logger
 
 		- a output stream to log some information.
-
-	*
-		- std::runtime_error
-
-		- 
-		  in the following cases:
-		  
-		  #. IPR is active (ipr_interva > 0) but the distance function is not set;
-		  
-		  #. Shaking is active (shake_interval > 0) and it is set as 'CUSTOM'. However the custom shaking procedure was not supplied.
-		  
-		  #. Shaking is active (shake_interval > 0). However, the intensity bounds are out of range. Should be (0.0, 1.0] and 'shaking_intensity_lower_bound <= shaking_intensity_upper_bound'.
 
 
 
