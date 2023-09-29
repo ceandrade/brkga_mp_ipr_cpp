@@ -256,24 +256,24 @@ each one from one objective function). So, we have the following definition
 
 | :memo: Definition          |
 |:---------------------------|
-| Let `A = (f_1, f_2, ..., f_n)` and `A' = (f'_1, f'_2, .., f'_n)` be two vectors for `n` functions `f_1, f_2, ..., f_n`. `A` is lexicographical smaller than `A'`, i.e.,`A < A'` if and only if `f_1 < f'_1`, or `f_1 = f'_1` and `f_2 < f'_2`, or `..., f_1 = f'_1, ..., f_{n-1} = f'_{n-1}` and `f_n < f'_n`.|
+| Let $A = (f_1, f_2, ..., f_n)$ and $A' = (f'_1, f'_2, .., f'_n)$ be two vectors for $n$ functions $f_1, f_2, ..., f_n$. $A$ is lexicographical smaller than $A'$, i.e.,$A < A'$ if and only if $f_1 < f'_1$, or $f_1 = f'_1$ and $f_2 < f'_2$, or $..., f_1 = f'_1, ..., f_{n-1} = f'_{n-1}$ and $f_n < f'_n$.|
 
 For instance, let's assume we have three minimizing objective functions and
 four solutions described in the following table:
 
-|Solution|`f_1`      |`f_2`      |`f_3`
+|Solution|$f_1$      |$f_2$      |$f_3$
 |--------|-----------|-----------|----------|
 |A       |50         |30         |30
 |B       |30         |55         |40
 |C       |30         |20         |50
 |D       |30         |20         |25
 
-Note that Solution B is better than Solution A because `f_1(A) < f_1(B),`
-even though A has much better values for `f_2` and `f_3`. Now,
-Solution C is better B because, although `f_1(B) = f_1(C),` we have that
-`f_2(B) < f_2(C),` regardless of the value of `f_3.` Solution D
-has the best value for all objective functions. Therefore `D < C < B <
-A.`
+Note that Solution B is better than Solution A because $f_1(A) < f_1(B)$,
+even though A has much better values for $f_2$ and $f_3$. Now,
+Solution C is better B because, although $f_1(B) = f_1(C)$, we have that
+$f_2(B) < f_2(C)$, regardless of the value of $f_3$. Solution D
+has the best value for all objective functions.
+Therefore $D < C < B < A$.
 
 | :warning: Warning          |
 |:---------------------------|
@@ -334,6 +334,7 @@ the files were downloaded.
 Quick example (unix): assume we are in an empty folder. So, we copy/clone
 BRKGA-IPR-MP first:
 
+```terminal
   $ git clone https://github.com/ceandrade/brkga_mp_ipr_cpp
   Cloning into 'brkga_mp_ipr_cpp'...
   remote: Enumerating objects: 118, done.
@@ -342,6 +343,7 @@ BRKGA-IPR-MP first:
   remote: Total 118 (delta 24), reused 0 (delta 0)
   Receiving objects: 100% (118/118), 3.50 MiB | 3.66 MiB/s, done.
   Resolving deltas: 100% (24/24), done.
+```
 
 Let's write a `test.cpp` with the following code:
 
@@ -357,6 +359,7 @@ int main() {
 
 Then, let's compile and see it works:
 
+```terminal
   $ g++ --version
   g++ (MacPorts gcc12 12.3.0_0+stdlib_flag) 12.3.0
 
@@ -364,6 +367,7 @@ Then, let's compile and see it works:
 
   $ ./test
   Testing sense: MINIMIZE
+```
 
 Note the Git clones the whole repository that contains the library code,
 documents, and examples. All the examples were built using
