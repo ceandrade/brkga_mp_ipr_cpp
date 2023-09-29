@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 27, 2023 by ceandrade.
+ * Last update: Sep 28, 2023 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -1466,6 +1466,7 @@ public:
  * \todo Clang fails printing chrono times. When they fix it, please, revise
  *       this function.
  */
+INLINE
 std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
     output
     << "\nbest_fitness: " << status.best_fitness
