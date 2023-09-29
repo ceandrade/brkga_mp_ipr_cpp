@@ -152,25 +152,33 @@ Supporting `run()`, we have three new methods:
 - `setStoppingCriteria()`: while method `run()` sets automatically maximum time
   or maximum stalled iterations (without improvement in the best solution) as
   standard stopping criteria, the user can add to these other criteria using
-  this method. For instance, the following lambda function tests if the best
-  solution reached a given value:
+  this method. For example, in a minimization problem, we may want to stop at
+  the value within a distance from a lower bound or when we reach a given number
+  of iterations:
 
   ```cpp
-  fitness_t my_magical_solution = 10;
+  fitness_t lower_bound = compute_lower_bound();
+  unsigned max_iterations = 100;
+
   algorithm.setStoppingCriteria(
       [&](const AlgorithmStatus& status) {
-          return status.best_fitness == my_magical_solution;
+          return
+              status.best_fitness <= lower_bound * 1.1; // 10% from the lower bound
+              ||
+              status.current_iteration == max_iterations;
       }
   );
   ```
 
-  In this case, the stop criteria become: _Is maximum time reached **OR** Is
-  maximum stalled iterations reached **OR**
-  `best_fitness == my_magical_solution`._
+  In this case, the stop criteria become:
+  - Is maximum time reached **OR**
+  - Is maximum stalled iterations reached **OR**
+  - `status.best_fitness <= lower_bound * 1.1` **OR**
+  - `status.current_iteration == max_iterations`.
 
   | :memo: Note                |
   |:---------------------------|
-  | While we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** (mainly when using IPR), if you really rmean to have no maximum time or maximum stalled iterations set, we recommend to use the following code:|
+  | While we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** (mainly when using IPR), if you really mean to have no maximum time or maximum stalled iterations set, we recommend to use the following code:|
 
   ```cpp
   // After reading your parameters, e.g.,
