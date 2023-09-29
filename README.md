@@ -189,7 +189,7 @@ Supporting `run()`, we have three new methods:
   // auto [brkga_params, control_params] = readConfiguration("config.conf");
   // You can set to the max.
   control_params.maximum_running_time = std::chrono::seconds::max();
-  control_params.stall_offset = numeric_limits<decltype(control_params.stall_offset)>::max();
+  control_params.stall_offset = std::numeric_limits<unsigned>::max();
   ```
 
 - `addNewSolutionObserver()`: This method adds a callback that is triggered
