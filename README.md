@@ -176,6 +176,7 @@ Supporting `run()`, we have three new methods:
   - `status.best_fitness <= lower_bound * 1.1` **OR**
   - `status.current_iteration == max_iterations`.
 
+
   | :memo: Note                |
   |:---------------------------|
   | While we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** (mainly when using IPR), if you really mean to have no maximum time or maximum stalled iterations set, we recommend to use the following code:|
