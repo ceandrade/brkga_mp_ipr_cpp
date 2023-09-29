@@ -179,17 +179,20 @@ Supporting `run()`, we have three new methods:
 
   | :memo: Note                |
   |:---------------------------|
-  | While we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** (mainly when using IPR).|
+  | If you are using implicit path relinking (IPR), which is **very timing consuming**, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is the core stopping criteria on IPR.|
 
-  If you really mean to have no maximum time or maximum stalled iterations set,
-  we recommend to use the following code:
+  If you really mean to have no maximum time and/or maximum stalled iterations
+  set, we recommend to use the following code:
 
   ```cpp
   // After reading your parameters, e.g.,
   // auto [brkga_params, control_params] = readConfiguration("config.conf");
-  // You can set to the max.
+
+  // You can set the time to max...
   control_params.maximum_running_time = std::chrono::seconds::max();
-  control_params.stall_offset = std::numeric_limits<unsigned>::max();
+
+  // ... and/or the stalled iterations to max.
+  control_params.stall_offset = numeric_limits<unsigned>::max();
   ```
 
 - `addNewSolutionObserver()`: This method adds a callback that is triggered
