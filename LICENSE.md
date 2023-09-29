@@ -1,5 +1,5 @@
 BRKGA-MP-IPR License
-========================
+==============================================================================
 
 Copyright (c) 2019-2023, Carlos Eduardo de Andrade. All other rights reserved.
 
@@ -48,8 +48,14 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+You can download all references for this
+[:open_file_folder: Bibtex](https://ceandrade.github.io/brkga_mp_ipr_cpp/_downloads/9e03f77296678467b193eb411a9ebc25/references.bib),
+or this
+[:open_file_folder: RIS](https://ceandrade.github.io/brkga_mp_ipr_cpp/_downloads/89ca66b5c665a51fcb314b01f33d167e/references.ris)
+files.
+
 The MIT License (MIT)
-========================
+-------------------------------------------------------------------------------
 
 Copyright (c) 2018
 Rodrigo Franco Toso and Mauricio G.C. Resende
