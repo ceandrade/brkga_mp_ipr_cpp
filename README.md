@@ -256,7 +256,7 @@ each one from one objective function). So, we have the following definition
 
 | :memo: Definition          |
 |:---------------------------|
-| Let $A = (f_1, f_2, ..., f_n)$ and $A' = (f'_1, f'_2, .., f'_n)$ be two vectors for $n$ functions $f_1, f_2, ..., f_n$. $A$ is lexicographical smaller than $A'$, i.e.,$A < A'$ if and only if $f_1 < f'_1$, or $f_1 = f'_1$ and $f_2 < f'_2$, or $..., f_1 = f'_1, ..., f_{n-1} = f'_{n-1}$ and $f_n < f'_n$.|
+| Let $A = (f_1, f_2, \ldots, f_n)$ and $A' = (f'_1, f'_2, \ldots, f'_n)$ be two vectors for $n$ functions $f_1, f_2, \ldots, f_n$. $A$ is lexicographical smaller than $A'$, i.e., $A < A'$ if and only if $f_1 < f'_1$, or $f_1 = f'_1$ and $f_2 < f'_2$, or $\ldots, f_1 = f'_1, \ldots f_{n-1} = f'_{n-1}$ and $f_n < f'_n$.|
 
 For instance, let's assume we have three minimizing objective functions and
 four solutions described in the following table:
