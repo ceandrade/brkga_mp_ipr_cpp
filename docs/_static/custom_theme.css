@@ -2,3 +2,15 @@
     color: #9b9b9b;
     background: #343131;
 }
+
+.colored-container {
+    background-color: #f6efdf;
+    padding: 1em;
+    border-radius: 5px;
+}
+
+h2 {
+    padding: 5px 0 5px 12px;
+    border-left: 1px solid;
+    border-top: 1px solid;
+};

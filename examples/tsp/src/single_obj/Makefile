@@ -5,7 +5,7 @@
 # All Rights Reserved.
 #
 # Created on : Mar 05, 2019 by ceandrade
-# Last update: Sep 20, 2023 by ceandrade
+# Last update: Sep 28, 2023 by ceandrade
 #
 # This code is released under BRKGA-MP-IPR License:
 # https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -39,7 +39,7 @@ OPT = opt
 # At full speed, the mating process is done in parallel, using independent RNGs.
 # The results are reproducible if and only if you use the same seed and the same
 # number of threads.
-USER_FLAGS += -DMATING_FULL_SPEED
+#USER_FLAGS += -DMATING_FULL_SPEED
 
 # Using the following option, the mating is still parallel, but each RNG is
 # seeded on each mating. This is a little bit slower than full speed, but we
@@ -52,7 +52,7 @@ USER_FLAGS += -DMATING_FULL_SPEED
 # original BRKGA. The reproducibility is guaranteed with only the same seed.
 # This option can be very slow for large chromosomes and large populations.
 # But it makes debugging easier.
-# USER_FLAGS += -DMATING_SEQUENTIAL
+ USER_FLAGS += -DMATING_SEQUENTIAL
 
 ###############################################################################
 # Build options
@@ -80,6 +80,9 @@ MAIN_MINIMAL_EXE = main_minimal
 
 MAIN_COMPLETE_OBJ = main_complete.o
 MAIN_COMPLETE_EXE = main_complete
+
+MAIN_MAXIMUM_ITERATIONS_OBJ = main_maximum_iterations.o
+MAIN_MAXIMUM_ITERATIONS_EXE = main_maximum_iterations
 
 ###############################################################################
 # Compiler, linker, and flags
@@ -141,6 +144,11 @@ main_complete: $(UTIL_OBJS) $(OBJS) $(MAIN_COMPLETE_OBJ)
 	$(CXX) $(CXXFLAGS) $(UTIL_OBJS) $(OBJS) $(MAIN_COMPLETE_OBJ) -o $(MAIN_COMPLETE_EXE)
 	@echo
 
+main_maximum_iterations: $(UTIL_OBJS) $(OBJS) $(MAIN_MAXIMUM_ITERATIONS_OBJ)
+	@echo "--> Linking objects... "
+	$(CXX) $(CXXFLAGS) $(UTIL_OBJS) $(OBJS) $(MAIN_MAXIMUM_ITERATIONS_OBJ) -o $(MAIN_MAXIMUM_ITERATIONS_EXE)
+	@echo
+
 .cpp.o:
 	@echo "--> Compiling $<..."
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(USER_DEFINES) -c $< -o $@
@@ -149,7 +157,8 @@ main_complete: $(UTIL_OBJS) $(OBJS) $(MAIN_COMPLETE_OBJ)
 clean:
 	@echo "--> Cleaning compiled..."
 	rm -rf $(UTIL_OBJS) $(OBJS) $(MAIN_MINIMAL_OBJ) $(MAIN_COMPLETE_OBJ) \
-$(MAIN_MINIMAL_EXE) $(MAIN_COMPLETE_EXE)
+$(MAIN_MAXIMUM_ITERATIONS_OBJ) $(MAIN_MINIMAL_EXE) $(MAIN_COMPLETE_EXE) \
+$(MAIN_MAXIMUM_ITERATIONS_EXE)
 	rm -rf *o
 	rm -rf Debug
 	rm -rf *.dSYM

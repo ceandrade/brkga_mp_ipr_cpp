@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>namespace BRKGA::PathRelinking &mdash; BRKGA-MP-IPR 2.0.0 documentation</title>
+  <title>namespace BRKGA::PathRelinking &mdash; BRKGA-MP-IPR 3.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
@@ -15,16 +15,17 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/add_target.js"></script>
-        <script src="_static/target-highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=acc74ff5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/add_target.js?v=0b007391"></script>
+        <script src="_static/target-highlight.js?v=df7d332b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="enum BRKGA::PathRelinking::PathRelinkingResult" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html" />
+    <link rel="next" title="enum BRKGA::PathRelinking::DistanceFunctionType" href="enum_BRKGA_PathRelinking_DistanceFunctionType.html" />
     <link rel="prev" title="namespace BRKGA" href="namespace_BRKGA.html" /> 
 </head>
 
@@ -33,15 +34,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> BRKGA-MP-IPR
-            <img src="_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BRKGA-MP-IPR
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0
+                3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -51,12 +56,13 @@
 <li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
-<li class="toctree-l1"><a class="reference internal" href="page_md_src_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_contributing.html">Contributing</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="global.html">API documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">namespace BRKGA::PathRelinking</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="enum_BRKGA_PathRelinking_DistanceFunctionType.html">enum BRKGA::PathRelinking::DistanceFunctionType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html">enum BRKGA::PathRelinking::PathRelinkingResult</a></li>
 <li class="toctree-l4"><a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html">enum BRKGA::PathRelinking::Selection</a></li>
 <li class="toctree-l4"><a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html">enum BRKGA::PathRelinking::Type</a></li>
@@ -67,19 +73,20 @@
 <li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_BiasFunctionType.html">enum BRKGA::BiasFunctionType</a></li>
 <li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_Sense.html">enum BRKGA::Sense</a></li>
 <li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_ShakingType.html">enum BRKGA::ShakingType</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html">template class BRKGA::BRKGA_MP_IPR</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BrkgaParams.html">class BRKGA::BrkgaParams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html">class BRKGA::DistanceFunctionBase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html">class BRKGA::ExternalControlParams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_HammingDistance.html">class BRKGA::HammingDistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_KendallTauDistance.html">class BRKGA::KendallTauDistance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_BRKGA_Population.html">class BRKGA::Population</a></li>
 <li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#detailed-documentation">Detailed Documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="class_EnumIO.html">template class EnumIO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessor_directives.html">Preprocessor directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_main_algorithms.html">Main BRKGA-MP-IPR algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_brkga_control_params.html">BRKGA and Control Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_algorithm_status.html">Algorithm status utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_distance_functions.html">Distance functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_utility_functions.html">Functions for equality comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_chrono_helpers.html">I/O chrono help functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_enum_io_templates.html">Template specializations for enum I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_compiler_directives.html">Compiler directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="global.html#overview">Overview</a></li>
 </ul>
 </li>
 </ul>
@@ -97,10 +104,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="global.html">API documentation</a> &raquo;</li>
-          <li><a href="namespace_BRKGA.html">namespace BRKGA</a> &raquo;</li>
-      <li>namespace BRKGA::PathRelinking</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="global.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="namespace_BRKGA.html">namespace BRKGA</a></li>
+      <li class="breadcrumb-item active">namespace BRKGA::PathRelinking</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/namespace_BRKGA_PathRelinking.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -111,16 +118,17 @@
            <div itemprop="articleBody">
              
   <section id="namespace-brkga-pathrelinking">
-<span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking"></span><span id="index-0"></span><h1>namespace BRKGA::PathRelinking<a class="headerlink" href="#namespace-brkga-pathrelinking" title="Permalink to this headline"></a></h1>
+<span id="doxid-namespace-b-r-k-g-a-1-1-path-relinking"></span><span id="index-0"></span><h1>namespace BRKGA::PathRelinking<a class="headerlink" href="#namespace-brkga-pathrelinking" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>Holds the enumerations for Path Relinking algorithms. <a class="reference internal" href="#details-namespace-b-r-k-g-a-1-1-path-relinking"><span class="std std-ref">More…</span></a></p>
 <pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="k">namespace</span> <span class="n">PathRelinking</span> <span class="p">{</span>
 
 <span class="c1">// enums</span>
 
+<span class="k">enum</span> <a class="reference internal" href="enum_BRKGA_PathRelinking_DistanceFunctionType.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a87d1364dc2c4abffd0fa93bebde97941"><span class="std std-ref">DistanceFunctionType</span></a><span></span><span class="p">;</span>
 <span class="k">enum</span> <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinkingResult</span></a><span></span><span class="p">;</span>
 <span class="k">enum</span> <a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">Selection</span></a><span></span><span class="p">;</span>
 <span class="k">enum</span> <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">Type</span></a><span></span><span class="p">;</span>
@@ -130,26 +138,43 @@
 <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinkingResult</span></a><span></span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a2d5412296fb1fa7d2c016b69a1c1194e"><span class="std std-ref">operator|=</span></a><span></span> <span class="p">(</span>
     <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinkingResult</span></a><span></span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span>
     <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinkingResult</span></a><span></span> <span class="n">rhs</span>
-    <span class="p">);</span>
+<span class="p">);</span>
 
 <span class="p">}</span> <span class="c1">// namespace PathRelinking</span></pre>
 </section>
 <section id="detailed-documentation">
-<span id="details-namespace-b-r-k-g-a-1-1-path-relinking"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline"></a></h2>
+<span id="details-namespace-b-r-k-g-a-1-1-path-relinking"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Link to this heading"></a></h2>
 <p>Holds the enumerations for Path Relinking algorithms.</p>
 <section id="global-functions">
-<h3>Global Functions<a class="headerlink" href="#global-functions" title="Permalink to this headline"></a></h3>
+<h3>Global Functions<a class="headerlink" href="#global-functions" title="Link to this heading"></a></h3>
 <pre class="highlight doxyrest-title-code-block literal-block" id="doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a2d5412296fb1fa7d2c016b69a1c1194e"><span id="index-1"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinkingResult</span></a><span></span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">|=</span> <span class="p">(</span>
     <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinkingResult</span></a><span></span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span>
     <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinkingResult</span></a><span></span> <span class="n">rhs</span>
-    <span class="p">)</span></pre>
-<p>Perform bitwise <code class="docutils literal notranslate"><span class="pre">OR</span></code> between two <code class="docutils literal notranslate"><span class="pre">PathRelinkingResult</span></code> returning the highest rank <code class="docutils literal notranslate"><span class="pre">PathRelinkingResult</span></code>.</p>
+<span class="p">)</span></pre>
+<p>Performs bitwise <code class="docutils literal notranslate"><span class="pre">OR</span></code> between two <code class="docutils literal notranslate"><span class="pre">PathRelinkingResult</span></code> returning the highest rank <code class="docutils literal notranslate"><span class="pre">PathRelinkingResult</span></code>.</p>
 <p>For example</p>
 <ul class="simple">
 <li><p>TOO_HOMOGENEOUS | NO_IMPROVEMENT == NO_IMPROVEMENT</p></li>
 <li><p>NO_IMPROVEMENT | ELITE_IMPROVEMENT == ELITE_IMPROVEMENT</p></li>
 <li><p>ELITE_IMPROVEMENT | BEST_IMPROVEMENT == BEST_IMPROVEMENT</p></li>
 </ul>
+<p class="rubric">Parameters:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>lhs</p></td>
+<td><p>the left-hand side status (lvalue).</p></td>
+</tr>
+<tr class="row-even"><td><p>rhs</p></td>
+<td><p>the right-hand side status (rvalue).</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Returns:</p>
+<p>a PathRelinkingResult according to the table above.</p>
 </section>
 </section>
 </section>
@@ -159,13 +184,13 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="namespace_BRKGA.html" class="btn btn-neutral float-left" title="namespace BRKGA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="enum_BRKGA_PathRelinking_PathRelinkingResult.html" class="btn btn-neutral float-right" title="enum BRKGA::PathRelinking::PathRelinkingResult" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="enum_BRKGA_PathRelinking_DistanceFunctionType.html" class="btn btn-neutral float-right" title="enum BRKGA::PathRelinking::DistanceFunctionType" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Carlos E. Andrade.</p>
+    <p>&#169; Copyright 2019-2023, Carlos E. Andrade.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

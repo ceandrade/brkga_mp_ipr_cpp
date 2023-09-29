@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>class BRKGA::BrkgaParams &mdash; BRKGA-MP-IPR 2.0.0 documentation</title>
+  <title>class BRKGA::BrkgaParams &mdash; BRKGA-MP-IPR 3.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
@@ -15,17 +15,18 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/add_target.js"></script>
-        <script src="_static/target-highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=acc74ff5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/add_target.js?v=0b007391"></script>
+        <script src="_static/target-highlight.js?v=df7d332b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="class BRKGA::DistanceFunctionBase" href="class_BRKGA_DistanceFunctionBase.html" />
-    <link rel="prev" title="template class BRKGA::BRKGA_MP_IPR" href="class_BRKGA_BRKGA_MP_IPR.html" /> 
+    <link rel="next" title="class BRKGA::ControlParams" href="class_BRKGA_ControlParams.html" />
+    <link rel="prev" title="BRKGA and Control Parameters" href="group_brkga_control_params.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -33,15 +34,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> BRKGA-MP-IPR
-            <img src="_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BRKGA-MP-IPR
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0
+                3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -51,32 +56,30 @@
 <li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
-<li class="toctree-l1"><a class="reference internal" href="page_md_src_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_contributing.html">Contributing</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="global.html">API documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA_PathRelinking.html">namespace BRKGA::PathRelinking</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_BiasFunctionType.html">enum BRKGA::BiasFunctionType</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_Sense.html">enum BRKGA::Sense</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_ShakingType.html">enum BRKGA::ShakingType</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html">template class BRKGA::BRKGA_MP_IPR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_main_algorithms.html">Main BRKGA-MP-IPR algorithms</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="group_brkga_control_params.html">BRKGA and Control Parameters</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">class BRKGA::BrkgaParams</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#detailed-documentation">Detailed Documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html">class BRKGA::DistanceFunctionBase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html">class BRKGA::ExternalControlParams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_HammingDistance.html">class BRKGA::HammingDistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_KendallTauDistance.html">class BRKGA::KendallTauDistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_Population.html">class BRKGA::Population</a></li>
-<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#detailed-documentation">Detailed Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_ControlParams.html">class BRKGA::ControlParams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="group_brkga_control_params.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="group_brkga_control_params.html#detailed-documentation">Detailed Documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="class_EnumIO.html">template class EnumIO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessor_directives.html">Preprocessor directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_algorithm_status.html">Algorithm status utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_distance_functions.html">Distance functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_utility_functions.html">Functions for equality comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_chrono_helpers.html">I/O chrono help functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_enum_io_templates.html">Template specializations for enum I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_compiler_directives.html">Compiler directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="global.html#overview">Overview</a></li>
 </ul>
 </li>
 </ul>
@@ -94,10 +97,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="global.html">API documentation</a> &raquo;</li>
-          <li><a href="namespace_BRKGA.html">namespace BRKGA</a> &raquo;</li>
-      <li>class BRKGA::BrkgaParams</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="global.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="group_brkga_control_params.html">BRKGA and Control Parameters</a></li>
+      <li class="breadcrumb-item active">class BRKGA::BrkgaParams</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/class_BRKGA_BrkgaParams.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -108,73 +111,101 @@
            <div itemprop="articleBody">
              
   <section id="class-brkga-brkgaparams">
-<span id="doxid-class-b-r-k-g-a-1-1-brkga-params"></span><span id="index-0"></span><h1>class BRKGA::BrkgaParams<a class="headerlink" href="#class-brkga-brkgaparams" title="Permalink to this headline"></a></h1>
+<span id="doxid-class-b-r-k-g-a-1-1-brkga-params"></span><span id="index-0"></span><h1>class BRKGA::BrkgaParams<a class="headerlink" href="#class-brkga-brkgaparams" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>Represents the <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> and IPR hyper-parameters. <a class="reference internal" href="#details-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span>
 
 <span class="k">class</span> <span class="n">BrkgaParams</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
     <span class="c1">// fields</span>
 
-    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a8a4b0592480f32a3cf186b6d1759f571"><span class="std std-ref">population_size</span></a><span></span><span class="p">;</span>
-    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a3b9a181f00f8675ed88e09f0b9c34571"><span class="std std-ref">elite_percentage</span></a><span></span><span class="p">;</span>
-    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a29f0ff6ae4506e2e34ac7bfd633a802c"><span class="std std-ref">mutants_percentage</span></a><span></span><span class="p">;</span>
-    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1aec9a49fd5bb618908ccc8633c0244157"><span class="std std-ref">num_elite_parents</span></a><span></span><span class="p">;</span>
-    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a8c214f59c688ba40baf86b4c4b4377be"><span class="std std-ref">total_parents</span></a><span></span><span class="p">;</span>
-    <a class="reference internal" href="enum_BRKGA_BiasFunctionType.html#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"><span class="std std-ref">BiasFunctionType</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1af20949ce2efbd51609e5fb6fcf465c2e"><span class="std std-ref">bias_type</span></a><span></span><span class="p">;</span>
-    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a9a4a99536f6b755ceb07b54d784f8926"><span class="std std-ref">num_independent_populations</span></a><span></span><span class="p">;</span>
-    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a80bb3ed52989c9daf9828c8214d85230"><span class="std std-ref">pr_number_pairs</span></a><span></span><span class="p">;</span>
-    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1aec6bb6fc8e77fa719b0522679e912231"><span class="std std-ref">pr_minimum_distance</span></a><span></span><span class="p">;</span>
-    <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1ab3cd1ab9a9f434869800bcad07251496"><span class="std std-ref">pr_type</span></a><span></span><span class="p">;</span>
-    <a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a8b5eba6b815e9559b296634457e65110"><span class="std std-ref">pr_selection</span></a><span></span><span class="p">;</span>
-    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a40ff7da597d2c4eadabf3f62b3b9196d"><span class="std std-ref">alpha_block_size</span></a><span></span><span class="p">;</span>
-    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a51bb97f66bde623ef8e8826eca78127b"><span class="std std-ref">pr_percentage</span></a><span></span><span class="p">;</span>
-
-    <span class="c1">// methods</span>
-
-    <span class="n">BrkgaParams</span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a92e6be8770d83d9338806b892875b935"><span class="std std-ref">operator =</span></a><span></span> <span class="p">(</span><span class="k">const</span> <span class="n">BrkgaParams</span><span class="o">&amp;</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a8a4b0592480f32a3cf186b6d1759f571"><span class="std std-ref">population_size</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a3b9a181f00f8675ed88e09f0b9c34571"><span class="std std-ref">elite_percentage</span></a><span></span> <span class="p">{</span><span class="mf">0.0</span><span class="p">};</span>
+    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a29f0ff6ae4506e2e34ac7bfd633a802c"><span class="std std-ref">mutants_percentage</span></a><span></span> <span class="p">{</span><span class="mf">0.0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1aec9a49fd5bb618908ccc8633c0244157"><span class="std std-ref">num_elite_parents</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a8c214f59c688ba40baf86b4c4b4377be"><span class="std std-ref">total_parents</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <a class="reference internal" href="enum_BRKGA_BiasFunctionType.html#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"><span class="std std-ref">BiasFunctionType</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1af20949ce2efbd51609e5fb6fcf465c2e"><span class="std std-ref">bias_type</span></a><span></span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_BiasFunctionType.html#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a8d6b5cada83510220f59e00ce86d4d92"><span class="std std-ref">BiasFunctionType::CONSTANT</span></a><span></span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a9a4a99536f6b755ceb07b54d784f8926"><span class="std std-ref">num_independent_populations</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a80bb3ed52989c9daf9828c8214d85230"><span class="std std-ref">pr_number_pairs</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1aec6bb6fc8e77fa719b0522679e912231"><span class="std std-ref">pr_minimum_distance</span></a><span></span> <span class="p">{</span><span class="mf">0.0</span><span class="p">};</span>
+    <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1ab3cd1ab9a9f434869800bcad07251496"><span class="std std-ref">pr_type</span></a><span></span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132a4c5d06b02c97731aaa976179c62dcf76"><span class="std std-ref">PathRelinking::Type::DIRECT</span></a><span></span><span class="p">};</span>
+    <a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a8b5eba6b815e9559b296634457e65110"><span class="std std-ref">pr_selection</span></a><span></span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076faa6a169dcc4781fa0dc8c448d550be9d39"><span class="std std-ref">PathRelinking::Selection::BESTSOLUTION</span></a><span></span><span class="p">};</span>
+    <a class="reference internal" href="enum_BRKGA_PathRelinking_DistanceFunctionType.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a87d1364dc2c4abffd0fa93bebde97941"><span class="std std-ref">PathRelinking::DistanceFunctionType</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1aeca229f1073ebe11184634fb9e8378b9"><span class="std std-ref">pr_distance_function_type</span></a><span></span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_PathRelinking_DistanceFunctionType.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a87d1364dc2c4abffd0fa93bebde97941a72baef04098f035e8a320b03ad197818"><span class="std std-ref">PathRelinking::DistanceFunctionType::CUSTOM</span></a><span></span><span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">DistanceFunctionBase</span></a><span></span><span class="o">&gt;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1af7eec34bf90551ae4553ac031d5dba3c"><span class="std std-ref">pr_distance_function</span></a><span></span> <span class="p">{};</span>
+    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a40ff7da597d2c4eadabf3f62b3b9196d"><span class="std std-ref">alpha_block_size</span></a><span></span> <span class="p">{</span><span class="mf">0.0</span><span class="p">};</span>
+    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a51bb97f66bde623ef8e8826eca78127b"><span class="std std-ref">pr_percentage</span></a><span></span> <span class="p">{</span><span class="mf">0.0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a67743b073653dbeec7a74b055ab2a14c"><span class="std std-ref">num_exchange_individuals</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <a class="reference internal" href="enum_BRKGA_ShakingType.html#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494"><span class="std std-ref">ShakingType</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a29fbf8f57e03e98d6c71ce43751efb2d"><span class="std std-ref">shaking_type</span></a><span></span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_ShakingType.html#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494a421cfd143e450c3f5814a0495409e073"><span class="std std-ref">ShakingType::CHANGE</span></a><span></span><span class="p">};</span>
+    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a38c571e712321de7b74429529e272d76"><span class="std std-ref">shaking_intensity_lower_bound</span></a><span></span> <span class="p">{</span><span class="mf">0.0</span><span class="p">};</span>
+    <span class="kt">double</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a3339e258741604f33784e28f2c073759"><span class="std std-ref">shaking_intensity_upper_bound</span></a><span></span> <span class="p">{</span><span class="mf">0.0</span><span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">double</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="kt">double</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_Population.html#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&gt;&gt;&amp;</span><span class="n">populations</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;&amp;</span><span class="n">shaken</span><span class="p">)</span><span class="o">&gt;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a4a5db47283d5f03e0605058338476337"><span class="std std-ref">custom_shaking</span></a><span></span> <span class="p">{};</span>
 <span class="p">};</span></pre>
 </section>
 <section id="detailed-documentation">
-<span id="details-class-b-r-k-g-a-1-1-brkga-params"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline"></a></h2>
+<span id="details-class-b-r-k-g-a-1-1-brkga-params"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Link to this heading"></a></h2>
 <p>Represents the <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> and IPR hyper-parameters.</p>
 <section id="fields">
-<h3>Fields<a class="headerlink" href="#fields" title="Permalink to this headline"></a></h3>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a8a4b0592480f32a3cf186b6d1759f571"><span id="index-1"></span><span></span><span class="kt">unsigned</span> <span class="n">population_size</span></pre>
-<p>Number of elements in the population.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a3b9a181f00f8675ed88e09f0b9c34571"><span id="index-2"></span><span></span><span class="kt">double</span> <span class="n">elite_percentage</span></pre>
-<p>Percentage of individuals to become the elite set (0, 1].</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a29f0ff6ae4506e2e34ac7bfd633a802c"><span id="index-3"></span><span></span><span class="kt">double</span> <span class="n">mutants_percentage</span></pre>
-<p>Percentage of mutants to be inserted in the population.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1aec9a49fd5bb618908ccc8633c0244157"><span id="index-4"></span><span></span><span class="kt">unsigned</span> <span class="n">num_elite_parents</span></pre>
-<p>Number of elite parents for mating.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a8c214f59c688ba40baf86b4c4b4377be"><span id="index-5"></span><span></span><span class="kt">unsigned</span> <span class="n">total_parents</span></pre>
-<p>Number of total parents for mating.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1af20949ce2efbd51609e5fb6fcf465c2e"><span id="index-6"></span><a class="reference internal" href="enum_BRKGA_BiasFunctionType.html#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"><span class="std std-ref">BiasFunctionType</span></a><span></span> <span class="n">bias_type</span></pre>
+<h3>Fields<a class="headerlink" href="#fields" title="Link to this heading"></a></h3>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a8a4b0592480f32a3cf186b6d1759f571"><span id="index-1"></span><span></span><span class="kt">unsigned</span> <span class="n">population_size</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Number of elements in the population (&gt; 0).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a3b9a181f00f8675ed88e09f0b9c34571"><span id="index-2"></span><span></span><span class="kt">double</span> <span class="n">elite_percentage</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">}</span></pre>
+<p>Percentage of individuals to become the elite set (0.0, 1.0].</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a29f0ff6ae4506e2e34ac7bfd633a802c"><span id="index-3"></span><span></span><span class="kt">double</span> <span class="n">mutants_percentage</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">}</span></pre>
+<p>Percentage of mutants to be inserted in the population (0.0, 1.0].</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1aec9a49fd5bb618908ccc8633c0244157"><span id="index-4"></span><span></span><span class="kt">unsigned</span> <span class="n">num_elite_parents</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Number of elite parents for mating (&gt; 0).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a8c214f59c688ba40baf86b4c4b4377be"><span id="index-5"></span><span></span><span class="kt">unsigned</span> <span class="n">total_parents</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Number of total parents for mating (&gt; 0).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1af20949ce2efbd51609e5fb6fcf465c2e"><span id="index-6"></span><a class="reference internal" href="enum_BRKGA_BiasFunctionType.html#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1"><span class="std std-ref">BiasFunctionType</span></a><span></span> <span class="n">bias_type</span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_BiasFunctionType.html#doxid-namespace-b-r-k-g-a-1af0ede0f2a7123e654a4e3176b5539fb1a8d6b5cada83510220f59e00ce86d4d92"><span class="std std-ref">BiasFunctionType::CONSTANT</span></a><span></span><span class="p">}</span></pre>
 <p>Type of bias that will be used.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a9a4a99536f6b755ceb07b54d784f8926"><span id="index-7"></span><span></span><span class="kt">unsigned</span> <span class="n">num_independent_populations</span></pre>
-<p>Number of independent parallel populations.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a80bb3ed52989c9daf9828c8214d85230"><span id="index-8"></span><span></span><span class="kt">unsigned</span> <span class="n">pr_number_pairs</span></pre>
-<p>Number of pairs of chromosomes to be tested to path relinking.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1aec6bb6fc8e77fa719b0522679e912231"><span id="index-9"></span><span></span><span class="kt">double</span> <span class="n">pr_minimum_distance</span></pre>
-<p>Mininum distance between chromosomes selected to path-relinking.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1ab3cd1ab9a9f434869800bcad07251496"><span id="index-10"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a><span></span> <span class="n">pr_type</span></pre>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a9a4a99536f6b755ceb07b54d784f8926"><span id="index-7"></span><span></span><span class="kt">unsigned</span> <span class="n">num_independent_populations</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Number of independent parallel populations (&gt; 0).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a80bb3ed52989c9daf9828c8214d85230"><span id="index-8"></span><span></span><span class="kt">unsigned</span> <span class="n">pr_number_pairs</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Number of pairs of chromosomes to be tested to path relinking (&gt; 0).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1aec6bb6fc8e77fa719b0522679e912231"><span id="index-9"></span><span></span><span class="kt">double</span> <span class="n">pr_minimum_distance</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">}</span></pre>
+<p>Mininum distance between chromosomes selected to path-relinking. Value range depends on the used distance function.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1ab3cd1ab9a9f434869800bcad07251496"><span id="index-10"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a><span></span> <span class="n">pr_type</span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132a4c5d06b02c97731aaa976179c62dcf76"><span class="std std-ref">PathRelinking::Type::DIRECT</span></a><span></span><span class="p">}</span></pre>
 <p>Path relinking type.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a8b5eba6b815e9559b296634457e65110"><span id="index-11"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a><span></span> <span class="n">pr_selection</span></pre>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a8b5eba6b815e9559b296634457e65110"><span id="index-11"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a><span></span> <span class="n">pr_selection</span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076faa6a169dcc4781fa0dc8c448d550be9d39"><span class="std std-ref">PathRelinking::Selection::BESTSOLUTION</span></a><span></span><span class="p">}</span></pre>
 <p>Individual selection to path-relinking.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a40ff7da597d2c4eadabf3f62b3b9196d"><span id="index-12"></span><span></span><span class="kt">double</span> <span class="n">alpha_block_size</span></pre>
-<p>Defines the block size based on the size of the population.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a51bb97f66bde623ef8e8826eca78127b"><span id="index-13"></span><span></span><span class="kt">double</span> <span class="n">pr_percentage</span></pre>
-<p>Percentage / path size to be computed. Value in (0, 1].</p>
-</section>
-<section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline"></a></h3>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a92e6be8770d83d9338806b892875b935"><span id="index-14"></span><span></span><span class="n">BrkgaParams</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <span class="n">BrkgaParams</span><span class="o">&amp;</span><span class="p">)</span></pre>
-<p>Assignment operator for complaince.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1aeca229f1073ebe11184634fb9e8378b9"><span id="index-12"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_DistanceFunctionType.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a87d1364dc2c4abffd0fa93bebde97941"><span class="std std-ref">PathRelinking::DistanceFunctionType</span></a><span></span> <span class="n">pr_distance_function_type</span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_PathRelinking_DistanceFunctionType.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a87d1364dc2c4abffd0fa93bebde97941a72baef04098f035e8a320b03ad197818"><span class="std std-ref">PathRelinking::DistanceFunctionType::CUSTOM</span></a><span></span><span class="p">}</span></pre>
+<p>Type of the distance function used on path-relinking.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1af7eec34bf90551ae4553ac031d5dba3c"><span id="index-13"></span><span></span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">DistanceFunctionBase</span></a><span></span><span class="o">&gt;</span> <span class="n">pr_distance_function</span> <span class="p">{}</span></pre>
+<p>The distance functor used on path-relinking.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a40ff7da597d2c4eadabf3f62b3b9196d"><span id="index-14"></span><span></span><span class="kt">double</span> <span class="n">alpha_block_size</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">}</span></pre>
+<p>Defines the block size based on the size of the population (&gt; 0).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a51bb97f66bde623ef8e8826eca78127b"><span id="index-15"></span><span></span><span class="kt">double</span> <span class="n">pr_percentage</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">}</span></pre>
+<p>Percentage / path size to be computed (0.0, 1.0].</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a67743b073653dbeec7a74b055ab2a14c"><span id="index-16"></span><span></span><span class="kt">unsigned</span> <span class="n">num_exchange_individuals</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Number of elite chromosomes exchanged from each population (&gt; 0).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a29fbf8f57e03e98d6c71ce43751efb2d"><span id="index-17"></span><a class="reference internal" href="enum_BRKGA_ShakingType.html#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494"><span class="std std-ref">ShakingType</span></a><span></span> <span class="n">shaking_type</span> <span class="p">{</span><a class="reference internal" href="enum_BRKGA_ShakingType.html#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494a421cfd143e450c3f5814a0495409e073"><span class="std std-ref">ShakingType::CHANGE</span></a><span></span><span class="p">}</span></pre>
+<p>Type of the shaking procedure.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a38c571e712321de7b74429529e272d76"><span id="index-18"></span><span></span><span class="kt">double</span> <span class="n">shaking_intensity_lower_bound</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">}</span></pre>
+<p>Shaking intensity lower bound (0.0, 1.0].</p>
+<p>For default CHANGE and SWAP procedures, this value is a percentage of the chromosome size. If <code class="docutils literal notranslate"><span class="pre">shaking_intensity_lower_bound</span> <span class="pre">&lt;</span> <span class="pre">shaking_intensity_upper_bound</span></code>, we uniformly draw a random intensity between these bounds on each shaking call. If <code class="docutils literal notranslate"><span class="pre">shaking_intensity_lower_bound</span> <span class="pre">=</span> <span class="pre">shaking_intensity_upper_bound</span></code>, then a fixed intensity is always used. See <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a3339e258741604f33784e28f2c073759"><span class="std std-ref">BrkgaParams::shaking_intensity_upper_bound</span></a>.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a3339e258741604f33784e28f2c073759"><span id="index-19"></span><span></span><span class="kt">double</span> <span class="n">shaking_intensity_upper_bound</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">}</span></pre>
+<p>Shaking intensity upper bound (0.0, 1.0].</p>
+<p>For default CHANGE and SWAP procedures, this value is a percentage of the chromosome size. If <code class="docutils literal notranslate"><span class="pre">shaking_intensity_lower_bound</span> <span class="pre">&lt;</span> <span class="pre">shaking_intensity_upper_bound</span></code>, we uniformly draw a random intensity between these bounds on each shaking call. If <code class="docutils literal notranslate"><span class="pre">shaking_intensity_lower_bound</span> <span class="pre">=</span> <span class="pre">shaking_intensity_upper_bound</span></code>, then a fixed intensity is always used. See <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-brkga-params-1a38c571e712321de7b74429529e272d76"><span class="std std-ref">BrkgaParams::shaking_intensity_lower_bound</span></a>.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-brkga-params-1a4a5db47283d5f03e0605058338476337"><span id="index-20"></span><span></span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">double</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="kt">double</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_Population.html#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&gt;&gt;&amp;</span><span class="n">populations</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;&amp;</span><span class="n">shaken</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">custom_shaking</span> <span class="p">{}</span></pre>
+<p>This is the custom shaking procedure given by the user.</p>
+<ul class="simple">
+<li><p>Parameters <code class="docutils literal notranslate"><span class="pre">lower_bound</span></code> and <code class="docutils literal notranslate"><span class="pre">upper_bound</span></code> is the shaking intensity bounds to be applied. Usually, the define a range where the intensity is sampled.</p></li>
+<li><p>Parameter <code class="docutils literal notranslate"><span class="pre">populations</span></code> are the current <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> populations.</p></li>
+<li><p>Parameter <code class="docutils literal notranslate"><span class="pre">shaken</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">&lt;population</span> <span class="pre">index,</span> <span class="pre">chromosome</span> <span class="pre">index&gt;</span></code> pairs indicating which chromosomes were shaken on which population, so that they got re-decoded.</p></li>
+</ul>
+<p>See <a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a4b5019c33a563d1906f0b7d0a8304169"><span class="std std-ref">BRKGA_MP_IPR::setShakingMethod()</span></a> for details and examples.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">shaken</span></code> is empty, all chromosomes of all populations are re-decoded. This may be slow. Even if you intention is to do so, it is faster to populate <code class="docutils literal notranslate"><span class="pre">shaken</span></code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This procedure can be very intrusive since it must manipulate the population. So, the user must make sure that <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> invariants are kept, such as chromosome size and population size. Otherwise, the overall functionaly may be compromised.</p>
+</div>
 </section>
 </section>
 </section>
@@ -183,14 +214,14 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="class_BRKGA_BRKGA_MP_IPR.html" class="btn btn-neutral float-left" title="template class BRKGA::BRKGA_MP_IPR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="class_BRKGA_DistanceFunctionBase.html" class="btn btn-neutral float-right" title="class BRKGA::DistanceFunctionBase" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="group_brkga_control_params.html" class="btn btn-neutral float-left" title="BRKGA and Control Parameters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="class_BRKGA_ControlParams.html" class="btn btn-neutral float-right" title="class BRKGA::ControlParams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Carlos E. Andrade.</p>
+    <p>&#169; Copyright 2019-2023, Carlos E. Andrade.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

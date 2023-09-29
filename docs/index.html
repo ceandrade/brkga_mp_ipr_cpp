@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BRKGA-MP-IPR Guide and Documentation - C++ Version &mdash; BRKGA-MP-IPR 2.0.0 documentation</title>
+  <title>BRKGA-MP-IPR Guide and Documentation - C++ Version 3.0 &mdash; BRKGA-MP-IPR 3.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
@@ -15,12 +15,13 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/add_target.js"></script>
-        <script src="_static/target-highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=acc74ff5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/add_target.js?v=0b007391"></script>
+        <script src="_static/target-highlight.js?v=df7d332b"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -33,15 +34,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> BRKGA-MP-IPR
-            <img src="_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="#" class="icon icon-home">
+            BRKGA-MP-IPR
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0
+                3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -51,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
-<li class="toctree-l1"><a class="reference internal" href="page_md_src_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_contributing.html">Contributing</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="global.html">API documentation</a></li>
@@ -70,8 +75,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>BRKGA-MP-IPR Guide and Documentation - C++ Version</li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">BRKGA-MP-IPR Guide and Documentation - C++ Version 3.0</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,13 +86,191 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="brkga-mp-ipr-guide-and-documentation-c-version">
-<span id="doxid-indexpage"></span><span id="index-0"></span><h1>BRKGA-MP-IPR Guide and Documentation - C++ Version<a class="headerlink" href="#brkga-mp-ipr-guide-and-documentation-c-version" title="Permalink to this headline"></a></h1>
+  <section id="brkga-mp-ipr-guide-and-documentation-c-version-3-0">
+<span id="doxid-indexpage"></span><span id="index-0"></span><h1>BRKGA-MP-IPR Guide and Documentation - C++ Version 3.0<a class="headerlink" href="#brkga-mp-ipr-guide-and-documentation-c-version-3-0" title="Link to this heading"></a></h1>
+<p><span class="target" id="doxid-index-mainpage"></span></p>
 <p>BRKGA-MP-IPR provides a <em>very easy-to-use</em> framework for the Multi-Parent
 Biased Random-Key Genetic Algorithm with Implict Path Relink
 (<strong>BRKGA-MP-IPR</strong>). Assuming that your have a <em>decoder</em> to your problem, we can
 setup, run, and extract the value of the best solution in less than 5 commands
 (obvisiously, you may need few other lines fo code to do a proper test).</p>
+<p>This C++ version provides a fast prototyping API using <a class="reference external" href="https://en.wikipedia.org/wiki/C%2B%2B20">C++20 standards</a> and libraries. All code was
+developed as a header-only library, and have no external dependencies other
+than those included in the package. So, you just need to copy/check out the
+files and point your compiler’s header path to BRKGA-MP-IPR folder (<code class="docutils literal notranslate"><span class="pre">-I</span></code> on
+GCC and Clang).</p>
+<p>This framework can use multiple threads of modern CPUs, by setting a single
+parameter (assuming that your decoder is thread-safe). This leverage the
+parallel decoding nature that BRKGAs offer, compared to other (meta) heuristic
+frameworks.</p>
+<p>The code can be compiled using <a class="reference external" href="https://gcc.gnu.org">&gt; GCC 9.4</a> and
+<a class="reference external" href="https://clang.llvm.org">&gt; Clang 10.0</a>, and it is very probable that it can
+be compiled using other modern C++ compilers, such as Intel and Microsoft
+compilers. To use multiple threads, your compiler must support <a class="reference external" href="https://www.openmp.org">OpenMP</a>. The current version has been long developed, and
+it is a very mature code used in production in several companies. However, it
+lacks of a proper unit and coverage testing.</p>
+<p>If C++ is not suitable to you, we may find useful the <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia version</a> of this framework. We are
+also developing a <a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_python">Python version</a> which is in its earlier
+stages (no IPR yet). However, both Julia and Python versions only support
+single-objective optimization at this moment. We have no timeline to implement
+multi-objective optimization in such platforms. Also, at this moment, we have
+no plans to implement the BRKGA-MP-IPR in other languages such as Java or C#.
+But if you want to do so, you are must welcome. But please, keep the API as
+close as possible to the C++ API (or Julia API in case you decide go C), and
+use the best coding and documentation practices of your chosen
+language/framework.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia version</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_python">Python version</a></p></li>
+</ul>
+<p>If you are not familiar with how <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a>
+works, take a look on <a class="reference external" href="https://doi.org/10.1016/j.ejor.2019.11.037">Multi-Parent BRKGA</a>. In the future, we will provide
+a <em>Prime on BRKGA-MP</em> section. If you know what <em>elite set</em>, <em>decoder</em>, and so
+means, we can get to the guts on the <a class="reference internal" href="page_guide.html#doxid-guide"><span class="std std-ref">Guide</span></a>.</p>
+<div class="admonition-over-here admonition">
+<p class="admonition-title">OVER HERE!</p>
+<p><a class="reference internal" href="page_guide.html#doxid-guide"><span class="std std-ref">Skip the update and go to the tutorial clicking here!</span></a></p>
+</div>
+<section id="what-is-new-on-version-3-0">
+<span id="doxid-index-new-on-version3"></span><h2>What is new on version 3.0<a class="headerlink" href="#what-is-new-on-version-3-0" title="Link to this heading"></a></h2>
+<section id="api-enhancements">
+<span id="doxid-index-new-on-version3-api-enhancements"></span><h3>API enhancements<a class="headerlink" href="#api-enhancements" title="Link to this heading"></a></h3>
+<p>On version 2.0, we claimed that BRKGA-MP-IPR was a very easy-to-use framework.
+But, few people told me this statement was not even true. The main complaining
+was that while the features were very nice, tightening them together was hard,
+even using the provided examples.</p>
+<p>Now, BRKGA-MP-IPR supplies a method called
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span class="std std-ref"><span class="pre">BRKGA_MP_IPR::run()</span></span></a></code>.
+It implements the entire pipeline using all framework features in a chain-like
+way, similar to the detailed examples. The user may call in this way:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//...</span>
+<span class="linenos"> 2</span><span class="k">auto</span> <span class="p">[</span><span class="n">brkga_params</span><span class="p">,</span> <span class="n">control_params</span><span class="p">]</span> <span class="o">=</span>
+<span class="linenos"> 3</span>      <span class="n">readConfiguration</span><span class="p">(</span><span class="n">config_file</span><span class="p">);</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">MyDecoder</span> <span class="n">my_decoder</span><span class="p">;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="n">BRKGA_MP_IPR</span><span class="o">&lt;</span><span class="n">MyDecoder</span><span class="o">&gt;</span> <span class="n">algorithm</span><span class="p">(</span>
+<span class="linenos"> 8</span>    <span class="n">my_decoder</span><span class="p">,</span> <span class="n">BRKGA</span><span class="o">::</span><span class="n">Sense</span><span class="o">::</span><span class="n">MINIMIZE</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">num_chromosomes</span><span class="p">,</span> <span class="n">brkga_params</span>
+<span class="linenos"> 9</span><span class="p">);</span>
+<span class="linenos">10</span><span class="c1">// algorithm.initialize(); // No need anymore :-)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="k">auto</span> <span class="n">final_status</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">control_params</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cout</span><span class="p">);</span>
+<span class="linenos">13</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Final algorithm status</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">final_status</span><span class="p">;</span>
+<span class="linenos">14</span><span class="c1">//...</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">control_params</span></code> is an instance of the new class
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_ControlParams.html#doxid-class-b-r-k-g-a-1-1-control-params"><span class="std std-ref"><span class="pre">BRKGA::ControlParams</span></span></a></code>
+(explained further), and an optional stream for logging (in this example,
+<code class="docutils literal notranslate"><span class="pre">cout</span></code>).
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span class="std std-ref"><span class="pre">run()</span></span></a></code>
+returns an
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref"><span class="pre">BRKGA::AlgorithmStatus</span></span></a></code>
+object with information about the optimization like total time, iteration
+counting, and more (check the full documentation for that).</p>
+<p>So, users need no more write fine control loops unless they need/want. Just set
+some control parameters (and some other callbacks, described below, if you
+like), and you are good to go!</p>
+<p>Supporting
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span class="std std-ref"><span class="pre">run()</span></span></a></code>,
+we have three new methods:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1adee8fc8410a56e71b2af84ed6f4f2a7c"><span class="std std-ref"><span class="pre">setStoppingCriteria()</span></span></a></code>:
+while method
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span class="std std-ref"><span class="pre">run()</span></span></a></code>
+sets automatically maximum time or maximum stalled iterations (without
+improvement in the best solution) as standard stopping criteria, the user can
+add to these other criteria using this method. For instance, the following
+lambda function tests if the best solution reached a given value:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>  <span class="n">fitness_t</span> <span class="n">my_magical_solution</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos">2</span>  <span class="n">algorithm</span><span class="p">.</span><span class="n">setStoppingCriteria</span><span class="p">(</span>
+<span class="linenos">3</span>      <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="n">AlgorithmStatus</span><span class="o">&amp;</span> <span class="n">status</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">4</span>          <span class="k">return</span> <span class="n">status</span><span class="p">.</span><span class="n">best_fitness</span> <span class="o">==</span> <span class="n">my_magical_solution</span><span class="p">;</span>
+<span class="linenos">5</span>      <span class="p">}</span>
+<span class="linenos">6</span>  <span class="p">);</span>
+</pre></div>
+</div>
+<p>In this case, the stop criteria become: Is maximum time reached <strong>OR</strong> Is
+maximum stalled iterations reached <strong>OR</strong> <code class="docutils literal notranslate"><span class="pre">best_fitness</span> <span class="pre">==</span> <span class="pre">my_magical_solution</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While we <strong>STRONGLY RECOMMEND TO SET A MAXIMUM TIME</strong> (mainly when using
+IPR), if you really rmean to have no maximum time or maximum stalled
+iterations set, we recommend to use the following code:</p>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>  <span class="c1">// After reading your parameters, e.g.,</span>
+<span class="linenos">2</span>  <span class="c1">// auto [brkga_params, control_params] = readConfiguration(&quot;config.conf&quot;);</span>
+<span class="linenos">3</span>  <span class="c1">// You can set to the max.</span>
+<span class="linenos">4</span>  <span class="n">control_params</span><span class="p">.</span><span class="n">maximum_running_time</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="o">::</span><span class="n">max</span><span class="p">();</span>
+<span class="linenos">5</span>  <span class="n">control_params</span><span class="p">.</span><span class="n">stall_offset</span> <span class="o">=</span> <span class="n">numeric_limits</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">control_params</span><span class="p">.</span><span class="n">stall_offset</span><span class="p">)</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa6cf3aca1879ffd4dc0c986340163254"><span class="std std-ref"><span class="pre">addNewSolutionObserver()</span></span></a></code>:
+This method adds a callback that is triggered when an overall improved
+solution is found by the algorithm. It also adds an additional stop point if
+the users finds it useful by return <code class="docutils literal notranslate"><span class="pre">true</span></code>. This is very useful for
+tracking the evolution of the algorithm, for instance:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>  <span class="n">algorithm</span><span class="p">.</span><span class="n">addNewSolutionObserver</span><span class="p">(</span>
+<span class="linenos"> 2</span>      <span class="p">[](</span><span class="k">const</span> <span class="n">AlgorithmStatus</span><span class="o">&amp;</span> <span class="n">status</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 3</span>          <span class="n">std</span><span class="o">::</span><span class="n">cout</span>
+<span class="linenos"> 4</span>          <span class="o">&lt;&lt;</span> <span class="s">&quot;&gt; Iter: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">current_iteration</span>
+<span class="linenos"> 5</span>          <span class="o">&lt;&lt;</span> <span class="s">&quot; | solution: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">best_fitness</span>
+<span class="linenos"> 6</span>          <span class="o">&lt;&lt;</span> <span class="s">&quot; | time: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">current_time</span>
+<span class="linenos"> 7</span>          <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos"> 8</span>          <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// Dont&#39; stop the optimization.</span>
+<span class="linenos"> 9</span>       <span class="p">}</span>
+<span class="linenos">10</span>  <span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a4b5019c33a563d1906f0b7d0a8304169"><span class="std std-ref"><span class="pre">setShakingMethod()</span></span></a></code>:
+This method adds a custom shaking procedure defined by the user. Please,
+refer to its documentation for more details.</p></li>
+</ul>
+<p>Less important but still relevant: previously, one must call <code class="docutils literal notranslate"><span class="pre">initialize()</span></code>
+before any method that manipulated the population. Also, since <code class="docutils literal notranslate"><span class="pre">initialize()</span></code>
+(re)decodes the population, we have to measure its running time too. Now, the
+user do not need to call <code class="docutils literal notranslate"><span class="pre">initialize()</span></code> anymore!!! <code class="docutils literal notranslate"><span class="pre">initialize()</span></code> is
+called on the need by its fellow methods internally. This leads to fewer
+error-prone codes.</p>
+</section>
+<section id="brkga-and-control-parameters">
+<span id="doxid-index-new-on-version3-parameters"></span><h3>BRKGA and control parameters<a class="headerlink" href="#brkga-and-control-parameters" title="Link to this heading"></a></h3>
+<p>Although this is part of API enhancement, it deserves special attention. Now,
+we include all <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> and IPR parameters into
+<code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams</span></span></a></code>, and all
+(external) control parameters into <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_ControlParams.html#doxid-class-b-r-k-g-a-1-1-control-params"><span class="std std-ref"><span class="pre">BRKGA::ControlParams</span></span></a></code> (which was renamed from
+<code class="docutils literal notranslate"><span class="pre">ExternalControlParams</span></code>). In doing so, we have a consistent set that can be
+fully loaded from configuration files.</p>
+<p>Not all parameters are required, and those not are set to their default values.
+The new reading function <code class="docutils literal notranslate"><a class="reference internal" href="group_brkga_control_params.html#doxid-group-brkga-control-params-1ga1c8b456ad75a3b522d315d4167546ae6"><span class="std std-ref"><span class="pre">BRKGA::readConfiguration()</span></span></a></code>
+will emit a warning when no-required parameters are not set.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are using IPR, we <strong>STRONGLY RECOMMEND TO SET A MAXIMUM TIME</strong> since
+this is the core stopping criteria on IPR.</p>
+</div>
+</section>
+<section id="code-modernizing-and-speed-bump">
+<span id="doxid-index-new-on-version3-modernization"></span><h3>Code modernizing and speed bump<a class="headerlink" href="#code-modernizing-and-speed-bump" title="Link to this heading"></a></h3>
+<p>The code has been modernized using <a class="reference external" href="https://en.wikipedia.org/wiki/C%2B%2B20">C++20 facilities</a> like concepts and ranges.
+Therefore, your compiler must support C++20 now.</p>
+<p>One notable change was substituting the custom code in <code class="docutils literal notranslate"><span class="pre">randInt()</span></code> for a
+<a class="reference external" href="https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution">standard library uniform distribution utility</a>.
+The old code was used when a custom Mersenne Twister RNG code was used (from
+the original <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> implementation). The
+inclusion of the Mersenne Twister in the standard library allows us to use all
+default utilities. Ad hoc tests show that the standard library utilities are
+faster than the old custom code. However, the speed-up is marginal when
+considering the full application of <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a>.
+But, when we accumulate hundreds or thousands of calls daily, the time savings
+can be considerable in a full year of operation (which usually translates into
+energy savings).</p>
+</section>
+</section>
+<section id="what-is-new-on-version-2-0">
+<span id="doxid-index-new-on-version2"></span><h2>What is new on version 2.0<a class="headerlink" href="#what-is-new-on-version-2-0" title="Link to this heading"></a></h2>
 <p>In version 2.0, BRKGA-MP-IPR also deals with multiple objectives in a
 lexicographical or priority dominance order. Differing from classical
 non-dominance order (using Pareto frontiers), the lexicographical order defines
@@ -110,12 +293,6 @@ and <span class="math notranslate nohighlight">\(f_n &lt; f'_n\)</span>.</p>
 <p>For instance, let’s assume we have three minimizing objective functions and
 four solutions described in the following table:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 27%" />
-<col style="width: 27%" />
-<col style="width: 27%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Solution</p></th>
 <th class="head"><p><span class="math notranslate nohighlight">\(f_1\)</span></p></th>
@@ -156,43 +333,62 @@ A.\)</span></p>
 <p class="admonition-title">Warning</p>
 <p>If you really want an algorithm to produce a <strong>non-dominated set of
 solutions (Pareto frontier)</strong>, this is <strong>not</strong> the right algorithm for you.
-We recommend taking a look at the <a class="reference external" href="https://doi.org/10.1109/4235.996017">NSGA-II</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/MOEA_Framework">MOAB</a>.</p>
+We recommend taking a look at the <a class="reference external" href="https://doi.org/10.1109/4235.996017">NSGA-II</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/MOEA_Framework">MOAB</a></p>
 </div>
-<p>If you are not familiar with how BRKGA works, take a look on <a class="reference external" href="http://dx.doi.org/10.1007/s10732-010-9143-1">Standard BRKGA</a> and <a class="reference external" href="https://doi.org/10.1016/j.ejor.2019.11.037">Multi-Parent BRKGA</a>.
-If you know what <em>elite set</em>, <em>decoder</em>,
-and so means, we can get to the guts on the <a class="reference internal" href="page_guide.html#doxid-guide"><span class="std std-ref">Guide</span></a>.</p>
-<section id="the-implementation">
-<h2>The implementation<a class="headerlink" href="#the-implementation" title="Permalink to this headline"></a></h2>
-<p>This C++ version provides a fast prototyping API using C++17 standards and
-libraries. All code was developed as a header-only library, and have no
-external dependencies other than those included in the package. So, you just
-need to copy/check out the files and point your compiler’s header path to
-BRKGA-MP-IPR folder (<code class="docutils literal notranslate"><span class="pre">-I</span></code> on G++ and CLANG++).</p>
-<p>This framework can use multiple threads of modern CPUs, by setting a single
-parameter (assuming that your decoder is thread-safe). This leverage the
-parallel decoding nature that BRKGAs offer, compared to other (meta) heuristic
-frameworks.</p>
-<p>The code can be compiled using <a class="reference external" href="https://gcc.gnu.org">&gt; GCC 7.2</a> and <a class="reference external" href="https://clang.llvm.org">&gt; Clang
-6.0</a>, and it is very probable that it can be
-compiled using other modern C++ compilers, such as Intel and Microsoft
-compilers. To use multiple threads, your compiler must support <a class="reference external" href="https://www.openmp.org">OpenMP</a>. The current version has been long developed, and
-it is a very mature code used in production in several companies. However, it
-lacks of a proper unit and coverage testing. Such tests are in the TODO list.</p>
-<p>If C++ is not suitable to you, we may find useful the
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_julia">Julia version</a>.
-We are also developing a
-<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_python">Python version</a>
-which is in its earlier stages.
-However, both Julia and Python versions only support single-objective
-optimization at this moment. We have no timeline to implement multi-objective
-optimization in such platforms.  At this moment, we have no plans to implement
-the BRKGA-MP-IPR in other languages such as Java or C#. But if you want to do
-so, you are must welcome.  But please, keep the API as close as possible to the
-C++ API (or Julia API in case you decide go C), and use the best coding and
-documentation practices of your chosen language/framework.</p>
+<section id="multi-thread-mating">
+<span id="doxid-index-new-on-versio2-mating"></span><h3>Multi-thread mating<a class="headerlink" href="#multi-thread-mating" title="Link to this heading"></a></h3>
+<p>One of the nice additions to BRKGA-MP-IPR 2.0 is the capability of performing
+the mating in parallel. Such capability speeds up the algorithm substantially,
+mainly for large chromosomes and large populations. However, when performing
+parallel mating, we have some points regarding reproducibility described in
+Section <a class="reference external" href="https://ceandrade.github.io/brkga_mp_ipr_cpp/page_guide.html#multi-threading">Multi-thread mating</a>
+in the <a class="reference external" href="https://ceandrade.github.io/brkga_mp_ipr_cpp">tutorial</a>.</p>
+</section>
+<section id="api-changes">
+<span id="doxid-index-new-on-versio2-api"></span><h3>API changes<a class="headerlink" href="#api-changes" title="Link to this heading"></a></h3>
+<section id="new-type-brkga-fitness-t">
+<span id="doxid-index-new-on-versio2-api-fitness"></span><h4>New type <code class="docutils literal notranslate"><span class="pre">BRKGA::fitness_t</span></code><a class="headerlink" href="#new-type-brkga-fitness-t" title="Link to this heading"></a></h4>
+<p>Due to the inclusion of multi-objective optimization capabilities, the user now
+must define a type <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae212772a5d4bb9b7055e30791b494514"><span class="std std-ref"><span class="pre">BRKGA::fitness_t</span></span></a></code>, and his/her
+decoder must return such a type. The user can do things like this:</p>
+<p>Please, check for details in Sections <a class="reference external" href="https://ceandrade.github.io/brkga_mp_ipr_cpp/page_guide.html#tl-dr-multi-objective">“TL;DR - Multi objective”</a>
+and <a class="reference external" href="https://ceandrade.github.io/brkga_mp_ipr_cpp/page_guide.html#using-brkga-mp-ipr-on-multi-objective-mode">“Using BRKGA-MP-IPR on multi-objective mode”</a>
+from the <a class="reference external" href="https://ceandrade.github.io/brkga_mp_ipr_cpp">tutorial</a>.</p>
+</section>
+<section id="new-brkga-mp-ipr-setinitialpopulation">
+<span id="doxid-index-new-on-versio2-api-setinitpop"></span><h4>New <code class="docutils literal notranslate"><span class="pre">BRKGA_MP_IPR::setInitialPopulation()</span></code><a class="headerlink" href="#new-brkga-mp-ipr-setinitialpopulation" title="Link to this heading"></a></h4>
+<p>In the previous versions, <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::setInitialPopulation()</span></span></a></code>
+fills up only the first population, discarding additional warm solutions if the
+population is full. Now, <code class="docutils literal notranslate"><span class="pre">setInitialPopulation()</span></code> fills up all populations.
+<a class="reference external" href="https://ceandrade.github.io/brkga_mp_ipr_cpp/class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7">More details here.</a></p>
+</section>
+<section id="changes-in-brkga-mp-ipr-injectchromosome">
+<span id="doxid-index-new-on-versio2-api-inject-chr"></span><h4>Changes in <code class="docutils literal notranslate"><span class="pre">BRKGA_MP_IPR::injectChromosome()</span></code><a class="headerlink" href="#changes-in-brkga-mp-ipr-injectchromosome" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0347f67b59bfe36856d1c27c95d4b151"><span class="std std-ref"><span class="pre">BRKGA::BRKGA_MP_IPR::injectChromosome()</span></span></a></code>
+does not accept initial fitness value anymore. Now, <code class="docutils literal notranslate"><span class="pre">injectChromosome()</span></code>
+triggers the decoder in all cases (and therefore, time must be measured on its
+call). <a class="reference external" href="https://ceandrade.github.io/brkga_mp_ipr_cpp/class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0347f67b59bfe36856d1c27c95d4b151">More details here.</a></p>
+</section>
+<section id="pump-to-c-17">
+<span id="doxid-index-new-on-versio2-api-cpp17"></span><h4>Pump to C++ 17<a class="headerlink" href="#pump-to-c-17" title="Link to this heading"></a></h4>
+<p>BRKGA-MP-IPR now uses some features of <a class="reference external" href="https://en.wikipedia.org/wiki/C%2B%2B17">C++17 standards</a>. Therefore, you must change your
+building tools to support that.</p>
+</section>
+</section>
+<section id="bug-fixes">
+<span id="doxid-index-new-on-versio2-bugfix"></span><h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params-1a29f0ff6ae4506e2e34ac7bfd633a802c"><span class="std std-ref"><span class="pre">BRKGA::BrkgaParams::mutants_percentage</span></span></a></code>
+should be of type <code class="docutils literal notranslate"><span class="pre">double</span></code> not <code class="docutils literal notranslate"><span class="pre">unsigned</span></code> (<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/issues/1">issue #1</a>). Thanks
+<code class="docutils literal notranslate"><span class="pre">&#64;sohaibafifi</span></code>.</p></li>
+<li><p>Fix the shorter method call for <code class="docutils literal notranslate"><span class="pre">BRKGA::BRKGA_MP_IPR::pathRelinking()</span></code>
+(<a class="reference external" href="https://github.com/ceandrade/brkga_mp_ipr_cpp/pull/2">pull #1</a>). Thanks
+<code class="docutils literal notranslate"><span class="pre">&#64;afkummer</span></code>.</p></li>
+</ul>
+</section>
 </section>
 <section id="license-and-citing">
-<h2>License and Citing<a class="headerlink" href="#license-and-citing" title="Permalink to this headline"></a></h2>
+<span id="doxid-index-license"></span><h2>License and Citing<a class="headerlink" href="#license-and-citing" title="Link to this heading"></a></h2>
 <p>BRKGA-MP-IPR uses a permissive BSD-like license and it can be used as it
 pleases you. And since this framework is also part of an academic effort, we
 kindly ask you to remember to cite the originating paper of this work.
@@ -200,8 +396,7 @@ Indeed, Clause 4 estipulates that “all publications, softwares, or any other
 materials mentioning features or use of this software (as a whole package or
 any parts of it) and/or the data used to test it must cite the following
 article explicitly”:</p>
-<div class="admonition-reference admonition">
-<p class="admonition-title">Reference</p>
+<div class="colored-container docutils container">
 <p>C.E. Andrade, R.F. Toso, J.F. Gonçalves, M.G.C. Resende. The Multi-Parent
 Biased Random-key Genetic Algorithm with Implicit Path Relinking. <em>European
 Journal of Operational Research</em>, volume 289, number 1, pages 17–30, 2021.
@@ -209,19 +404,16 @@ DOI:
 <a class="reference external" href="https://doi.org/10.1016/j.ejor.2019.11.037">10.1016/j.ejor.2019.11.037</a>.</p>
 </div>
 <p>If you are using the multi-objective version, you must also cite this paper:</p>
-<div class="admonition-reference admonition">
-<p class="admonition-title">Reference</p>
+<div class="colored-container docutils container">
 <p>C.E. Andrade, L.S. Pessoa, S. Stawiarski. The Physical Cell Identity
 Assignment Problem: a Multi-objective Optimization Approach.
-<em>IEEE Transactions on Evolutionary Computation</em>, volume XXX, number X,
-pages XX–XX, 2022.
+<em>IEEE Transactions on Evolutionary Computation</em>, to appear, 2022.
 DOI:
 <a class="reference external" href="https://doi.org/10.1016/j.ejor.2019.11.037">10.1016/j.ejor.2019.11.037</a>.</p>
 </div>
 <p>You may also consider to cite the following papers from people that helped
 to find bugs and develop new features for BRKGA-MP-IPR 2.0:</p>
-<div class="admonition-reference admonition">
-<p class="admonition-title">Reference</p>
+<div class="colored-container docutils container">
 <p>A.F. Kummer N., L.S. Buriol, O.C.B. de Araujo. A biased random key genetic
 algorithm applied to the VRPTW with skill requirements and synchronization
 constraints. <em>Proceedings of the 2020 Genetic and Evolutionary Computation
@@ -231,33 +423,41 @@ DOI:
 </div>
 <p>You can download all references for this
 <a class="reference download internal" download="" href="_downloads/9e03f77296678467b193eb411a9ebc25/references.bib"><code class="xref download docutils literal notranslate"><span class="pre">Bibtex</span></code></a>, or this
-<a class="reference download internal" download="" href="_downloads/89ca66b5c665a51fcb314b01f33d167e/references.ris"><code class="xref download docutils literal notranslate"><span class="pre">RIS</span></code></a> files.</p>
+<a class="reference download internal" download="" href="_downloads/89ca66b5c665a51fcb314b01f33d167e/references.ris"><code class="xref download docutils literal notranslate"><span class="pre">RIS</span></code></a> files</p>
+</section>
+<section id="collaborators">
+<span id="doxid-index-collaborators"></span><h2>Collaborators<a class="headerlink" href="#collaborators" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Alberto Kummer, 2021 (parallel mating).</p></li>
+<li><p>Daniele Ferone, 2023 (bug fix on IPR).</p></li>
+</ul>
 </section>
 <section id="about-the-logo">
-<h2>About the logo<a class="headerlink" href="#about-the-logo" title="Permalink to this headline"></a></h2>
+<span id="doxid-index-logo"></span><h2>About the logo<a class="headerlink" href="#about-the-logo" title="Link to this heading"></a></h2>
 <p>The logo is just a play with 3 chromosomes crossing with each other
 (multi-parent) during the mating process. The lines also represent solutions
 paths that encounter with each other generating new solutions during the
 path-relink.</p>
 <div class="toctree-wrapper compound">
 </div>
-</section>
 <section id="related-pages">
-<h2>Related Pages<a class="headerlink" href="#related-pages" title="Permalink to this headline"></a></h2>
+<h3>Related Pages<a class="headerlink" href="#related-pages" title="Link to this heading"></a></h3>
 <div class="line-block">
 <div class="line"><a class="reference internal" href="page_guide.html"><span class="doc">Guide / Tutorial</span></a></div>
+<div class="line"><a class="reference internal" href="page_license.html"><span class="doc">BRKGA-MP-IPR License</span></a></div>
 <div class="line"><a class="reference internal" href="page_todo.html"><span class="doc">Todo List</span></a></div>
-<div class="line"><a class="reference internal" href="page_md_src_contributing.html"><span class="doc">Contributing</span></a></div>
+<div class="line"><a class="reference internal" href="page_contributing.html"><span class="doc">Contributing</span></a></div>
 </div>
 </section>
 <section id="reference-and-index">
-<h2>Reference and Index<a class="headerlink" href="#reference-and-index" title="Permalink to this headline"></a></h2>
+<h3>Reference and Index<a class="headerlink" href="#reference-and-index" title="Link to this heading"></a></h3>
 <div class="toctree-wrapper compound">
 </div>
 <div class="line-block">
 <div class="line"><a class="reference internal" href="global.html"><span class="doc">API documentation</span></a></div>
 <div class="line"><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></div>
 </div>
+</section>
 </section>
 </section>
 
@@ -271,7 +471,7 @@ path-relink.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Carlos E. Andrade.</p>
+    <p>&#169; Copyright 2019-2023, Carlos E. Andrade.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

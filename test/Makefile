@@ -24,7 +24,7 @@
 ###############################################################################
 
 OPT = opt
-USER_FLAGS += -std=c++20 -fopenmp
+USER_FLAGS += -std=c++20 -fopenmp -DBRKGA_MULTIPLE_INCLUSIONS
 
 # Compiler flags for debugging
 ifeq ($(OPT), opt)
@@ -95,6 +95,12 @@ test_run: clean $(COMMON_OBJS)
 test_speed: clean $(COMMON_OBJS)
 	# $(CXX) $(USER_FLAGS) -I../brkga_mp_ipr $(COMMON_OBJS) test_speed.cpp -o test_new_version
 	$(CXX) $(USER_FLAGS) -Ibrkga_mp_ipr_old $(COMMON_OBJS) -DOLD_VERSION test_speed.cpp -o test_old_version
+
+test_multiple_inclusions: 
+	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+	$(CXX) $(USER_FLAGS) -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
+	$(CXX) $(USER_FLAGS)  module_a.o module_b.o -o test
+
 
 check:
 	cppcheck --enable=all --suppress=missingIncludeSystem ../brkga_mp_ipr/brkga_mp_ipr.hpp

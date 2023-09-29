@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithm status utilities &mdash; BRKGA-MP-IPR 3.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/doxyrest-pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/doxyrest-sphinx_rtd_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=acc74ff5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/add_target.js?v=0b007391"></script>
+        <script src="_static/target-highlight.js?v=df7d332b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="class BRKGA::AlgorithmStatus" href="class_BRKGA_AlgorithmStatus.html" />
+    <link rel="prev" title="class BRKGA::ControlParams" href="class_BRKGA_ControlParams.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BRKGA-MP-IPR
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_contributing.html">Contributing</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="global.html">API documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_main_algorithms.html">Main BRKGA-MP-IPR algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_brkga_control_params.html">BRKGA and Control Parameters</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Algorithm status utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_AlgorithmStatus.html">class BRKGA::AlgorithmStatus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#detailed-documentation">Detailed Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#global-functions">Global Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group_distance_functions.html">Distance functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_utility_functions.html">Functions for equality comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_chrono_helpers.html">I/O chrono help functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_enum_io_templates.html">Template specializations for enum I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_compiler_directives.html">Compiler directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="global.html#overview">Overview</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BRKGA-MP-IPR</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="global.html">API documentation</a></li>
+      <li class="breadcrumb-item active">Algorithm status utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/group_algorithm_status.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="algorithm-status-utilities">
+<span id="doxid-group-algorithm-status"></span><span id="index-0"></span><h1>Algorithm status utilities<a class="headerlink" href="#algorithm-status-utilities" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="c1">// classes</span>
+
+<span class="k">class</span> <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">BRKGA::AlgorithmStatus</span></a><span></span><span class="p">;</span>
+
+<span class="c1">// global functions</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-group-algorithm-status-1gacd174acb61b2b339b678c6c2020316b0"><span class="std std-ref">BRKGA::operator &lt;&lt;</span></a><span></span> <span class="p">(</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">output</span><span class="p">,</span>
+    <span class="k">const</span> <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a><span></span><span class="o">&amp;</span> <span class="n">status</span>
+<span class="p">);</span></pre>
+</section>
+<section id="detailed-documentation">
+<span id="details-group-algorithm-status"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Link to this heading"></a></h2>
+<section id="global-functions">
+<h3>Global Functions<a class="headerlink" href="#global-functions" title="Link to this heading"></a></h3>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-group-algorithm-status-1gacd174acb61b2b339b678c6c2020316b0"><span id="index-1"></span><span></span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">BRKGA</span><span class="o">::</span><span class="k">operator</span> <span class="o">&lt;&lt;</span> <span class="p">(</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">output</span><span class="p">,</span>
+    <span class="k">const</span> <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a><span></span><span class="o">&amp;</span> <span class="n">status</span>
+<span class="p">)</span></pre>
+<p>Output streaming operator for <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a>.</p>
+<p>Todo Clang fails printing chrono times. When they fix it, please, revise this function.</p>
+<p class="rubric">Parameters:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>output</p></td>
+<td><p>the output stream.</p></td>
+</tr>
+<tr class="row-even"><td><p>status</p></td>
+<td><p>the algorithm status.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Returns:</p>
+<p>the output stream.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="class_BRKGA_ControlParams.html" class="btn btn-neutral float-left" title="class BRKGA::ControlParams" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="class_BRKGA_AlgorithmStatus.html" class="btn btn-neutral float-right" title="class BRKGA::AlgorithmStatus" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2023, Carlos E. Andrade.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

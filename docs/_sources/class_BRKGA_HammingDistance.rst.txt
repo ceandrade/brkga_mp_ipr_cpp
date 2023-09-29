@@ -22,7 +22,7 @@ Hamming distance between two vectors. :ref:`More...<details-class_b_r_k_g_a_1_1_
 	public:
 		// fields
 	
-		double :ref:`threshold<doxid-class_b_r_k_g_a_1_1_hamming_distance_1ae4f83a7d514e75c3abf3d47663c1b9d9>`;
+		double :ref:`threshold<doxid-class_b_r_k_g_a_1_1_hamming_distance_1ae4f83a7d514e75c3abf3d47663c1b9d9>` {0.5};
 
 		// construction
 	
@@ -30,21 +30,21 @@ Hamming distance between two vectors. :ref:`More...<details-class_b_r_k_g_a_1_1_
 
 		// methods
 	
-		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_hamming_distance_1ade9120b27adf3834a36406c508cb6ee9>`(
-			const std::vector<double>& vector1,
-			const std::vector<double>& vector2
-			);
+		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_hamming_distance_1abeb4f21b0bc65d5d21bc9b752f682848>`(
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& vector1,
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& vector2
+		);
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_hamming_distance_1abd15c245ad7be970116330e4f91c3c0f>`(
-			const double key1,
-			const double key2
-			);
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_hamming_distance_1ae50ee3109e7c89e41a3e46b8bc66c51d>`(
+			const Chromosome::value_type key1,
+			const Chromosome::value_type key2
+		);
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_hamming_distance_1a4df949516a669e17a5b7a6550dd9cbca>`(
-			std::vector<double>::const_iterator v1_begin,
-			std::vector<double>::const_iterator v2_begin,
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_hamming_distance_1aceac2e7381d0454f0118372662fa155c>`(
+			Chromosome::const_iterator v1_begin,
+			Chromosome::const_iterator v2_begin,
 			const std::size_t block_size
-			);
+		);
 	};
 
 Inherited Members
@@ -56,21 +56,21 @@ Inherited Members
 	public:
 		// methods
 	
-		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1acee8e7b478010aff23b3a46cd113860a>`(
-			const std::vector<double>& v1,
-			const std::vector<double>& v2
-			) = 0;
+		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a97950c58509065dee6c352cbe4fb5b35>`(
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& v1,
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& v2
+		) = 0;
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a243c8a1031fb149c6abc16f3869f2ace>`(
-			const double key1,
-			const double key2
-			) = 0;
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1ac43fa85761c96a6a16c679781ee468fa>`(
+			const Chromosome::value_type key1,
+			const Chromosome::value_type key2
+		) = 0;
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1aca0fc7103888cd025a67a16575954875>`(
-			std::vector<double>::const_iterator v1_begin,
-			std::vector<double>::const_iterator v2_begin,
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a02fe55b2288dbef73e51aa55d65a69cf>`(
+			Chromosome::const_iterator v1_begin,
+			Chromosome::const_iterator v2_begin,
 			const std::size_t block_size
-			) = 0;
+		) = 0;
 
 .. _details-class_b_r_k_g_a_1_1_hamming_distance:
 
@@ -90,7 +90,7 @@ Fields
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
-	double threshold
+	double threshold {0.5}
 
 Threshold parameter used to rounding the values to 0 or 1.
 
@@ -123,15 +123,15 @@ Methods
 -------
 
 .. index:: pair: function; distance
-.. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1ade9120b27adf3834a36406c508cb6ee9:
+.. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1abeb4f21b0bc65d5d21bc9b752f682848:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual double distance(
-		const std::vector<double>& vector1,
-		const std::vector<double>& vector2
-		)
+		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& vector1,
+		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& vector2
+	)
 
 Computes the Hamming distance between two vectors.
 
@@ -153,15 +153,15 @@ Computes the Hamming distance between two vectors.
 		- second vector
 
 .. index:: pair: function; affectSolution
-.. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1abd15c245ad7be970116330e4f91c3c0f:
+.. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1ae50ee3109e7c89e41a3e46b8bc66c51d:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual bool affectSolution(
-		const double key1,
-		const double key2
-		)
+		const Chromosome::value_type key1,
+		const Chromosome::value_type key2
+	)
 
 Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 
@@ -183,16 +183,16 @@ Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 		- the second key
 
 .. index:: pair: function; affectSolution
-.. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1a4df949516a669e17a5b7a6550dd9cbca:
+.. _doxid-class_b_r_k_g_a_1_1_hamming_distance_1aceac2e7381d0454f0118372662fa155c:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual bool affectSolution(
-		std::vector<double>::const_iterator v1_begin,
-		std::vector<double>::const_iterator v2_begin,
+		Chromosome::const_iterator v1_begin,
+		Chromosome::const_iterator v2_begin,
 		const std::size_t block_size
-		)
+	)
 
 Returns true if the changing of the blocks of keys ``v1`` by the blocks of keys ``v2`` affects the solution.
 

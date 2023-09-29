@@ -8,10 +8,13 @@ Guide / Tutorial
 This tutorial is based on the single objective function usage of BRKGA.
 However, almost all information also applies to the multi-objective mode with
 minimal changes, as explained in Section
-:ref:`Using BRKGA-MP on multi-objective mode <doxid-guide_1guide_multi_obj>`.
+:ref:`Using BRKGA-MP on multi-objective mode <doxid-guide_guide_multi_obj>`.
+
+If you desire to understand the deeps of the multi-parenting and the implicity
+path relink, read :cite:p:`Andrade2021:BRKGA_MP_IPR`.
 
 
-.. _doxid-guide_1guide_installation:
+.. _doxid-guide_installation:
 
 Installation
 ===============================================================================
@@ -88,7 +91,7 @@ quickly adapt it to other toolchains such as `Microsoft
 <https://software.intel.com/en-us/c-compilers>`_ toolchains.
 
 
-.. _doxid-guide_1guide_tldr_single_obj:
+.. _doxid-guide_guide_tldr_single_obj:
 
 TL;DR - Single objective
 ===============================================================================
@@ -231,7 +234,7 @@ this code for serious business and experimentation.**
 These are the basic steps, but I do recommend the reading of this guide.
 
 
-.. _doxid-guide_1guide_tldr_multi_obj:
+.. _doxid-guide_guide_tldr_multi_obj:
 
 TL;DR - Multi objective
 ===============================================================================
@@ -266,7 +269,7 @@ to reflect such a thing. In this example, we use the standard
 
 In this case, the first component of the tuple holds the tour length, and the
 second contains the largest edge. On Section
-:ref:`Using BRKGA-MP on multi-objective mode <doxid-guide_1guide_multi_obj>`,
+:ref:`Using BRKGA-MP on multi-objective mode <doxid-guide_guide_multi_obj>`,
 we talk with more details about multi-objective problems. Just keep in mind,
 although you could use any type for your `fitness_t`, you should prefer to use
 `std::tuple <https://en.cppreference.com/w/cpp/utility/tuple>`_.
@@ -274,11 +277,11 @@ although you could use any type for your `fitness_t`, you should prefer to use
 The remaining code is almost identical to the single-objective. The only
 differences are in computing the largest edge, and printing such information on
 the main call. All the steps described briefly in the
-:ref:`previous section <doxid-guide_1guide_tldr_single_obj>`
+:ref:`previous section <doxid-guide_guide_tldr_single_obj>`
 are also used here.
 
 
-.. _doxid-guide_1guide_getting_started:
+.. _doxid-guide_getting_started:
 
 Getting started
 ===============================================================================
@@ -596,10 +599,13 @@ I hope by now you got your system set up and running. Let's see the essential
 details on how to use the BRKGA-MP-IPR.
 
 
-.. _doxid-guide_1guide_decoder:
+.. _doxid-guide_decoder_development:
 
 First things first
 ===============================================================================
+
+
+.. _doxid-guide_decoder_function:
 
 The decoder function
 -------------------------------------------------------------------------------
@@ -636,6 +642,8 @@ reference and an ``boolean``, and returns a
 ``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>```.
 But before going further, let's talk about the chromosome.
 
+
+.. _doxid-guide_the_chromosome:
 
 The chromosome or vector of doubles
 -------------------------------------------------------------------------------
@@ -708,6 +716,8 @@ c) We **DO AVOID** polymorphism:
     std::vector<double>* pt = new Chromosome();     // Bad idea. Don't do that!
     delete pt;      // Delete does not call the Chromosome destructor.
 
+
+.. _doxid-guide_back_to_the_decoder:
 
 Back to the decoder
 -------------------------------------------------------------------------------
@@ -785,7 +795,7 @@ structures and perform the optimization.
     When using multiple threads, **you must guarantee that the decoder is
     thread-safe.** You may want to create all read-write data structures on each
     call or create a separate storage space for each thread. Section
-    :ref:`Multi-thread decoding <doxid-guide_1guide_tips_multi_thread_decoding>`
+    :ref:`Multi-thread decoding <doxid-guide_guide_tips_multi_thread_decoding>`
     brings some tips.
 
 .. warning::
@@ -837,11 +847,11 @@ solution. This is an example:
 
     // Just instantiate a local random number generator. Tip: this can hit your
     // performance. Better allocate the RNG before. If you use multiple threads,
-    // please read the Section :ref:`Multi-thread decoding <doxid-guide_1guide_tips_multi_thread_decoding>`.
+    // please read the Section :ref:`Multi-thread decoding <doxid-guide_guide_tips_multi_thread_decoding>`.
     std::mt19937 my_local_rng(seed1);
 
 
-.. _doxid-guide_1guide_brkga_object:
+.. _doxid-guide_brkga_object:
 
 Building BRKGA-MP-IPR algorithm object
 ===============================================================================
@@ -891,7 +901,7 @@ parameters. We will take about that later.
 ``max_threads`` defines how many threads the algorithm should use for decoding
 and some other operations. As said before, **you must guarantee that the
 decoder is thread-safe** when using two or more threads. See
-:ref:`Multi-thread decoding <doxid-guide_1guide_tips_multi_thread_decoding>`
+:ref:`Multi-thread decoding <doxid-guide_guide_tips_multi_thread_decoding>`
 for more information.
 
 Another common argument is ``evolutionary_mechanism_on`` which is enabled by
@@ -1005,350 +1015,7 @@ one holds a self-contained BRKGA state including populations, fitness
 information, and a state of the random number generator.
 
 
-.. _doxid-guide_1guide_before_opt:
-
-Options before optimization starts
-===============================================================================
-
-Before version 3.0, the user had to implement the optimization loop externally,
-which, although it gave full control of the algorithm flow, was a heavy burden,
-even with the code examples provided. From version 3.0, we can simply call
-``:ref:`run() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```
-immediately after building the BRKGA object. However, some
-options can enhance the pipeline before running the optimization. We can:
-
-* Set solution observer callbacks that are called when the best solution is
-  updated;
-* Set a custom stopping-criteria function other than solely time and stalled
-  iterations;
-* Set a custom shake procedure instead of using the canonical BRKGA-MP-IPR
-  shaking options;
-* Set custom bias function for chromosome ranking;
-* Provide warmstart solutions to the algorithm to improve general solution
-  quality and convergence.
-
-We will explore such options in the following sections.
-
-Setting solution observers / callbacks
--------------------------------------------------------------------------------
-
-Usually, tracking the algorithm's convergence is a good idea.
-``:ref:`run() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```
-provides a callback mechanism activated when the best solution found so far
-during the optimization is improved. This is done by calling functions provided
-by the user. For instance:
-
-.. code-block:: cpp
-    :linenos:
-
-    algorithm.addNewSolutionObserver(
-        [](const AlgorithmStatus& status) {
-            std::cout
-            << "> Iter: " << status.current_iteration
-            << " | solution: " << status.best_fitness
-            << " | time: " << status.current_time
-            << std::endl;
-            return false; // Dont' stop the optimization.
-         }
-    );
-
-adds a callback function that prints the current iteration, the value of the
-current best solution, and the time it was found. In this example, we use a
-lambda function. Obviously, you can define a named function outside this scope
-and add it as a callback, too.
-
-You have noted that we use the method
-``:ref:`BRKGA_MP_IPR::addNewSolutionObserver() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa6cf3aca1879ffd4dc0c986340163254>```
-to add the callback function which must have the following signature:
-
-.. code-block:: cpp
-
-    bool observer_callback_name(const AlgorithmStatus& status);
-
-where
-``:ref:`BRKGA::AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>```
-provides the current optimization status, such as current
-time, number of iterations, best solution values, best chromosome, and many
-other statistics. Indeed,
-``:ref:`BRKGA::AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>```
-is the primary way to track the algorithm's convergence. Then, this function
-returns a ``boolean`` that, if ``true``, aborts the optimization immediately.
-This is useful when one wants only to obtain a solution with a particular value
-or characteristic and stop to save time.
-
-You can add as many observers as you want. They will be called in the order
-they are added.
-
-Defining custom stopping criteria
--------------------------------------------------------------------------------
-
-By default, the algorithm always test for **the maximum running time** and for
-**the maximum stalled iterations/generations** given by
-``:ref:`ControlParams <doxid-class_b_r_k_g_a_1_1_control_params>```.
-However, in some situations, the user may want to evaluate additional criteria
-to determine whether the optimization must stop or not. For example, in a
-minimization problem, we may want to stop the value within a distance from a
-lower bound or when we reach a given number of iterations, as shown below:
-
-.. code-block:: cpp
-    :linenos:
-
-    fitness_t lower_bound = compute_lower_bound();
-    unsigned max_iterations = 100;
-
-    algorithm.setStoppingCriteria(
-        [&](const AlgorithmStatus& status) {
-            return
-                status.best_fitness <= lower_bound * 1.1; // 10% from the lower bound
-                ||
-                status.current_iteration == max_iterations;
-        }
-    );
-
-
-For that, we use the method
-``:ref:`BRKGA_MP_IPR::setStoppingCriteria() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1adee8fc8410a56e71b2af84ed6f4f2a7c>```
-which takes a function with the signature
-
-.. code-block:: cpp
-
-    bool stopping_callback_name(const AlgorithmStatus& status);
-
-Similar to observer callbacks, the function must take a reference to a
-``:ref:`BRKGA::AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>```
-object and return ``true`` when the optimization must stop or ``false`` otherwise.
-
-.. warning::
-
-    If you are using implicit path relinking (IPR), which is **very timing
-    consuming**, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is
-    the core stopping criteria on IPR.
-
-If you really mean to have no maximum time and/or maximum stalled iterations
-set, we recommend to use the following code:
-
-.. code-block:: cpp
-    :linenos:
-
-    // After reading your parameters, e.g.,
-    // auto [brkga_params, control_params] = readConfiguration("config.conf");
-
-    // You can set the time to max...
-    control_params.maximum_running_time = std::chrono::seconds::max();
-
-    // ... and/or the stalled iterations to max.
-    control_params.stalled_iterations = numeric_limits<unsigned>::max();
-
-
-Providing custom shake procedure
--------------------------------------------------------------------------------
-
-BRKGA-MP-IPR supplies two canonical ways to perturb the population called
-shaking procedures (:ref:`more details here <doxid-guide_1guide_shaking_reset>`).
-Shaking was introduced by :cite:p:`Andrade2019:PFSP_brkga_shaking`, and the
-canonical shaking procedures are effective in most cases. However, there are
-situation that calls for a custom (maybe more effective) procedure (e.g.,
-:cite:p:`Higino2018:BRKGA_VRP_Private`). In such cases, one can use method
-
-``:ref:`BRKGA_MP_IPR::setShakingMethod()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a4b5019c33a563d1906f0b7d0a8304169>```
-which sets a shaking function with the signature:
-
-.. code-block:: cpp
-    :linenos:
-
-    void custom_shaking(
-        double lower_bound,
-        double upper_bound,
-        std::vector<std::shared_ptr<Population>>& populations,
-        std::vector<std::pair<unsigned, unsigned>>& shaken
-    );
-
-We have that:
-
-* Parameters ``lower_bound`` and ``upper_bound`` is the shaking intensity
-  bounds to be applied. Usually, the define a range where the intensity is
-  sampled;
-* Parameter ``populations`` are the current BRKGA populations;
-* Parameter ``shaken`` is a list of ``<population index, chromosome index>``
-  pairs indicating which chromosomes were shaken on which population,
-  so that they got re-decoded.
-
-.. note::
-
-    If ``shaken`` is empty, all chromosomes of all populations are
-    re-decoded. This may be slow. Even if you intention is to do so,
-    it is faster to populate ``shaken``.
-
-.. warning::
-
-    This procedure can be **very intrusive** since it must manipulate
-    the population. So, the user must make sure that BRKGA invariants
-    are kept, such as chromosome size and population size.
-    Otherwise, the overall functionaly may be compromised.
-
-In the example below, we implement the standard mutation for vanilla
-genetic algorithms to the elite population. Note that we kept the random number
-generator outside, to make sure we generate different sequences on each call:
-
-.. code-block:: cpp
-    :linenos:
-
-    // A random number generator.
-    std::mt19937 rng(2700001);
-    rng.discard(rng.state_size);
-
-    // Determines whether we change the allele or not.
-    std::bernoulli_distribution must_change(0.50);
-
-     algorithm.setShakingMethod(
-         [&](double lower_bound, double upper_bound,
-             std::vector<std::shared_ptr<Population>>& populations,
-             std::vector<std::pair<unsigned, unsigned>>& shaken) {
-
-             // Determines the value of the allele.
-             std::uniform_real_distribution<> allele_value(lower_bound, upper_bound);
-
-             for(unsigned pop_idx = 0; pop_idx < populations.size(); ++pop_idx) {
-                 auto& population = populations[0]->population;
-
-                 for(unsigned chr_idx = 0; chr_idx < population.size(); ++chr_idx) {
-                     auto& chromosome = population[chr_idx];
-
-                     bool change = false;
-                     for(unsigned i = 0; i < chromosome.size(); ++i) {
-                         if(must_change(rng)) {
-                             chromosome[i] = allele_value(rng);
-                             change = true;
-                         }
-                     }
-
-                     if(change)
-                         shaken.push_back({pop_idx, chr_idx});
-                 } // chr for
-             } // pop for
-         }; // lambda
-     ); // setShakingMethod
-
-Setting custom bias function
--------------------------------------------------------------------------------
-
-The bias function controls how alleles are chosen from the (multi) parents
-during mating. While BRKGA-MP-IPR framework already provides an extensive set
-of functions through
-``:ref:`BRKGA::BiasFunctionType
-<doxid-namespace_b_r_k_g_a_1af0ede0f2a7123e654a4e3176b5539fb1>```,
-one may want to change that behavior using a
-custom function (e.g., to
-:ref:`simulate the vanilla BRKGA <doxid-guide_1guide_standard_brkga>`).
-This is done using method
-``:ref:`BRKGA_MP_IPR::setBiasCustomFunction()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a8616c89626ca3c8e8d3b5adb1da24c92>```,
-where the user supplies the desired **positive non-increasing function** with
-the signature
-
-.. code-block:: cpp
-
-    double bias_function(const unsigned r);
-
-.. warning::
-
-    The bias function must be a **positive non-increasing function**, i.e.
-    :math:`f: \mathbb{N}^+ \to \mathbb{R}^+` such that :math:`f(i) \ge 0` and
-    :math:`f(i) \ge f(i+1)` for :math:`i \in [1, \ldots, total\_parents]`.
-    This is requirement to produce the right probabilities.
-
-Note that
-``:ref:`setBiasCustomFunction()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a8616c89626ca3c8e8d3b5adb1da24c92>```
-tests the function and throw a
-`std::runtime_error <https://en.cppreference.com/w/cpp/error/runtime_error>`_
-in case the funtion is not positive non-increasing.
-
-For instance, the code below sets the inverse quadratic function as bias:
-
-.. code-block:: cpp
-    :linenos:
-
-    algorithm.setBiasCustomFunction(
-        [](const unsigned x) {
-            return 1.0 / (x * x);
-        }
-    );
-
-Injecting warm-start solutions
--------------------------------------------------------------------------------
-
-One good strategy is to bootstrap the main optimization algorithm with good
-solutions from fast heuristics
-(:cite:p:`Lopes2016:Heuristics_hub_location`,
-:cite:p:`Pessoa2018:Heuristics_flowshop_stepwise`,
-:cite:p:`Andrade2019:PFSP_brkga_shaking`)
-or even from relaxations of integer linear programming models
-:cite:p:`Andrade2015:BRKGA_CA`
-or constraint programming models
-:cite:p:`Andrade2022:PCI_MO`.
-
-Since BRKGA-MP-IPR does not know the problem structure, you must *encode* the
-warm-start solution as chromosomes (vectors in the interval [0, 1)). In other
-words, you must do the inverse process that your decoder does. For instance,
-this is a piece of code from `main_complete.cpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`__
-showing this process:
-
-.. code-block:: cpp
-    :linenos:
-
-    auto initial_solution = greedy_tour(instance);
-    //...
-
-    std::mt19937 rng(seed);
-    vector<double> keys(instance.num_nodes); // It should be == chromosome_size.
-    for(auto& key : keys)
-        key = generate_canonical<double,
-                                 numeric_limits<double>::digits>(rng);
-
-    sort(keys.begin(), keys.end());
-
-    BRKGA::Chromosome initial_chromosome(instance.num_nodes);
-    auto& initial_tour = initial_solution.second;
-    for(size_t i = 0; i < keys.size(); i++)
-        initial_chromosome[initial_tour[i]] = keys[i];
-
-    algorithm.setInitialPopulation(
-        vector<BRKGA::Chromosome>(1, initial_chromosome)
-    );
-
-Here, we create one incumbent solution using the greedy heuristic ``greedy_tour()``
-`found here <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples/tsp/src/single_obj/heuristics>`_.
-It gives us ``initial_solution`` which is a ``std::pair<double, std::vector<unsigned>>``
-containing the cost of the tour and the tour itself which is a sequence of
-nodes to be visited. In the next lines, we encode ``initial_solution``. First,
-we create a vector of sorted random ``keys``. For that, we create a new random
-number generator ``rng``, the vector ``keys``, and fill up ``keys`` with random
-numbers in the interval [0, 1), using C++ standard library function
-``:ref:`generate_canonical<>() <https://en.cppreference.com/w/cpp/numeric/random/generate_canonical>```
-Once we have the keys, we sort them as
-``TSP_Decoder::decode()`` does. We then create the ``initial_chromosome``, and
-fill it up with ``keys`` according to the nodes' order in ``initial_solution``.
-Finally, we use
-``:ref:`BRKGA_MP_IPR::setInitialPopulation()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a59b05650ede92f5e0107ab606ff6e8b7>```
-to assign the incumbent to the initial population. Note that we enclose the
-initial solution inside a vector of chromosomes, since
-``:ref:`setInitialPopulation()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a59b05650ede92f5e0107ab606ff6e8b7>```
-may take more than one starting solution. See its signature:
-
-.. code-block:: cpp
-
-    void setInitialPopulation(const std::vector<Chromosome>& chromosomes);
-
-Indeed, you can have as much warm-start solutions as you like, limited to the
-size of the populations.
-
-
-.. _doxid-guide_1guide_opt:
+.. _doxid-guide_opt:
 
 It's optimization time
 ===============================================================================
@@ -1476,89 +1143,486 @@ chromosome size. For more details on that, refer to
     held, we suggest using a single thread for optimization.
 
 
-.. _doxid-guide_1fine_control:
+.. _doxid-guide_before_opt:
 
-DIY: building a optimization loop for fine control
+Options before optimization starts
+-------------------------------------------------------------------------------
+
+While we can call
+``:ref:`run()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```
+right away, some options can enhance the pipeline before running the
+optimization. We can:
+
+* Set solution observer callbacks that are called when the best solution is
+  updated;
+* Set a custom stopping-criteria function other than solely time and stalled
+  iterations;
+* Set a custom shake procedure instead of using the canonical BRKGA-MP-IPR
+  shaking options;
+* Set custom bias function for chromosome ranking;
+* Provide warmstart solutions to the algorithm to improve general solution
+  quality and convergence.
+
+We will explore such options in the following sections.
+
+
+.. _doxid-guide_setting_observer_callbacks:
+
+Setting solution observers / callbacks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Usually, tracking the algorithm's convergence is a good idea.
+``:ref:`run()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```
+provides a callback mechanism activated when the best solution found so far
+during the optimization is improved. This is done by calling functions provided
+by the user. For instance:
+
+.. code-block:: cpp
+    :linenos:
+
+    algorithm.addNewSolutionObserver(
+        [](const AlgorithmStatus& status) {
+            std::cout
+            << "> Iter: " << status.current_iteration
+            << " | solution: " << status.best_fitness
+            << " | time: " << status.current_time
+            << std::endl;
+            return false; // Dont' stop the optimization.
+         }
+    );
+
+adds a callback function that prints the current iteration, the value of the
+current best solution, and the time it was found. In this example, we use a
+lambda function. Obviously, you can define a named function outside this scope
+and add it as a callback, too.
+
+You have noted that we use the method
+``:ref:`BRKGA_MP_IPR::addNewSolutionObserver()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa6cf3aca1879ffd4dc0c986340163254>```
+to add the callback function which must have the following signature:
+
+.. code-block:: cpp
+
+    bool observer_callback_name(const AlgorithmStatus& status);
+
+where
+``:ref:`BRKGA::AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>```
+provides the current optimization status, such as current
+time, number of iterations, best solution values, best chromosome, and many
+other statistics. Indeed,
+``:ref:`BRKGA::AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>```
+is the primary way to track the algorithm's convergence. Then, this function
+returns a ``boolean`` that, if ``true``, aborts the optimization immediately.
+This is useful when one wants only to obtain a solution with a particular value
+or characteristic and stop to save time.
+
+You can add as many observers as you want. They will be called in the order
+they are added.
+
+One interesting usage of such callbacks is to perform (expensive) local search
+from the best solution when this cannot be done during the decoder process.
+Once the local search is done, we can inject the improved solution/chromosome
+back into the population using method
+``:ref:`BRKGA_MP_IPR::injectChromosome()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0347f67b59bfe36856d1c27c95d4b151>```.
+Please, see section
+:ref:`Injecting solutions / chromosome into the population <doxid-guide_inject_chromosome>`
+for more details.
+
+
+.. _doxid-guide_setting_stopping_criteria:
+
+Defining custom stopping criteria
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, the algorithm always test for **the maximum running time** and for
+**the maximum stalled iterations/generations** given by
+``:ref:`ControlParams <doxid-class_b_r_k_g_a_1_1_control_params>```.
+However, in some situations, the user may want to evaluate additional criteria
+to determine whether the optimization must stop or not. For example, in a
+minimization problem, we may want to stop the value within a distance from a
+lower bound or when we reach a given number of iterations, as shown below:
+
+.. code-block:: cpp
+    :linenos:
+
+    fitness_t lower_bound = compute_lower_bound();
+    unsigned max_iterations = 100;
+
+    algorithm.setStoppingCriteria(
+        [&](const AlgorithmStatus& status) {
+            return
+                status.best_fitness <= lower_bound * 1.1; // 10% from the lower bound
+                ||
+                status.current_iteration == max_iterations;
+        }
+    );
+
+
+For that, we use the method
+``:ref:`BRKGA_MP_IPR::setStoppingCriteria() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1adee8fc8410a56e71b2af84ed6f4f2a7c>```
+which takes a function with the signature
+
+.. code-block:: cpp
+
+    bool stopping_callback_name(const AlgorithmStatus& status);
+
+Similar to observer callbacks, the function must take a reference to a
+``:ref:`BRKGA::AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>```
+object and return ``true`` when the optimization must stop or ``false`` otherwise.
+
+.. warning::
+
+    If you are using implicit path relinking (IPR), which is **very timing
+    consuming**, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is
+    the core stopping criteria on IPR.
+
+If you really mean to have no maximum time and/or maximum stalled iterations
+set, we recommend to use the following code:
+
+.. code-block:: cpp
+    :linenos:
+
+    // After reading your parameters, e.g.,
+    // auto [brkga_params, control_params] = readConfiguration("config.conf");
+
+    // You can set the time to max...
+    control_params.maximum_running_time = std::chrono::seconds::max();
+
+    // ... and/or the stalled iterations to max.
+    control_params.stall_offset = numeric_limits<unsigned>::max();
+
+
+.. _doxid-guide_providing_custom_shake:
+
+Providing custom shake procedure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+BRKGA-MP-IPR supplies two canonical ways to perturb the population called
+shaking procedures (:ref:`more details here <doxid-guide_guide_shaking>`).
+Shaking was introduced by :cite:p:`Andrade2019:PFSP_brkga_shaking`, and the
+canonical shaking procedures are effective in most cases. However, there are
+situation that calls for a custom (maybe more effective) procedure (e.g.,
+:cite:p:`Higino2018:BRKGA_VRP_Private`). In such cases, one can use method
+
+``:ref:`BRKGA_MP_IPR::setShakingMethod()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a4b5019c33a563d1906f0b7d0a8304169>```
+which sets a shaking function with the signature:
+
+.. code-block:: cpp
+    :linenos:
+
+    void custom_shaking(
+        double lower_bound,
+        double upper_bound,
+        std::vector<std::shared_ptr<Population>>& populations,
+        std::vector<std::pair<unsigned, unsigned>>& shaken
+    );
+
+We have that:
+
+* Parameters ``lower_bound`` and ``upper_bound`` is the shaking intensity
+  bounds to be applied. Usually, the define a range where the intensity is
+  sampled;
+* Parameter ``populations`` are the current BRKGA populations;
+* Parameter ``shaken`` is a list of ``<population index, chromosome index>``
+  pairs indicating which chromosomes were shaken on which population,
+  so that they got re-decoded.
+
+.. note::
+
+    If ``shaken`` is empty, all chromosomes of all populations are
+    re-decoded. This may be slow. Even if you intention is to do so,
+    it is faster to populate ``shaken``.
+
+.. warning::
+
+    This procedure can be **very intrusive** since it must manipulate
+    the population. So, the user must make sure that BRKGA invariants
+    are kept, such as chromosome size and population size.
+    Otherwise, the overall functionaly may be compromised.
+
+In the example below, we implement the standard mutation for vanilla
+genetic algorithms to the elite population. Note that we kept the random number
+generator outside, to make sure we generate different sequences on each call:
+
+.. code-block:: cpp
+    :linenos:
+
+    // A random number generator.
+    std::mt19937 rng(2700001);
+    rng.discard(rng.state_size);
+
+    // Determines whether we change the allele or not.
+    std::bernoulli_distribution must_change(0.50);
+
+     algorithm.setShakingMethod(
+         [&](double lower_bound, double upper_bound,
+             std::vector<std::shared_ptr<Population>>& populations,
+             std::vector<std::pair<unsigned, unsigned>>& shaken) {
+
+             // Determines the value of the allele.
+             std::uniform_real_distribution<> allele_value(lower_bound, upper_bound);
+
+             for(unsigned pop_idx = 0; pop_idx < populations.size(); ++pop_idx) {
+                 auto& population = populations[0]->population;
+
+                 for(unsigned chr_idx = 0; chr_idx < population.size(); ++chr_idx) {
+                     auto& chromosome = population[chr_idx];
+
+                     bool change = false;
+                     for(unsigned i = 0; i < chromosome.size(); ++i) {
+                         if(must_change(rng)) {
+                             chromosome[i] = allele_value(rng);
+                             change = true;
+                         }
+                     }
+
+                     if(change)
+                         shaken.push_back({pop_idx, chr_idx});
+                 } // chr for
+             } // pop for
+         }; // lambda
+     ); // setShakingMethod
+
+
+.. _doxid-guide_setting_custom_bias_function:
+
+Setting custom bias function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The bias function controls how alleles are chosen from the (multi) parents
+during mating. While BRKGA-MP-IPR framework already provides an extensive set
+of functions through
+``:ref:`BRKGA::BiasFunctionType
+<doxid-namespace_b_r_k_g_a_1af0ede0f2a7123e654a4e3176b5539fb1>```,
+one may want to change that behavior using a
+custom function (e.g., to
+:ref:`simulate the vanilla BRKGA <doxid-guide_guide_standard_brkga>`).
+This is done using method
+``:ref:`BRKGA_MP_IPR::setBiasCustomFunction()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a8616c89626ca3c8e8d3b5adb1da24c92>```,
+where the user supplies the desired **positive non-increasing function** with
+the signature
+
+.. code-block:: cpp
+
+    double bias_function(const unsigned r);
+
+.. warning::
+
+    The bias function must be a **positive non-increasing function**, i.e.
+    :math:`f: \mathbb{N}^+ \to \mathbb{R}^+` such that :math:`f(i) \ge 0` and
+    :math:`f(i) \ge f(i+1)` for :math:`i \in [1, \ldots, total\_parents]`.
+    This is requirement to produce the right probabilities.
+
+Note that
+``:ref:`setBiasCustomFunction()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a8616c89626ca3c8e8d3b5adb1da24c92>```
+tests the function and throw a
+`std::runtime_error <https://en.cppreference.com/w/cpp/error/runtime_error>`_
+in case the funtion is not positive non-increasing.
+
+For instance, the code below sets the inverse quadratic function as bias:
+
+.. code-block:: cpp
+    :linenos:
+
+    algorithm.setBiasCustomFunction(
+        [](const unsigned x) {
+            return 1.0 / (x * x);
+        }
+    );
+
+
+.. _doxid-guide_injecting_warm_start_solutions:
+
+Injecting warm-start solutions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+One good strategy is to bootstrap the main optimization algorithm with good
+solutions from fast heuristics
+(:cite:p:`Lopes2016:Heuristics_hub_location`,
+:cite:p:`Pessoa2018:Heuristics_flowshop_stepwise`,
+:cite:p:`Andrade2019:PFSP_brkga_shaking`)
+or even from relaxations of integer linear programming models
+:cite:p:`Andrade2015:BRKGA_CA`
+or constraint programming models
+:cite:p:`Andrade2022:PCI_MO`.
+
+Since BRKGA-MP-IPR does not know the problem structure, you must *encode* the
+warm-start solution as chromosomes (vectors in the interval [0, 1)). In other
+words, you must do the inverse process that your decoder does. For instance,
+this is a piece of code from `main_complete.cpp
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`__
+showing this process:
+
+.. code-block:: cpp
+    :linenos:
+
+    auto initial_solution = greedy_tour(instance);
+    //...
+
+    std::mt19937 rng(seed);
+    vector<double> keys(instance.num_nodes); // It should be == chromosome_size.
+    for(auto& key : keys)
+        key = generate_canonical<double,
+                                 numeric_limits<double>::digits>(rng);
+
+    sort(keys.begin(), keys.end());
+
+    BRKGA::Chromosome initial_chromosome(instance.num_nodes);
+    auto& initial_tour = initial_solution.second;
+    for(size_t i = 0; i < keys.size(); i++)
+        initial_chromosome[initial_tour[i]] = keys[i];
+
+    algorithm.setInitialPopulation(
+        vector<BRKGA::Chromosome>(1, initial_chromosome)
+    );
+
+Here, we create one incumbent solution using the greedy heuristic ``greedy_tour()``
+`found here <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples/tsp/src/single_obj/heuristics>`_.
+It gives us ``initial_solution`` which is a ``std::pair<double, std::vector<unsigned>>``
+containing the cost of the tour and the tour itself which is a sequence of
+nodes to be visited. In the next lines, we encode ``initial_solution``. First,
+we create a vector of sorted random ``keys``. For that, we create a new random
+number generator ``rng``, the vector ``keys``, and fill up ``keys`` with random
+numbers in the interval [0, 1), using C++ standard library function
+``:ref:`generate_canonical<>() <https://en.cppreference.com/w/cpp/numeric/random/generate_canonical>```
+Once we have the keys, we sort them as
+``TSP_Decoder::decode()`` does. We then create the ``initial_chromosome``, and
+fill it up with ``keys`` according to the nodes' order in ``initial_solution``.
+Finally, we use
+``:ref:`BRKGA_MP_IPR::setInitialPopulation()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a59b05650ede92f5e0107ab606ff6e8b7>```
+to assign the incumbent to the initial population. Note that we enclose the
+initial solution inside a vector of chromosomes, since
+``:ref:`setInitialPopulation()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a59b05650ede92f5e0107ab606ff6e8b7>```
+may take more than one starting solution. See its signature:
+
+.. code-block:: cpp
+
+    void setInitialPopulation(const std::vector<Chromosome>& chromosomes);
+
+Indeed, you can have as much warm-start solutions as you like, limited to the
+size of the populations.
+
+
+.. _doxid-guide_fine_optimization_control:
+
+DIY: building an optimization loop for fine control
 ===============================================================================
 
+While version 3.0 greatly enhances how to utilize all BRKGA-MP-IPR features
+transparently, one may want to change the algorithm's flow. For instance, we
+are developing a hyperheuristic using BRKGA, IPR, and VND so that each
+algorithm is called when some condition happens. For that, we kept all public
+interfaces from version 2.0 to version 3.0. The following sections describe
+each one of these features in detail.
+
+
+.. _doxid-guide_evolving_population:
 
 Evolving the population
 -------------------------------------------------------------------------------
 
-Once all data is set up, it is time to evolve the population and perform other
-operations like path-relinking, shaking, migration, and others. The call is
-pretty simple:
+The core aspect of the BRKGA-MP-IPR is the genetic algorithm itself. The
+evolution of each generation/iteration is performed by method
+``:ref:`BRKGA_MP_IPR::evolve()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aee1828c2ca506f18b896f1fc75ceafcb>```, which
+takes the number of generations we must evolve. The call is pretty simple:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
 
     algorithm.evolve(num_generations);
 
-``:ref:`BRKGA::BRKGA_MP_IPR::evolve()
+``:ref:`evolve()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aee1828c2ca506f18b896f1fc75ceafcb>```
 evolves all populations for ``num_generations``. If ``num_genertions`` is
-omitted, ``evolve()`` evolves only one generation.
+omitted, only one generation is evolved.
 
-For example, in `main_minimal.cpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp>`__,
-we just evolve the population for a given number of generations directly and
-then extract the best solution cost.
+Note that
+``:ref:`run() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```
+calls
+``:ref:`evolve() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aee1828c2ca506f18b896f1fc75ceafcb>```
+for one generation evolution per iteration of the main loop. In a custom setting,
+one may evolve several generations per main loop iteration, if it make sense
+for that scenario.
 
-.. ref-code-block:: cpp
+.. note::
 
-    algorithm.evolve(num_generations);
-    auto best_cost = algorithm.getBestFitness();
-
-On
-`main_complete.cpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`__
-we have fine-grained control on the optimization.
-There, we have a main loop that evolves the population one generation at a time
-and performs several operations as to hold the best solution, to check whether
-it is time for path relink, population reset, among others. The advantage of
-that code is that we can track all optimization details, and I do recommend
-similar style for experimentation.
+    ``:ref:`evolve() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aee1828c2ca506f18b896f1fc75ceafcb>```
+    does not check the stopping criteria and only stops when the given
+    iterations are done. Therefore, we must be careful when evolving multiple
+    generations at once. Please, check Section
+    :ref:`Complex decoders and timing. <doxid-guide_complex_decoders_and_timing>`
 
 .. warning::
-  Again, the decoding of each chromosome is done in parallel if multi-thread is
-  enabled. Therefore, **we must guarantee that the decoder is THREAD-SAFE.** If
-  such property cannot be held, we suggest using a single thread.
+
+    Again, the decoding of each chromosome is done in parallel if multi-thread
+    is enabled. Therefore, **we must guarantee that the decoder is
+    THREAD-SAFE.** If such property cannot be held, we suggest using a single
+    thread.
 
 
-.. _doxid-guide_1guide_access_solutions:
+.. _doxid-guide_access_solutions:
 
 Accessing solutions/chromosomes
 -------------------------------------------------------------------------------
 
-BRKGA-MP-IPR C++ offers several mechanisms to access a variaty of data during
-the optimization. Most common, we want to access the best chromosome after some
-iterations. You can use the companion functions:
+BRKGA-MP-IPR offers several mechanisms to access a variety of data during
+the optimization. Most common, we want to access the best chromosome of the
+current population after some iterations. You can use the companion methods:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
 
-    double getBestFitness() const;
+    double BRKGA_MP_IPR::getBestFitness() const;
+    const Chromosome& BRKGA_MP_IPR::getBestChromosome() const;
 
-    const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getBestChromosome() const;
-
-``:ref:`BRKGA::BRKGA_MP_IPR::getBestFitness()
+``:ref:`BRKGA_MP_IPR::getBestFitness()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0499e65fbddae20a97b276504fe72e39>```
-returns the value/fitness of the best chromosome across all populations.
-
-``:ref:`BRKGA::BRKGA_MP_IPR::getBestChromosome()
+returns the value/fitness of the best chromosome across all current populations.
+``:ref:`BRKGA_MP_IPR::getBestChromosome()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa4b0396a4780fde3be8d284c535b600e>```
-returns a *reference* of the best chromosome across all populations. You may
-want to extract an actual solution from such chromosome, i.e., to apply a
-decoding function that returns the actual solution instead only its value.
+returns a *reference* of the best chromosome across all current populations.
+You may want to extract an actual solution from such chromosome, i.e.,
+to apply a decoding function that returns the actual solution instead only
+its value.
+
+You may have noticed that we insist on the term **current population.**
+This is because all getting methods use the current chromosomes, i.e., the
+population whose state can change after any procedure such as IPR, shaking, or
+reset. Usually, IPR preserves the best solution when manipulating the
+population. However, the shaking and reset procedures often perturb and/or
+deconstruct the population. *Therefore, there is a big chance that we will lose
+the best solution.*
+
+.. warning::
+
+    All the get methods return information (fitness and chromosome) from the
+    current population, not the best solution found overall. Only method
+    ``:ref:`run() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```
+    keeps the best solution overall.
+
 
 You may also want to get a reference of specific chromosome and its fitness
-for a given population using ``:ref:`BRKGA::BRKGA_MP_IPR::getChromosome()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1abfe4eccfd47a8eb88fc920e640f8513f>```.
+for a given population using
+``:ref:`BRKGA_MP_IPR::getChromosome()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1abfe4eccfd47a8eb88fc920e640f8513f>```
+and
+``:ref:`BRKGA_MP_IPR::getFitness()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a9d6636a50f519bf0f1e85257282c6065>```.
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
 
-    const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getChromosome(unsigned population_index,
-                                    unsigned position) const
+    const Chromosome& getChromosome(unsigned population_index,
+                                    unsigned position) const;
 
-    const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& getFitness(unsigned population_index,
-                                 unsigned position) const
+    fitness_t getFitness(unsigned population_index,
+                         unsigned position) const;
 
 For example, you can get the 3rd best chromosome (and it fitness)
 from the 2nd population using
@@ -1573,40 +1637,49 @@ from the 2nd population using
   (zero), the second population index is 1 (one), and so forth. The same happens
   for the chromosomes.
 
+
+.. _doxid-guide_inject_chromosome:
+
+Injecting solutions / chromosome into the population
+-------------------------------------------------------------------------------
+
 Now, suppose you get such chromosome or chromosomes and apply a quick local
 search procedure on them. It may be useful to reinsert such new solutions in
-the BRKGA population for the next
-evolutionary cycles. You can do that using
-``:ref:`BRKGA::BRKGA_MP_IPR::injectChromosome()
+the BRKGA population for the next evolutionary cycles. You can do that using
+``:ref:`BRKGA_MP_IPR::injectChromosome()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0347f67b59bfe36856d1c27c95d4b151>```.
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
 
-    void injectChromosome(const :ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome,
-                          unsigned population_index,
-                          unsigned position,
-                          double fitness = std::numeric_limits<double>::infinity());
+    void injectChromosome(
+        const Chromosome& chromosome,
+        unsigned population_index,
+        unsigned position
+    )
 
 Note that the chromosome is put in a specific position of a given population.
-If you do not provide the fitness, ``injectChromosome()`` will decode the
-injected chromosome. For example, assuming the ``algorithm`` is your
+The new chromosome replaces the old one, and the decoder is triggered to
+compute the new fitness. Once done, the population is re-sorted according to
+the chromosomes’ fitness.
+
+For example, assuming the ``algorithm`` is your
 BRKGA-MP-IPR object and ``brkga_params`` is your ``BrkgaParams`` object, the
 following code injects the random chromosome ``keys`` into the population #1 in
-the last position (``population_size``), i.e., it will replace the worst
+the last position (``population_size - 1``), i.e., it will replace the worst
 solution by a random one:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     std::mt19937 rng(seed);
-    vector<double> keys(instance.num_nodes);
+    Chromosome keys(instance.num_nodes);
     for(auto& key : keys)
-        key = generate_canonical<double,
-                                 numeric_limits<double>::digits>(rng);
+        key = generate_canonical<double, numeric_limits<double>::digits>(rng);
 
-    algorithm.injectChromosome(keys, 0, brkga_params.population_size);
+    algorithm.injectChromosome(keys, 0, brkga_params.population_size - 1);
 
 
-.. _doxid-guide_1guide_ipr:
+.. _doxid-guide_guide_ipr:
 
 Implicit Path Relink
 -------------------------------------------------------------------------------
@@ -1619,40 +1692,63 @@ tedious if done by hand or customized per problem.
 
 BRKGA-MP-IPR provides a friendly interface to use IPR directly from the BRKGA
 population, and you only must provide a few functions and arguments to have a
-Path Relink algorithm ready to go. This is the main signature of
-``:ref:`BRKGA::BRKGA_MP_IPR::pathRelink()
-<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a95529466a3e942e4aafa26259aa83d0f>```
-:
+Path Relink algorithm ready to go. These are the two main signatures:
+``:ref:`BRKGA_MP_IPR::pathRelink(/*long args call*/)
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa8da5193248d23ced19e68483aca31a5>```
+and
+``:ref:`BRKGA_MP_IPR::pathRelink(/*short args call*/)
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1ae9c15595bc46c3554b3eb5656ab08a53>```,
+and these are their signatures:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
-    :ref:`PathRelinking::PathRelinkingResult <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` pathRelink(
-                    :ref:`PathRelinking::Type <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a79247d22aeb1fa9ab7611488e8137132>` pr_type,
-                    :ref:`PathRelinking::Selection <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a3ce8f0aeb5c0063aab2e8cbaee3076fa>` pr_selection,
-                    std::shared_ptr<DistanceFunctionBase> dist,
-                    unsigned number_pairs,
-                    double minimum_distance,
-                    std::size_t block_size = 1,
-                    long max_time = 0,
-                    double percentage = 1.0);
+    // Long list of arguments.
+    PathRelinking::PathRelinkingResult pathRelink(
+        PathRelinking::Type pr_type,
+        PathRelinking::Selection pr_selection,
+        std::shared_ptr<DistanceFunctionBase> dist,
+        unsigned number_pairs,
+        double minimum_distance,
+        std::size_t block_size = 1,
+        std::chrono::seconds max_time = std::chrono::seconds{0},
+        double percentage = 1.0
+    )
+
+    // Short list of arguments.
+    PathRelinking::PathRelinkingResult pathRelink(
+        std::shared_ptr<DistanceFunctionBase> dist,
+        std::chrono::seconds max_time = std::chrono::seconds{0}
+    )
 
 The first argument defines the type of implicit path relink to be performed
 ``:ref:`BRKGA::PathRelinking::Type
 <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a79247d22aeb1fa9ab7611488e8137132>```.
-The ``DIRECT`` path relink exchanges the keys of two chromosomes directly, and
+The
+``:ref:`DIRECT
+<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a79247d22aeb1fa9ab7611488e8137132a4c5d06b02c97731aaa976179c62dcf76>```
+path relink exchanges the keys of two chromosomes directly, and
 it is usually more suitable to or threshold representations, i.e., where the
-key values are used to some kind of discretization, such as "if x < 0.5, then
-0, otherwise 1." The ``PERMUTATION`` path relink switches the order of a key
+key values are used to some kind of discretization, such as *"if x < 0.5, then
+0, otherwise 1."*
+The
+``:ref:`PERMUTATION
+<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a79247d22aeb1fa9ab7611488e8137132a48deaef68056f516e0091a15c1db3daa>```
+path relink switches the order of a key
 according to its position in the other chromosome. Usually, this kind of path
 relink is more suitable to permutation representations, where the chromosome
 induces an order or permutation. For example, chromosome ``[0.4, 0.7, 0.1]``
 may induce the increasing order ``(3, 1, 2)``. More details about threshold and
-permutation representations in `this paper <https://doi.org/10.1016/j.ejor.2019.11.037>`__.
+permutation representations in :cite:p:`Andrade2021:BRKGA_MP_IPR`.
 
 ``:ref:`BRKGA::PathRelinking::Selection
 <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a3ce8f0aeb5c0063aab2e8cbaee3076fa>```
-defines how the algorithm picks the chromosomes for relinking. ``BESTSOLUTION``
-selects, in the order, the best solution of each population. ``RANDOMELITE``
+defines how the algorithm picks the chromosomes for relinking.
+``:ref:`BESTSOLUTION
+<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a3ce8f0aeb5c0063aab2e8cbaee3076faa6a169dcc4781fa0dc8c448d550be9d39>```
+selects, in the order, the best solution of each population.
+``:ref:`RANDOMELITE
+<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a3ce8f0aeb5c0063aab2e8cbaee3076faa80e0b7674eebae1977705eed127c6ee8>```
 chooses uniformly random solutions from the elite sets.
 
 The next argument is a pointer to a functor object used to compute the distance
@@ -1662,22 +1758,26 @@ change the solution. This object must inherit from
 <doxid-class_b_r_k_g_a_1_1_distance_function_base>```, which has the following
 signature:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     class DistanceFunctionBase {
     public:
-        DistanceFunctionBase() {}
-        virtual ~DistanceFunctionBase() {}
-
-        virtual double distance(const std::vector<double>& v1,
-                                const std::vector<double>& v2) = 0;
-
-        virtual bool affectSolution(const double key1, const double key2) = 0;
+        virtual double distance(
+            const Chromosome& v1,
+            const Chromosome& v2
+        ) = 0;
 
         virtual bool affectSolution(
-                std::vector<double>::const_iterator v1_begin,
-                std::vector<double>::const_iterator v2_begin,
-                const std::size_t block_size) = 0;
+            const Chromosome::value_type key1,
+            const Chromosome::value_type key2
+        ) = 0;
+
+        virtual bool affectSolution(
+            Chromosome::const_iterator v1_begin,
+            Chromosome::const_iterator v2_begin,
+            const std::size_t block_size
+        ) = 0;
     };
 
 Note that ``:ref:`BRKGA::DistanceFunctionBase
@@ -1685,8 +1785,8 @@ Note that ``:ref:`BRKGA::DistanceFunctionBase
 and children classes must implement all methods.
 
 If the value returned by method ``distance()`` is greater than or equal to
-``minimum_distance`` (on ``pathRelink()`` call), the algorithm will perform the
-path relink between the two chromosomes. Otherwise, it will look for another
+``minimum_distance`` (on ``pathRelink()`` arguments), the algorithm will perform
+the path relink between the two chromosomes. Otherwise, it will look for another
 pair of chromosomes. The algorithm will try ``number_pairs`` chromosomes before
 gives up. In the presence of multiple populations, the path relinking is
 performed between elite chromosomes from different populations, in a circular
@@ -1707,15 +1807,15 @@ and a class/functor that computes the
 `Kendall Tau distance <https://en.wikipedia.org/wiki/Kendall_tau_distance>`_
 distance for permutation representations (``:ref:`BRKGA::KendallTauDistance
 <doxid-class_b_r_k_g_a_1_1_kendall_tau_distance>```). Again, details about
-threshold and permutation representations in `this paper
-<https://doi.org/10.1016/j.ejor.2019.11.037>`__.
+threshold and permutation representations in :cite:p:`Andrade2021:BRKGA_MP_IPR`.
 
 As a simple example, suppose you are using a threshold representation where
 each chromosome key can represent one of 3 different values (a ternary
 threshold representation). So, one possible way to compute the distance between
 two chromosomes can be:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     class TernaryHammingDistance: public DistanceFunctionBase {
     protected:
@@ -1728,20 +1828,20 @@ two chromosomes can be:
         virtual ~TernaryHammingDistance() {}
 
         virtual double distance(const std::vector<double>& vector1,
-                                const std::vector<double>& vector2) {
+                                const std::vector<double>& vector2) override {
             double dist = 0.0;
             for(std::size_t i = 0; i < vector1.size(); ++i)
                 dist += std::fabs(value(vector1[i]) - value(vector2[i]));
             return dist;
         }
 
-        virtual bool affectSolution(const double key1, const double key2) {
+        virtual bool affectSolution(const double key1, const double key2) override {
             return std::fabs(value(key1) - value(key2)) > 0.0;
         }
 
         virtual bool affectSolution(std::vector<double>::const_iterator v1_begin,
                                     std::vector<double>::const_iterator v2_begin,
-                                    const std::size_t block_size) {
+                                    const std::size_t block_size) override {
             for(std::size_t i = 0; i < block_size;
                 ++i, ++v1_begin, ++v2_begin) {
                 if(std::fabs(value(*v1_begin) - value(*v2_begin)) > 0.0)
@@ -1782,15 +1882,16 @@ or even the whole chromosome.
   ``affectSolution()``. However, ``pathRelink()`` requires the function.
   Therefore, we can implement simple constant methods:
 
-  .. ref-code-block:: cpp
+  .. code-block:: cpp
+    :linenos:
 
-      virtual bool affectSolution(const double key1, const double key2) {
+      virtual bool affectSolution(const double, const double) override {
           return true;
       }
 
-      virtual bool affectSolution(std::vector<double>::const_iterator v1_begin,
-                                  std::vector<double>::const_iterator v2_begin,
-                                  const std::size_t block_size) {
+      virtual bool affectSolution(std::vector<double>::const_iterator,
+                                  std::vector<double>::const_iterator,
+                                  const std::size_t) override {
           return true;
       }
 
@@ -1798,11 +1899,13 @@ or even the whole chromosome.
 exchanged during the direct path relink. This parameter is also critical for
 IPR performance since it avoids too many exchanges during the path building.
 Usually, we can compute this number based on the size of the chromosome by some
-factor (``alpha_block_size`` in the configuration file), chosen by you. Again,
-details `here <https://doi.org/10.1016/j.ejor.2019.11.037>`_.
-
+factor (
+``:ref:`BrkgaParams::alpha_block_size <doxid-class_b_r_k_g_a_1_1_brkga_params_1a40ff7da597d2c4eadabf3f62b3b9196d>```
+in the configuration file), chosen by you.
+Again, details in :cite:p:`Andrade2021:BRKGA_MP_IPR`.
 
 .. note::
+
   Experiments have shown that a good choice is
   :math:`block\_size = alpha\_block\_size \times \sqrt{size~of~chromosome}`
 
@@ -1810,21 +1913,18 @@ The last two parameters are stopping criteria. The algorithm stops either when
 ``max_time`` seconds is reached or ``percentage%`` of the path is built.
 
 .. warning::
-  IPR is a very time-intensive process. You must set the stopping criteria
-  accordingly.
 
-Let's see the example on `main_complete.cpp
-<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp>`__.
-Remember, since we are solving the TSP, we want to use the permutation-based
-IPR, and the Kendall Tau distance functions.
+  **IPR is a very time-intensive process. You must set the stopping criteria
+  accordingly.**
 
-.. ref-code-block:: cpp
+Let's see how can we call IPR. As example, take the TSP for which we use
+the permutation-based IPR, and the Kendall Tau distance functions.
 
-    if(brkga_params.pr_type == :ref:`BRKGA::PathRelinking::Type::DIRECT <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a79247d22aeb1fa9ab7611488e8137132a4c5d06b02c97731aaa976179c62dcf76>`)
-        dist_func.reset(new :ref:`BRKGA::HammingDistance <doxid-class_b_r_k_g_a_1_1_hamming_distance>`(0.5));
-    else
-        dist_func.reset(new :ref:`BRKGA::KendallTauDistance <doxid-class_b_r_k_g_a_1_1_kendall_tau_distance>`())
-    ...
+.. code-block:: cpp
+    :linenos:
+
+    std::shared_ptr<DistanceFunctionBase> dist_func {new KendallTauDistance};
+
     auto result = algorithm.pathRelink(
         brkga_params.pr_type,
         brkga_params.pr_selection,
@@ -1832,19 +1932,40 @@ IPR, and the Kendall Tau distance functions.
         brkga_params.pr_number_pairs,
         1, // block_size doesn't not matter for permutation.
         max_time - elapsedFrom(start_time),
-        brkga_params.pr_percentage)
+        brkga_params.pr_percentage
+    );
 
 Note that most parameters come from ``brkga_params``. The maximum IPR time is
 set to the remaining time for optimization (global ``maximum_time`` minus the
-elapsed time). ``pathRelink()`` returns a
+elapsed time).
+``:ref:`pathRelink()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa8da5193248d23ced19e68483aca31a5>```
+returns a
 ``:ref:`BRKGA::PathRelinking::PathRelinkingResult
 <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>```
-object which defines the status of the IPR optimization.
+object which defines the status of the IPR optimization. Four situation may
+happen:
 
-.. note::
-  The ``TOO_HOMOGENEOUS`` status is directly linked to the chosen distance
-  function and minimum distance. If the minimum distance is too large, IPR may
-  not be able to find a pair of chromosomes far enough for path relink.
+* ``:ref:`TOO_HOMOGENEOUS
+  <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253afc79eaa94186dcf0eda5c1df7bd87001>```
+  The chromosomes among the populations are too homogeneous and the path relink
+  will not generate improveded solutions. This status is directly linked to
+  the chosen distance function and minimum distance. If the minimum distance is
+  too large, IPR may not be able to find a pair of chromosomes far enough for
+  path relink;
+
+* ``:ref:`NO_IMPROVEMENT
+  <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253ae7339868191fd122c45d9abb0dcb87e9>```
+  Path relink was done but no improveded solution was found;
+
+* ``:ref:`ELITE_IMPROVEMENT
+  <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253ae523f249a5e460a70f2ae8ac7d7a959b>```
+  An improved solution among the elite set was found, but the best solution was
+  not improved;
+
+* ``:ref:`BEST_IMPROVEMENT
+  <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253a44ea02fc8a02805c8ddfe8d37d101a39>```
+  The best solution was improved.
 
 If the found solution is the best solution found so far, IPR replaces the worst
 solution by it. Otherwise, IPR computes the distance between the found solution
@@ -1855,7 +1976,7 @@ them.
 Important notes about IPR
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The API will call ``decode()`` function always with ``writeback = false``. The
+IPR will call ``decode()`` function always with ``writeback = false``. The
 reason is that if the decoder rewrites the chromosome, the path between
 solutions is lost and inadvertent results may come up. Note that at the end of
 the path relinking, the method calls the decoder with ``writeback = true`` in
@@ -1863,8 +1984,9 @@ the best chromosome found to guarantee that this chromosome is re-written to
 reflect the best solution found.
 
 .. warning::
-  Make sure your decoder does not rewrite the chromosome when called with the
-  argument ``writeback = false``.
+
+    Make sure your decoder does not rewrite the chromosome when called with the
+    argument ``writeback = false``.
 
 BRKGA-MP-IPR ``pathRelink()`` implementation is multi-threaded. Instead of to
 build and decode each chromosome one at a time, the method builds a list of
@@ -1875,46 +1997,70 @@ build the candidates, which can be costly if the ``chromosome_size`` is very
 large.
 
 .. warning::
-  As it is in method ``evolve()``, the decoding is done in parallel using
-  threads, and the user **must guarantee that the decoder is THREAD-SAFE.** If
-  such property cannot be held, we suggest using a single thread for
-  optimization.
+
+    As it is in method ``evolve()``, the decoding is done in parallel using
+    threads, and the user **must guarantee that the decoder is THREAD-SAFE.**
+    If such property cannot be held, we suggest using a single thread for
+    optimization.
 
 
-.. _doxid-guide_1guide_shaking_reset:
+.. _doxid-guide_guide_shaking:
 
-Shaking and Resetting
+Shaking
 -------------------------------------------------------------------------------
 
 Sometimes, BRKGA gets stuck, converging to local maxima/minima, for several
 iterations. When such a situation happens, it is a good idea to perturb the
 population, or even restart from a new one completely new. BRKGA-MP-IPR offers
-``:ref:`BRKGA::BRKGA_MP_IPR::shake()
+``:ref:`BRKGA_MP_IPR::shake()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3721a91ed9d3fcbdc57fbcee2e20ac66>```,
-an improved variation of the original version proposed in `this paper
-<http://dx.doi.org/10.1016/j.eswa.2019.03.007>`__.
+an improved variation of the original version proposed in
+:cite:p:`Andrade2019:PFSP_brkga_shaking`. This is the signature:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
-    void shake(unsigned intensity, :ref:`ShakingType <doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494>` shaking_type,
-               unsigned population_index =
-                   std::numeric_limits<unsigned>::infinity());
+    void shake(
+        unsigned intensity,
+        ShakingType shaking_type,
+        unsigned population_index = std::numeric_limits<unsigned>::infinity()
+    )
 
-``shake()`` method gets an ``intensity`` parameter that measures how many times
+``:ref:`shake()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3721a91ed9d3fcbdc57fbcee2e20ac66>```,
+method gets an ``intensity`` parameter that measures how many times
 the perturbation is applied on the elite set for a given ``population_index``
 (if not given, all populations are shaken). This method offers two
-generic/implicit ``:ref:`BRKGA::ShakingType
-<doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494>``` s. With
-``CHANGE``, direct modifications are done in the keys/alleles. This kind of
+canonial/generic
+``:ref:`BRKGA::ShakingType
+<doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494>```'s.
+With
+``:ref:`CHANGE
+<doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494a421cfd143e450c3f5814a0495409e073>```,
+direct modifications are done in the keys/alleles. This kind of
 shaking is recommended when the chromosome uses direct or threshold
-representations. ``SWAP`` exchanges keys/alleles inducing new permutations. For
-representational definitions, please read `this paper
-<https://doi.org/10.1016/j.ejor.2019.11.037>`__. For instance, the following
-code shakes all populations using 10 swap moves:
+representations.
+``:ref:`SWAP
+<doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494a46fc23bc4e4d57e5469a39658a6dd3e8>```
+exchanges keys/alleles inducing new permutations.
+For representational definitions, please refer to
+:cite:p:`Andrade2021:BRKGA_MP_IPR`. For instance, the following code shakes
+all populations using 10 swap moves:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
 
-    algorithm.shake(10, SWAP);
+    algorithm.shake(10, BRKGA::ShakingTypeSWAP);
+
+Sometimes, the provided shaking are not appropriated to the problem being solved.
+In this case, the user can provide a custom shaking procedure. Please, take a
+look on section
+:ref:`Providing custom shake procedure <doxid-guide_providing_custom_shake>`.
+
+
+.. _doxid-guide_guide_resetting:
+
+Resetting
+-------------------------------------------------------------------------------
 
 Sometimes, even shaking the populations does not help to escape from local
 maxima/minima. So, we need a drastic measure, restarting from scratch the role
@@ -1937,42 +2083,46 @@ population. This can be easily accomplished with
   such property cannot be held, we suggest using a single thread..
 
 
-.. _doxid-guide_1guide_migration:
+.. _doxid-guide_guide_migration:
 
 Multi-population and migration
 -------------------------------------------------------------------------------
 
 Multi-population or *island model* was introduced in genetic algorithms in
-`this paper
-<http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.36.7225>`__. The idea
-is to evolve parallel and independent populations and, once a while, exchange
-individuals among these populations. In several scenarios, this approach is
-very beneficial for optimization.
+:cite:p:`Whitley1998:Island_model`.
+The idea is to evolve parallel and independent populations and, once a while,
+exchange individuals among these populations. In several scenarios, this
+approach is very beneficial for optimization.
 
 BRKGA-MP-IPR is implemented using such island idea from the core. If you read
 the guide until here, you may notice that several methods take into account
 multiple populations. To use multiple populations, you must set
-``:ref:`BRKGA::BrkgaParams.num_independent_populations
+``:ref:`BrkgaParams::num_independent_populations
 <doxid-class_b_r_k_g_a_1_1_brkga_params_1a9a4a99536f6b755ceb07b54d784f8926>```
 with 2 or more populations, and build the BRKGA algorithm from such parameters.
 
-The immigration process is implemented by
+The immigration process is implemented by method
+``:ref:`BRKGA_MP_IPR::exchangeElite()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1ab89298e6c633a81bf8c0462fb40ddd15>```
+which has the following signature:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
 
     void exchangeElite(unsigned num_immigrants);
 
-``exchangeElite()`` copies ``num_immigrants`` from one population to another,
-replacing the worst ``num_immigrants`` individuals from the recipient
-population. Note that the migration is done for all pairs of populations. For
-instance, the following code exchanges 3 best individuals from each population:
+``:ref:`BRKGA_MP_IPR::exchangeElite()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1ab89298e6c633a81bf8c0462fb40ddd15>```
+copies ``num_immigrants`` from one population to another, replacing the worst
+``num_immigrants`` individuals from the recipient population. Note that the
+migration is done for all pairs of populations. For instance, the following
+code exchanges 3 best individuals from each population:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
 
     algorithm.exchangeElite(3);
 
 
-.. _doxid-guide_1guide_standard_brkga:
+.. _doxid-guide_guide_standard_brkga:
 
 Simulating the standard BRKGA
 ===============================================================================
@@ -1987,7 +2137,8 @@ accomplished setting ``num_elite_parents = 1`` and ``total_parents = 2``. Then,
 you must set up a bias function that ranks the elite and no-elite individual
 according to the original BRKGA bias parameter :math:`\rho` (rho).
 
-You can use ``:ref:`BRKGA::BRKGA_MP_IPR::setBiasCustomFunction()
+You can use
+``:ref:`BRKGA_MP_IPR::setBiasCustomFunction()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a8616c89626ca3c8e8d3b5adb1da24c92>```
 for that task. The given function should receive the index of the chromosome and
 returns a ranking for it. Such ranking is used in the roulette method to choose
@@ -1997,120 +2148,126 @@ function must return the probability to one or other individual. In the
 following code, we do that with a simple ``if...else`` lambda function.
 
 .. ref-code-block:: cpp
+    :linenos:
 
     // Create brkga_params by hand or reading from a file,
     // then set the following by hand.
     brkga_params.num_elite_parents = 1;
     brkga_params.total_parents = 2;
 
+    // This is the original parameter rho form the vanilla BRKGA.
     const double rho = 0.75;
-    algorithm.setBiasCustomFunction!([&](const unsigned x) {
-        return x == 1 ? rho : 1.0 - rho;
-    });
-    algorithm.initialize();
+
+    algorithm.setBiasCustomFunction!(
+        [&](const unsigned x) {
+            return x == 1 ? rho : 1.0 - rho;
+        }
+    );
 
 Here, we first set the ``num_elite_parents = 1`` and ``total_parents = 2`` as
 explained before. Following, we set a variable ``rho = 0.75``. This is the
 :math:`\rho` from standard BRKGA, and you may set it as you wish. Then, we set
 the bias function as a very simple lambda function (note that we must use
-``[&]`` to capture ``rho`` in the outside context):
-
-.. ref-code-block:: cpp
-
-    [&](const unsigned x) {
-        return x == 1 ? rho : 1.0 - rho;
-    }
-
-So, if the index of the chromosome is 1 (elite individual), it gets a 0.75
-rank/probability. If the index is 2 (non-elite individual), the chromosome gets
-0.25 rank/probability.
+``[&]`` to capture ``rho`` in the outside context). So, if the index of the
+chromosome is 1 (elite individual), it gets a 0.75 rank/probability. If the
+index is 2 (non-elite individual), the chromosome gets 0.25 rank/probability.
 
 .. warning::
-    Note that we consider the index 1 as the elite individual instead index
-    0, and index 2 to the non-elite individual opposed to index 1. The reason
+
+    Note that we consider the index 1 as the elite individual instead index 0,
+    and index 2 to the non-elite individual opposed to index 1. The reason
     for this is that, internally, BRKGA always pass ``r > 0`` to the bias
     function to avoid division-by-zero exceptions.
 
-.. warning::
-  All these operations must be done before calling ``initialize()``.
 
-
-.. _doxid-guide_1guide_parameters:
+.. _doxid-guide_guide_parameters:
 
 Reading and writing parameters
 ===============================================================================
 
 Although we can build the BRKGA algorithm data by set up a
-``:ref:`BRKGA::BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>``` object
+``:ref:`BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>``` object
 manually, the easiest way to do so is to read such parameters from a
 configuration file. For this, we can use
-``:ref:`BRKGA::readConfiguration() <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>```
-that reads a
-simple plain text file and returns a tuple of ``:ref:`BRKGA::BrkgaParams
-<doxid-class_b_r_k_g_a_1_1_brkga_params>``` and
-``:ref:`BRKGA::ExternalControlParams
-<doxid-class_b_r_k_g_a_1_1_external_control_params>``` objects. For instance,
+``:ref:`BRKGA::readConfiguration()
+<doxid-group__brkga__control__params_1ga1c8b456ad75a3b522d315d4167546ae6>```
+that reads a simple plain text file and returns a tuple of
+``:ref:`BRKGA::BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>```
+and
+``:ref:`BRKGA::ControlParams <doxid-class_b_r_k_g_a_1_1_control_params>```
+objects. For instance,
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
 
-    auto [brkga_params, control_params] = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>`("tuned_conf.txt");
+    auto [brkga_params, control_params] = BRKGA::readConfiguration("tuned_conf.txt");
 
 The configuration file must be plain text such that contains pairs of
-parameter name and value. This file must list all fields from
-``:ref:`BRKGA::BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>``` and
-``:ref:`BRKGA::ExternalControlParams
-<doxid-class_b_r_k_g_a_1_1_external_control_params>```, even though you do
-not use each one at this moment. In `examples folder
+parameter name and value.
+In `examples folder
 <https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples/tsp>`_, we
 have `config.conf
 <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/config.conf>`_
 that looks like this:
 
-.. ref-code-block:: cpp
+.. code-block::
+    :linenos:
 
+    # BRKGA and IPR parameters
     population_size 2000
     elite_percentage 0.30
     mutants_percentage 0.15
     num_elite_parents 2
     total_parents 3
-    bias_type :ref:`LOGINVERSE <doxid-namespace_b_r_k_g_a_1af0ede0f2a7123e654a4e3176b5539fb1adca762bd1443afdcf03af352da1c9184>`
+    bias_type LOGINVERSE
     num_independent_populations 3
     pr_number_pairs 0
     pr_minimum_distance 0.15
-    pr_type :ref:`PERMUTATION <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a79247d22aeb1fa9ab7611488e8137132a48deaef68056f516e0091a15c1db3daa>`
-    pr_selection :ref:`BESTSOLUTION <doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a3ce8f0aeb5c0063aab2e8cbaee3076faa6a169dcc4781fa0dc8c448d550be9d39>`
+    pr_type DIRECT
+    pr_selection BESTSOLUTION
+    pr_distance_function_type KENDALLTAU
     alpha_block_size 1.0
     pr_percentage 1.0
-    exchange_interval 200
-    num_exchange_indivuduals 2
-    reset_interval 600
+    num_exchange_individuals 1
+    shaking_type SWAP
+    shaking_intensity_lower_bound 0.25
+    shaking_intensity_upper_bound 0.75
+
+    # Control parameters
+    maximum_running_time 60
+    exchange_interval 100
+    ipr_interval 200
+    shake_interval 300
+    reset_interval 500
+    stall_offset 100
 
 It does not matter whether we use lower or upper cases. Blank lines and lines
 starting with ``#`` are ignored. The order of the parameters should not
 matter either. And, finally, this file should be readable for both C++, Julia,
-and Python framework versions.
+and Python framework versions (when all come to the same version number).
 
 In some cases, you define some of the parameters at the running time, and you
 may want to save them for debug or posterior use. To do so, you can use
 ``:ref:`BRKGA::writeConfiguration()
-<doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>```, call upon a
-``BrkgaParams`` object.
+<doxid-group__brkga__control__params_1ga758c489d2f6291cf80a78ca6765b856e>```,
+call upon a ``:ref:`BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>``` object.
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
-    :ref:`writeConfiguration <doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>`("test.conf", brkga_params);
+    BRKGA::writeConfiguration("test.conf", brkga_params);
     //or
-    :ref:`writeConfiguration <doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>`("test.conf", brkga_params, control_params);
+    BRKGA::writeConfiguration ("test.conf", brkga_params, control_params);
 
 If ``control_params`` is not given, default values are used in its place.
 
 .. note::
-  ``:ref:`BRKGA::writeConfiguration()
-  <doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>```
-  rewrites the given file. So, watch out to not lose previous configurations.
+
+    ``:ref:`BRKGA::writeConfiguration()
+    <doxid-group__brkga__control__params_1ga758c489d2f6291cf80a78ca6765b856e>```
+    rewrites the given file. So, watch out to not lose previous configurations.
 
 
-.. _doxid-guide_1guide_multi_obj:
+.. _doxid-guide_guide_multi_obj:
 
 Using BRKGA-MP-IPR on multi-objective mode
 ===============================================================================
@@ -2174,6 +2331,7 @@ Note that we could use the single-objective version of the BRKGA, by doing a
 linear (or affine) comnination of the objective function like this:
 
 .. math::
+
     \sum_{i = 1}^n \alpha_i f_i
 
 where :math:`n` is the number of objective functions.
@@ -2200,53 +2358,60 @@ from the developer to break the total value on every single objective value.
 
 That said, to use BRKGA-MP-IPR in the native multi-objective mode,
 we first must set
-``:ref:`BRKGA::fitness_t <doxid-namespace_b_r_k_g_a_1ae9551fcbbfd6072b95e5f112e3b1565e>```
+``:ref:`BRKGA::fitness_t
+<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>```
 according to the number of objectives we want. For that, we must
 change the file
 `fitness_type.hpp <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/brkga_mp_ipr/fitness_type.hpp>`_
 to reflect such a thing. In this example, we use the standard
 `std::tuple <https://en.cppreference.com/w/cpp/utility/tuple>`_:
 
-.. ref-code-block:: cpp
-
-    #include <limits>
-    #include <:ref:`tuple <https://en.cppreference.com/w/cpp/utility/tuple>`>
+.. code-block:: cpp
+    :linenos:
 
     namespace BRKGA {
-
-    typedef :ref:`std::tuple <https://en.cppreference.com/w/cpp/utility/tuple>`<double, double> fitness_t;
-
-    //...
+    using fitness_t = std::tuple<double, double>;
     } // end namespace BRKGA_MP_IPR
 
-In theory, we can use any custom structure or class, providing it implements the
-comparison operators(``operator<``, ``operator>``, and ``operator==``).
+In theory, we can use any custom structure or class, providing it implements
+the comparison operators (`operator<`, `operator>`, and `operator==`), and the
+streaming operator `std::ostream& operator<<(std::ostream& os, const
+CustomFitness& fitness)` where `CustomFitness` is your fitness structure.
 
 Internally, BRKGA-MP-IPR doesn't use ``operator==`` directly. BRKGA implements
-the custom function ``close_enough()``. For fundamental numerical types, it
-compares the absolute difference with a given
-:ref:`EQUALITY_THRESHOLD <doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>`,
+the custom function
+``:ref:`BRKGA::close_enough()
+<doxid-group__utility__functions_1gae3eb0d56b561126f23ebd26ec556ac29>```.
+For fundamental numerical types, it compares the absolute difference with a given
+``:ref:`BRKGA::EQUALITY_THRESHOLD
+<doxid-namespace_b_r_k_g_a_1a8d1d184901bb4f34c71c7bb73a86a84a>```
 i.e., two numbers :math:`a` and :math:`b` equal if :math:`|a - b| <
-EQUALITY\_THRESHOLD`.  For all other types (except ``std::tuple``), we use
+EQUALITY\_THRESHOLD`. For all other types (except ``std::tuple``), we use
 ``operator==``. For ``std::tuple``, we have a specialized ``close_enough()``
 that iterates over each element of the tuples calling the base
 ``close_enough()``.
 
 Once defined your ``fitness_t``, you must also provide
-:ref:`FITNESS_T_MIN <doxid-namespace_b_r_k_g_a_1a27f915fd21c02aee1097135954420ebb>`
+``:ref:`BRKGA::FITNESS_T_MIN
+<doxid-namespace_b_r_k_g_a_1a27f915fd21c02aee1097135954420ebb>```
 and
-:ref:`FITNESS_T_MAX <doxid-namespace_b_r_k_g_a_1aa4eaa93f02c949d7af918598c606402f>`,
+``:ref:`BRKGA::FITNESS_T_MAX
+<doxid-namespace_b_r_k_g_a_1aa4eaa93f02c949d7af918598c606402f>```,
 if your ``fitness_t`` is not a fundamental type or a tuple of
 fundamental types. The following is an example of a custom ``fitness_t`` should
 looks like.
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     class MyCrazyFitness {
     public:
-        MyCrazyFitness(const double _main_part,
-                       const double _secondary_part,
-                       const double _threshold):
+        constexpr MyCrazyFitness() = default;
+
+
+        constexpr MyCrazyFitness(const double _main_part,
+                                 const double _secondary_part,
+                                 const double _threshold):
             main_part(_main_part),
             secondary_part(_secondary_part),
             threshold(_threshold)
@@ -2278,22 +2443,34 @@ looks like.
         double threshold;
     };
 
+    std::ostream& operator<<(std::ostream& os, const MyCrazyFitness& fitness) {
+        os
+        << "(main_part: " << fitness.main_part << ", "
+        << "secondary_part: " << fitness.secondary_part << ", "
+        << "threshold: " << fitness.threshold << ")";
+        return os;
+    }
+
     // The following three definitions are mandatory!
+    using fitness_t = MyCrazyFitness;
 
-    typedef MyCrazyFitness fitness_t;
+    static constexpr fitness_t FITNESS_T_MIN {-100.0, -10.0, 1e-16};
 
-    static constexpr fitness_t FITNESS_T_MIN = fitness_t(-100.0, -10.0, 1e-16);
+    static constexpr fitness_t FITNESS_T_MAX {1000.0, 100.0, 1e-1};
 
-    static constexpr fitness_t FITNESS_T_MAX = fitness_t(1000.0, 100.0, 1e-1);
+
 
 .. warning::
+
     Unless we really need a custom ``fitness_t``, you should use ``std::tuple``.
 
 
-.. _doxid-guide_1guide_tips:
+.. _doxid-guide_guide_tips:
 
 (Probable Valuable) Tips
 ===============================================================================
+
+.. _doxid-guide_algorithm_warmup:
 
 Algorithm warmup
 -------------------------------------------------------------------------------
@@ -2313,6 +2490,8 @@ structures since it might incur
 `false sharing <https://en.wikipedia.org/wiki/False_sharing>`_.
 Therefore, more experimentation and fine-tuning are needed in this space.
 
+
+.. _doxid-guide_complex_decoders_and_timing:
 
 Complex decoders and timing
 -------------------------------------------------------------------------------
@@ -2335,7 +2514,7 @@ this way, we make the solution **invalid** since it violates the maximum time
 allowed. The BRKGA framework takes care of the rest.
 
 
-.. _doxid-guide_1guide_tips_multi_thread_decoding:
+.. _doxid-guide_guide_tips_multi_thread_decoding:
 
 Multi-thread decoding
 -------------------------------------------------------------------------------
@@ -2365,24 +2544,27 @@ and recover the memory you want to use.
 Let's see a simple example considering the TSP example. ``TSP_Decode`` uses a
 single array to create the permutation of nodes. Let's pre-allocate its memory
 per thread. To keep things separeted and easy to understand, we created a new
-class `TSP_Decoder_pre_allocating <https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/decoders/tsp_decoder_pre_allocating.hpp>`_
+class
+`TSP_Decoder_pre_allocating
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/decoders/tsp_decoder_pre_allocating.hpp>`_
 so that we allocate, for each thread, a vector to hold the permutation during
 the decoding:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     class TSP_Decoder_pre_allocating {
     public:
         TSP_Decoder_pre_allocating(const TSP_Instance& instance,
                                    const unsigned num_threads = 1);
 
-        double decode(:ref:`BRKGA::Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome, bool rewrite = true);
+        double decode(BRKGA::Chromosome & chromosome, bool rewrite = true);
 
     public:
         const TSP_Instance& instance;
 
     protected:
-        typedef std::vector<std::pair<double, unsigned>> Permutation;
+        using Permutation = std::vector<std::pair<double, unsigned>>;
         std::vector<Permutation> permutation_per_thread;
     };
 
@@ -2399,7 +2581,8 @@ In ``decode``, we use `omp_get_thread_num()
 to identify which thread called the decoder, and retrieve the respective data
 strucuture.
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     #include <omp.h>
 
@@ -2410,7 +2593,7 @@ strucuture.
         permutation_per_thread(num_threads, Permutation(instance.num_nodes))
     {}
 
-    double TSP_Decoder_pre_allocating::decode(:ref:`Chromosome <doxid-namespace_b_r_k_g_a_1ac1d4eb0799f47b27004f711bdffeb1c4>`& chromosome,
+    double TSP_Decoder_pre_allocating::decode(Chromosome& chromosome,
                                               bool /* not-used */) {
         // If you have OpenMP available, get the allocated memory per thread ID.
         #ifdef _OPENMP
@@ -2435,19 +2618,21 @@ strucuture.
     }
 
 .. note::
-  Pre-allocation and multi-threading only make sense for large data structures
-  and time-consuming decoders. Otherwise, the code spends too much time on
-  context switching and system calls.
+
+    Pre-allocation and multi-threading only make sense for large data structures
+    and time-consuming decoders. Otherwise, the code spends too much time on
+    context switching and system calls.
 
 .. warning::
-  Multi-threading consumes many resources of the machine and have diminishing
-  returns. I recommend using **at most the number of physical cores** (may -1)
-  to avoid racing and too much context switching. You must test which is the
-  best option for your case. In my experience, complex decoders benefit more
-  from multi-threading than simple and fast decoders.
+
+    Multi-threading consumes many resources of the machine and have diminishing
+    returns. I recommend using **at most the number of physical cores** (may -1)
+    to avoid racing and too much context switching. You must test which is the
+    best option for your case. In my experience, complex decoders benefit more
+    from multi-threading than simple and fast decoders.
 
 
-.. _doxid-guide_1guide_tips_multi_thread_mating:
+.. _doxid-guide_guide_tips_multi_thread_mating:
 
 Multi-thread mating
 -------------------------------------------------------------------------------
@@ -2456,49 +2641,50 @@ One of the nice additions to BRKGA-MP-IPR 2.0 is the capability of performing
 the mating in parallel. Such capability speeds up the algorithm substantially,
 mainly for large chromosomes and large populations. However, when performing
 parallel mating, we have some points regarding reproducibility described below.
-
 The parallel mating is controlled in compilation time by the preprocessing flags
-:ref:`MATING_FULL_SPEED <doxid-brkga__mp__ipr_8hpp_mating_full_speed>`,
-:ref:`MATING_SEED_ONLY <doxid-brkga__mp__ipr_8hpp_mating_seed_only>`,
+``:ref:`MATING_FULL_SPEED <doxid-group__compiler__directives_1ga232080cffcccb7698dd33155c0a534d7>```,
+``:ref:`MATING_SEED_ONLY <doxid-group__compiler__directives_1ga68b3cb7d49905ea1096c35a4467b6c22>```,
 and
-:ref:`MATING_SEQUENTIAL <doxid-brkga__mp__ipr_8hpp_mating_sequential>`.
+``:ref:`MATING_SEQUENTIAL <doxid-group__compiler__directives_1ga5766b15b52c6201d58440c53462fdf24>```,
 
 Compiling your code with
-:ref:`MATING_SEQUENTIAL <doxid-brkga__mp__ipr_8hpp_mating_sequential>`,
-enabled will remove the parallel
-mating at all, and the algorithm will behave like the previous versions. This
-option can be very slow for large chromosomes and large populations. But it
-makes debugging easier. Following we have a quick example using the TSP decoder
-with 4 threads, for 1,000 generations. Note that the average total time
-(real time) is 7m 38s.
+``:ref:`MATING_SEQUENTIAL <doxid-group__compiler__directives_1ga5766b15b52c6201d58440c53462fdf24>```,
+enabled will remove the parallel mating at all, and the algorithm will behave
+like the previous versions. This option can be very slow for large chromosomes
+and large populations. But it makes debugging easier. Following we have a quick
+example using the TSP decoder with 4 threads, for 1,000 generations. We only
+run the evolutionary portion, disabling all other features
+(see `main_maximum_iterations.cpp
+<https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_maximum_iterations.cpp>`_).
+Note that the average total time (real time) is 4m 46s.
 
-.. ref-code-block::
+.. code-block::
 
     $ make
     ...
     ...
-    g++ -DMATING_SEQUENTIAL -std=c++17 -O3 -fomit-frame-pointer -funroll-loops \
+    g++ -DMATING_SEQUENTIAL -std=c++20 -O3 -fomit-frame-pointer -funroll-loops \
         -ftracer -fpeel-loops -fprefetch-loop-arrays -pthread -fopenmp \
-        -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
+        -I. -I./brkga_mp_ipr  -c main_maximum_iterations.cpp -o main_maximum_iterations.o
     ...
 
-    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/vm1084.dat > /dev/null; done
+    $ for i in 1 2 3; do time ./main_maximum_iterations 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
 
-    real	7m39.152s
-    user	10m47.575s
-    sys		0m1.079s
+    real    4m48.649s
+    user    6m58.208s
+    sys     0m0.432s
 
-    real	7m41.216s
-    user	10m50.354s
-    sys		0m1.180s
+    real    4m42.132s
+    user    6m48.032s
+    sys     0m0.418s
 
-    real	7m35.458s
-    user	10m42.487s
-    sys		0m0.853s
+    real    4m46.317s
+    user    6m53.796s
+    sys     0m0.243s
 
 
 Setting
-:ref:`MATING_SEED_ONLY <doxid-brkga__mp__ipr_8hpp_mating_seed_only>`,
+``:ref:`MATING_SEED_ONLY <doxid-group__compiler__directives_1ga68b3cb7d49905ea1096c35a4467b6c22>```,
 BRKGA will perform the mating in parallel, however, in
 a more controlled way. On each evolutionary step, the algorithm creates a
 sequence of seeds (one per to-be-generated offspring). Such seeds are fed to a
@@ -2506,35 +2692,35 @@ pseudo-random number generator (RNG) for each thread: when starting the mating,
 the RNG is seeded before being used. This occurs in each iteration. In this way,
 all generators have their state controlled by the main generator, and therefore,
 **the unique seed** supplied by the user. This is another example, running the
-same machine and also 4 threads. The average total time is 3m 15s, a whooping
-reduction of ~57%.
+same machine and also 4 threads. The average total time is 1m 58s, a whooping
+reduction of ~59%.
 
-.. ref-code-block::
+.. code-block::
 
     $ make
     ...
     ...
-    g++ -DMATING_SEED_ONLY -std=c++17 -O3 -fomit-frame-pointer -funroll-loops \
+    g++ -DMATING_SEED_ONLY -std=c++20 -O3 -fomit-frame-pointer -funroll-loops \
         -ftracer -fpeel-loops -fprefetch-loop-arrays -pthread -fopenmp \
-        -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
+        -I. -I./brkga_mp_ipr  -c main_maximum_iterations.cpp -o main_maximum_iterations.o
     ...
 
-    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/vm1084.dat > /dev/null; done
+    $ for i in 1 2 3; do time ./main_maximum_iterations 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
 
-    real	3m15.552s
-    user	12m35.755s
-    sys		0m1.704s
+    real    1m58.493s
+    user    7m34.826s
+    sys     0m2.335s
 
-    real	3m15.644s
-    user	12m36.619s
-    sys		0m1.382s
+    real    1m57.311s
+    user    7m38.627s
+    sys     0m0.941s
 
-    real	3m15.445s
-    user	12m38.104s
-    sys		0m1.115s
+    real    1m57.403s
+    user    7m47.691s
+    sys     0m0.950s
 
 Finally,
-:ref:`MATING_FULL_SPEED <doxid-brkga__mp__ipr_8hpp_mating_full_speed>`
+``:ref:`MATING_FULL_SPEED <doxid-group__compiler__directives_1ga232080cffcccb7698dd33155c0a534d7>```,
 enables parallel mating at full speed. In this case,
 each thread has a unique RNG previously seeded at the beginning of the algorithm
 (BRKGA constructor). This initialization is done in a chain: the first RNG is
@@ -2548,38 +2734,38 @@ per thread. In other words, the random states must be the same for each thread,
 on different runs.  When we increase or decrease the number of threads,
 different threads will handle the chromosomes. However, this is the fastest
 method. Here is another example, using the same conditions as before.
-The average here is 3m 7s, a marginal improve regarding to
-:ref:`MATING_SEED_ONLY <doxid-brkga__mp__ipr_8hpp_mating_seed_only>`.
+The average here is 1m 56s, a marginal improve regarding to
+``:ref:`MATING_SEED_ONLY <doxid-group__compiler__directives_1ga68b3cb7d49905ea1096c35a4467b6c22>```,
 
 .. ref-code-block::
 
     $ make
     ...
     ...
-    g++ -DMATING_FULL_SPEED -std=c++17 -O3 -fomit-frame-pointer -funroll-loops \
+    g++ -DMATING_FULL_SPEED -std=c++20 -O3 -fomit-frame-pointer -funroll-loops \
         -ftracer -fpeel-loops -fprefetch-loop-arrays -pthread -fopenmp \
-        -I. -I./brkga_mp_ipr  -c main_minimal.cpp -o main_minimal.o
+        -I. -I./brkga_mp_ipr  -c main_maximum_iterations.cpp -o main_maximum_iterations.o
     ...
 
-    $ for i in 1 2 3; do time ./main_minimal 270001 config.conf 1000 ../../instances/vm1084.dat > /dev/null; done
+    $ for i in 1 2 3; do time ./main_maximum_iterations 270001 config.conf 1000 ../../instances/rd400.dat > /dev/null; done
 
-    real	3m2.835s
-    user	11m47.193s
-    sys	0m1.724s
+    real    1m55.840s
+    user    7m40.191s
+    sys     0m1.382s
 
-    real	3m7.438s
-    user	12m3.809s
-    sys		0m1.368s
+    real    1m56.824s
+    user    7m44.251s
+    sys     0m0.845s
 
-    real	3m7.876s
-    user	12m6.018s
-    sys		0m1.368s
+    real    1m56.293s
+    user    7m41.350s
+    sys     0m2.114s
 
 
 .. warning::
 
     Remember, when using
-    :ref:`MATING_FULL_SPEED <doxid-brkga__mp__ipr_8hpp_mating_full_speed>`,
+    ``:ref:`MATING_FULL_SPEED <doxid-group__compiler__directives_1ga232080cffcccb7698dd33155c0a534d7>```,
     the results depend on both **seed** and **number of threads.**
     Multiple runs with the same seed and number of threads should produce the
     same results. Changing one or other, the results will change.
@@ -2590,135 +2776,177 @@ very significant improvement over the serial version.
 
 .. note::
 
-    We thank `Alberto Francisco Kummer Neto <https://github.com/afkummer>`_
+    We thank `Alberto F. Kummer <https://github.com/afkummer>`_
     very much for the first version of the parallel mating and the fruitful
     discussions about it and other topics. Please, also consider citing his
-    paper:
-
-        A.F. Kummer N., L.S. Buriol, O.C.B. de Araujo. A biased random key
-        genetic algorithm applied to the VRPTW with skill requirements and
-        synchronization constraints. *Proceedings of the 2020 Genetic and
-        Evolutionary Computation Conference (GECCO '20)*, pages 717-724, 2020.
-        DOI: `10.1145/3377930.3390209
-        <https://doi.org/10.1145/3377930.3390209>`_.
+    paper :cite:p:`Kummer2020:BRKGA_VRPTW_Synch`.
 
 
-.. _doxid-guide_1guide_known_issues:
+.. _doxid-guide_known_issues:
 
 Known issues
 ===============================================================================
 
-One of the interesting features implemented in this C++ BRKGA-MP-IPR framework
-is the capability to easily load and write the algorithm configuration into
-text files. To enable this feature, we borrow some nice code from Bradley Plohr
-(`https://codereview.stackexchange.com/questions/14309/conversion-between-enum-and-string-in-c-class-header
-<https://codereview.stackexchange.com/questions/14309/conversion-between-enum-and-string-in-c-class-header>`_),
-which make easy to read and write enumerations from standard streams (cout and
-cerr).
+Since BRKGA-MP-IPR is header-only, we may have compilation/linking issues if we
+include the BRKGA-MP-IPR header in different modules (translation units on C++
+jargon) and compile them separately (which normally we do). For example,
+suppose we have two pieces of code, module_a.cpp and module_b.cpp, such that we
+include BRKGA in both (i.e., ``#include "brkga_mp_ipr"`` in both files.
 
-However, since BRKGA-MP-IPR is header-only, this feature can cause some
-headaches during the linking, especially if you include the BRKGA-MP-IPR header
-in different modules (translation units on C++ jargon) and compile them
-separately (which normally we do). For example, suppose we have two pieces of
-code, module_a.cpp and module_b.cpp, such that we include BRKGA in both (i.e.,
-``#include <brkga_mp_ipr>`` in both files.
+File `module_a.cpp`:
 
-File module_a.cpp
-
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     #include "brkga_mp_ipr.hpp"
     int main() {
-        auto params = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>`("config.conf");
+        auto params = BRKGA::readConfiguration("config.conf");
         return 0;
     }
 
-File module_b.cpp
+File `module_b.cpp`:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     #include "brkga_mp_ipr.hpp"
     void test() {
-        auto params = :ref:`BRKGA::readConfiguration <doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>`("config.conf");
+        auto params = BRKGA::readConfiguration("config.conf");
     }
 
 Let's compile each one with GCC and link them:
 
-.. ref-code-block::
+.. code-block::
+    :linenos:
 
-    $ g++ -std=c++17 -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+    $ g++ -std=c++20 -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
 
-    $ g++ -std=c++17 -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
+    $ g++ -std=c++20 -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
 
     $ g++ module_a.o module_b.o -o test
-    duplicate symbol EnumIO<BRKGA::PathRelinking::Selection>::enum_names[abi:cxx11]()    in:
+
+    duplicate symbol '__ZN5BRKGA6EnumIOINS_13PathRelinking9SelectionEE10enum_namesB5cxx11Ev' in:
         module_a.o
         module_b.o
-    duplicate symbol EnumIO<BRKGA::Sense>::enum_names[abi:cxx11]()    in:
+    duplicate symbol '__ZN5BRKGA6EnumIOINS_5SenseEE10enum_namesB5cxx11Ev' in:
         module_a.o
         module_b.o
-    duplicate symbol EnumIO<BRKGA::BiasFunctionType>::enum_names[abi:cxx11]()     in:
+    duplicate symbol '__ZN5BRKGA6EnumIOINS_16BiasFunctionTypeEE10enum_namesB5cxx11Ev' in:
         module_a.o
         module_b.o
-    duplicate symbol EnumIO<BRKGA::PathRelinking::Type>::enum_names[abi:cxx11]()    in:
+    duplicate symbol '__ZN5BRKGA6EnumIOINS_13PathRelinking20DistanceFunctionTypeEE10enum_namesB5cxx11Ev' in:
         module_a.o
         module_b.o
-    duplicate symbol BRKGA::writeConfiguration(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, BRKGA::BrkgaParams const&, BRKGA::ExternalControlParams const&) in:
+    duplicate symbol '__ZN5BRKGA6EnumIOINS_11ShakingTypeEE10enum_namesB5cxx11Ev' in:
         module_a.o
         module_b.o
-    duplicate symbol BRKGA::readConfiguration(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) in:
+    duplicate symbol '__ZN5BRKGA6EnumIOINS_13PathRelinking4TypeEE10enum_namesB5cxx11Ev' in:
         module_a.o
         module_b.o
-    ld: 6 duplicate symbols for architecture x86_64
+    duplicate symbol '__ZN5BRKGA17readConfigurationERSiRSo' in:
+        module_a.o
+        module_b.o
+    duplicate symbol '__ZN5BRKGA17readConfigurationERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSo' in:
+        module_a.o
+        module_b.o
+    duplicate symbol '__ZN5BRKGAlsERSoRKNS_15AlgorithmStatusE' in:
+        module_a.o
+        module_b.o
+    duplicate symbol '__ZN5BRKGAlsERSoRKNS_13ControlParamsE' in:
+        module_a.o
+        module_b.o
+    duplicate symbol '__ZN5BRKGA18writeConfigurationERSoRKNS_11BrkgaParamsERKNS_13ControlParamsE' in:
+        module_a.o
+        module_b.o
+    duplicate symbol '__ZN5BRKGA18writeConfigurationERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERKNS_11BrkgaParamsERKNS_13ControlParamsE' in:
+        module_a.o
+        module_b.o
+    duplicate symbol '__ZN5BRKGAlsERSoRKNS_11BrkgaParamsE' in:
+        module_a.o
+        module_b.o
+    ld: 13 duplicate symbols for architecture x86_64
     collect2: error: ld returned 1 exit status
 
-Let's try with Clang:
+Now, we try with Clang:
 
-.. ref-code-block::
+.. code-block::
+    :linenos:
 
-    $ clang++-mp-7.0 -std=c++17 -pthread -fopenmp -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
+    $ clang++ -std=c++20 -fopenmp -I../brkga_mp_ipr -c module_a.cpp -o module_a.o
 
-    $ clang++-mp-7.0 -std=c++17 -pthread -fopenmp -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
+    $ clang++ -std=c++20 -fopenmp -I../brkga_mp_ipr -c module_b.cpp -o module_b.o
 
-    $ clang++-mp-7.0 module_a.o module_b.o -o test
-    duplicate symbol __ZN6EnumIOIN5BRKGA13PathRelinking9SelectionEE10enum_namesEv in:
+    $ clang++ -std=c++20 -fopenmp module_a.o module_b.o -o test
+
+    duplicate symbol 'BRKGA::EnumIO<BRKGA::PathRelinking::Selection>::enum_names()' in:
         module_a.o
         module_b.o
-    duplicate symbol __ZN6EnumIOIN5BRKGA5SenseEE10enum_namesEv in:
+    duplicate symbol 'BRKGA::EnumIO<BRKGA::Sense>::enum_names()' in:
         module_a.o
         module_b.o
-    duplicate symbol __ZN6EnumIOIN5BRKGA16BiasFunctionTypeEE10enum_namesEv in:
+    duplicate symbol 'BRKGA::EnumIO<BRKGA::BiasFunctionType>::enum_names()' in:
         module_a.o
         module_b.o
-    duplicate symbol __ZN6EnumIOIN5BRKGA13PathRelinking4TypeEE10enum_namesEv in:
+    duplicate symbol 'BRKGA::EnumIO<BRKGA::PathRelinking::DistanceFunctionType>::enum_names()' in:
         module_a.o
         module_b.o
-    duplicate symbol __ZN5BRKGA18writeConfigurationERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEERKNS_11BrkgaParamsERKNS_21ExternalControlParamsE in:
+    duplicate symbol 'BRKGA::EnumIO<BRKGA::ShakingType>::enum_names()' in:
         module_a.o
         module_b.o
-    duplicate symbol __ZN5BRKGA17readConfigurationERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE in:
+    duplicate symbol 'BRKGA::EnumIO<BRKGA::PathRelinking::Type>::enum_names()' in:
         module_a.o
         module_b.o
-    ld: 6 duplicate symbols for architecture x86_64
+    duplicate symbol 'BRKGA::operator<<(std::__1::basic_ostream<char, std::__1::char_traits<char>>&, BRKGA::AlgorithmStatus const&)' in:
+        module_a.o
+        module_b.o
+    duplicate symbol 'BRKGA::writeConfiguration(std::__1::basic_ostream<char, std::__1::char_traits<char>>&, BRKGA::BrkgaParams const&, BRKGA::ControlParams const&)' in:
+        module_a.o
+        module_b.o
+    duplicate symbol 'BRKGA::writeConfiguration(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, BRKGA::BrkgaParams const&, BRKGA::ControlParams const&)' in:
+        module_a.o
+        module_b.o
+    duplicate symbol 'BRKGA::operator<<(std::__1::basic_ostream<char, std::__1::char_traits<char>>&, BRKGA::ControlParams const&)' in:
+        module_a.o
+        module_b.o
+    duplicate symbol 'BRKGA::operator<<(std::__1::basic_ostream<char, std::__1::char_traits<char>>&, BRKGA::BrkgaParams const&)' in:
+        module_a.o
+        module_b.o
+    duplicate symbol 'BRKGA::readConfiguration(std::__1::basic_istream<char, std::__1::char_traits<char>>&, std::__1::basic_ostream<char, std::__1::char_traits<char>>&)' in:
+        module_a.o
+        module_b.o
+    duplicate symbol 'BRKGA::readConfiguration(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, std::__1::basic_ostream<char, std::__1::char_traits<char>>&)' in:
+        module_a.o
+        module_b.o
+    duplicate symbol 'operator<<(std::__1::basic_ostream<char, std::__1::char_traits<char>>&, std::__1::chrono::duration<double, std::__1::ratio<1l, 1l>> const&)' in:
+        module_a.o
+        module_b.o
+    ld: 14 duplicate symbols for architecture x86_64
     clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
-So, note that we have several duplicated symbols, which are the ``enum``
-writer/readers, and the two stand-alone functions
-``:ref:`BRKGA::writeConfiguration()
-<doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>``` and
+
+So, note that we have several duplicated symbols (which varies a little bit
+per compiler), including the EnumIO utilities, output stream operators,
 ``:ref:`BRKGA::readConfiguration()
-<doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>```.
+<doxid-group__brkga__control__params_1ga1c8b456ad75a3b522d315d4167546ae6>```,
+``:ref:`BRKGA::writeConfiguration()
+<doxid-group__brkga__control__params_1ga758c489d2f6291cf80a78ca6765b856e>```,
+even the definitions of
+``:ref:`BRKGA::AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>```,
+``:ref:`BRKGA::BrkgaParams <doxid-class_b_r_k_g_a_1_1_brkga_params>```,
+and
+``:ref:`BRKGA::ControlParams <doxid-class_b_r_k_g_a_1_1_control_params>```.
 
 To avoid such a situation, we have to ``inline`` these functions and template
 specializations. We can do that passing the compiler directive
-``BRKGA_MULTIPLE_INCLUSIONS`` which inlines the functions and template
-specializations properly.
+``:ref:`BRKGA_MULTIPLE_INCLUSIONS
+<doxid-group__compiler__directives_1ga608f9e381594efac6848d962c0110e91>```,
+which inlines the functions and template specializations properly.
 
-.. ref-code-block::
+.. code-block::
 
-    $ g++ -std=c++17 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_a.cpp -o module_a.o
+    $ g++ -std=c++20 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_a.cpp -o module_a.o
 
-    $ g++ -std=c++17 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_b.cpp -o module_b.o
+    $ g++ -std=c++20 -I../brkga_mp_ipr -DBRKGA_MULTIPLE_INCLUSIONS -c module_b.cpp -o module_b.o
 
     $ g++ module_a.o module_b.o -o test
 
@@ -2729,23 +2957,20 @@ compiler may complain about too many inline functions, if you are already using
 several inline functions.
 
 .. warning::
-  Avoid including ``brkga_mp_ip.hpp`` in several files/translation units. If
-  unavoidable, use the compiler directive ``BRKGA_MULTIPLE_INCLUSIONS``.
+
+    Avoid including ``brkga_mp_ip.hpp`` in several files/translation units.
+    If unavoidable, use the compiler directive ``:ref:`BRKGA_MULTIPLE_INCLUSIONS
+    <doxid-group__compiler__directives_1ga608f9e381594efac6848d962c0110e91>```.
 
 But now, suppose we must use multiple inclusions of BRKGA header, and our
 compiler finds issues on inline such functions. The last resource is to move
-functions ``:ref:`BRKGA::writeConfiguration()
-<doxid-namespace_b_r_k_g_a_1a01bade43afee725ca73c3f45a76012c4>``` and
-``:ref:`BRKGA::readConfiguration()
-<doxid-namespace_b_r_k_g_a_1a6ea1575c98d23be6abbc2a497f31529f>```, and all enum
-template specializations (at the end of file ``brkga_mp_ipr.hpp``), to a unique
-translation unit. I recommend to it on your ``main()`` module, so that they are
-compiled just once.
+the implementation of such functions to a separated translation unit (.cpp)
+and compile them isolated, adding to the linking stage.
+
+
+.. _doxid-guide_references:
 
 References
 ===============================================================================
 
 .. bibliography::
-
-
-.. footbibliography::

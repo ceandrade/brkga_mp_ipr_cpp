@@ -1953,7 +1953,7 @@ public:
      * // You can set to the max.
      * control_params.maximum_running_time = std::chrono::seconds::max();
      *
-     * control_params.stalled_iterations = numeric_limits<unsigned>::max();
+     * control_params.stall_offset = numeric_limits<unsigned>::max();
      * \endcode
      *
      * \param stopping_criteria a callback function to determine is the

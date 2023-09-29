@@ -22,21 +22,21 @@ Distance Function Base. :ref:`More...<details-class_b_r_k_g_a_1_1_distance_funct
 	public:
 		// methods
 	
-		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1acee8e7b478010aff23b3a46cd113860a>`(
-			const std::vector<double>& v1,
-			const std::vector<double>& v2
-			) = 0;
+		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a97950c58509065dee6c352cbe4fb5b35>`(
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& v1,
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& v2
+		) = 0;
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a243c8a1031fb149c6abc16f3869f2ace>`(
-			const double key1,
-			const double key2
-			) = 0;
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1ac43fa85761c96a6a16c679781ee468fa>`(
+			const Chromosome::value_type key1,
+			const Chromosome::value_type key2
+		) = 0;
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1aca0fc7103888cd025a67a16575954875>`(
-			std::vector<double>::const_iterator v1_begin,
-			std::vector<double>::const_iterator v2_begin,
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a02fe55b2288dbef73e51aa55d65a69cf>`(
+			Chromosome::const_iterator v1_begin,
+			Chromosome::const_iterator v2_begin,
 			const std::size_t block_size
-			) = 0;
+		) = 0;
 	};
 
 	// direct descendants
@@ -50,21 +50,21 @@ Detailed Documentation
 
 Distance Function Base.
 
-This class is a interface for functors that compute the distance between two vectors of double numbers.
+This class is a interface for functors that compute the distance between two chromosomes.
 
 Methods
 -------
 
 .. index:: pair: function; distance
-.. _doxid-class_b_r_k_g_a_1_1_distance_function_base_1acee8e7b478010aff23b3a46cd113860a:
+.. _doxid-class_b_r_k_g_a_1_1_distance_function_base_1a97950c58509065dee6c352cbe4fb5b35:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual double distance(
-		const std::vector<double>& v1,
-		const std::vector<double>& v2
-		) = 0
+		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& v1,
+		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& v2
+	) = 0
 
 Computes the distance between two vectors.
 
@@ -78,23 +78,23 @@ Computes the distance between two vectors.
 	*
 		- v1
 
-		- first vector
+		- first chromosome.
 
 	*
 		- v2
 
-		- second vector
+		- second chromosome.
 
 .. index:: pair: function; affectSolution
-.. _doxid-class_b_r_k_g_a_1_1_distance_function_base_1a243c8a1031fb149c6abc16f3869f2ace:
+.. _doxid-class_b_r_k_g_a_1_1_distance_function_base_1ac43fa85761c96a6a16c679781ee468fa:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual bool affectSolution(
-		const double key1,
-		const double key2
-		) = 0
+		const Chromosome::value_type key1,
+		const Chromosome::value_type key2
+	) = 0
 
 Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 
@@ -108,24 +108,24 @@ Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 	*
 		- key1
 
-		- the first key
+		- the first key.
 
 	*
 		- key2
 
-		- the second key
+		- the second key.
 
 .. index:: pair: function; affectSolution
-.. _doxid-class_b_r_k_g_a_1_1_distance_function_base_1aca0fc7103888cd025a67a16575954875:
+.. _doxid-class_b_r_k_g_a_1_1_distance_function_base_1a02fe55b2288dbef73e51aa55d65a69cf:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual bool affectSolution(
-		std::vector<double>::const_iterator v1_begin,
-		std::vector<double>::const_iterator v2_begin,
+		Chromosome::const_iterator v1_begin,
+		Chromosome::const_iterator v2_begin,
 		const std::size_t block_size
-		) = 0
+	) = 0
 
 Returns true if the changing of the blocks of keys ``v1`` by the blocks of keys ``v2`` affects the solution.
 
@@ -139,12 +139,12 @@ Returns true if the changing of the blocks of keys ``v1`` by the blocks of keys 
 	*
 		- v1_begin
 
-		- begin of the first blocks of keys
+		- begin of the first blocks of keys.
 
 	*
 		- v2_begin
 
-		- begin of the first blocks of keys
+		- begin of the first blocks of keys.
 
 	*
 		- block_size

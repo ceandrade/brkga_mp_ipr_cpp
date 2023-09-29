@@ -17,12 +17,12 @@ This class represents a Multi-Parent Biased Random-key Genetic Algorithm with Im
 	:class: doxyrest-overview-code-block
 
 	#include <brkga_mp_ipr.hpp>
-	
+
 	template <class Decoder>
 	class BRKGA_MP_IPR {
 	public:
 		// construction
-	
+
 		:ref:`BRKGA_MP_IPR<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a041a64b7b5a81b563fd54cfbeec1bb96>`(
 			Decoder& decoder_reference,
 			const :ref:`Sense<doxid-namespace_b_r_k_g_a_1af28538be111c8320b2fec44b77ec5e9b>` sense,
@@ -34,20 +34,20 @@ This class represents a Multi-Parent Biased Random-key Genetic Algorithm with Im
 		);
 
 		// methods
-	
+
 		void :ref:`setInitialPopulation<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a59b05650ede92f5e0107ab606ff6e8b7>`(const std::vector<:ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`>& chromosomes);
 		void :ref:`setBiasCustomFunction<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a8616c89626ca3c8e8d3b5adb1da24c92>`(const std::function<double(const unsigned)>& func);
 		void :ref:`setShakingMethod<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a4b5019c33a563d1906f0b7d0a8304169>`(const std::function<void(double lower_bound, double upper_bound, std::vector<std::shared_ptr<:ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`>>&populations, std::vector<std::pair<unsigned, unsigned>>&shaken)>& func);
 		void :ref:`setStoppingCriteria<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1adee8fc8410a56e71b2af84ed6f4f2a7c>`(const std::function<bool(const :ref:`AlgorithmStatus<doxid-class_b_r_k_g_a_1_1_algorithm_status>`&)>& stopping_criteria);
 		void :ref:`addNewSolutionObserver<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa6cf3aca1879ffd4dc0c986340163254>`(const std::function<bool(const :ref:`AlgorithmStatus<doxid-class_b_r_k_g_a_1_1_algorithm_status>`&)>& func);
-	
+
 		:ref:`AlgorithmStatus<doxid-class_b_r_k_g_a_1_1_algorithm_status>` :ref:`run<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>`(
 			const :ref:`ControlParams<doxid-class_b_r_k_g_a_1_1_control_params>`& control_params,
 			std::ostream* logger = &std::cout
 		);
-	
+
 		void :ref:`evolve<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aee1828c2ca506f18b896f1fc75ceafcb>`(unsigned generations = 1);
-	
+
 		:ref:`PathRelinking::PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` :ref:`pathRelink<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa8da5193248d23ced19e68483aca31a5>`(
 			:ref:`PathRelinking::Type<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a79247d22aeb1fa9ab7611488e8137132>` pr_type,
 			:ref:`PathRelinking::Selection<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a3ce8f0aeb5c0063aab2e8cbaee3076fa>` pr_selection,
@@ -58,41 +58,41 @@ This class represents a Multi-Parent Biased Random-key Genetic Algorithm with Im
 			std::chrono::seconds max_time = std::chrono::seconds{0},
 			double percentage = 1.0
 		);
-	
+
 		:ref:`PathRelinking::PathRelinkingResult<doxid-namespace_b_r_k_g_a_1_1_path_relinking_1a64da27c4c7ed94712c1547d972de6253>` :ref:`pathRelink<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1ae9c15595bc46c3554b3eb5656ab08a53>`(
 			std::shared_ptr<:ref:`DistanceFunctionBase<doxid-class_b_r_k_g_a_1_1_distance_function_base>`> dist,
 			std::chrono::seconds max_time = std::chrono::seconds{0}
 		);
-	
+
 		void :ref:`exchangeElite<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1ab89298e6c633a81bf8c0462fb40ddd15>`(unsigned num_immigrants);
 		void :ref:`reset<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3bfe66221dd2f9c755a65ed7df14e350>`();
-	
+
 		void :ref:`shake<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3721a91ed9d3fcbdc57fbcee2e20ac66>`(
 			unsigned intensity,
 			:ref:`ShakingType<doxid-namespace_b_r_k_g_a_1a616e3d7dedad5ff4e6a2961cda1ea494>` shaking_type,
 			unsigned population_index = std::numeric_limits<unsigned>::infinity()
 		);
-	
+
 		void :ref:`injectChromosome<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0347f67b59bfe36856d1c27c95d4b151>`(
 			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& chromosome,
 			unsigned population_index,
 			unsigned position
 		);
-	
+
 		const :ref:`Population<doxid-class_b_r_k_g_a_1_1_population>`& :ref:`getCurrentPopulation<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a878b5edaec7438669ceec2e5fdd42d43>`(unsigned population_index = 0) const;
 		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& :ref:`getBestChromosome<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa4b0396a4780fde3be8d284c535b600e>`() const;
 		:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` :ref:`getBestFitness<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0499e65fbddae20a97b276504fe72e39>`() const;
-	
+
 		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& :ref:`getChromosome<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1abfe4eccfd47a8eb88fc920e640f8513f>`(
 			unsigned population_index,
 			unsigned position
 		) const;
-	
+
 		:ref:`fitness_t<doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` :ref:`getFitness<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a9d6636a50f519bf0f1e85257282c6065>`(
 			unsigned population_index,
 			unsigned position
 		) const;
-	
+
 		const :ref:`BrkgaParams<doxid-class_b_r_k_g_a_1_1_brkga_params>`& :target:`getBrkgaParams<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a27bdc9e01cbb9e5ac180adb1afcc92f0>`() const;
 		:ref:`Sense<doxid-namespace_b_r_k_g_a_1af28538be111c8320b2fec44b77ec5e9b>` :target:`getOptimizationSense<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a5a4466f754d00b07cfc64e4a6da21f9a>`() const;
 		unsigned :target:`getChromosomeSize<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1ab5737430a77071ce139dca80cdcf521b>`() const;
@@ -291,9 +291,9 @@ Builds the algorithm and its data strtuctures with the given arguments.
 	*
 		- max_threads
 
-		- 
+		-
 		  number of threads to perform parallel decoding.
-		  
+
 		  **NOTE** : ``Decoder::decode()`` MUST be thread-safe.
 
 	*
@@ -345,7 +345,7 @@ We assign as many individuals as possible across all populations. Extra individu
 
 Sets a custom bias function used to build the probabilities.
 
-It must be a **positive non-increasing function**, i.e. :math:`f: \mathbb{N}^+ \to \mathbb{R}^+` such that :math:`f(i) \ge 0` and :math:`f(i) \ge f(i+1)` for :math:`i \in [1..total\_parents]`. For example
+It must be a **positive non-increasing function**, i.e. :math:`f: \mathbb{N}^+ \to \mathbb{R}^+` such that :math:`f(i) \ge 0` and :math:`f(i) \ge f(i+1)` for :math:`i \in [1, \ldots, total\_parents]`. For example
 
 .. ref-code-block:: cpp
 
@@ -396,33 +396,33 @@ For more details, see :ref:`BrkgaParams::custom_shaking <doxid-class_b_r_k_g_a_1
 	*
 		- func
 
-		- 
+		-
 		  a callback function. For example, the code below implements the standard mutation:
-		  
+
 		  .. ref-code-block:: cpp
-		  
+
 		  	// A random number generator.
 		  	std::mt19937 rng(2700001);
 		  	rng.discard(rng.state_size);
-		  	
+
 		  	// Change some values from elite chromosomes from all populations.
 		  	// Similar to a standard mutation.
 		  	algorithm.setShakingMethod(
 		  	    [&](double lower_bound, double upper_bound,
 		  	        std::vector<std::shared_ptr<Population>>& populations,
 		  	        std::vector<std::pair<unsigned, unsigned>>& shaken) {
-		  	
+
 		  	        // Determines whether we change the allele or not.
 		  	        std::bernoulli_distribution must_change(0.50);
-		  	
+
 		  	        // Determines the value of the allele.
 		  	        std::uniform_real_distribution<> allele_value(lower_bound, upper_bound);
-		  	
+
 		  	        for(unsigned pop_idx = 0; pop_idx < populations.size(); ++pop_idx) {
 		  	            auto& population = populations[0]->population;
 		  	            for(unsigned chr_idx = 0; chr_idx < population.size(); ++chr_idx) {
 		  	                auto& chromosome = population[chr_idx];
-		  	
+
 		  	                bool change = false;
 		  	                for(unsigned i = 0; i < chromosome.size(); ++i) {
 		  	                    if(must_change(rng)) {
@@ -430,7 +430,7 @@ For more details, see :ref:`BrkgaParams::custom_shaking <doxid-class_b_r_k_g_a_1
 		  	                        change = true;
 		  	                    }
 		  	                }
-		  	
+
 		  	                if(change)
 		  	                    shaken.push_back({pop_idx, chr_idx});
 		  	            }
@@ -454,15 +454,17 @@ The algorithm always test for *the maximum running time* and for *the maximum st
 
 	If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is the core stopping criteria on IPR.
 
-If you really mean to have no maximum time set, we recommend to use the following code:
+If you really mean to have no maximum time and/or maximum stalled iterations set, we recommend to use the following code:
 
 .. ref-code-block:: cpp
 
 	// After reading your parameters, e.g.,
 	// auto [brkga_params, control_params] = readConfiguration("config.conf");
-	
+
 	// You can set to the max.
 	control_params.maximum_running_time = std::chrono::seconds::max();
+
+	control_params.stall_offset = numeric_limits<unsigned>::max();
 
 
 
@@ -474,16 +476,16 @@ If you really mean to have no maximum time set, we recommend to use the followin
 	*
 		- stopping_criteria
 
-		- 
-		  a callback function to determine is the algorithm must stop. For instance, the following lambda function tests if the best solution reached a given value:
-		  
+		-
+		  a callback function to determine is the algorithm must stop. For instance, the following lambda function tests if the best solution reached a given value for a minimization problem:
+
 		  .. ref-code-block:: cpp
-		  
+
 		  	:ref:`fitness_t <doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` my_magical_solution = 10;
-		  	
+
 		  	algorithm.setStoppingCriteria(
 		  	    [&](const AlgorithmStatus& status) {
-		  	        return status.best_fitness == my_magical_solution;
+		  	        return status.best_fitness <= my_magical_solution;
 		  	    }
 		  	);
 
@@ -497,7 +499,7 @@ If you really mean to have no maximum time set, we recommend to use the followin
 
 Adds a callback function called when the best solution is improved.
 
-It must take a reference to :ref:`AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>` and return ``true`` if the algorithm should stop immediately. You may have as much observers you want. They will be called in the order they are added.
+It must take a reference to :ref:`AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>` and return ``true`` if the algorithm should stop immediately. You may have as many observers as you want. They will be called in the order they are added.
 
 
 
@@ -509,26 +511,26 @@ It must take a reference to :ref:`AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_alg
 	*
 		- func
 
-		- 
+		-
 		  a callback function such as
-		  
+
 		  .. ref-code-block:: cpp
-		  
+
 		  	bool check_solution(const AlgorithmStatus& status) {
 		  	    std::cout << "\n" << status.best_fitness;
 		  	    return true; // Stop the optimization.
 		  	}
 		  	//...
 		  	algorithm.addNewSolutionObserver(check_solution);
-		  
-		  
-		  
+
+
+
 		  or a lambda function such as
-		  
-		  
-		  
+
+
+
 		  .. ref-code-block:: cpp
-		  
+
 		  	algorithm.addNewSolutionObserver(
 		  	    [](const AlgorithmStatus& status) {
 		  	        std::cout
@@ -563,7 +565,7 @@ This method uses all facilities associated with this BRKGA-MP-IPR library, provi
 	        Save best solution;
 	        Call observer callbacks;
 	    }
-	
+
 	    if(!must_stop && ipr_interval > 0 && stalled_iterations > 0 &&
 	       stalled_iterations % ipr_interval == 0) {
 	         :ref:`pathRelink <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1aa8da5193248d23ced19e68483aca31a5>`();
@@ -572,17 +574,17 @@ This method uses all facilities associated with this BRKGA-MP-IPR library, provi
 	             Call observer callbacks;
 	         }
 	     }
-	
+
 	    if(!must_stop && exchange_interval > 0 && stalled_iterations > 0 &&
 	       stalled_iterations % exchange_interval == 0) {
 	         :ref:`exchangeElite <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1ab89298e6c633a81bf8c0462fb40ddd15>`();
 	    }
-	
+
 	    if(!must_stop && shake_interval > 0 && stalled_iterations > 0 &&
 	       stalled_iterations % shake_interval == 0) {
 	         :ref:`shake <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3721a91ed9d3fcbdc57fbcee2e20ac66>`();
 	    }
-	
+
 	    if(!must_stop && reset_interval > 0 && stalled_iterations > 0 &&
 	       stalled_iterations % reset_interval == 0) {
 	         :ref:`reset <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a3bfe66221dd2f9c755a65ed7df14e350>`();
@@ -619,6 +621,18 @@ For path relinking, the block size is computed by :math:`\lceil \alpha \times \s
 		- logger
 
 		- a output stream to log some information.
+
+	*
+		- std::runtime_error
+
+		-
+		  in the following cases:
+
+		  #. IPR is active (ipr_interva > 0) but the distance function is not set;
+
+		  #. Shaking is active (shake_interval > 0) and it is set as 'CUSTOM'. However the custom shaking procedure was not supplied.
+
+		  #. Shaking is active (shake_interval > 0). However, the intensity bounds are out of range. Should be (0.0, 1.0] and 'shaking_intensity_lower_bound <= shaking_intensity_upper_bound'.
 
 
 

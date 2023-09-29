@@ -2,9 +2,9 @@
 .. _doxid-indexpage:
 
 BRKGA-MP-IPR Guide and Documentation - C++ Version 3.0
-======================================================
+*******************************************************************************
 
-:target:`doxid-index_1mainpage`
+:target:`doxid-index_mainpage`
 
 BRKGA-MP-IPR provides a *very easy-to-use* framework for the Multi-Parent
 Biased Random-Key Genetic Algorithm with Implict Path Relink
@@ -60,15 +60,15 @@ means, we can get to the guts on the :ref:`Guide <doxid-guide>`.
     :ref:`Skip the update and go to the tutorial clicking here! <doxid-guide>`
 
 
-.. _doxid-index_1autotoc_md0:
+.. _doxid-index_new_on_version3:
 
 What is new on version 3.0
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+===============================================================================
 
-.. _doxid-index_1autotoc_md1:
+.. _doxid-index_new_on_version3_api_enhancements:
 
 API enhancements
-----------------
+-------------------------------------------------------------------------------
 
 On version 2.0, we claimed that BRKGA-MP-IPR was a very easy-to-use framework.
 But, few people told me this statement was not even true. The main complaining
@@ -76,20 +76,22 @@ was that while the features were very nice, tightening them together was hard,
 even using the provided examples.
 
 Now, BRKGA-MP-IPR supplies a method called
-``:ref:`run() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```.
+``:ref:`BRKGA_MP_IPR::run()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```.
 It implements the entire pipeline using all framework features in a chain-like
 way, similar to the detailed examples. The user may call in this way:
 
-.. ref-code-block:: cpp
+.. code-block:: cpp
+    :linenos:
 
     //...
     auto [brkga_params, control_params] =
-          :ref:`BRKGA::readConfiguration <doxid-group__brkga__control__params_1ga1c8b456ad75a3b522d315d4167546ae6>`(config_file);
+          readConfiguration(config_file);
 
     MyDecoder my_decoder;
 
-    :ref:`BRKGA::BRKGA_MP_IPR\<MyDecoder> <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r>` algorithm(
-        my_decoder, :ref:`BRKGA::Sense::MINIMIZE <doxid-namespace_b_r_k_g_a_1af28538be111c8320b2fec44b77ec5e9ba704bfa6c1ed5e479c8cfb5bdfc8cccda>`, seed, num_chromosomes, brkga_params
+    BRKGA_MP_IPR<MyDecoder> algorithm(
+        my_decoder, BRKGA::Sense::MINIMIZE, seed, num_chromosomes, brkga_params
     );
     // algorithm.initialize(); // No need anymore :-)
 
@@ -100,7 +102,10 @@ way, similar to the detailed examples. The user may call in this way:
 where ``control_params`` is an instance of the new class
 ``:ref:`BRKGA::ControlParams <doxid-class_b_r_k_g_a_1_1_control_params>```
 (explained further), and an optional stream for logging (in this example,
-``cout``). ``run()`` returns an
+``cout``).
+``:ref:`run()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```
+returns an
 ``:ref:`BRKGA::AlgorithmStatus <doxid-class_b_r_k_g_a_1_1_algorithm_status>```
 object with information about the optimization like total time, iteration
 counting, and more (check the full documentation for that).
@@ -109,18 +114,23 @@ So, users need no more write fine control loops unless they need/want. Just set
 some control parameters (and some other callbacks, described below, if you
 like), and you are good to go!
 
-Supporting ``run()``, we have three new methods:
+Supporting
+``:ref:`run()
+<doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```,
+we have three new methods:
 
 * ``:ref:`setStoppingCriteria() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1adee8fc8410a56e71b2af84ed6f4f2a7c>```:
-  while method ``run()`` sets automatically maximum time or maximum stalled
-  iterations (without improvement in the best solution) as standard stopping
-  criteria, the user can add to these other criteria using this method. For
-  instance, the following lambda function tests if the best solution reached a
-  given value:
+  while method
+  ``:ref:`run() <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1acb361f402797d3c09390f852326fc7b8>```
+  sets automatically maximum time or maximum stalled iterations (without
+  improvement in the best solution) as standard stopping criteria, the user can
+  add to these other criteria using this method. For instance, the following
+  lambda function tests if the best solution reached a given value:
 
-  .. ref-code-block:: cpp
+  .. code-block:: cpp
+    :linenos:
 
-      :ref:`fitness_t <doxid-namespace_b_r_k_g_a_1ae212772a5d4bb9b7055e30791b494514>` my_magical_solution = 10;
+      fitness_t my_magical_solution = 10;
       algorithm.setStoppingCriteria(
           [&](const AlgorithmStatus& status) {
               return status.best_fitness == my_magical_solution;
@@ -136,7 +146,8 @@ Supporting ``run()``, we have three new methods:
     IPR), if you really rmean to have no maximum time or maximum stalled
     iterations set, we recommend to use the following code:
 
-  .. ref-code-block:: cpp
+  .. code-block:: cpp
+    :linenos:
 
       // After reading your parameters, e.g.,
       // auto [brkga_params, control_params] = readConfiguration("config.conf");
@@ -150,7 +161,8 @@ Supporting ``run()``, we have three new methods:
   the users finds it useful by return ``true``. This is very useful for
   tracking the evolution of the algorithm, for instance:
 
-  .. ref-code-block:: cpp
+  .. code-block:: cpp
+    :linenos:
 
       algorithm.addNewSolutionObserver(
           [](const AlgorithmStatus& status) {
@@ -170,15 +182,15 @@ Supporting ``run()``, we have three new methods:
 Less important but still relevant: previously, one must call ``initialize()``
 before any method that manipulated the population. Also, since ``initialize()``
 (re)decodes the population, we have to measure its running time too. Now, the
-user do not need to call ``initialize()`` anymore!!!. ``initialize()`` is
+user do not need to call ``initialize()`` anymore!!! ``initialize()`` is
 called on the need by its fellow methods internally. This leads to fewer
 error-prone codes.
 
 
-.. _doxid-index_1autotoc_md2:
+.. _doxid-index_new_on_version3_parameters:
 
 BRKGA and control parameters
-----------------------------
+-------------------------------------------------------------------------------
 
 Although this is part of API enhancement, it deserves special attention. Now,
 we include all :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and IPR parameters into
@@ -199,10 +211,10 @@ will emit a warning when no-required parameters are not set.
     this is the core stopping criteria on IPR.
 
 
-.. _doxid-index_1autotoc_md3:
+.. _doxid-index_new_on_version3_modernization:
 
 Code modernizing and speed bump
--------------------------------
+-------------------------------------------------------------------------------
 
 The code has been modernized using `C++20 facilities
 <https://en.wikipedia.org/wiki/C%2B%2B20>`__ like concepts and ranges.
@@ -222,12 +234,10 @@ can be considerable in a full year of operation (which usually translates into
 energy savings).
 
 
-.. _doxid-index_1autotoc_md4:
+.. _doxid-index_new_on_version2:
 
 What is new on version 2.0
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. _doxid-index_1autotoc_md5:
+===============================================================================
 
 In version 2.0, BRKGA-MP-IPR also deals with multiple objectives in a
 lexicographical or priority dominance order. Differing from classical
@@ -279,10 +289,10 @@ A.`
     <https://en.wikipedia.org/wiki/MOEA_Framework>`_
 
 
-.. _doxid-index_1autotoc_md6:
+.. _doxid-index_new_on_versio2_mating:
 
 Multi-thread mating
--------------------
+-------------------------------------------------------------------------------
 
 One of the nice additions to BRKGA-MP-IPR 2.0 is the capability of performing
 the mating in parallel. Such capability speeds up the algorithm substantially,
@@ -293,15 +303,15 @@ Section `Multi-thread mating
 in the `tutorial <https://ceandrade.github.io/brkga_mp_ipr_cpp>`__.
 
 
-.. _doxid-index_1autotoc_md7:
+.. _doxid-index_new_on_versio2_api:
 
 API changes
------------
+-------------------------------------------------------------------------------
 
-.. _doxid-index_1autotoc_md8:
+.. _doxid-index_new_on_versio2_api_fitness:
 
 New type ``BRKGA::fitness_t``
-++++++++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Due to the inclusion of multi-objective optimization capabilities, the user now
 must define a type ``:ref:`BRKGA::fitness_t
@@ -315,10 +325,10 @@ and `"Using BRKGA-MP-IPR on multi-objective mode"
 from the `tutorial <https://ceandrade.github.io/brkga_mp_ipr_cpp>`__.
 
 
-.. _doxid-index_1autotoc_md9:
+.. _doxid-index_new_on_versio2_api_setinitpop:
 
 New ``BRKGA_MP_IPR::setInitialPopulation()``
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the previous versions, ``:ref:`BRKGA::BRKGA_MP_IPR::setInitialPopulation()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a59b05650ede92f5e0107ab606ff6e8b7>```
@@ -328,8 +338,10 @@ population is full. Now, ``setInitialPopulation()`` fills up all populations.
 <https://ceandrade.github.io/brkga_mp_ipr_cpp/class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7>`__
 
 
+.. _doxid-index_new_on_versio2_api_inject_chr:
+
 Changes in ``BRKGA_MP_IPR::injectChromosome()``
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``:ref:`BRKGA::BRKGA_MP_IPR::injectChromosome()
 <doxid-class_b_r_k_g_a_1_1_b_r_k_g_a___m_p___i_p_r_1a0347f67b59bfe36856d1c27c95d4b151>```
@@ -339,20 +351,20 @@ call). `More details here.
 <https://ceandrade.github.io/brkga_mp_ipr_cpp/class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0347f67b59bfe36856d1c27c95d4b151>`__
 
 
-.. _doxid-index_1autotoc_md11:
+.. _doxid-index_new_on_versio2_api_cpp17:
 
 Pump to C++ 17
-++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 BRKGA-MP-IPR now uses some features of `C++17 standards
 <https://en.wikipedia.org/wiki/C%2B%2B17>`__. Therefore, you must change your
 building tools to support that.
 
 
-.. _doxid-index_1autotoc_md12:
+.. _doxid-index_new_on_versio2_bugfix:
 
 Bug fixes
----------
+-------------------------------------------------------------------------------
 
 * ``:ref:`BRKGA::BrkgaParams::mutants_percentage
   <doxid-class_b_r_k_g_a_1_1_brkga_params_1a29f0ff6ae4506e2e34ac7bfd633a802c>```
@@ -365,10 +377,10 @@ Bug fixes
   ``@afkummer``.
 
 
-.. _doxid-index_1autotoc_md13:
+.. _doxid-index_license:
 
 License and Citing
-~~~~~~~~~~~~~~~~~~
+===============================================================================
 
 BRKGA-MP-IPR uses a permissive BSD-like license and it can be used as it
 pleases you. And since this framework is also part of an academic effort, we
@@ -413,20 +425,20 @@ You can download all references for this
 :download:`RIS <../assets/references.ris>` files
 
 
-.. _doxid-index_1autotoc_md14:
+.. _doxid-index_collaborators:
 
 Collaborators
-~~~~~~~~~~~~~
+===============================================================================
 
 * Alberto Kummer, 2021 (parallel mating).
 
 * Daniele Ferone, 2023 (bug fix on IPR).
 
 
-.. _doxid-index_1autotoc_md15:
+.. _doxid-index_logo:
 
 About the logo
-~~~~~~~~~~~~~~
+===============================================================================
 
 The logo is just a play with 3 chromosomes crossing with each other
 (multi-parent) during the mating process. The lines also represent solutions

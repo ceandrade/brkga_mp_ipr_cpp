@@ -7,7 +7,7 @@ enum BRKGA::BiasFunctionType
 Overview
 ~~~~~~~~
 
-Specifies a bias function type when choosing parents to mating (``r`` is a given parameter). This function substitutes the ``rhoe`` parameter from the original :ref:`BRKGA <doxid-namespace_b_r_k_g_a>`. :ref:`More...<details-namespace_b_r_k_g_a_1af0ede0f2a7123e654a4e3176b5539fb1>`
+Specifies a bias function type when choosing parents to mating (``r`` is a given parameter). :ref:`More...<details-namespace_b_r_k_g_a_1af0ede0f2a7123e654a4e3176b5539fb1>`
 
 .. ref-code-block:: cpp
 	:class: doxyrest-overview-code-block
@@ -29,7 +29,9 @@ Specifies a bias function type when choosing parents to mating (``r`` is a given
 Detailed Documentation
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Specifies a bias function type when choosing parents to mating (``r`` is a given parameter). This function substitutes the ``rhoe`` parameter from the original :ref:`BRKGA <doxid-namespace_b_r_k_g_a>`.
+Specifies a bias function type when choosing parents to mating (``r`` is a given parameter).
+
+This function substitutes the ``rhoe`` parameter from the original :ref:`BRKGA <doxid-namespace_b_r_k_g_a>`.
 
 Enum Values
 -----------
@@ -42,7 +44,7 @@ Enum Values
 
 	CONSTANT
 
-:math:`\frac{1}{\text{num. parents for mating}}` (all individuals have the same probability)
+:math:`\frac{1}{\text{num. parents for mating}}` (all individuals have the same probability).
 
 .. index:: pair: enumvalue; CUBIC
 .. _doxid-namespace_b_r_k_g_a_1af0ede0f2a7123e654a4e3176b5539fb1accd681e34e5e40fbce74618c3ccffcff:
@@ -82,7 +84,7 @@ Enum Values
 
 	LOGINVERSE
 
-:math:`\frac{1}{\log(r + 1)}` (usually works better than other functions)
+:math:`\frac{1}{\log(r + 1)}` (usually works better than other functions).
 
 .. index:: pair: enumvalue; QUADRATIC
 .. _doxid-namespace_b_r_k_g_a_1af0ede0f2a7123e654a4e3176b5539fb1aa6ef2e8b7424bfa9d56315aca733861c:
@@ -102,5 +104,5 @@ Enum Values
 
 	CUSTOM
 
-Indicates a custom function supplied by the user.
+Indicates a custom bias function supplied by the user.
 

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>class BRKGA::ControlParams &mdash; BRKGA-MP-IPR 3.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/doxyrest-pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/doxyrest-sphinx_rtd_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=acc74ff5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/add_target.js?v=0b007391"></script>
+        <script src="_static/target-highlight.js?v=df7d332b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Algorithm status utilities" href="group_algorithm_status.html" />
+    <link rel="prev" title="class BRKGA::BrkgaParams" href="class_BRKGA_BrkgaParams.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BRKGA-MP-IPR
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_contributing.html">Contributing</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="global.html">API documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_main_algorithms.html">Main BRKGA-MP-IPR algorithms</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="group_brkga_control_params.html">BRKGA and Control Parameters</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BrkgaParams.html">class BRKGA::BrkgaParams</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">class BRKGA::ControlParams</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detailed-documentation">Detailed Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="group_brkga_control_params.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="group_brkga_control_params.html#detailed-documentation">Detailed Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group_algorithm_status.html">Algorithm status utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_distance_functions.html">Distance functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_utility_functions.html">Functions for equality comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_chrono_helpers.html">I/O chrono help functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_enum_io_templates.html">Template specializations for enum I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_compiler_directives.html">Compiler directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="global.html#overview">Overview</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BRKGA-MP-IPR</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="global.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="group_brkga_control_params.html">BRKGA and Control Parameters</a></li>
+      <li class="breadcrumb-item active">class BRKGA::ControlParams</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/class_BRKGA_ControlParams.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-brkga-controlparams">
+<span id="doxid-class-b-r-k-g-a-1-1-control-params"></span><span id="index-0"></span><h1>class BRKGA::ControlParams<a class="headerlink" href="#class-brkga-controlparams" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Represents additional control parameters that can be used outside this framework. <a class="reference internal" href="#details-class-b-r-k-g-a-1-1-control-params"><span class="std std-ref">More…</span></a></p>
+<pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span>
+
+<span class="k">class</span> <span class="n">ControlParams</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// fields</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-control-params-1af0ce79e47569d1189c9bf74fc66766e0"><span class="std std-ref">maximum_running_time</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-control-params-1a143277bea05ee5204fbb50b805e6569c"><span class="std std-ref">exchange_interval</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-control-params-1acadef8421e45b48b4af9709a5a9125e3"><span class="std std-ref">ipr_interval</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-control-params-1acf6dbc7ef57a532acebc65fc70d51cf7"><span class="std std-ref">shake_interval</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-control-params-1a6471f8cce94062e95cfd035f1d13cd49"><span class="std std-ref">reset_interval</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">unsigned</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-control-params-1a7f438a8e777a9bee2c8289c0e7d13a3b"><span class="std std-ref">stall_offset</span></a><span></span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="p">};</span></pre>
+</section>
+<section id="detailed-documentation">
+<span id="details-class-b-r-k-g-a-1-1-control-params"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Link to this heading"></a></h2>
+<p>Represents additional control parameters that can be used outside this framework.</p>
+<p>These parameters are not used directly in the <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a> nor in the path relinking. However, they are loaded from the configuration file and can be called by the user to perform out-loop controlling.</p>
+<section id="fields">
+<h3>Fields<a class="headerlink" href="#fields" title="Link to this heading"></a></h3>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-control-params-1af0ce79e47569d1189c9bf74fc66766e0"><span id="index-1"></span><span></span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span> <span class="n">maximum_running_time</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Maximum running time.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-control-params-1a143277bea05ee5204fbb50b805e6569c"><span id="index-2"></span><span></span><span class="kt">unsigned</span> <span class="n">exchange_interval</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Interval / number of interations without improvement in the best solution at which elite chromosomes are exchanged (0 means no exchange).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-control-params-1acadef8421e45b48b4af9709a5a9125e3"><span id="index-3"></span><span></span><span class="kt">unsigned</span> <span class="n">ipr_interval</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Interval / number of interations without improvement in the best solution at which the Implicit Path Relink is called (0 means no IPR).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-control-params-1acf6dbc7ef57a532acebc65fc70d51cf7"><span id="index-4"></span><span></span><span class="kt">unsigned</span> <span class="n">shake_interval</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Interval / number of interations without improvement in the best solution at which the populations are shaken (0 means no shake).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-control-params-1a6471f8cce94062e95cfd035f1d13cd49"><span id="index-5"></span><span></span><span class="kt">unsigned</span> <span class="n">reset_interval</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Interval / number of interations without improvement in the best solution at which the populations are reset (0 means no reset).</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-control-params-1a7f438a8e777a9bee2c8289c0e7d13a3b"><span id="index-6"></span><span></span><span class="kt">unsigned</span> <span class="n">stall_offset</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span></pre>
+<p>Defines the numbers iterations to stop when the best solution is not improved, i.e., the algorithm converged (0 means don’t stop by stall).</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="class_BRKGA_BrkgaParams.html" class="btn btn-neutral float-left" title="class BRKGA::BrkgaParams" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group_algorithm_status.html" class="btn btn-neutral float-right" title="Algorithm status utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2023, Carlos E. Andrade.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

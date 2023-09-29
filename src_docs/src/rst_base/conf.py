@@ -4,7 +4,7 @@
 # All Rights Reserved.
 #
 #  Created on : Jul 08, 2019 by andrade
-#  Last update: Sep 22, 2023 by andrade
+#  Last update: Sep 27, 2023 by andrade
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -65,7 +65,10 @@ extensions = [
     'sphinx.ext.mathjax',
     'doxyrest',
     'cpplexer',
+    'sphinxcontrib.bibtex'
 ]
+
+bibtex_bibfiles = ['references.bib']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

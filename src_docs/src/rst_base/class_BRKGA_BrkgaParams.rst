@@ -17,11 +17,11 @@ Represents the :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` and IPR hyper-parameters
 	:class: doxyrest-overview-code-block
 
 	#include <brkga_mp_ipr.hpp>
-	
+
 	class BrkgaParams {
 	public:
 		// fields
-	
+
 		unsigned :ref:`population_size<doxid-class_b_r_k_g_a_1_1_brkga_params_1a8a4b0592480f32a3cf186b6d1759f571>` {0};
 		double :ref:`elite_percentage<doxid-class_b_r_k_g_a_1_1_brkga_params_1a3b9a181f00f8675ed88e09f0b9c34571>` {0.0};
 		double :ref:`mutants_percentage<doxid-class_b_r_k_g_a_1_1_brkga_params_1a29f0ff6ae4506e2e34ac7bfd633a802c>` {0.0};
@@ -257,7 +257,7 @@ For default CHANGE and SWAP procedures, this value is a percentage of the chromo
 
 This is the custom shaking procedure given by the user.
 
-* Parameters ``lower_bound`` and ``upper_bound`` is the shaking intensity bounds to be applied.
+* Parameters ``lower_bound`` and ``upper_bound`` is the shaking intensity bounds to be applied. Usually, the define a range where the intensity is sampled.
 
 * Parameter ``populations`` are the current :ref:`BRKGA <doxid-namespace_b_r_k_g_a>` populations.
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>template class BRKGA::BRKGA_MP_IPR &mdash; BRKGA-MP-IPR 2.0.0 documentation</title>
+  <title>template class BRKGA::BRKGA_MP_IPR &mdash; BRKGA-MP-IPR 3.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
@@ -15,18 +15,19 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/add_target.js"></script>
-        <script src="_static/target-highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=acc74ff5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/add_target.js?v=0b007391"></script>
+        <script src="_static/target-highlight.js?v=df7d332b"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="class BRKGA::BrkgaParams" href="class_BRKGA_BrkgaParams.html" />
-    <link rel="prev" title="enum BRKGA::ShakingType" href="enum_BRKGA_ShakingType.html" /> 
+    <link rel="next" title="BRKGA and Control Parameters" href="group_brkga_control_params.html" />
+    <link rel="prev" title="Main BRKGA-MP-IPR algorithms" href="group_main_algorithms.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -34,15 +35,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> BRKGA-MP-IPR
-            <img src="_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BRKGA-MP-IPR
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0
+                3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,15 +57,12 @@
 <li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
-<li class="toctree-l1"><a class="reference internal" href="page_md_src_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_contributing.html">Contributing</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="global.html">API documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA_PathRelinking.html">namespace BRKGA::PathRelinking</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_BiasFunctionType.html">enum BRKGA::BiasFunctionType</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_Sense.html">enum BRKGA::Sense</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_BRKGA_ShakingType.html">enum BRKGA::ShakingType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="group_main_algorithms.html">Main BRKGA-MP-IPR algorithms</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">template class BRKGA::BRKGA_MP_IPR</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#detailed-documentation">Detailed Documentation</a></li>
@@ -71,18 +73,16 @@
 <li class="toctree-l4"><a class="reference internal" href="#history">History</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_BrkgaParams.html">class BRKGA::BrkgaParams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html">class BRKGA::DistanceFunctionBase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_ExternalControlParams.html">class BRKGA::ExternalControlParams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_HammingDistance.html">class BRKGA::HammingDistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_KendallTauDistance.html">class BRKGA::KendallTauDistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_BRKGA_Population.html">class BRKGA::Population</a></li>
-<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="namespace_BRKGA.html#detailed-documentation">Detailed Documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="class_EnumIO.html">template class EnumIO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessor_directives.html">Preprocessor directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_brkga_control_params.html">BRKGA and Control Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_algorithm_status.html">Algorithm status utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_distance_functions.html">Distance functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_utility_functions.html">Functions for equality comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_chrono_helpers.html">I/O chrono help functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_enum_io_templates.html">Template specializations for enum I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_compiler_directives.html">Compiler directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="global.html#overview">Overview</a></li>
 </ul>
 </li>
 </ul>
@@ -100,10 +100,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="global.html">API documentation</a> &raquo;</li>
-          <li><a href="namespace_BRKGA.html">namespace BRKGA</a> &raquo;</li>
-      <li>template class BRKGA::BRKGA_MP_IPR</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="global.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="group_main_algorithms.html">Main BRKGA-MP-IPR algorithms</a></li>
+      <li class="breadcrumb-item active">template class BRKGA::BRKGA_MP_IPR</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/class_BRKGA_BRKGA_MP_IPR.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -114,13 +114,13 @@
            <div itemprop="articleBody">
              
   <section id="template-class-brkga-brkga-mp-ipr">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"></span><span id="index-0"></span><h1>template class BRKGA::BRKGA_MP_IPR<a class="headerlink" href="#template-class-brkga-brkga-mp-ipr" title="Permalink to this headline"></a></h1>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"></span><span id="index-0"></span><h1>template class BRKGA::BRKGA_MP_IPR<a class="headerlink" href="#template-class-brkga-brkga-mp-ipr" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>This class represents a Multi-Parent Biased Random-key Genetic Algorithm with Implicit Path Relinking (BRKGA-MP-IPR). <a class="reference internal" href="#details-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"><span class="std std-ref">More…</span></a></p>
-<pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span><span class="cp"></span>
+<pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="cp">#include</span> <span class="cpf">&lt;brkga_mp_ipr.hpp&gt;</span>
 
 <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="n">Decoder</span><span class="o">&gt;</span>
 <span class="k">class</span> <span class="n">BRKGA_MP_IPR</span> <span class="p">{</span>
@@ -135,30 +135,38 @@
         <span class="k">const</span> <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="o">&amp;</span> <span class="n">params</span><span class="p">,</span>
         <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">max_threads</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="k">const</span> <span class="kt">bool</span> <span class="n">evolutionary_mechanism_on</span> <span class="o">=</span> <span class="nb">true</span>
-        <span class="p">);</span>
+    <span class="p">);</span>
 
     <span class="c1">// methods</span>
 
-    <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref">setInitialPopulation</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&gt;&amp;</span> <span class="n">chromosomes</span><span class="p">);</span>
+    <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref">setInitialPopulation</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&gt;&amp;</span> <span class="n">chromosomes</span><span class="p">);</span>
     <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a8616c89626ca3c8e8d3b5adb1da24c92"><span class="std std-ref">setBiasCustomFunction</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">func</span><span class="p">);</span>
-    <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a65fbb0b0c6b2daba98f346601354d957"><span class="std std-ref">initialize</span></a><span></span><span class="p">(</span><span class="kt">bool</span> <span class="n">reset</span> <span class="o">=</span> <span class="nb">false</span><span class="p">);</span>
+    <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a4b5019c33a563d1906f0b7d0a8304169"><span class="std std-ref">setShakingMethod</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">double</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="kt">double</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_Population.html#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&gt;&gt;&amp;</span><span class="n">populations</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;&amp;</span><span class="n">shaken</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">func</span><span class="p">);</span>
+    <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1adee8fc8410a56e71b2af84ed6f4f2a7c"><span class="std std-ref">setStoppingCriteria</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a><span></span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">stopping_criteria</span><span class="p">);</span>
+    <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa6cf3aca1879ffd4dc0c986340163254"><span class="std std-ref">addNewSolutionObserver</span></a><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a><span></span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">func</span><span class="p">);</span>
+
+    <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span class="std std-ref">run</span></a><span></span><span class="p">(</span>
+        <span class="k">const</span> <a class="reference internal" href="class_BRKGA_ControlParams.html#doxid-class-b-r-k-g-a-1-1-control-params"><span class="std std-ref">ControlParams</span></a><span></span><span class="o">&amp;</span> <span class="n">control_params</span><span class="p">,</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">*</span> <span class="n">logger</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span>
+    <span class="p">);</span>
+
     <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref">evolve</span></a><span></span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">generations</span> <span class="o">=</span> <span class="mi">1</span><span class="p">);</span>
 
-    <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a95529466a3e942e4aafa26259aa83d0f"><span class="std std-ref">pathRelink</span></a><span></span><span class="p">(</span>
+    <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa8da5193248d23ced19e68483aca31a5"><span class="std std-ref">pathRelink</span></a><span></span><span class="p">(</span>
         <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a><span></span> <span class="n">pr_type</span><span class="p">,</span>
         <a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a><span></span> <span class="n">pr_selection</span><span class="p">,</span>
         <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">DistanceFunctionBase</span></a><span></span><span class="o">&gt;</span> <span class="n">dist</span><span class="p">,</span>
         <span class="kt">unsigned</span> <span class="n">number_pairs</span><span class="p">,</span>
         <span class="kt">double</span> <span class="n">minimum_distance</span><span class="p">,</span>
         <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="kt">long</span> <span class="n">max_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span> <span class="n">max_time</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">{</span><span class="mi">0</span><span class="p">},</span>
         <span class="kt">double</span> <span class="n">percentage</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="p">);</span>
+    <span class="p">);</span>
 
-    <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a891815a683e55722a68cf52f47efe44e"><span class="std std-ref">pathRelink</span></a><span></span><span class="p">(</span>
+    <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ae9c15595bc46c3554b3eb5656ab08a53"><span class="std std-ref">pathRelink</span></a><span></span><span class="p">(</span>
         <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">DistanceFunctionBase</span></a><span></span><span class="o">&gt;</span> <span class="n">dist</span><span class="p">,</span>
-        <span class="kt">long</span> <span class="n">max_time</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span> <span class="n">max_time</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span>
+    <span class="p">);</span>
 
     <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ab89298e6c633a81bf8c0462fb40ddd15"><span class="std std-ref">exchangeElite</span></a><span></span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">num_immigrants</span><span class="p">);</span>
     <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span class="std std-ref">reset</span></a><span></span><span class="p">();</span>
@@ -167,27 +175,27 @@
         <span class="kt">unsigned</span> <span class="n">intensity</span><span class="p">,</span>
         <a class="reference internal" href="enum_BRKGA_ShakingType.html#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494"><span class="std std-ref">ShakingType</span></a><span></span> <span class="n">shaking_type</span><span class="p">,</span>
         <span class="kt">unsigned</span> <span class="n">population_index</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;::</span><span class="n">infinity</span><span class="p">()</span>
-        <span class="p">);</span>
+    <span class="p">);</span>
 
     <span class="kt">void</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0347f67b59bfe36856d1c27c95d4b151"><span class="std std-ref">injectChromosome</span></a><span></span><span class="p">(</span>
-        <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span>
+        <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span>
         <span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
         <span class="kt">unsigned</span> <span class="n">position</span>
-        <span class="p">);</span>
+    <span class="p">);</span>
 
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_Population.html#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a878b5edaec7438669ceec2e5fdd42d43"><span class="std std-ref">getCurrentPopulation</span></a><span></span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">population_index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-    <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span class="std std-ref">getBestChromosome</span></a><span></span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-    <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0499e65fbddae20a97b276504fe72e39"><span class="std std-ref">getBestFitness</span></a><span></span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span class="std std-ref">getBestChromosome</span></a><span></span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae212772a5d4bb9b7055e30791b494514"><span class="std std-ref">fitness_t</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0499e65fbddae20a97b276504fe72e39"><span class="std std-ref">getBestFitness</span></a><span></span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 
-    <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1abfe4eccfd47a8eb88fc920e640f8513f"><span class="std std-ref">getChromosome</span></a><span></span><span class="p">(</span>
+    <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1abfe4eccfd47a8eb88fc920e640f8513f"><span class="std std-ref">getChromosome</span></a><span></span><span class="p">(</span>
         <span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
         <span class="kt">unsigned</span> <span class="n">position</span>
-        <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 
-    <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a9d6636a50f519bf0f1e85257282c6065"><span class="std std-ref">getFitness</span></a><span></span><span class="p">(</span>
+    <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae212772a5d4bb9b7055e30791b494514"><span class="std std-ref">fitness_t</span></a><span></span> <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a9d6636a50f519bf0f1e85257282c6065"><span class="std std-ref">getFitness</span></a><span></span><span class="p">(</span>
         <span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
         <span class="kt">unsigned</span> <span class="n">position</span>
-        <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="o">&amp;</span> <span class="doxyrest-code-target target" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a27bdc9e01cbb9e5ac180adb1afcc92f0"><span></span><span class="n">getBrkgaParams</span></span><span></span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
     <a class="reference internal" href="enum_BRKGA_Sense.html#doxid-namespace-b-r-k-g-a-1af28538be111c8320b2fec44b77ec5e9b"><span class="std std-ref">Sense</span></a><span></span> <span class="doxyrest-code-target target" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a5a4466f754d00b07cfc64e4a6da21f9a"><span></span><span class="n">getOptimizationSense</span></span><span></span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
@@ -199,71 +207,62 @@
 <span class="p">};</span></pre>
 </section>
 <section id="detailed-documentation">
-<span id="details-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Permalink to this headline"></a></h2>
+<span id="details-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"></span><h2>Detailed Documentation<a class="headerlink" href="#detailed-documentation" title="Link to this heading"></a></h2>
 <p>This class represents a Multi-Parent Biased Random-key Genetic Algorithm with Implicit Path Relinking (BRKGA-MP-IPR).</p>
 <p>Carlos Eduardo de Andrade <a class="reference external" href="mailto:ce&#46;andrade&#37;&#52;&#48;gmail&#46;com">ce<span>&#46;</span>andrade<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
-<p>2021</p>
+<p>2023</p>
 </section>
 <section id="main-capabilities">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1main-cap"></span><h2>Main capabilities<a class="headerlink" href="#main-capabilities" title="Permalink to this headline"></a></h2>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1main-cap"></span><h2>Main capabilities<a class="headerlink" href="#main-capabilities" title="Link to this heading"></a></h2>
 <section id="evolutionary-process">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1evol-process"></span><h3>Evolutionary process<a class="headerlink" href="#evolutionary-process" title="Permalink to this headline"></a></h3>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1evol-process"></span><h3>Evolutionary process<a class="headerlink" href="#evolutionary-process" title="Link to this heading"></a></h3>
 <p>In the BRKGA-MP-IPR, we keep a population of chromosomes divided between the elite and the non-elite group. During the mating, multiple parents are chosen from the elite group and the non-elite group. They are sorted either on no-decreasing order for minimization or non-increasing order to maximization problems. Given this order, a bias function is applied to the rank of each chromosome, resulting in weight for each one. Using a roulette method based on the weights, the chromosomes are combined using a biased crossover.</p>
 <p>This code also implements the island model, where multiple populations can be evolved in parallel, and migration between individuals between the islands are performed using <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ab89298e6c633a81bf8c0462fb40ddd15"><span class="std std-ref">exchangeElite()</span></a> method.</p>
 <p>This code requires the template argument <code class="docutils literal notranslate"><span class="pre">Decoder</span></code> be a class or functor object capable to map a chromosome to a solution for the specific problem, and return a value to be used as fitness to the decoded chromosome. The decoder must have the method</p>
-<pre class="highlight literal-block"><span></span><span class="kt">double</span> <span class="n">decode</span><span class="p">(</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">rewrite</span><span class="p">);</span></pre>
-<p>where <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a> is a <code class="docutils literal notranslate"><span class="pre">vector&lt;double&gt;</span></code> representing a solution and <code class="docutils literal notranslate"><span class="pre">rewrite</span></code> is a boolean indicating that if the decode should rewrite the chromosome in case it implements local searches and modifies the initial solution decoded from the chromosome. Since this API has the capability of decoding several chromosomes in parallel, the user must guarantee that <code class="docutils literal notranslate"><span class="pre">Decoder::decode(...)</span></code> is thread-safe. Therefore, we do recommend to have the writable variables per thread. Please, see the example that follows this code.</p>
+<pre class="highlight literal-block"><span></span><span class="kt">double</span> <span class="n">decode</span><span class="p">(</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">rewrite</span><span class="p">);</span></pre>
+<p>where <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a> is a <code class="docutils literal notranslate"><span class="pre">vector&lt;double&gt;</span></code> (in general) representing a solution and <code class="docutils literal notranslate"><span class="pre">rewrite</span></code> is a boolean indicating that if the decode should rewrite the chromosome in case it implements local searches and modifies the initial solution decoded from the chromosome. Since this API has the capability of decoding several chromosomes in parallel, the user must guarantee that <code class="docutils literal notranslate"><span class="pre">Decoder::decode(...)</span></code> is thread-safe. Therefore, we do recommend to have the writable variables per thread. Please, see the example that follows this code.</p>
 </section>
 <section id="implicit-path-relinking">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ipr"></span><h3>Implicit Path Relinking<a class="headerlink" href="#implicit-path-relinking" title="Permalink to this headline"></a></h3>
-<p>This API also implements the Implicit Path Relinking leveraging the decoder capabilities. To perform the path relinking, the user must call <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a95529466a3e942e4aafa26259aa83d0f"><span class="std std-ref">pathRelink()</span></a> method, indicating the type of path relinking (direct or permutation-based, see <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a>), the selection criteria (best solution or random elite, see <a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a>), the distance function (to choose individuals far enough, see <a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">BRKGA::DistanceFunctionBase</span></a>, <a class="reference internal" href="class_BRKGA_HammingDistance.html#doxid-class-b-r-k-g-a-1-1-hamming-distance"><span class="std std-ref">BRKGA::HammingDistance</span></a>, and <a class="reference internal" href="class_BRKGA_KendallTauDistance.html#doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref">BRKGA::KendallTauDistance</span></a>), a maximum time or a maximum path size.</p>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ipr"></span><h3>Implicit Path Relinking<a class="headerlink" href="#implicit-path-relinking" title="Link to this heading"></a></h3>
+<p>This API also implements the Implicit Path Relinking leveraging the decoder capabilities. To perform the path relinking, the user must call <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa8da5193248d23ced19e68483aca31a5"><span class="std std-ref">pathRelink()</span></a> method, indicating the type of path relinking (direct or permutation-based, see <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a>), the selection criteria (best solution or random elite, see <a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a>), the distance function (to choose individuals far enough, see <a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">BRKGA::DistanceFunctionBase</span></a>, <a class="reference internal" href="class_BRKGA_HammingDistance.html#doxid-class-b-r-k-g-a-1-1-hamming-distance"><span class="std std-ref">BRKGA::HammingDistance</span></a>, and <a class="reference internal" href="class_BRKGA_KendallTauDistance.html#doxid-class-b-r-k-g-a-1-1-kendall-tau-distance"><span class="std std-ref">BRKGA::KendallTauDistance</span></a>), a maximum time or a maximum path size.</p>
 <p>In the presence of multiple populations, the path relinking is performed between elite chromosomes from different populations, in a circular fashion. For example, suppose we have 3 populations. The framework performs 3 path relinkings: the first between individuals from populations 1 and 2, the second between populations 2 and 3, and the third between populations 3 and 1. In the case of just one population, both base and guiding individuals are sampled from the elite set of that population.</p>
 <p>Note that the algorithm tries to find a pair of base and guiding solutions with a minimum distance given by the distance function. If this is not possible, a new pair of solutions are sampled (without replacement) and tested against the distance. In case it is not possible to find such pairs for the given populations, the algorithm skips to the next pair of populations (in a circular fashion, as described above). Yet, if such pairs are not found in any case, the algorithm declares failure. This indicates that the populations are very homogeneous.</p>
 <p>The API will call <code class="docutils literal notranslate"><span class="pre">Decoder::decode()</span></code> always with <code class="docutils literal notranslate"><span class="pre">rewrite</span> <span class="pre">=</span> <span class="pre">false</span></code>. The reason is that if the decoder rewrites the chromosome, the path between solutions is lost and inadvertent results may come up. Note that at the end of the path relinking, the method calls the decoder with <code class="docutils literal notranslate"><span class="pre">rewrite</span> <span class="pre">=</span> <span class="pre">true</span></code> in the best chromosome found to guarantee that this chromosome is re-written to reflect the best solution found.</p>
 </section>
 </section>
 <section id="other-capabilities">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1other-cap"></span><h2>Other capabilities<a class="headerlink" href="#other-capabilities" title="Permalink to this headline"></a></h2>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1other-cap"></span><h2>Other capabilities<a class="headerlink" href="#other-capabilities" title="Link to this heading"></a></h2>
 <section id="multi-start">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1multi-start"></span><h3>Multi-start<a class="headerlink" href="#multi-start" title="Permalink to this headline"></a></h3>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1multi-start"></span><h3>Multi-start<a class="headerlink" href="#multi-start" title="Link to this heading"></a></h3>
 <p>This API also can be used as a simple multi-start algorithm without evolution. To do that, the user must supply in the constructor the argument <code class="docutils literal notranslate"><span class="pre">evolutionary_mechanism_on</span> <span class="pre">=</span> <span class="pre">false</span></code>. This argument makes the elite set has one individual and the number of mutants n - 1, where n is the size of the population. This setup disables the evolutionary process completely.</p>
 </section>
 <section id="initial-population">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1init-pop"></span><h3>Initial Population<a class="headerlink" href="#initial-population" title="Permalink to this headline"></a></h3>
-<p>This API allows the user provides a set of initial solutions to warm start the algorithm. In general, initial solutions are created using other (fast) heuristics and help the convergence of the <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a>. To do that, the user must encode the solutions on <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a> (<code class="docutils literal notranslate"><span class="pre">vector&lt;double&gt;</span></code>) and pass to the method <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref">setInitialPopulation()</span></a> as a <code class="docutils literal notranslate"><span class="pre">vector&lt;#Chromosome&gt;</span></code>.</p>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1init-pop"></span><h3>Initial Population<a class="headerlink" href="#initial-population" title="Link to this heading"></a></h3>
+<p>This API allows the user provides a set of initial solutions to warm start the algorithm. In general, initial solutions are created using other (fast) heuristics and help the convergence of the <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a>. To do that, the user must encode the solutions on <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a> (<code class="docutils literal notranslate"><span class="pre">vector&lt;double&gt;</span></code>) and pass to the method <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref"><span class="pre">setInitialPopulation()</span></span></a></code> as a <code class="docutils literal notranslate"><span class="pre">vector&lt;#Chromosome&gt;</span></code>.</p>
 </section>
 </section>
 <section id="general-usage">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1gen-usage"></span><h2>General Usage<a class="headerlink" href="#general-usage" title="Permalink to this headline"></a></h2>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1gen-usage"></span><h2>General Usage<a class="headerlink" href="#general-usage" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
-<li><p>The user must call the <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"><span class="std std-ref">BRKGA_MP_IPR</span></a> constructor and pass the desired parameters. Please, see <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a041a64b7b5a81b563fd54cfbeec1bb96"><span class="std std-ref">BRKGA_MP_IPR::BRKGA_MP_IPR</span></a> for parameter details;</p>
-<ol class="arabic simple">
-<li><p>(Optional) The user provides the warm start solutions using <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref">setInitialPopulation()</span></a>;</p></li>
-</ol>
-</li>
-<li><p>The user must call the method <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a65fbb0b0c6b2daba98f346601354d957"><span class="std std-ref">initialize()</span></a> to start the data structures and perform the decoding of the very first populations;</p></li>
-<li><p>Main evolutionary loop:</p>
-<ol class="arabic simple">
-<li><p>On each iteration, the method <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref">evolve()</span></a> should be called to perform the evolutionary step (or multi-steps if desired);</p></li>
-<li><p>The user can check the current best chromosome (<a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span class="std std-ref">getBestChromosome()</span></a>) and its fitness (<a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0499e65fbddae20a97b276504fe72e39"><span class="std std-ref">getBestFitness()</span></a>) and perform checking and logging operations;</p></li>
-<li><p>(Optional) The user can perform the individual migration between populations (<a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ab89298e6c633a81bf8c0462fb40ddd15"><span class="std std-ref">exchangeElite()</span></a>);</p></li>
-<li><p>(Optional) The user can perform the path relinking (<a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a95529466a3e942e4aafa26259aa83d0f"><span class="std std-ref">pathRelink()</span></a>);</p></li>
-<li><p>(Optional) The user can reset and start the algorithm over (<a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span class="std std-ref">reset()</span></a>);</p></li>
-</ol>
-</li>
+<li><p>The user must call the <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r"><span class="std std-ref">BRKGA_MP_IPR</span></a> constructor and pass the desired parameters. Please, see <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a041a64b7b5a81b563fd54cfbeec1bb96"><span class="std std-ref">BRKGA_MP_IPR::BRKGA_MP_IPR</span></a> for parameter details;</p></li>
+<li><p>(Optional) The user provides the warm start solutions using <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref"><span class="pre">setInitialPopulation()</span></span></a></code>;</p></li>
+<li><p>(Optional) The user provides a callback to track the optimization using <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa6cf3aca1879ffd4dc0c986340163254"><span class="std std-ref"><span class="pre">addNewSolutionObserver()</span></span></a></code>;</p></li>
+<li><p>(Optional) The user provides custom stopping criteria function using <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1adee8fc8410a56e71b2af84ed6f4f2a7c"><span class="std std-ref"><span class="pre">setStoppingCriteria()</span></span></a></code>;</p></li>
+<li><p>(Optional) The user provides a custom shaking procedure using <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a4b5019c33a563d1906f0b7d0a8304169"><span class="std std-ref"><span class="pre">setShakingMethod()</span></span></a></code>;</p></li>
+<li><p>The user calls <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span class="std std-ref"><span class="pre">run()</span></span></a></code> to cary out the optimization; This method returns a <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref"><span class="pre">AlgorithmStatus</span></span></a></code> object with the results of the optimization.</p></li>
 </ol>
 <p>For a comprehensive and detailed usage, please see the examples that follow this API.</p>
 </section>
 <section id="about-multi-threading">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1multi-thread"></span><h2>About multi-threading<a class="headerlink" href="#about-multi-threading" title="Permalink to this headline"></a></h2>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1multi-thread"></span><h2>About multi-threading<a class="headerlink" href="#about-multi-threading" title="Link to this heading"></a></h2>
 <p>This API is capable of decoding several chromosomes in parallel, as mentioned before. This capability is based on OpenMP (<a class="reference external" href="http://www.openmp.org">http://www.openmp.org</a>) and the compiler must have support to it. Most recent versions of GNU G++ and Intel C++ Compiler support OpenMP. Clang supports OpenMP since 3.8. However, there are some issues with the libraries, and sometimes, the parallel sections are not enabled. On the major, the user can find fixes to his/her system.</p>
 <p>Since, in general, the decoding process can be complex and lengthy, it is recommended that <strong>the number of threads used DO NOT exceed the number of physical cores in the machine.</strong> This improves the overall performance drastically, avoiding cache misses and racing conditions. Note that the number of threads is also tied to the memory utilization, and it should be monitored carefully.</p>
 </section>
 <section id="history">
-<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1hist"></span><h2>History<a class="headerlink" href="#history" title="Permalink to this headline"></a></h2>
+<span id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1hist"></span><h2>History<a class="headerlink" href="#history" title="Link to this heading"></a></h2>
 <p>This API was based on the code by Rodrigo Franco Toso, Sep 15, 2011. <a class="reference external" href="http://github.com/rfrancotoso/brkgaAPI">http://github.com/rfrancotoso/brkgaAPI</a></p>
 <section id="construction">
-<h3>Construction<a class="headerlink" href="#construction" title="Permalink to this headline"></a></h3>
+<h3>Construction<a class="headerlink" href="#construction" title="Link to this heading"></a></h3>
 <pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a041a64b7b5a81b563fd54cfbeec1bb96"><span id="index-1"></span><span></span><span class="n">BRKGA_MP_IPR</span><span class="p">(</span>
     <span class="n">Decoder</span><span class="o">&amp;</span> <span class="n">decoder_reference</span><span class="p">,</span>
     <span class="k">const</span> <a class="reference internal" href="enum_BRKGA_Sense.html#doxid-namespace-b-r-k-g-a-1af28538be111c8320b2fec44b77ec5e9b"><span class="std std-ref">Sense</span></a><span></span> <span class="n">sense</span><span class="p">,</span>
@@ -272,13 +271,13 @@
     <span class="k">const</span> <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params"><span class="std std-ref">BrkgaParams</span></a><span></span><span class="o">&amp;</span> <span class="n">params</span><span class="p">,</span>
     <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">max_threads</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="k">const</span> <span class="kt">bool</span> <span class="n">evolutionary_mechanism_on</span> <span class="o">=</span> <span class="nb">true</span>
-    <span class="p">)</span></pre>
+<span class="p">)</span></pre>
 <p>Builds the algorithm and its data strtuctures with the given arguments.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>decoder_reference</p></td>
@@ -311,16 +310,16 @@
 </table>
 </section>
 <section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline"></a></h3>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span id="index-2"></span><span></span><span class="kt">void</span> <span class="n">setInitialPopulation</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&gt;&amp;</span> <span class="n">chromosomes</span><span class="p">)</span></pre>
+<h3>Methods<a class="headerlink" href="#methods" title="Link to this heading"></a></h3>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span id="index-2"></span><span></span><span class="kt">void</span> <span class="n">setInitialPopulation</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&gt;&amp;</span> <span class="n">chromosomes</span><span class="p">)</span></pre>
 <p>Sets individuals to initial population.</p>
-<p>Set initial individuals into the poulation to work as warm-starters. Such individuals can be obtained from solutions of external procedures such as fast heuristics, other methaheuristics, or even relaxations from a mixed integer programming model that models the problem.</p>
+<p>Set initial individuals into the population to work as warm-starters. Such individuals can be obtained from solutions of external procedures such as fast heuristics, other methaheuristics, or even relaxations from a mixed integer programming model that models the problem.</p>
 <p>We assign as many individuals as possible across all populations. Extra individuals are disregarded.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>chromosomes</p></td>
@@ -330,7 +329,7 @@
 </table>
 <pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a8616c89626ca3c8e8d3b5adb1da24c92"><span id="index-3"></span><span></span><span class="kt">void</span> <span class="n">setBiasCustomFunction</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">func</span><span class="p">)</span></pre>
 <p>Sets a custom bias function used to build the probabilities.</p>
-<p>It must be a <strong>positive non-increasing function</strong>, i.e. <span class="math notranslate nohighlight">\(f: \mathbb{N}^+ \to \mathbb{R}^+\)</span> such that <span class="math notranslate nohighlight">\(f(i) \ge 0\)</span> and <span class="math notranslate nohighlight">\(f(i) \ge f(i+1)\)</span> for <span class="math notranslate nohighlight">\(i \in [1..total\_parents]\)</span>. For example</p>
+<p>It must be a <strong>positive non-increasing function</strong>, i.e. <span class="math notranslate nohighlight">\(f: \mathbb{N}^+ \to \mathbb{R}^+\)</span> such that <span class="math notranslate nohighlight">\(f(i) \ge 0\)</span> and <span class="math notranslate nohighlight">\(f(i) \ge f(i+1)\)</span> for <span class="math notranslate nohighlight">\(i \in [1, \ldots, total\_parents]\)</span>. For example</p>
 <pre class="highlight literal-block"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a8616c89626ca3c8e8d3b5adb1da24c92"><span class="std std-ref">setBiasCustomFunction</span></a><span></span><span class="p">(</span>
     <span class="p">[](</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">);</span>
@@ -338,10 +337,10 @@
 <span class="p">);</span></pre>
 <p>sets an inverse quadratic function.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>func</p></td>
@@ -352,66 +351,245 @@
 </tr>
 </tbody>
 </table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a65fbb0b0c6b2daba98f346601354d957"><span id="index-4"></span><span></span><span class="kt">void</span> <span class="n">initialize</span><span class="p">(</span><span class="kt">bool</span> <span class="n">reset</span> <span class="o">=</span> <span class="nb">false</span><span class="p">)</span></pre>
-<p>Initializes the populations and others parameters of the algorithm.</p>
-<p>If a initial population is supplied, this method completes the remain individuals, if they do not exist. This method also performs the initial decoding of the chromosomes. Therefore, depending on the decoder implementation, this can take a while, and the user may want to time such procedure in his/her experiments.</p>
-<p>This method must be call before any evolutionary or population handling method.</p>
-<p>As it is in <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref">evolve()</span></a>, the decoding is done in parallel using threads, and the user <strong>must guarantee that the decoder is THREAD-SAFE.</strong> If such property cannot be held, we suggest using a single thread for optimization.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a4b5019c33a563d1906f0b7d0a8304169"><span id="index-4"></span><span></span><span class="kt">void</span> <span class="n">setShakingMethod</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">double</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="kt">double</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_Population.html#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&gt;&gt;&amp;</span><span class="n">populations</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;&amp;</span><span class="n">shaken</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">func</span><span class="p">)</span></pre>
+<p>Sets a custom shaking procedure.</p>
+<p>For more details, see <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params-1a4a5db47283d5f03e0605058338476337"><span class="std std-ref">BrkgaParams::custom_shaking</span></a>.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p>reset</p></td>
-<td><p>when set true, it ignores all solutions provided by <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref"><span class="pre">setInitialPopulation()</span></span></a></code>, and builds a completely random population. This parameter is set to true during reset phase. When false, <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a65fbb0b0c6b2daba98f346601354d957"><span class="std std-ref"><span class="pre">initialize()</span></span></a></code> considers all solutions given by <code class="docutils literal notranslate"><a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref"><span class="pre">setInitialPopulation()</span></span></a></code>.</p></td>
+<tr class="row-odd"><td><p>func</p></td>
+<td><p>a callback function. For example, the code below implements the standard mutation:</p>
+<pre class="highlight literal-block"><span></span><span class="c1">// A random number generator.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">rng</span><span class="p">(</span><span class="mi">2700001</span><span class="p">);</span>
+<span class="n">rng</span><span class="p">.</span><span class="n">discard</span><span class="p">(</span><span class="n">rng</span><span class="p">.</span><span class="n">state_size</span><span class="p">);</span>
+
+<span class="c1">// Change some values from elite chromosomes from all populations.</span>
+<span class="c1">// Similar to a standard mutation.</span>
+<span class="n">algorithm</span><span class="p">.</span><span class="n">setShakingMethod</span><span class="p">(</span>
+    <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">double</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="kt">double</span> <span class="n">upper_bound</span><span class="p">,</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Population</span><span class="o">&gt;&gt;&amp;</span> <span class="n">populations</span><span class="p">,</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="p">,</span> <span class="kt">unsigned</span><span class="o">&gt;&gt;&amp;</span> <span class="n">shaken</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// Determines whether we change the allele or not.</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">bernoulli_distribution</span> <span class="n">must_change</span><span class="p">(</span><span class="mf">0.50</span><span class="p">);</span>
+
+        <span class="c1">// Determines the value of the allele.</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">uniform_real_distribution</span><span class="o">&lt;&gt;</span> <span class="n">allele_value</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">);</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">pop_idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">pop_idx</span> <span class="o">&lt;</span> <span class="n">populations</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">pop_idx</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">auto</span><span class="o">&amp;</span> <span class="n">population</span> <span class="o">=</span> <span class="n">populations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">population</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">chr_idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">chr_idx</span> <span class="o">&lt;</span> <span class="n">population</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">chr_idx</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">auto</span><span class="o">&amp;</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="n">population</span><span class="p">[</span><span class="n">chr_idx</span><span class="p">];</span>
+
+                <span class="kt">bool</span> <span class="n">change</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">chromosome</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">must_change</span><span class="p">(</span><span class="n">rng</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="n">chromosome</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">allele_value</span><span class="p">(</span><span class="n">rng</span><span class="p">);</span>
+                        <span class="n">change</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="n">change</span><span class="p">)</span>
+                    <span class="n">shaken</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">pop_idx</span><span class="p">,</span> <span class="n">chr_idx</span><span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">);</span></pre>
+</td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span id="index-5"></span><span></span><span class="kt">void</span> <span class="n">evolve</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">generations</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></pre>
-<p>Evolves the current populations following the guidelines of Multi-parent BRKGAs.</p>
-<p>The decoding is done in parallel using threads, and the user <strong>must guarantee that the decoder is THREAD-SAFE.</strong> If such property cannot be held, we suggest using a single thread for optimization.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1adee8fc8410a56e71b2af84ed6f4f2a7c"><span id="index-5"></span><span></span><span class="kt">void</span> <span class="n">setStoppingCriteria</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a><span></span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">stopping_criteria</span><span class="p">)</span></pre>
+<p>Sets a custom stopping criteria supplied by the user.</p>
+<p>The algorithm always test for <em>the maximum running time</em> and for <em>the maximum stalled iterations/generations</em> given by <code class="docutils literal notranslate"><a class="reference internal" href="class_BRKGA_ControlParams.html#doxid-class-b-r-k-g-a-1-1-control-params"><span class="std std-ref"><span class="pre">ControlParams</span></span></a></code> indenpendently of the stopping criteria function supplied by the user. This is especially important when activating the implicit path reliking which is <strong>very timing consuming</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are using IPR, we <strong>STRONGLY RECOMMEND TO SET A MAXIMUM TIME</strong> since this is the core stopping criteria on IPR.</p>
+</div>
+<p>If you really mean to have no maximum time and/or maximum stalled iterations set, we recommend to use the following code:</p>
+<pre class="highlight literal-block"><span></span><span class="c1">// After reading your parameters, e.g.,</span>
+<span class="c1">// auto [brkga_params, control_params] = readConfiguration(&quot;config.conf&quot;);</span>
+
+<span class="c1">// You can set to the max.</span>
+<span class="n">control_params</span><span class="p">.</span><span class="n">maximum_running_time</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="o">::</span><span class="n">max</span><span class="p">();</span>
+
+<span class="n">control_params</span><span class="p">.</span><span class="n">stall_offset</span> <span class="o">=</span> <span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span></pre>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>stopping_criteria</p></td>
+<td><p>a callback function to determine is the algorithm must stop. For instance, the following lambda function tests if the best solution reached a given value for a minimization problem:</p>
+<pre class="highlight literal-block"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae212772a5d4bb9b7055e30791b494514"><span class="std std-ref">fitness_t</span></a><span></span> <span class="n">my_magical_solution</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+<span class="n">algorithm</span><span class="p">.</span><span class="n">setStoppingCriteria</span><span class="p">(</span>
+    <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="n">AlgorithmStatus</span><span class="o">&amp;</span> <span class="n">status</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">status</span><span class="p">.</span><span class="n">best_fitness</span> <span class="o">&lt;=</span> <span class="n">my_magical_solution</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">);</span></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa6cf3aca1879ffd4dc0c986340163254"><span id="index-6"></span><span></span><span class="kt">void</span> <span class="n">addNewSolutionObserver</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">(</span><span class="k">const</span> <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a><span></span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">func</span><span class="p">)</span></pre>
+<p>Adds a callback function called when the best solution is improved.</p>
+<p>It must take a reference to <a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a> and return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the algorithm should stop immediately. You may have as many observers as you want. They will be called in the order they are added.</p>
+<p class="rubric">Parameters:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>func</p></td>
+<td><p>a callback function such as</p>
+<pre class="highlight literal-block"><span></span><span class="kt">bool</span> <span class="nf">check_solution</span><span class="p">(</span><span class="k">const</span> <span class="n">AlgorithmStatus</span><span class="o">&amp;</span> <span class="n">status</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">best_fitness</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span> <span class="c1">// Stop the optimization.</span>
+<span class="p">}</span>
+<span class="c1">//...</span>
+<span class="n">algorithm</span><span class="p">.</span><span class="n">addNewSolutionObserver</span><span class="p">(</span><span class="n">check_solution</span><span class="p">);</span></pre>
+<p>or a lambda function such as</p>
+<pre class="highlight literal-block"><span></span><span class="n">algorithm</span><span class="p">.</span><span class="n">addNewSolutionObserver</span><span class="p">(</span>
+    <span class="p">[](</span><span class="k">const</span> <span class="n">AlgorithmStatus</span><span class="o">&amp;</span> <span class="n">status</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span>
+        <span class="o">&lt;&lt;</span> <span class="s">&quot;&gt; Iter: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">current_iteration</span>
+        <span class="o">&lt;&lt;</span> <span class="s">&quot; | solution: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">best_fitness</span>
+        <span class="o">&lt;&lt;</span> <span class="s">&quot; | time: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">current_time</span>
+        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// Dont&#39; stop the optimization.</span>
+     <span class="p">}</span>
+<span class="p">);</span></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span id="index-7"></span><a class="reference internal" href="class_BRKGA_AlgorithmStatus.html#doxid-class-b-r-k-g-a-1-1-algorithm-status"><span class="std std-ref">AlgorithmStatus</span></a><span></span> <span class="n">run</span><span class="p">(</span>
+    <span class="k">const</span> <a class="reference internal" href="class_BRKGA_ControlParams.html#doxid-class-b-r-k-g-a-1-1-control-params"><span class="std std-ref">ControlParams</span></a><span></span><span class="o">&amp;</span> <span class="n">control_params</span><span class="p">,</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">*</span> <span class="n">logger</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span>
+<span class="p">)</span></pre>
+<p>Runs the full framework performing evolution, path-reliking, exchanges, shakes, and resets according to the parameters.</p>
+<p>This method uses all facilities associated with this BRKGA-MP-IPR library, providing a comprehensive and easy-to-use single-entry point. The main loop always evolves one generation per iteration and calls other procedures based on the number of stalled iterations (i.e., the number of iterations without improvement in the best solution), and the given user thresholds in Control Parameters. <em>If the thresholds are all the same</em>, the main loop should be like this:</p>
+<pre class="highlight literal-block"><span></span><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">must_stop</span><span class="p">)</span> <span class="p">{</span>
+    <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref">evolve</span></a><span></span><span class="p">();</span> <span class="c1">// One generation.</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">best</span> <span class="n">solution</span> <span class="n">improvement</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Save</span> <span class="n">best</span> <span class="n">solution</span><span class="p">;</span>
+        <span class="n">Call</span> <span class="n">observer</span> <span class="n">callbacks</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">must_stop</span> <span class="o">&amp;&amp;</span> <span class="n">ipr_interval</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">stalled_iterations</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+       <span class="n">stalled_iterations</span> <span class="o">%</span> <span class="n">ipr_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+         <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa8da5193248d23ced19e68483aca31a5"><span class="std std-ref">pathRelink</span></a><span></span><span class="p">();</span>
+         <span class="k">if</span><span class="p">(</span><span class="n">best</span> <span class="n">solution</span> <span class="n">improvement</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">Save</span> <span class="n">best</span> <span class="n">solution</span><span class="p">;</span>
+             <span class="n">Call</span> <span class="n">observer</span> <span class="n">callbacks</span><span class="p">;</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">must_stop</span> <span class="o">&amp;&amp;</span> <span class="n">exchange_interval</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">stalled_iterations</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+       <span class="n">stalled_iterations</span> <span class="o">%</span> <span class="n">exchange_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+         <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ab89298e6c633a81bf8c0462fb40ddd15"><span class="std std-ref">exchangeElite</span></a><span></span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">must_stop</span> <span class="o">&amp;&amp;</span> <span class="n">shake_interval</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">stalled_iterations</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+       <span class="n">stalled_iterations</span> <span class="o">%</span> <span class="n">shake_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+         <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3721a91ed9d3fcbdc57fbcee2e20ac66"><span class="std std-ref">shake</span></a><span></span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">must_stop</span> <span class="o">&amp;&amp;</span> <span class="n">reset_interval</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">stalled_iterations</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+       <span class="n">stalled_iterations</span> <span class="o">%</span> <span class="n">reset_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+         <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span class="std std-ref">reset</span></a><span></span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span></pre>
+<p>Therefore, note that the order that <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa8da5193248d23ced19e68483aca31a5"><span class="std std-ref">pathRelink()</span></a>, <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ab89298e6c633a81bf8c0462fb40ddd15"><span class="std std-ref">exchangeElite()</span></a>, <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3721a91ed9d3fcbdc57fbcee2e20ac66"><span class="std std-ref">shake()</span></a>, and <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span class="std std-ref">reset()</span></a> are called, depends on the thresholds defined in <a class="reference internal" href="class_BRKGA_ControlParams.html#doxid-class-b-r-k-g-a-1-1-control-params"><span class="std std-ref">ControlParams</span></a>.</p>
+<p>For path relinking, the block size is computed by <span class="math notranslate nohighlight">\(\lceil \alpha \times \sqrt{p} \rceil\)</span> where <span class="math notranslate nohighlight">\(\alpha\)</span> is <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params-1a40ff7da597d2c4eadabf3f62b3b9196d"><span class="std std-ref">BrkgaParams::alpha_block_size</span></a> and <span class="math notranslate nohighlight">\(p\)</span> is <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params-1a8a4b0592480f32a3cf186b6d1759f571"><span class="std std-ref">BrkgaParams::population_size</span></a>. If the size is larger than the chromosome size, the size is set to half of the chromosome size. For more details on that, refer to <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa8da5193248d23ced19e68483aca31a5"><span class="std std-ref">pathRelink()</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The algorithm always test against maximum running time and for the maximum stalled iterations/generations given by <a class="reference internal" href="class_BRKGA_ControlParams.html#doxid-class-b-r-k-g-a-1-1-control-params"><span class="std std-ref">ControlParams</span></a> indenpendently of the stopping criteria function supplied by the user. This is especially important when activating the implicit path reliking which is <strong>very timing consuming</strong>. If you are using IPR, we <strong>STRONGLY RECOMMEND TO SET A MAXIMUM TIME</strong> since this is the core stopping criteria on IPR.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The decoding is done in parallel using threads, and the user <strong>must guarantee that the decoder is THREAD-SAFE.</strong> If such property cannot be held, we suggest using a single thread for optimization.</p>
+</div>
+<p class="rubric">Parameters:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>control_params</p></td>
+<td><p>the parameters to control the algorithm flow, such as calling exchanges, shakes, and IPR.</p></td>
+</tr>
+<tr class="row-even"><td><p>logger</p></td>
+<td><p>a output stream to log some information.</p></td>
+</tr>
+<tr class="row-odd"><td><p>std::runtime_error</p></td>
+<td><p>in the following cases:</p>
+<ol class="arabic simple">
+<li><p>IPR is active (ipr_interva &gt; 0) but the distance function is not set;</p></li>
+<li><p>Shaking is active (shake_interval &gt; 0) and it is set as ‘CUSTOM’. However the custom shaking procedure was not supplied.</p></li>
+<li><p>Shaking is active (shake_interval &gt; 0). However, the intensity bounds are out of range. Should be (0.0, 1.0] and ‘shaking_intensity_lower_bound &lt;= shaking_intensity_upper_bound’.</p></li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Returns:</p>
+<p>The last algorithm status before the stopping criteria are met.</p>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span id="index-8"></span><span></span><span class="kt">void</span> <span class="n">evolve</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">generations</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></pre>
+<p>Evolves the current populations following the guidelines of Multi-parent BRKGAs.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The decoding is done in parallel using threads, and the user <strong>must guarantee that the decoder is THREAD-SAFE.</strong> If such property cannot be held, we suggest using a single thread for optimization.</p>
+</div>
+<p class="rubric">Parameters:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>generations</p></td>
 <td><p>number of generations to be evolved. Must be larger than zero.</p></td>
 </tr>
-<tr class="row-even"><td><p>std::runtime_error</p></td>
-<td><p>if the algorithm is not initialized.</p></td>
-</tr>
-<tr class="row-odd"><td><p>std::range_error</p></td>
+<tr class="row-even"><td><p>std::range_error</p></td>
 <td><p>if the number of generations is zero.</p></td>
 </tr>
 </tbody>
 </table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a95529466a3e942e4aafa26259aa83d0f"><span id="index-6"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <span class="n">pathRelink</span><span class="p">(</span>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa8da5193248d23ced19e68483aca31a5"><span id="index-9"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <span class="n">pathRelink</span><span class="p">(</span>
     <a class="reference internal" href="enum_BRKGA_PathRelinking_Type.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a79247d22aeb1fa9ab7611488e8137132"><span class="std std-ref">PathRelinking::Type</span></a><span></span> <span class="n">pr_type</span><span class="p">,</span>
     <a class="reference internal" href="enum_BRKGA_PathRelinking_Selection.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a3ce8f0aeb5c0063aab2e8cbaee3076fa"><span class="std std-ref">PathRelinking::Selection</span></a><span></span> <span class="n">pr_selection</span><span class="p">,</span>
     <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">DistanceFunctionBase</span></a><span></span><span class="o">&gt;</span> <span class="n">dist</span><span class="p">,</span>
     <span class="kt">unsigned</span> <span class="n">number_pairs</span><span class="p">,</span>
     <span class="kt">double</span> <span class="n">minimum_distance</span><span class="p">,</span>
     <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">block_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="kt">long</span> <span class="n">max_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span> <span class="n">max_time</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">{</span><span class="mi">0</span><span class="p">},</span>
     <span class="kt">double</span> <span class="n">percentage</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="p">)</span></pre>
+<span class="p">)</span></pre>
 <p>Performs path relinking between elite solutions that are, at least, a given minimum distance between themselves. In this method, the local/loaded parameters are ignored in favor to the supplied ones.</p>
 <p>In the presence of multiple populations, the path relinking is performed between elite chromosomes from different populations, in a circular fashion. For example, suppose we have 3 populations. The framework performs 3 path relinkings: the first between individuals from populations 1 and 2, the second between populations 2 and 3, and the third between populations 3 and 1. In the case of just one population, both base and guiding individuals are sampled from the elite set of that population.</p>
 <p>Note that the algorithm tries to find a pair of base and guiding solutions with a minimum distance given by the distance function. If this is not possible, a new pair of solutions are sampled (without replacement) and tested against the distance. In case it is not possible to find such pairs for the given populations, the algorithm skips to the next pair of populations (in a circular fashion, as described above). Yet, if such pairs are not found in any case, the algorithm declares failure. This indicates that the populations are very homogeneous.</p>
 <p>If the found solution is the best solution found so far, IPR replaces the worst solution by it. Otherwise, IPR computes the distance between the found solution and all other solutions in the elite set, and replaces the worst solution by it if and only if the found solution is, at least, <code class="docutils literal notranslate"><span class="pre">minimum_distance</span></code> from all them.</p>
 <p>The API will call <code class="docutils literal notranslate"><span class="pre">Decoder::decode()</span></code> function always with <code class="docutils literal notranslate"><span class="pre">rewrite</span> <span class="pre">=</span> <span class="pre">false</span></code>. The reason is that if the decoder rewrites the chromosome, the path between solutions is lost and inadvertent results may come up. Note that at the end of the path relinking, the method calls the decoder with <code class="docutils literal notranslate"><span class="pre">rewrite</span> <span class="pre">=</span> <span class="pre">true</span></code> in the best chromosome found to guarantee that this chromosome is re-written to reflect the best solution found.</p>
 <p>This method is a multi-thread implementation. Instead of to build and decode each chromosome one at a time, the method builds a list of candidates, altering the alleles/keys according to the guide solution, and then decode all candidates in parallel. Note that <code class="docutils literal notranslate"><span class="pre">O(chromosome_size^2</span> <span class="pre">/</span> <span class="pre">block_size)</span></code> additional memory is necessary to build the candidates, which can be costly if the <code class="docutils literal notranslate"><span class="pre">chromosome_size</span></code> is very large.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>As it is in <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aee1828c2ca506f18b896f1fc75ceafcb"><span class="std std-ref">evolve()</span></a>, the decoding is done in parallel using threads, and the user <strong>must guarantee that the decoder is THREAD-SAFE.</strong> If such property cannot be held, we suggest using a single thread for optimization.</p>
+</div>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>pr_type</p></td>
@@ -427,7 +605,7 @@
 <td><p>number of chromosome pairs to be tested. If 0, all pairs are tested.</p></td>
 </tr>
 <tr class="row-odd"><td><p>minimum_distance</p></td>
-<td><p>between two chromosomes computed byt <code class="docutils literal notranslate"><span class="pre">dist</span></code>.</p></td>
+<td><p>between two chromosomes computed by <code class="docutils literal notranslate"><span class="pre">dist</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p>block_size</p></td>
 <td><p>number of alleles to be exchanged at once in each iteration. If one, the traditional path relinking is performed.</p></td>
@@ -445,18 +623,18 @@
 </table>
 <p class="rubric">Returns:</p>
 <p>A <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a> depending on the relink status.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a891815a683e55722a68cf52f47efe44e"><span id="index-7"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <span class="n">pathRelink</span><span class="p">(</span>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ae9c15595bc46c3554b3eb5656ab08a53"><span id="index-10"></span><a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a><span></span> <span class="n">pathRelink</span><span class="p">(</span>
     <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><a class="reference internal" href="class_BRKGA_DistanceFunctionBase.html#doxid-class-b-r-k-g-a-1-1-distance-function-base"><span class="std std-ref">DistanceFunctionBase</span></a><span></span><span class="o">&gt;</span> <span class="n">dist</span><span class="p">,</span>
-    <span class="kt">long</span> <span class="n">max_time</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="p">)</span></pre>
+    <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span> <span class="n">max_time</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span>
+<span class="p">)</span></pre>
 <p>Performs path relinking between elite solutions that are, at least, a given minimum distance between themselves.</p>
 <p>This method uses all parameters supplied in the constructor. In particular, the block size is computed by <span class="math notranslate nohighlight">\(\lceil \alpha \times \sqrt{p} \rceil\)</span> where <span class="math notranslate nohighlight">\(\alpha\)</span> is <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params-1a40ff7da597d2c4eadabf3f62b3b9196d"><span class="std std-ref">BrkgaParams::alpha_block_size</span></a> and <span class="math notranslate nohighlight">\(p\)</span> is <a class="reference internal" href="class_BRKGA_BrkgaParams.html#doxid-class-b-r-k-g-a-1-1-brkga-params-1a8a4b0592480f32a3cf186b6d1759f571"><span class="std std-ref">BrkgaParams::population_size</span></a>. If the size is larger than the chromosome size, the size is set to half of the chromosome size.</p>
-<p>Please, refer to <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a95529466a3e942e4aafa26259aa83d0f"><span class="std std-ref">pathRelink()</span></a> for details.</p>
+<p>Please, refer to <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa8da5193248d23ced19e68483aca31a5"><span class="std std-ref">pathRelink()</span></a> for details.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>dist</p></td>
@@ -472,14 +650,14 @@
 </table>
 <p class="rubric">Returns:</p>
 <p>A <a class="reference internal" href="enum_BRKGA_PathRelinking_PathRelinkingResult.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking-1a64da27c4c7ed94712c1547d972de6253"><span class="std std-ref">PathRelinking::PathRelinkingResult</span></a> depending on the relink status.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ab89298e6c633a81bf8c0462fb40ddd15"><span id="index-8"></span><span></span><span class="kt">void</span> <span class="n">exchangeElite</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">num_immigrants</span><span class="p">)</span></pre>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1ab89298e6c633a81bf8c0462fb40ddd15"><span id="index-11"></span><span></span><span class="kt">void</span> <span class="n">exchangeElite</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">num_immigrants</span><span class="p">)</span></pre>
 <p>Exchanges elite-solutions between the populations.</p>
 <p>Given a population, the <code class="docutils literal notranslate"><span class="pre">num_immigrants</span></code> best solutions are copied to the neighbor populations, replacing their worth solutions. If there is only one population, nothing is done.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>num_immigrants</p></td>
@@ -490,32 +668,20 @@
 </tr>
 </tbody>
 </table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span id="index-9"></span><span></span><span class="kt">void</span> <span class="n">reset</span><span class="p">()</span></pre>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span id="index-12"></span><span></span><span class="kt">void</span> <span class="n">reset</span><span class="p">()</span></pre>
 <p>Resets all populations with brand new keys.</p>
 <p>All warm-start solutions provided <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a59b05650ede92f5e0107ab606ff6e8b7"><span class="std std-ref">setInitialPopulation()</span></a> are discarded. You may use <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0347f67b59bfe36856d1c27c95d4b151"><span class="std std-ref">injectChromosome()</span></a> to insert those solutions again.</p>
-<p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>std::runtime_error</p></td>
-<td><p>if the algorithm is not initialized.</p></td>
-</tr>
-</tbody>
-</table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3721a91ed9d3fcbdc57fbcee2e20ac66"><span id="index-10"></span><span></span><span class="kt">void</span> <span class="n">shake</span><span class="p">(</span>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3721a91ed9d3fcbdc57fbcee2e20ac66"><span id="index-13"></span><span></span><span class="kt">void</span> <span class="n">shake</span><span class="p">(</span>
     <span class="kt">unsigned</span> <span class="n">intensity</span><span class="p">,</span>
     <a class="reference internal" href="enum_BRKGA_ShakingType.html#doxid-namespace-b-r-k-g-a-1a616e3d7dedad5ff4e6a2961cda1ea494"><span class="std std-ref">ShakingType</span></a><span></span> <span class="n">shaking_type</span><span class="p">,</span>
     <span class="kt">unsigned</span> <span class="n">population_index</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;::</span><span class="n">infinity</span><span class="p">()</span>
-    <span class="p">)</span></pre>
+<span class="p">)</span></pre>
 <p>Performs a shaking in the chosen population.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>intensity</p></td>
@@ -529,18 +695,18 @@
 </tr>
 </tbody>
 </table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0347f67b59bfe36856d1c27c95d4b151"><span id="index-11"></span><span></span><span class="kt">void</span> <span class="n">injectChromosome</span><span class="p">(</span>
-    <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0347f67b59bfe36856d1c27c95d4b151"><span id="index-14"></span><span></span><span class="kt">void</span> <span class="n">injectChromosome</span><span class="p">(</span>
+    <span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">chromosome</span><span class="p">,</span>
     <span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
     <span class="kt">unsigned</span> <span class="n">position</span>
-    <span class="p">)</span></pre>
+<span class="p">)</span></pre>
 <p>Injects/Replaces a chromosome of a given population into a given position.</p>
 <p>The new chromosome replaces the old one, and the decoder is triggered to compute the new fitness. Once done, the population is re-sorted according to the chromosomes’ fitness.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>chromosome</p></td>
@@ -557,13 +723,13 @@
 </tr>
 </tbody>
 </table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a878b5edaec7438669ceec2e5fdd42d43"><span id="index-12"></span><span></span><span class="k">const</span> <a class="reference internal" href="class_BRKGA_Population.html#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span> <span class="n">getCurrentPopulation</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">population_index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">const</span></pre>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a878b5edaec7438669ceec2e5fdd42d43"><span id="index-15"></span><span></span><span class="k">const</span> <a class="reference internal" href="class_BRKGA_Population.html#doxid-class-b-r-k-g-a-1-1-population"><span class="std std-ref">Population</span></a><span></span><span class="o">&amp;</span> <span class="n">getCurrentPopulation</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">population_index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">const</span></pre>
 <p>Returns a reference to a current population.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>population_index</p></td>
@@ -574,20 +740,28 @@
 </tr>
 </tbody>
 </table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span id="index-13"></span><span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getBestChromosome</span><span class="p">()</span> <span class="k">const</span></pre>
-<p>Returns a reference to the chromosome with best fitness so far among all populations.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0499e65fbddae20a97b276504fe72e39"><span id="index-14"></span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span> <span class="n">getBestFitness</span><span class="p">()</span> <span class="k">const</span></pre>
-<p>Return the best fitness found so far among all populations.</p>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1abfe4eccfd47a8eb88fc920e640f8513f"><span id="index-15"></span><span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ac1d4eb0799f47b27004f711bdffeb1c4"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1aa4b0396a4780fde3be8d284c535b600e"><span id="index-16"></span><span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getBestChromosome</span><span class="p">()</span> <span class="k">const</span></pre>
+<p>Returns a reference to the chromosome with best fitness among all current populations.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that this method <strong>does not</strong> return the best solution but the one within the current population. If a <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3721a91ed9d3fcbdc57fbcee2e20ac66"><span class="std std-ref">shake()</span></a> or <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span class="std std-ref">reset()</span></a> is called, the best solution may be lose in the populations. However, if you are using <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span class="std std-ref">run()</span></a>, the best solution is returned by that method. If not, you must keep track of the best solution.</p>
+</div>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0499e65fbddae20a97b276504fe72e39"><span id="index-17"></span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae212772a5d4bb9b7055e30791b494514"><span class="std std-ref">fitness_t</span></a><span></span> <span class="n">getBestFitness</span><span class="p">()</span> <span class="k">const</span></pre>
+<p>Returns the best fitness among all current populations.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that this method <strong>does not</strong> return the best fitness but the one within the current population. If a <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3721a91ed9d3fcbdc57fbcee2e20ac66"><span class="std std-ref">shake()</span></a> or <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a3bfe66221dd2f9c755a65ed7df14e350"><span class="std std-ref">reset()</span></a> is called, the best fitness may be lose in the populations. However, if you are using <a class="reference internal" href="#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1acb361f402797d3c09390f852326fc7b8"><span class="std std-ref">run()</span></a>, the best fitness is returned by that method. If not, you must keep track of the best fitness.</p>
+</div>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1abfe4eccfd47a8eb88fc920e640f8513f"><span id="index-18"></span><span></span><span class="k">const</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1a8ae7fc2da08d2d93a0628f346e72fab6"><span class="std std-ref">Chromosome</span></a><span></span><span class="o">&amp;</span> <span class="n">getChromosome</span><span class="p">(</span>
     <span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
     <span class="kt">unsigned</span> <span class="n">position</span>
-    <span class="p">)</span> <span class="k">const</span></pre>
+<span class="p">)</span> <span class="k">const</span></pre>
 <p>Returns a reference to a chromosome of the given population.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>population_index</p></td>
@@ -601,16 +775,16 @@
 </tr>
 </tbody>
 </table>
-<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a9d6636a50f519bf0f1e85257282c6065"><span id="index-16"></span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae9551fcbbfd6072b95e5f112e3b1565e"><span class="std std-ref">fitness_t</span></a><span></span> <span class="n">getFitness</span><span class="p">(</span>
+<pre class="highlight doxyrest-title-code-block literal-block" id="doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a9d6636a50f519bf0f1e85257282c6065"><span id="index-19"></span><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae212772a5d4bb9b7055e30791b494514"><span class="std std-ref">fitness_t</span></a><span></span> <span class="n">getFitness</span><span class="p">(</span>
     <span class="kt">unsigned</span> <span class="n">population_index</span><span class="p">,</span>
     <span class="kt">unsigned</span> <span class="n">position</span>
-    <span class="p">)</span> <span class="k">const</span></pre>
+<span class="p">)</span> <span class="k">const</span></pre>
 <p>Returns the fitness of a chromosome of the given population.</p>
 <p class="rubric">Parameters:</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>population_index</p></td>
@@ -632,14 +806,14 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="enum_BRKGA_ShakingType.html" class="btn btn-neutral float-left" title="enum BRKGA::ShakingType" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="class_BRKGA_BrkgaParams.html" class="btn btn-neutral float-right" title="class BRKGA::BrkgaParams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="group_main_algorithms.html" class="btn btn-neutral float-left" title="Main BRKGA-MP-IPR algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group_brkga_control_params.html" class="btn btn-neutral float-right" title="BRKGA and Control Parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Carlos E. Andrade.</p>
+    <p>&#169; Copyright 2019-2023, Carlos E. Andrade.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

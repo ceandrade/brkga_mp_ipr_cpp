@@ -22,21 +22,21 @@ Kendall Tau distance between two vectors. :ref:`More...<details-class_b_r_k_g_a_
 	public:
 		// methods
 	
-		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1aeb8d4c9cd3b87b08f84762ed83d347ff>`(
-			const std::vector<double>& vector1,
-			const std::vector<double>& vector2
-			);
+		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a7c95831e7f477e7bbc4203fab5fdffb1>`(
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& vector1,
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& vector2
+		);
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a0901afc35a6f2a44427d0a1ce78b2daa>`(
-			const double key1,
-			const double key2
-			);
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a94c50ba4c6a2ef14d657b6579f2a8739>`(
+			const Chromosome::value_type key1,
+			const Chromosome::value_type key2
+		);
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a4638274b38b50051eaba3f399b1b9c5f>`(
-			std::vector<double>::const_iterator v1_begin,
-			std::vector<double>::const_iterator v2_begin,
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a06d79321c14a511195daa4c1d143ed7e>`(
+			Chromosome::const_iterator v1_begin,
+			Chromosome::const_iterator v2_begin,
 			const std::size_t block_size
-			);
+		);
 	};
 
 Inherited Members
@@ -48,21 +48,21 @@ Inherited Members
 	public:
 		// methods
 	
-		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1acee8e7b478010aff23b3a46cd113860a>`(
-			const std::vector<double>& v1,
-			const std::vector<double>& v2
-			) = 0;
+		virtual double :ref:`distance<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a97950c58509065dee6c352cbe4fb5b35>`(
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& v1,
+			const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& v2
+		) = 0;
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a243c8a1031fb149c6abc16f3869f2ace>`(
-			const double key1,
-			const double key2
-			) = 0;
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1ac43fa85761c96a6a16c679781ee468fa>`(
+			const Chromosome::value_type key1,
+			const Chromosome::value_type key2
+		) = 0;
 	
-		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1aca0fc7103888cd025a67a16575954875>`(
-			std::vector<double>::const_iterator v1_begin,
-			std::vector<double>::const_iterator v2_begin,
+		virtual bool :ref:`affectSolution<doxid-class_b_r_k_g_a_1_1_distance_function_base_1a02fe55b2288dbef73e51aa55d65a69cf>`(
+			Chromosome::const_iterator v1_begin,
+			Chromosome::const_iterator v2_begin,
 			const std::size_t block_size
-			) = 0;
+		) = 0;
 
 .. _details-class_b_r_k_g_a_1_1_kendall_tau_distance:
 
@@ -77,15 +77,15 @@ Methods
 -------
 
 .. index:: pair: function; distance
-.. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1aeb8d4c9cd3b87b08f84762ed83d347ff:
+.. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a7c95831e7f477e7bbc4203fab5fdffb1:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual double distance(
-		const std::vector<double>& vector1,
-		const std::vector<double>& vector2
-		)
+		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& vector1,
+		const :ref:`Chromosome<doxid-namespace_b_r_k_g_a_1a8ae7fc2da08d2d93a0628f346e72fab6>`& vector2
+	)
 
 Computes the Kendall Tau distance between two vectors.
 
@@ -107,15 +107,15 @@ Computes the Kendall Tau distance between two vectors.
 		- second vector
 
 .. index:: pair: function; affectSolution
-.. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a0901afc35a6f2a44427d0a1ce78b2daa:
+.. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a94c50ba4c6a2ef14d657b6579f2a8739:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual bool affectSolution(
-		const double key1,
-		const double key2
-		)
+		const Chromosome::value_type key1,
+		const Chromosome::value_type key2
+	)
 
 Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 
@@ -137,20 +137,20 @@ Returns true if the changing of ``key1`` by ``key2`` affects the solution.
 		- the second key
 
 .. index:: pair: function; affectSolution
-.. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a4638274b38b50051eaba3f399b1b9c5f:
+.. _doxid-class_b_r_k_g_a_1_1_kendall_tau_distance_1a06d79321c14a511195daa4c1d143ed7e:
 
 .. ref-code-block:: cpp
 	:class: doxyrest-title-code-block
 
 	virtual bool affectSolution(
-		std::vector<double>::const_iterator v1_begin,
-		std::vector<double>::const_iterator v2_begin,
+		Chromosome::const_iterator v1_begin,
+		Chromosome::const_iterator v2_begin,
 		const std::size_t block_size
-		)
+	)
 
 Returns true if the changing of the blocks of keys ``v1`` by the blocks of keys ``v2`` affects the solution.
 
-Todo (ceandrade): implement this properly.
+Todo This is the same implementation of Hamming. We need to figure out how to do it properly.
 
 
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API documentation &mdash; BRKGA-MP-IPR 2.0.0 documentation</title>
+  <title>API documentation &mdash; BRKGA-MP-IPR 3.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
@@ -15,17 +15,18 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/add_target.js"></script>
-        <script src="_static/target-highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=acc74ff5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/add_target.js?v=0b007391"></script>
+        <script src="_static/target-highlight.js?v=df7d332b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="namespace BRKGA" href="namespace_BRKGA.html" />
-    <link rel="prev" title="Contributing" href="page_md_src_contributing.html" /> 
+    <link rel="prev" title="Contributing" href="page_contributing.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -33,15 +34,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> BRKGA-MP-IPR
-            <img src="_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BRKGA-MP-IPR
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0
+                3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -51,13 +56,20 @@
 <li class="toctree-l1"><a class="reference internal" href="page_guide.html">Guide / Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_license.html">BRKGA-MP-IPR License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="page_todo.html">Todo List</a></li>
-<li class="toctree-l1"><a class="reference internal" href="page_md_src_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_contributing.html">Contributing</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="namespace_BRKGA.html">namespace BRKGA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="class_EnumIO.html">template class EnumIO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessor_directives.html">Preprocessor directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_main_algorithms.html">Main BRKGA-MP-IPR algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_brkga_control_params.html">BRKGA and Control Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_algorithm_status.html">Algorithm status utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_distance_functions.html">Distance functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_utility_functions.html">Functions for equality comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_chrono_helpers.html">I/O chrono help functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_enum_io_templates.html">Template specializations for enum I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group_compiler_directives.html">Compiler directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 </ul>
 </li>
 </ul>
@@ -75,8 +87,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>API documentation</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API documentation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/global.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,14 +98,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="global"></span><section id="api-documentation">
-<span id="index-0"></span><h1>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline"></a></h1>
+  <section id="api-documentation">
+<span id="index-0"></span><span id="global"></span><h1>API documentation<a class="headerlink" href="#api-documentation" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>All BRKGA-MP-IPR algorithms and facilities are within
+namespace <code class="docutils literal notranslate"><a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref"><span class="pre">BRKGA</span></span></a></code>. Some helper are in
+the general scope, such general streaming operator and enumaratio manipulation.</p>
 <pre class="highlight doxyrest-overview-code-block literal-block"><span></span><span class="c1">// namespaces</span>
 
 <span class="k">namespace</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a"><span class="std std-ref">BRKGA</span></a><span></span><span class="p">;</span>
-<span class="k">namespace</span> <a class="reference internal" href="namespace_BRKGA_PathRelinking.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking"><span class="std std-ref">BRKGA::PathRelinking</span></a><span></span><span class="p">;</span>
+    <span class="k">namespace</span> <a class="reference internal" href="namespace_BRKGA_PathRelinking.html#doxid-namespace-b-r-k-g-a-1-1-path-relinking"><span class="std std-ref">BRKGA::PathRelinking</span></a><span></span><span class="p">;</span>
 
 <span class="c1">// classes</span>
 
@@ -102,45 +119,61 @@
 
 <span class="c1">// global functions</span>
 
+<span class="k">template</span> <span class="o">&lt;</span><span class="n">DurationType</span> <span class="n">durantion_t</span><span class="o">&gt;</span>
+<span class="n">INLINE</span> <span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">&amp;</span> <a class="reference internal" href="group_chrono_helpers.html#doxid-group-chrono-helpers-1ga79cf8ed7aa9f3f585935caba988d60c8"><span class="std std-ref">operator &gt;&gt;</span></a><span></span> <span class="p">(</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">is</span><span class="p">,</span>
+    <span class="n">durantion_t</span><span class="o">&amp;</span> <span class="n">duration</span>
+<span class="p">);</span>
+
+<span class="n">INLINE</span> <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <a class="reference internal" href="group_chrono_helpers.html#doxid-group-chrono-helpers-1gaf5b85af7b48112d0af6f04c27e6dbbb7"><span class="std std-ref">operator &lt;&lt;</span></a><span></span> <span class="p">(</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">os</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">dur</span>
+<span class="p">);</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span> <span class="n">Ts</span><span class="o">&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <a class="reference internal" href="namespace_BRKGA.html#doxid-namespace-b-r-k-g-a-1ae212772a5d4bb9b7055e30791b494514"><span class="std std-ref">operator &lt;&lt;</span></a><span></span> <span class="p">(</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">os</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">Ts</span><span class="p">...</span><span class="o">&gt;&amp;</span> <span class="n">tp</span>
+<span class="p">);</span>
+
 <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="doxyrest-code-target target" id="doxid-enum-io-8hpp-1ada3f4837517f607981fce6af2219f67e"><span></span><span class="n">toUpper</span></span><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">);</span>
 
-<span class="k">template</span> <span class="o">&lt;</span>
-    <span class="k">typename</span> <span class="n">T</span><span class="p">,</span>
-    <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_enum</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">*</span> <span class="o">=</span> <span class="k">nullptr</span>
-    <span class="o">&gt;</span>
-<span class="n">T</span> <span class="doxyrest-code-target target" id="doxid-enum-io-8hpp-1a1acb2a2038abbd68664d821dfa0a4fd1"><span></span><span class="n">toEnum</span></span><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="n">EnumType</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="n">T</span> <span class="doxyrest-code-target target" id="doxid-enum-io-8hpp-1afea8619f6e8b531411980659ada31f4a"><span></span><span class="n">toEnum</span></span><span></span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
 
-<span class="k">template</span> <span class="o">&lt;</span>
-    <span class="k">typename</span> <span class="n">T</span><span class="p">,</span>
-    <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_enum</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">*</span> <span class="o">=</span> <span class="k">nullptr</span>
-    <span class="o">&gt;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="doxyrest-code-target target" id="doxid-enum-io-8hpp-1a6656bb4c91dcb19d6d089791bcfd4d5e"><span></span><span class="k">operator</span> <span class="o">&lt;&lt;</span></span><span></span> <span class="p">(</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="n">EnumType</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="doxyrest-code-target target" id="doxid-enum-io-8hpp-1a04b7b755bb1d0514802003ff47aaa868"><span></span><span class="k">operator</span> <span class="o">&lt;&lt;</span></span><span></span> <span class="p">(</span>
     <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">os</span><span class="p">,</span>
     <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">t</span>
-    <span class="p">);</span>
+<span class="p">);</span>
 
-<span class="k">template</span> <span class="o">&lt;</span>
-    <span class="k">typename</span> <span class="n">T</span><span class="p">,</span>
-    <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_enum</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">*</span> <span class="o">=</span> <span class="k">nullptr</span>
-    <span class="o">&gt;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">&amp;</span> <span class="doxyrest-code-target target" id="doxid-enum-io-8hpp-1a2600831426fc570b21237e48b2c467fd"><span></span><span class="k">operator</span> <span class="o">&gt;&gt;</span></span><span></span> <span class="p">(</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="n">EnumType</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">&amp;</span> <span class="doxyrest-code-target target" id="doxid-enum-io-8hpp-1a398b74584e926b4c900380606f800e83"><span></span><span class="k">operator</span> <span class="o">&gt;&gt;</span></span><span></span> <span class="p">(</span>
     <span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">is</span><span class="p">,</span>
     <span class="n">T</span><span class="o">&amp;</span> <span class="n">t</span>
-    <span class="p">);</span></pre>
+<span class="p">);</span>
+
+<span class="c1">// macros</span>
+
+<span class="cp">#define </span><a class="reference internal" href="group_compiler_directives.html#doxid-group-compiler-directives-1ga608f9e381594efac6848d962c0110e91"><span class="std std-ref">BRKGA_MULTIPLE_INCLUSIONS</span></a><span></span>
+<span class="cp">#define </span><a class="reference internal" href="group_compiler_directives.html#doxid-group-compiler-directives-1ga232080cffcccb7698dd33155c0a534d7"><span class="std std-ref">MATING_FULL_SPEED</span></a><span></span>
+<span class="cp">#define </span><a class="reference internal" href="group_compiler_directives.html#doxid-group-compiler-directives-1ga68b3cb7d49905ea1096c35a4467b6c22"><span class="std std-ref">MATING_SEED_ONLY</span></a><span></span>
+<span class="cp">#define </span><a class="reference internal" href="group_compiler_directives.html#doxid-group-compiler-directives-1ga5766b15b52c6201d58440c53462fdf24"><span class="std std-ref">MATING_SEQUENTIAL</span></a></pre>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="page_md_src_contributing.html" class="btn btn-neutral float-left" title="Contributing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="page_contributing.html" class="btn btn-neutral float-left" title="Contributing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="namespace_BRKGA.html" class="btn btn-neutral float-right" title="namespace BRKGA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Carlos E. Andrade.</p>
+    <p>&#169; Copyright 2019-2023, Carlos E. Andrade.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
