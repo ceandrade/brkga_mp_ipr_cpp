@@ -179,7 +179,10 @@ Supporting `run()`, we have three new methods:
 
   | :memo: Note                |
   |:---------------------------|
-  | While we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** (mainly when using IPR), if you really mean to have no maximum time or maximum stalled iterations set, we recommend to use the following code:|
+  | While we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** (mainly when using IPR).|
+
+  If you really mean to have no maximum time or maximum stalled iterations set,
+  we recommend to use the following code:
 
   ```cpp
   // After reading your parameters, e.g.,
