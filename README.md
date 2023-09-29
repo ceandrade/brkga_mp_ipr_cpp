@@ -176,6 +176,9 @@ Supporting `run()`, we have three new methods:
   - `status.best_fitness <= lower_bound * 1.1` **OR**
   - `status.current_iteration == max_iterations`.
 
+  Note that BRKGA-MP-IPR always tests against time and stalled iterations to
+  avoid hanging up. However, this behavior can be changed by modifying the
+  maximum time and maximum stalled iterations in the control parameters.
 
   | :memo: Note                |
   |:---------------------------|
@@ -214,7 +217,8 @@ Supporting `run()`, we have three new methods:
   ```
 
 - `setShakingMethod()`: This method adds a custom shaking procedure defined
-  by the user. Please, refer to its documentation for more details.
+  by the user. Please,
+  [refer to its documentation for more details](https://ceandrade.github.io/brkga_mp_ipr_cpp/page_guide.html#providing-custom-shake-procedure).
 
 Less important but still relevant: previously, one must call `initialize()`
 before any method that manipulated the population. Also, since `initialize()`
