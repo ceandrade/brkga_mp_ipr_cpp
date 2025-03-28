@@ -681,7 +681,7 @@ files.
 --------------------------------------------------------------------------------
 
 - Alberto Kummer, 2021 (parallel mating).
-- Daniele Ferone, 2023 (bug fix on IPR, bug on initialize()).
+- Daniele Ferone, 2023, 2015 (bug fix on IPR, bug on initialize()).
 - Pedro H.D.B Hokama, 2025 (bug fix on evolution).
 - Mário C. San Felice, 2025 (bug fix on evolution).
 
