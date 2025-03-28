@@ -32,6 +32,9 @@ Table of Contents
 --------------------------------------------------------------------------------
 
 - :speech_balloon: [Introduction](#speech_balloon-introduction)
+- :high_brightness: [What is new on version 3.1](#high_brightness-what-is-new-on-version-3.1)
+  -[Bug fix 1: Evolution step used to mess up with the best chromosome](#evolution-step-used-to-mess-up-with-the-best-chromosome)
+  -[Bug fix 2: Initial population was incorrect](#initial-population-was-incorrect)
 - :high_brightness: [What is new on version 3.0](#high_brightness-what-is-new-on-version-3.0)
   - [API enhancements](#api-enhancements)
   - [BRKGA and control parameters](#brkga-and-control-parameters)
@@ -123,7 +126,7 @@ and bugs.
 I thank **Pedro H.D.B Hokama** and **Mário C. San Felice** for the long debug session
 in finding and fixing this issue.
 
-### Initial population was incorrect due to `initialize()` bug
+### Initial population was incorrect
 
 The method `initialize()` is responsible for asserting the correct state of
 the algorithm before it runs. This includes initializing the full population
