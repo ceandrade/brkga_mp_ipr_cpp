@@ -2,11 +2,11 @@
  * brkga_mp_ipr.hpp: Biased Random-Key Genetic Algorithm Multi-Parent
  *                   with Implict Path Relinking.
  *
- * (c) Copyright 2015-2023, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2025, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 28, 2023 by ceandrade.
+ * Last update: Mar 28, 2025 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -27,7 +27,9 @@
  *
  * Collaborators:
  * - Alberto Kummer, 2021 (parallel mating).
- * - Daniele Ferone, 2023 (bug fix on IPR).
+ * - Daniele Ferone, 2023, 2025 (bug fix on IPR, bug on initialize()).
+ * - Pedro H.D.B Hokama, 2025 (bug fix on evolution).
+ * - Mário C. San Felice, 2025 (bug fix on evolution).
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -1579,11 +1581,11 @@ public:
 
     /**
      * \brief Returns a reference to a chromosome.
-     * \param chromosome index of desired chromosome.
+     * \param chromosome_index index of desired chromosome.
      * \returns a reference to chromosome.
      */
-    Chromosome& operator()(unsigned chromosome) {
-        return chromosomes[chromosome];
+    Chromosome& operator()(const unsigned chromosome_index) {
+        return chromosomes[chromosome_index];
     }
     ///@}
 
@@ -1604,7 +1606,7 @@ public:
     }
 
     /// Returns a reference to the i-th best chromosome.
-    Chromosome& getChromosome(unsigned i) {
+    Chromosome& getChromosome(const unsigned i) {
         return chromosomes[fitness[i].second];
     }
 
@@ -1629,11 +1631,11 @@ public:
 
     /**
      * \brief Sets the fitness of chromosome.
-     * \param chromosome index of chromosome.
+     * \param chromosome_index index of chromosome.
      * \param value allele value.
      */
-    void setFitness(const unsigned chromosome, const fitness_t value) {
-        fitness[chromosome] = std::make_pair(value, chromosome);
+    void setFitness(const unsigned chromosome_index, const fitness_t value) {
+        fitness[chromosome_index] = std::make_pair(value, chromosome_index);
     }
     ///@}
 };
@@ -3075,18 +3077,15 @@ void BRKGA_MP_IPR<Decoder>::setInitialPopulation(
                                 const std::vector<Chromosome>& chromosomes) {
     // First, reserve some memory.
     for(auto& pop : current) {
-        // We cannot init a populaiton with zero chromosomes...
-        pop.reset(new Population(chromosome_size, 1));
-        //... so, we add one but remove it immediately.
-        pop->chromosomes.pop_back();
-        pop->chromosomes.reserve(params.population_size);
+        pop.reset(new Population(chromosome_size, params.population_size));
+        pop->chromosomes.clear();
     }
 
     auto it_init_chr = chromosomes.begin();
     auto it_pop = current.begin();
 
     unsigned counter = 0;
-    while( it_init_chr != chromosomes.end()) {
+    while(it_init_chr != chromosomes.end()) {
         if(it_init_chr->size() != chromosome_size) {
             std::stringstream ss;
             ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
@@ -3121,7 +3120,8 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool reset) {
 
     // Check and complete the populations.
     for(auto& pop : current) {
-        if(!pop) {
+        const bool new_pop = !pop;
+        if(new_pop) {
             pop.reset(new Population(chromosome_size, params.population_size));
         }
         else {
@@ -3131,9 +3131,9 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool reset) {
         if(reset)
             pop->chromosomes.clear();
 
-        if(pop->chromosomes.size() < params.population_size) {
+        if(new_pop || (pop->chromosomes.size() < params.population_size)) {
             Chromosome chromosome(chromosome_size);
-            unsigned last_chromosome = pop->chromosomes.size();
+            unsigned last_chromosome = new_pop? 0 : pop->chromosomes.size();
 
             pop->chromosomes.resize(params.population_size);
             for(; last_chromosome < params.population_size; ++last_chromosome) {
@@ -3245,9 +3245,9 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     #endif
 
     // First, we copy the elite chromosomes to the next generation.
-    for(unsigned chr = 0; chr < elite_size; ++chr) {
-        next.chromosomes[chr] = curr.chromosomes[curr.fitness[chr].second];
-        next.fitness[chr] = std::make_pair(curr.fitness[chr].first, chr);
+    for(unsigned chr_idx = 0; chr_idx < elite_size; ++chr_idx) {
+        next.chromosomes[chr_idx] = curr.chromosomes[curr.fitness[chr_idx].second];
+        next.fitness[chr_idx] = std::make_pair(curr.fitness[chr_idx].first, chr_idx);
     }
 
     // Second, we mate 'pop_size - elite_size - num_mutants' pairs.
@@ -3258,8 +3258,8 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         #pragma omp parallel for num_threads(max_threads) schedule(static, 1)
     #endif
     #endif
-    for(unsigned chr = elite_size;
-        chr < params.population_size - num_mutants; ++chr) {
+    for(auto chr_idx = elite_size;
+        chr_idx < params.population_size - num_mutants; ++chr_idx) {
 
         #ifdef _OPENMP
             auto& shuffled_individuals =
@@ -3277,7 +3277,7 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 
         #ifdef MATING_SEED_ONLY
         // Reseed the RNG to guarantee reproducibility.
-        rng.seed(mating_seeds[chr - elite_size]);
+        rng.seed(mating_seeds[chr_idx - elite_size]);
         #endif
 
         // First, we shuffled the elite set and non-elite set indices,
@@ -3336,7 +3336,8 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         // This strategy of setting the offpring in a local variable, and then
         // copying to the population seems to reduce the overall cache misses
         // counting.
-        next.getChromosome(chr) = offspring;
+        next.chromosomes[chr_idx] = offspring;
+        next.fitness[chr_idx] = std::make_pair(-1, chr_idx);
     }
 
     // To finish, we fill up the remaining spots with mutants.
@@ -3345,14 +3346,15 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         #pragma omp parallel for num_threads(max_threads) schedule(static, 1)
     #endif
     #endif
-    for(unsigned chr = params.population_size - num_mutants;
-        chr < params.population_size; ++chr) {
+    for(auto chr_idx = params.population_size - num_mutants;
+        chr_idx < params.population_size; ++chr_idx) {
         #ifdef _OPENMP
             auto& rng = rng_per_thread[omp_get_thread_num()];
         #else
             auto& rng = rng_per_thread[0];
         #endif
-        for(auto& allele : next.chromosomes[chr])
+        next.fitness[chr_idx] = std::make_pair(-1, chr_idx);
+        for(auto& allele : next.chromosomes[chr_idx])
             allele = rand01(rng);
     }
 
@@ -3360,8 +3362,9 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     #ifdef _OPENMP
         #pragma omp parallel for num_threads(max_threads) schedule(static, 1)
     #endif
-    for(unsigned i = elite_size; i < params.population_size; ++i)
+    for(auto i = elite_size; i < params.population_size; ++i) {
         next.setFitness(i, decoder.decode(next.chromosomes[i], true));
+    }
 
     // Now we must sort by fitness, since things might have changed.
     next.sortFitness(optimization_sense);

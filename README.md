@@ -3,7 +3,7 @@
   <img src="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/src_docs/src/assets/logo_name_300.png">
 </div>
 
-BRKGA-MP-IPR - C++ version 3.0
+BRKGA-MP-IPR - C++ version 3.1
 ================================================================================
 
 <table>
@@ -104,6 +104,40 @@ documentation practices of your chosen language/framework.
 
 If you are not familiar with how BRKGA works, take a look on
 [Multi-Parent BRKGA](https://doi.org/10.1016/j.ejor.2019.11.037).
+
+:high_brightness: What is new on version 3.1
+--------------------------------------------------------------------------------
+
+We have two major bug fixes, so we decided to bump the version up to 3.1,
+even though we have no new features.
+
+### Evolution step used to mess up with the best chromosome
+
+On the `evolution()` method, the index handling was mixed with absolute and
+relative chromosome position/ranking in the population.
+Therefore, offspring may be written in the place of elite individuals.
+Although this is a major bug, the overall performance did not drop
+significantly, showing how robust BRKGA is, even in the presence of noise
+and bugs.
+
+I thank **Pedro H.D.B Hokama** and **Mário C. San Felice** for the long debug session
+in finding and fixing this issue.
+
+### Initial population was incorrect due to `initialize()` bug
+
+The method `initialize()` is responsible for asserting the correct state of
+the algorithm before it runs. This includes initializing the full population
+if no initial solution is injected before the algorithm starts or
+if the initial solutions/chromosomes are provided,
+completing the first population with random chromosomes.
+
+While working correctly in the presence of initial solutions,
+`initialize()` incorrectly, creating a population with all alleles equal to zero
+when no initial solutions were present. We have fixed that,
+and now we guarantee an entirely random initial population in both cases.
+
+Thank **Daniele Ferone** for detecting such a bug.
+
 
 :high_brightness: What is new on version 3.0
 --------------------------------------------------------------------------------
@@ -644,7 +678,9 @@ files.
 --------------------------------------------------------------------------------
 
 - Alberto Kummer, 2021 (parallel mating).
-- Daniele Ferone, 2023 (bug fix on IPR).
+- Daniele Ferone, 2023 (bug fix on IPR, bug on initialize()).
+- Pedro H.D.B Hokama, 2025 (bug fix on evolution).
+- Mário C. San Felice, 2025 (bug fix on evolution).
 
 :construction_worker: TODO
 --------------------------------------------------------------------------------

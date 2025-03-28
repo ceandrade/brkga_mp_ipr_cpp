@@ -297,7 +297,7 @@ Options:
 
         vector<pair<double, unsigned>> tour(instance.num_nodes);
         for(unsigned i = 0; i < instance.num_nodes; ++i)
-            tour[i] = make_pair(final_status.best_chromosome[i], i);;
+            tour[i] = make_pair(final_status.best_chromosome[i], i);
 
         sort(tour.begin(), tour.end());
 

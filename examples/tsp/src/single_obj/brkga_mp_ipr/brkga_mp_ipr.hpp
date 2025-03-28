@@ -2,11 +2,11 @@
  * brkga_mp_ipr.hpp: Biased Random-Key Genetic Algorithm Multi-Parent
  *                   with Implict Path Relinking.
  *
- * (c) Copyright 2015-2023, Carlos Eduardo de Andrade.
+ * (c) Copyright 2015-2025, Carlos Eduardo de Andrade.
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Sep 21, 2023 by ceandrade.
+ * Last update: Mar 28, 2025 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -28,6 +28,8 @@
  * Collaborators:
  * - Alberto Kummer, 2021 (parallel mating).
  * - Daniele Ferone, 2023 (bug fix on IPR).
+ * - Pedro H.D.B Hokama, 2025 (bug fix on evolution).
+ * - Mário C. San Felice, 2025 (bug fix on evolution).
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -203,6 +205,7 @@ namespace BRKGA::PathRelinking {}
  * \defgroup chrono_helpers I/O chrono help functions
  *
  * Defines some helpers for chrono types.
+ *
  * \todo These functions may not be necessary for C++23,
  *       since streaming operators for chrono types are defined there.
  */
@@ -253,7 +256,8 @@ operator>>(std::istream& is, durantion_t& duration) {
  *
  * To the date, libc (clang) has no support to stream chrono objects.
  * This is a working around only for seconds.
- * \todo: remove this when clang/libc get the support.
+ *
+ * \todo Remove this when clang/libc get the support.
  *
  * \param os the output operator.
  * \param dur the duration.
@@ -327,8 +331,6 @@ constexpr bool close_enough(T a, T b) {
  * This specialization iterates, recursively, of each tuples' members and
  * compares them. Note that this is done in compilation time, with no impact at
  * running time.
- *
- * \todo Could we implement this using C++17 template folding?
  *
  * \param a First tuple to be compared.
  * \param b Second tuple to be compared.
@@ -499,7 +501,7 @@ inline PathRelinkingResult& operator|=(PathRelinkingResult& lhs,
 //----------------------------------------//
 
 /**
- * \defgroup enum_io_templates Template specializations for enum I/O.
+ * \defgroup enum_io_templates Template specializations for enum I/O
  *
  * Using slightly modified template class provided by Bradley Plohr
  * (https://codereview.stackexchange.com/questions/14309/conversion-between-enum-and-string-in-c-class-header)
@@ -509,13 +511,11 @@ inline PathRelinkingResult& operator|=(PathRelinkingResult& lhs,
  * saving time in coding custom solutions. Please, see third_part/enum_io.hpp
  * for complete reference and examples.
  *
-  * \note
-  *     Due to some weird scope resolution within clang compilers,
-  *     we must imbue the enum facilities into namespace BRKGA.
-  *     This does not happen with g++. We have not test to MSVC.
+ * \note Due to some weird scope resolution within clang compilers,
+ *     we must imbue the enum facilities into namespace BRKGA.
+ *     This does not happen with g++. We have not test to MSVC.
  *
- * \warning
- *      The specialization must be inline-d to avoid multiple definitions
+ * \warning The specialization must be inline-d to avoid multiple definitions
  *      issues across different modules. However, this can cause "inline"
  *      overflow, and compromise your code. If you include this header only
  *      once along with your code, it is safe to remove the `inline`s from the
@@ -807,7 +807,8 @@ public:
      * \param v2_begin begin of the first blocks of keys
      * \param block_size number of keys to be considered.
      *
-     * \todo (ceandrade): implement this properly.
+     * \todo This is the same implementation of Hamming. We need to figure out
+     *       how to do it properly.
      */
     virtual bool affectSolution(Chromosome::const_iterator v1_begin,
                                 Chromosome::const_iterator v2_begin,
@@ -926,7 +927,8 @@ public:
     /** \brief This is the custom shaking procedure given by the user.
      *
      * - Parameters `lower_bound` and `upper_bound` is the shaking intensity
-     *   bounds to be applied.
+     *   bounds to be applied. Usually, the define a range where the intensity
+     *   is sampled.
      *
      * - Parameter `populations` are the current BRKGA populations.
      *
@@ -937,11 +939,10 @@ public:
      * See BRKGA_MP_IPR::setShakingMethod() for details and examples.
      *
      * \note If `shaken` is empty, all chromosomes of all populations are
-     *       re-decoded. This may be slow. Even if you intention is to do so,
-     *       it is faster to populate `shaken`.
+     *      re-decoded. This may be slow. Even if you intention is to do so,
+     *      it is faster to populate `shaken`.
      *
-     * \warning
-     *      This procedure can be very intrusive since it must manipulate
+     * \warning This procedure can be very intrusive since it must manipulate
      *      the population. So, the user must make sure that BRKGA invariants
      *      are kept, such as chromosome size and population size.
      *      Otherwise, the overall functionaly may be compromised.
@@ -962,7 +963,7 @@ public:
 };
 
 //----------------------------------------------------------------------------//
-// External Control Params class.
+// Control Parameters class.
 //----------------------------------------------------------------------------//
 
 /**
@@ -1026,8 +1027,9 @@ public:
  * \param logger a output stream to log some information such as missing
  *               no-required parameters. It does not log errors.
  * \returns a tuple containing the BRKGA and external control parameters.
- * \throw std::fstream::failure in case of errors in the file.
- * \todo (ceandrade) This method can beneficiate from introspection tools.
+ * \throws std::fstream::failure in case of errors in the file.
+ *
+ * \todo This method can beneficiate from introspection tools.
  *       We would like achieve a code similar to the
  *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
  */
@@ -1240,7 +1242,7 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
  * \param logger a output stream to log some information such as missing
  *               no-required parameters. It does not log errors.
  * \returns a tuple containing the BRKGA and external control parameters.
- * \throw std::fstream::failure in case of errors in the file.
+ * \throws std::fstream::failure in case of errors in the file.
  */
 INLINE std::pair<BrkgaParams, ControlParams>
 readConfiguration(const std::string& filename,
@@ -1321,7 +1323,8 @@ operator<<(std::ostream& os, const ControlParams& control_params) {
  * \param brkga_params the BRKGA parameters.
  * \param control_params the external control parameters. Default is an empty
  *        object.
- * \throw std::fstream::failure in case of errors in the file.
+ * \throws std::fstream::failure in case of errors in the file.
+ *
  * \todo This method can beneficiate from introspection tools.
  *       We would like achieve a code similar to the
  *       [Julia counterpart](<https://github.com/ceandrade/brkga_mp_ipr_julia>).
@@ -1343,7 +1346,7 @@ INLINE void writeConfiguration(std::ostream& output,
  * \param brkga_params the BRKGA parameters.
  * \param control_params the external control parameters.
  *        Default is an empty object.
- * \throw std::fstream::failure in case of errors in the file.
+ * \throws std::fstream::failure in case of errors in the file.
  */
 INLINE void writeConfiguration(const std::string& filename,
         const BrkgaParams& brkga_params,
@@ -1375,8 +1378,7 @@ INLINE void writeConfiguration(const std::string& filename,
  * \brief Defines the current status of the algorithm for a given
  * BRKGA_MP_IPR::run() call.
  *
- * \note
- *      We use `std::chrono::duration<double>` instead `std::chrono::seconds`
+ * \note We use `std::chrono::duration<double>` instead `std::chrono::seconds`
  *      for keep better precision.
  */
 class AlgorithmStatus {
@@ -1466,6 +1468,7 @@ public:
  * \todo Clang fails printing chrono times. When they fix it, please, revise
  *       this function.
  */
+INLINE
 std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
     output
     << "\nbest_fitness: " << status.best_fitness
@@ -1497,7 +1500,7 @@ std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
  * Encapsulates a population of chromosomes providing supporting methods for
  * making the implementation easier.
  *
- * \warning
+ * J
  *      All methods and attributes are public and can be manipulated directly
  *      from BRKGA algorithms. Note that this class is not meant to be used
  *      externally of this unit.
@@ -1519,7 +1522,7 @@ public:
      * \brief Default constructor.
      * \param chr_size size of chromosome.
      * \param pop_size size of population.
-     * \throw std::range_error if population size or chromosome size is zero.
+     * \throws std::range_error if population size or chromosome size is zero.
      */
     Population(const unsigned chr_size, const unsigned pop_size):
         chromosomes(pop_size, Chromosome(chr_size, 0.0)),
@@ -1578,11 +1581,11 @@ public:
 
     /**
      * \brief Returns a reference to a chromosome.
-     * \param chromosome index of desired chromosome.
+     * \param chromosome_index index of desired chromosome.
      * \returns a reference to chromosome.
      */
-    Chromosome& operator()(unsigned chromosome) {
-        return chromosomes[chromosome];
+    Chromosome& operator()(const unsigned chromosome_index) {
+        return chromosomes[chromosome_index];
     }
     ///@}
 
@@ -1603,7 +1606,7 @@ public:
     }
 
     /// Returns a reference to the i-th best chromosome.
-    Chromosome& getChromosome(unsigned i) {
+    Chromosome& getChromosome(const unsigned i) {
         return chromosomes[fitness[i].second];
     }
 
@@ -1628,11 +1631,11 @@ public:
 
     /**
      * \brief Sets the fitness of chromosome.
-     * \param chromosome index of chromosome.
+     * \param chromosome_index index of chromosome.
      * \param value allele value.
      */
-    void setFitness(const unsigned chromosome, const fitness_t value) {
-        fitness[chromosome] = std::make_pair(value, chromosome);
+    void setFitness(const unsigned chromosome_index, const fitness_t value) {
+        fitness[chromosome_index] = std::make_pair(value, chromosome_index);
     }
     ///@}
 };
@@ -1642,6 +1645,10 @@ public:
 // Path Relinking
 //----------------------------------------------------------------------------//
 
+/**
+ * \defgroup main_algorithms Main BRKGA-MP-IPR algorithms
+ */
+///@{
 /**
  * \brief This class represents a Multi-Parent Biased Random-key Genetic
  * Algorithm with Implicit Path Relinking (BRKGA-MP-IPR).
@@ -1812,8 +1819,8 @@ public:
      *        but only chromosome decoding. Very useful to emulate a
      *        multi-start algorithm.
      *
-     * \throw std::range_error if some parameter or combination of parameters
-     *        does not fit.
+     * \throws std::range_error if some parameter or combination of parameters
+     *         does not fit.
      */
     BRKGA_MP_IPR(
         Decoder& decoder_reference,
@@ -1852,7 +1859,7 @@ public:
      * It must be a **positive non-increasing function**, i.e.
      * \f$ f: \mathbb{N}^+ \to \mathbb{R}^+\f$ such that
      * \f$f(i) \ge 0\f$ and \f$f(i) \ge f(i+1)\f$ for
-     * \f$i \in [1..total\_parents]\f$.
+     * \f$i \in [1, \ldots, total\_parents]\f$.
      * For example
      * \code{.cpp}
      * setBiasCustomFunction(
@@ -1864,8 +1871,8 @@ public:
      * sets an inverse quadratic function.
      *
      * \param func a reference to a unary positive non-increasing function.
-     * \throw std::runtime_error in case the function is not a non-decreasing
-     *        positive function.
+     * \throws std::runtime_error in case the function is not a non-decreasing
+     *         positive function.
      */
     void setBiasCustomFunction(
         const std::function<double(const unsigned)>& func
@@ -1936,10 +1943,10 @@ public:
      * which is **very timing consuming**.
      *
      * \warning If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM
-     *          TIME** since this is the core stopping criteria on IPR.
+     *      TIME** since this is the core stopping criteria on IPR.
      *
-     * If you really mean to have no maximum time set, we recommend to use
-     * the following code:
+     * If you really mean to have no maximum time and/or maximum stalled
+     * iterations set, we recommend to use the following code:
      *
      * \code{.cpp}
      * // After reading your parameters, e.g.,
@@ -1947,17 +1954,20 @@ public:
      *
      * // You can set to the max.
      * control_params.maximum_running_time = std::chrono::seconds::max();
+     *
+     * control_params.stall_offset = numeric_limits<unsigned>::max();
      * \endcode
      *
      * \param stopping_criteria a callback function to determine is the
      *        algorithm must stop. For instance, the following lambda
-     *        function tests if the best solution reached a given value:
+     *        function tests if the best solution reached a given value for
+     *        a minimization problem:
      * \code{.cpp}
      * fitness_t my_magical_solution = 10;
      *
      * algorithm.setStoppingCriteria(
      *     [&](const AlgorithmStatus& status) {
-     *         return status.best_fitness == my_magical_solution;
+     *         return status.best_fitness <= my_magical_solution;
      *     }
      * );
      * \endcode
@@ -1971,8 +1981,8 @@ public:
      * improved.
      *
      * It must take a reference to AlgorithmStatus and return `true`
-     * if the algorithm should stop immediately. You may have as much observers
-     * you want. They will be called in the order they are added.
+     * if the algorithm should stop immediately. You may have as many observers
+     * as you want. They will be called in the order they are added.
      *
      * \param func a callback function such as
      * \code{.cpp}
@@ -2064,19 +2074,17 @@ public:
      * half of the chromosome size. For more details on that, refer to
      * #pathRelink().
      *
-     * \note
-     *      The algorithm always test against maximum running time and for the
+     * \note The algorithm always test against maximum running time and for the
      *      maximum stalled iterations/generations given by ControlParams
-     *      indenpendently of the stopping criteria function supplied by
-     *      the user. This is especially important when activating the implicit
-     *      path reliking which is **very timing consuming**.
-     *      If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM
-     *      TIME** since this is the core stopping criteria on IPR.
+     *      indenpendently of the stopping criteria function supplied by the
+     *      user. This is especially important when activating the implicit path
+     *      reliking which is **very timing consuming**. If you are using IPR,
+     *      we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is
+     *      the core stopping criteria on IPR.
      *
-     * \warning
-     *     The decoding is done in parallel using threads, and the user **must
-     *     guarantee that the decoder is THREAD-SAFE.** If such property cannot
-     *     be held, we suggest using a single thread for optimization.
+     * \warning The decoding is done in parallel using threads, and the user
+     *      **must guarantee that the decoder is THREAD-SAFE.** If such property
+     *      cannot be held, we suggest using a single thread for optimization.
      *
      * \param control_params the parameters to control the algorithm flow,
      *        such as calling exchanges, shakes, and IPR.
@@ -2084,6 +2092,15 @@ public:
      * \param logger a output stream to log some information.
      *
      * \returns The last algorithm status before the stopping criteria are met.
+     *
+     * \throws std::runtime_error in the following cases:
+     *      -# IPR is active (ipr_interva > 0) but the distance function is
+     *         not set;
+     *      -# Shaking is active (shake_interval > 0) and it is set as 'CUSTOM'.
+     *         However the custom shaking procedure was not supplied.
+     *      -# Shaking is active (shake_interval > 0). However, the intensity
+     *         bounds are out of range. Should be (0.0, 1.0] and
+     *         'shaking_intensity_lower_bound <= shaking_intensity_upper_bound'.
      */
     AlgorithmStatus run(
         const ControlParams& control_params,
@@ -2097,14 +2114,13 @@ public:
      * \brief Evolves the current populations following the guidelines of
      *        Multi-parent BRKGAs.
      *
-     * \warning
-     *     The decoding is done in parallel using threads, and the user **must
-     *     guarantee that the decoder is THREAD-SAFE.** If such property cannot
-     *     be held, we suggest using a single thread for optimization.
+     * \warning The decoding is done in parallel using threads, and the user
+     *      **must guarantee that the decoder is THREAD-SAFE.** If such property
+     *      cannot be held, we suggest using a single thread for optimization.
      *
      * \param generations number of generations to be evolved. Must be larger
      *        than zero.
-     * \throw std::range_error if the number of generations is zero.
+     * \throws std::range_error if the number of generations is zero.
      */
     void evolve(unsigned generations = 1);
     ///@}
@@ -2156,11 +2172,10 @@ public:
      * build the candidates, which can be costly if the `chromosome_size` is
      * very large.
      *
-     * \warning
-     *     As it is in #evolve(), the decoding is done in parallel using
-     *     threads, and the user **must guarantee that the decoder is
-     *     THREAD-SAFE.** If such property cannot be held, we suggest using
-     *     a single thread  for optimization.
+     * \warning As it is in #evolve(), the decoding is done in parallel using
+     *      threads, and the user **must guarantee that the decoder is
+     *      THREAD-SAFE.** If such property cannot be held, we suggest using
+     *      a single thread for optimization.
      *
      * \param pr_type type of path relinking to be performed.
      *        See PathRelinking::Type.
@@ -2182,8 +2197,8 @@ public:
      * \returns A PathRelinking::PathRelinkingResult depending on the relink
      *          status.
      *
-     * \throw std::range_error if the percentage or size of the path is
-     *        not in (0, 1].
+     * \throws std::range_error if the percentage or size of the path is
+     *         not in (0, 1].
      */
     PathRelinking::PathRelinkingResult pathRelink(
         PathRelinking::Type pr_type,
@@ -2219,8 +2234,8 @@ public:
      * \returns A PathRelinking::PathRelinkingResult depending on the relink
      *          status.
      *
-     * \throw std::range_error if the percentage or size of the path is
-     *        not in (0, 1].
+     * \throws std::range_error if the percentage or size of the path is
+     *         not in (0, 1].
      */
     PathRelinking::PathRelinkingResult pathRelink(
         std::shared_ptr<DistanceFunctionBase> dist,
@@ -2239,10 +2254,10 @@ public:
 
      * \param num_immigrants number of elite chromosomes to select from each
      *        population.
-     * \throw std::range_error if the number of immigrants less than one or
-     *        it is larger than or equal to the population size divided by
-     *        the number of populations minus one, i.e. \f$\lceil
-     *        \frac{population\_size}{num\_independent\_populations} \rceil
+     * \throws std::range_error if the number of immigrants less than one or
+     *         it is larger than or equal to the population size divided by
+     *         the number of populations minus one, i.e. \f$\lceil
+     *         \frac{population\_size}{num\_independent\_populations} \rceil
      *         - 1\f$.
      */
     void exchangeElite(unsigned num_immigrants);
@@ -2281,9 +2296,9 @@ public:
      * \param population_index the population index.
      * \param position the chromosome position.
      *
-     * \throw std::range_error eitheir if `population_index` is larger
-     *        than number of populations; or `position` is larger than the
-     *        population size; or ` chromosome.size() != chromosome_size`
+     * \throws std::range_error eitheir if `population_index` is larger
+     *         than number of populations; or `position` is larger than the
+     *         population size; or ` chromosome.size() != chromosome_size`
      */
     void injectChromosome(
         const Chromosome& chromosome,
@@ -2297,8 +2312,8 @@ public:
     /**
      * \brief Returns a reference to a current population.
      * \param population_index the population index.
-     * \throw std::range_error if the index is larger than number of
-     *        populations.
+     * \throws std::range_error if the index is larger than number of
+     *         populations.
      */
     const Population& getCurrentPopulation(unsigned population_index = 0) const;
 
@@ -2306,12 +2321,11 @@ public:
      * \brief Returns a reference to the chromosome with best fitness among
      * all current populations.
      *
-     * \warning
-     *     Note that this method **does not** return the best solution but
-     *     the one within the current population. If a #shake() or #reset()
-     *     is called, the best solution may be lose in the populations.
-     *     However, if you are using #run(), the best solution is returned
-     *     by that method. If not, you must keep track of the best solution.
+     * \warning Note that this method **does not** return the best solution but
+     *      the one within the current population. If a #shake() or #reset()
+     *      is called, the best solution may be lose in the populations.
+     *      However, if you are using #run(), the best solution is returned
+     *      by that method. If not, you must keep track of the best solution.
      *
      */
     const Chromosome& getBestChromosome() const;
@@ -2319,12 +2333,11 @@ public:
     /**
      * \brief Returns the best fitness among all current populations.
      *
-     * \warning
-     *     Note that this method **does not** return the best fitness but
-     *     the one within the current population. If a #shake() or #reset()
-     *     is called, the best fitness may be lose in the populations.
-     *     However, if you are using #run(), the best fitness is returned
-     *     by that method. If not, you must keep track of the best fitness.
+     * \warning Note that this method **does not** return the best fitness but
+     *      the one within the current population. If a #shake() or #reset()
+     *      is called, the best fitness may be lose in the populations.
+     *      However, if you are using #run(), the best fitness is returned
+     *      by that method. If not, you must keep track of the best fitness.
      */
     fitness_t getBestFitness() const;
 
@@ -2333,9 +2346,9 @@ public:
      * \param population_index the population index.
      * \param position the chromosome position, ordered by fitness.
      *        The best chromosome is located in position 0.
-     * \throw std::range_error eitheir if `population_index` is larger
-     *        than number of populations, or `position` is larger than the
-     *        population size.
+     * \throws std::range_error eitheir if `population_index` is larger
+     *         than number of populations, or `position` is larger than the
+     *         population size.
      */
     const Chromosome& getChromosome(
         unsigned population_index,
@@ -2347,9 +2360,9 @@ public:
      * \param population_index the population index.
      * \param position the chromosome position, ordered by fitness.
      *        The best chromosome is located in position 0.
-     * \throw std::range_error eitheir if `population_index` is larger
-     *        than number of populations, or `position` is larger than the
-     *        population size.
+     * \throws std::range_error eitheir if `population_index` is larger
+     *         than number of populations, or `position` is larger than the
+     *         population size.
      */
     fitness_t getFitness(unsigned population_index, unsigned position) const;
     ///@}
@@ -2501,14 +2514,12 @@ protected:
      * implementation, this can take a while, and the user may want to time
      * such procedure in his/her experiments.
      *
-     * \warning
-     *      This method must be call before any population handling method.
+     * \warning This method must be call before any population handling method.
      *
-     * \warning
-     *     As it is in #evolve(), the decoding is done in parallel using
-     *     threads, and the user **must guarantee that the decoder is
-     *     THREAD-SAFE.** If such property cannot be held, we suggest using
-     *     a single thread for optimization.
+     * \warning As it is in #evolve(), the decoding is done in parallel using
+     *      threads, and the user **must guarantee that the decoder is
+     *      THREAD-SAFE.** If such property cannot be held, we suggest using
+     *      a single thread for optimization.
      *
      * \param reset when set true, it ignores all solutions provided
      *        by #setInitialPopulation(), and builds a completely random
@@ -2625,6 +2636,7 @@ protected:
     inline unsigned randInt(const unsigned n, std::mt19937& rng);
     ///@}
 };
+///@} main_algorithms
 
 //----------------------------------------------------------------------------//
 /// \cond IGNORE_IMPLEMENTATION
@@ -3065,18 +3077,15 @@ void BRKGA_MP_IPR<Decoder>::setInitialPopulation(
                                 const std::vector<Chromosome>& chromosomes) {
     // First, reserve some memory.
     for(auto& pop : current) {
-        // We cannot init a populaiton with zero chromosomes...
-        pop.reset(new Population(chromosome_size, 1));
-        //... so, we add one but remove it immediately.
-        pop->chromosomes.pop_back();
-        pop->chromosomes.reserve(params.population_size);
+        pop.reset(new Population(chromosome_size, params.population_size));
+        pop->chromosomes.clear();
     }
 
     auto it_init_chr = chromosomes.begin();
     auto it_pop = current.begin();
 
     unsigned counter = 0;
-    while( it_init_chr != chromosomes.end()) {
+    while(it_init_chr != chromosomes.end()) {
         if(it_init_chr->size() != chromosome_size) {
             std::stringstream ss;
             ss << __PRETTY_FUNCTION__ << ", line " << __LINE__ << ": "
@@ -3111,7 +3120,8 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool reset) {
 
     // Check and complete the populations.
     for(auto& pop : current) {
-        if(!pop) {
+        const bool new_pop = !pop;
+        if(new_pop) {
             pop.reset(new Population(chromosome_size, params.population_size));
         }
         else {
@@ -3121,9 +3131,9 @@ void BRKGA_MP_IPR<Decoder>::initialize(bool reset) {
         if(reset)
             pop->chromosomes.clear();
 
-        if(pop->chromosomes.size() < params.population_size) {
+        if(new_pop || (pop->chromosomes.size() < params.population_size)) {
             Chromosome chromosome(chromosome_size);
-            unsigned last_chromosome = pop->chromosomes.size();
+            unsigned last_chromosome = new_pop? 0 : pop->chromosomes.size();
 
             pop->chromosomes.resize(params.population_size);
             for(; last_chromosome < params.population_size; ++last_chromosome) {
@@ -3235,9 +3245,9 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     #endif
 
     // First, we copy the elite chromosomes to the next generation.
-    for(unsigned chr = 0; chr < elite_size; ++chr) {
-        next.chromosomes[chr] = curr.chromosomes[curr.fitness[chr].second];
-        next.fitness[chr] = std::make_pair(curr.fitness[chr].first, chr);
+    for(unsigned chr_idx = 0; chr_idx < elite_size; ++chr_idx) {
+        next.chromosomes[chr_idx] = curr.chromosomes[curr.fitness[chr_idx].second];
+        next.fitness[chr_idx] = std::make_pair(curr.fitness[chr_idx].first, chr_idx);
     }
 
     // Second, we mate 'pop_size - elite_size - num_mutants' pairs.
@@ -3248,8 +3258,8 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         #pragma omp parallel for num_threads(max_threads) schedule(static, 1)
     #endif
     #endif
-    for(unsigned chr = elite_size;
-        chr < params.population_size - num_mutants; ++chr) {
+    for(auto chr_idx = elite_size;
+        chr_idx < params.population_size - num_mutants; ++chr_idx) {
 
         #ifdef _OPENMP
             auto& shuffled_individuals =
@@ -3267,7 +3277,7 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
 
         #ifdef MATING_SEED_ONLY
         // Reseed the RNG to guarantee reproducibility.
-        rng.seed(mating_seeds[chr - elite_size]);
+        rng.seed(mating_seeds[chr_idx - elite_size]);
         #endif
 
         // First, we shuffled the elite set and non-elite set indices,
@@ -3326,7 +3336,8 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         // This strategy of setting the offpring in a local variable, and then
         // copying to the population seems to reduce the overall cache misses
         // counting.
-        next.getChromosome(chr) = offspring;
+        next.chromosomes[chr_idx] = offspring;
+        next.fitness[chr_idx] = std::make_pair(-1, chr_idx);
     }
 
     // To finish, we fill up the remaining spots with mutants.
@@ -3335,14 +3346,15 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         #pragma omp parallel for num_threads(max_threads) schedule(static, 1)
     #endif
     #endif
-    for(unsigned chr = params.population_size - num_mutants;
-        chr < params.population_size; ++chr) {
+    for(auto chr_idx = params.population_size - num_mutants;
+        chr_idx < params.population_size; ++chr_idx) {
         #ifdef _OPENMP
             auto& rng = rng_per_thread[omp_get_thread_num()];
         #else
             auto& rng = rng_per_thread[0];
         #endif
-        for(auto& allele : next.chromosomes[chr])
+        next.fitness[chr_idx] = std::make_pair(-1, chr_idx);
+        for(auto& allele : next.chromosomes[chr_idx])
             allele = rand01(rng);
     }
 
@@ -3350,8 +3362,9 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
     #ifdef _OPENMP
         #pragma omp parallel for num_threads(max_threads) schedule(static, 1)
     #endif
-    for(unsigned i = elite_size; i < params.population_size; ++i)
+    for(auto i = elite_size; i < params.population_size; ++i) {
         next.setFitness(i, decoder.decode(next.chromosomes[i], true));
+    }
 
     // Now we must sort by fitness, since things might have changed.
     next.sortFitness(optimization_sense);
