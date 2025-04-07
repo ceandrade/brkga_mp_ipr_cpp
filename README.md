@@ -32,15 +32,15 @@ Table of Contents
 --------------------------------------------------------------------------------
 
 - :speech_balloon: [Introduction](#speech_balloon-introduction)
-- :high_brightness: [What is new on version 3.1.1](#high_brightness-what-is-new-on-version-3.1.1)
-- :high_brightness: [What is new on version 3.1](#high_brightness-what-is-new-on-version-3.1)
+- :high_brightness: [What is new in version 3.1.1](#high_brightness-what-is-new-on-version-311)
+- :high_brightness: [What is new in version 3.1](#high_brightness-what-is-new-on-version-31)
   - [Bug fix 1: Evolution step used to mess up with the best chromosome](#evolution-step-used-to-mess-up-with-the-best-chromosome)
   - [Bug fix 2: Initial population was incorrect](#initial-population-was-incorrect)
-- :high_brightness: [What is new on version 3.0](#high_brightness-what-is-new-on-version-3.0)
+- :high_brightness: [What is new in version 3.0](#high_brightness-what-is-new-on-version-30)
   - [API enhancements](#api-enhancements)
   - [BRKGA and control parameters](#brkga-and-control-parameters)
   - [Code modernizing and speed bump](#code-modernizing-and-speed-bump)
-- :high_brightness: [What is new on version 2.0](#high_brightness-what-is-new-on-version-2.0)
+- :high_brightness: [What is new in version 2.0](#high_brightness-what-is-new-on-version-20)
   - [Multiples objectives (Lexicographically)](#multiples-objectives-lexicographically)
   - [Multi-thread mating](#multi-thread-mating)
   - [API changes](#api-changes)
@@ -53,6 +53,7 @@ Table of Contents
 - :black_nib: [License and Citing](#black_nib-license-and-citing)
 - :construction_worker: [TODO](#construction_worker-todo)
 - :pencil2: [Contributing](#pencil2-contributing)
+
 
 :speech_balloon: Introduction
 --------------------------------------------------------------------------------
@@ -109,7 +110,7 @@ documentation practices of your chosen language/framework.
 If you are not familiar with how BRKGA works, take a look on
 [Multi-Parent BRKGA](https://doi.org/10.1016/j.ejor.2019.11.037).
 
-:high_brightness: What is new on version 3.1.1
+:high_brightness: What is new in version 3.1.1
 --------------------------------------------------------------------------------
 
 - We have removed some code used for debugging that may cause compiling errors
@@ -117,7 +118,7 @@ depending on the `fitness_t` chosen by the user;
 - Small polishing for modern C++ brace-initialization syntax.
 
 
-:high_brightness: What is new on version 3.1
+:high_brightness: What is new in version 3.1
 --------------------------------------------------------------------------------
 
 We have two major bug fixes, so we decided to bump the version up to 3.1,
@@ -151,7 +152,7 @@ and now we guarantee an entirely random initial population in both cases.
 Thank **Daniele Ferone** for detecting such a bug.
 
 
-:high_brightness: What is new on version 3.0
+:high_brightness: What is new in version 3.0
 --------------------------------------------------------------------------------
 
 ### API enhancements
@@ -306,7 +307,7 @@ BRKGA. But, when we accumulate hundreds or thousands of calls daily, the time
 savings can be considerable in a full year of operation (which usually
 translates into energy savings).
 
-:high_brightness: What is new on version 2.0
+:high_brightness: What is new in version 2.0
 --------------------------------------------------------------------------------
 
 ### Multiples objectives (Lexicographically)
