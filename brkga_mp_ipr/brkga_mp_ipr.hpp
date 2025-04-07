@@ -6,7 +6,7 @@
  * All Rights Reserved.
  *
  * Created on : Jan 06, 2015 by ceandrade.
- * Last update: Mar 28, 2025 by ceandrade.
+ * Last update: Apr 07, 2025 by ceandrade.
  *
  * This code is released under BRKGA-MP-IPR License:
  * https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md
@@ -670,7 +670,7 @@ public:
      * \param _threshold used to rounding the values to 0 or 1.
      */
     explicit HammingDistance(const double _threshold = 0.5):
-        threshold(_threshold) {}
+        threshold {_threshold} {}
 
     /// Default destructor
     virtual ~HammingDistance() {}
@@ -1050,9 +1050,9 @@ readConfiguration(std::istream& input, std::ostream& logger = std::cout) {
 
         // Constructor.
         AuxParam(bool _required, std::function<void()> _setter):
-            required(_required),
-            supplied(false),
-            setter(_setter)
+            required {_required},
+            supplied {false},
+            setter {_setter}
             {}
 
         // Just call `setter()` and adjust the supplied flag.
@@ -2652,28 +2652,28 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
         const bool _evolutionary_mechanism_on):
 
         // Algorithm parameters.
-        params(_params),
-        optimization_sense(_sense),
-        chromosome_size(_chromosome_size),
-        elite_size(_evolutionary_mechanism_on?
+        params {_params},
+        optimization_sense {_sense},
+        chromosome_size {_chromosome_size},
+        elite_size {_evolutionary_mechanism_on?
                     unsigned(params.elite_percentage *
                              params.population_size)
-                    : 1),
-        num_mutants(_evolutionary_mechanism_on?
+                    : 1},
+        num_mutants {_evolutionary_mechanism_on?
                     unsigned(params.mutants_percentage *
                              params.population_size):
-                    params.population_size - 1),
-        evolutionary_mechanism_on(_evolutionary_mechanism_on),
-        max_threads(_max_threads),
+                    params.population_size - 1},
+        evolutionary_mechanism_on {_evolutionary_mechanism_on},
+        max_threads {_max_threads},
 
         // Internal data.
-        decoder(_decoder_reference),
-        rng_per_thread(_max_threads),
-        integer_distribution(),
+        decoder {_decoder_reference},
+        rng_per_thread {_max_threads},
+        integer_distribution {},
         previous(params.num_independent_populations, nullptr),
         current(params.num_independent_populations, nullptr),
-        bias_function(),
-        total_bias_weight(0.0),
+        bias_function {},
+        total_bias_weight {0.0},
         #ifdef MATING_SEED_ONLY
             mating_seeds(params.population_size - elite_size - num_mutants, 0),
         #endif
@@ -2707,11 +2707,11 @@ BRKGA_MP_IPR<Decoder>::BRKGA_MP_IPR(
                     ::value_type(_chromosome_size)
             ),
         #endif
-        initial_population(false),
-        initialized(false),
-        pr_start_time(),
-        stopping_criteria(),
-        info_callbacks()
+        initial_population {false},
+        initialized {false},
+        pr_start_time {},
+        stopping_criteria {},
+        info_callbacks {}
 {
     using std::range_error;
     std::stringstream ss;
@@ -3337,7 +3337,6 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         // copying to the population seems to reduce the overall cache misses
         // counting.
         next.chromosomes[chr_idx] = offspring;
-        next.fitness[chr_idx] = std::make_pair(-1, chr_idx);
     }
 
     // To finish, we fill up the remaining spots with mutants.
@@ -3353,7 +3352,6 @@ void BRKGA_MP_IPR<Decoder>::evolution(Population& curr,
         #else
             auto& rng = rng_per_thread[0];
         #endif
-        next.fitness[chr_idx] = std::make_pair(-1, chr_idx);
         for(auto& allele : next.chromosomes[chr_idx])
             allele = rand01(rng);
     }

@@ -3,7 +3,7 @@
   <img src="https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/src_docs/src/assets/logo_name_300.png">
 </div>
 
-BRKGA-MP-IPR - C++ version 3.1
+BRKGA-MP-IPR - C++ version 3.1.1
 ================================================================================
 
 <table>
@@ -32,6 +32,7 @@ Table of Contents
 --------------------------------------------------------------------------------
 
 - :speech_balloon: [Introduction](#speech_balloon-introduction)
+- :high_brightness: [What is new on version 3.1.1](#high_brightness-what-is-new-on-version-3.1.1)
 - :high_brightness: [What is new on version 3.1](#high_brightness-what-is-new-on-version-3.1)
   - [Bug fix 1: Evolution step used to mess up with the best chromosome](#evolution-step-used-to-mess-up-with-the-best-chromosome)
   - [Bug fix 2: Initial population was incorrect](#initial-population-was-incorrect)
@@ -107,6 +108,14 @@ documentation practices of your chosen language/framework.
 
 If you are not familiar with how BRKGA works, take a look on
 [Multi-Parent BRKGA](https://doi.org/10.1016/j.ejor.2019.11.037).
+
+:high_brightness: What is new on version 3.1.1
+--------------------------------------------------------------------------------
+
+- We have removed some code used for debugging that may cause compiling errors
+depending on the `fitness_t` chosen by the user;
+- Small polishing for modern C++ brace-initialization syntax.
+
 
 :high_brightness: What is new on version 3.1
 --------------------------------------------------------------------------------
