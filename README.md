@@ -59,61 +59,67 @@ Table of Contents
 --------------------------------------------------------------------------------
 
 BRKGA-MP-IPR provides a _very easy-to-use_ framework for the
-Multi-Parent Biased Random-Key Genetic Algorithm with Implict Path Relink
-(**BRKGA-MP-IPR**). Assuming that your have a _decoder_ to your problem,
-we can setup, run, and extract the value of the best solution in less than
-5 commands (obvisiously, you may need few other lines fo code to do a proper
+Multi-Parent Biased Random-Key Genetic Algorithm with Implicit Path Relink
+(**BRKGA-MP-IPR**). Assuming that you have a _decoder_ for your problem,
+we can set up, run, and extract the value of the best solution in less than
+5 commands (obviously, you may need a few other lines of code to do a proper
 test).
 
 We provide a very thorough and easy-to-follow tutorial on using
 BRKGA effectively. We strongly recommend you read the tutorial to make
-your code works at best within BRKGA. Check out the tutorial and API
+your code work at best within BRKGA. Check out the tutorial and API
 documentation: https://ceandrade.github.io/brkga_mp_ipr_cpp
 
 This C++ version provides a fast prototyping API using C++20 standards and
-libraries. All code was developed as a header-only library, and have no
+libraries. All code was developed as a header-only library, with no
 external dependencies other than those included in the package. So, you just
 need to copy/check out the files and point your compiler's header path to
 BRKGA-MP-IPR folder (`-I` on GCC and Clang).
 
 This framework can use multiple threads of modern CPUs, by setting a single
-parameter (assuming that your decoder is thread-safe). This leverage the
+parameter (assuming that your decoder is thread-safe). This leverages the
 parallel decoding nature that BRKGAs offer, compared to other (meta)
 heuristic frameworks.
 
 The code can be compiled using [> GCC 9.4](https://gcc.gnu.org) and [> Clang
-10.0](https://clang.llvm.org), and it is very probable that it can be compiled
+10.0](https://clang.llvm.org), and it is probable that it can be compiled
 using other modern C++ compilers, such as Intel and Microsoft compilers. To
 use multiple threads, your compiler must support
-[OpenMP](https://www.openmp.org). The current version has been long developed,
-and it is a very mature code used in production in several companies.
-However, it lacks of a proper unit and coverage testing. Such tests are in
-the [TODO](#construction_worker-todo) list.
+[OpenMP](https://www.openmp.org). The current version has been under 
+long development, and it is a very mature code used in production 
+in several companies. However, it lacks proper unit and
+coverage testing. Such tests are in the [TODO](#construction_worker-todo) list.
 
-If C++ is not suitable to you, we may find useful the [**Julia
+If C++ is not suitable for you, we may find useful the [**Julia
 version**](https://github.com/ceandrade/brkga_mp_ipr_julia) of this framework.
 We are also developing a
 [**Python version**](https://github.com/ceandrade/brkga_mp_ipr_python)
 which is in its earlier stages (no IPR yet).
 However, both Julia and Python versions only support single-objective optimization
-at this moment. We have no timeline to implement multi-objective optimization
+now. We have no timeline for implementing multi-objective optimization
 in such platforms. Also, at this moment, we have no plans to implement
-the BRKGA-MP-IPR in other
-languages such as Java or C#. But if you want to do so, you are
-must welcome. But please, keep the API as close as possible to the C++ API
-(or Julia API in case you decide go C), and use the best coding and
+the BRKGA-MP-IPR in other languages such as Java or C#. 
+But if you want to do so, you are welcome to do so. 
+But please, keep the API as close as possible to the C++ API
+(or Julia API in case you decide to go C), and use the best coding and
 documentation practices of your chosen language/framework.
 
 - [**Julia version**](https://github.com/ceandrade/brkga_mp_ipr_julia)
 - [**Python version**](https://github.com/ceandrade/brkga_mp_ipr_python)
 
-If you are not familiar with how BRKGA works, take a look on
+If you are not familiar with how BRKGA works, take a look at
 [Multi-Parent BRKGA](https://doi.org/10.1016/j.ejor.2019.11.037).
+
+You may also find it very useful to read these reviews:
+
+- [Biased random-key genetic algorithms: A review](https://doi.org/10.1016/j.ejor.2024.03.030)
+- [Early years of Biased Random-Key Genetic Algorithms: A systematic review](https://doi.org/10.1007/s10898-024-01446-5)
+
 
 :high_brightness: What is new in version 3.1.1
 --------------------------------------------------------------------------------
 
-- We have removed some code used for debugging that may cause compiling errors
+- We have removed some code used for debugging that may cause compilation errors
 depending on the `fitness_t` chosen by the user;
 - Small polishing for modern C++ brace-initialization syntax.
 
@@ -124,7 +130,7 @@ depending on the `fitness_t` chosen by the user;
 We have two major bug fixes, so we decided to bump the version up to 3.1,
 even though we have no new features.
 
-### Evolution step used to mess up with the best chromosome
+### Evolution step is used to mess up with the best chromosome
 
 On the `evolution()` method, the index handling was mixed with absolute and
 relative chromosome position/ranking in the population.
@@ -140,12 +146,12 @@ in finding and fixing this issue.
 
 The method `initialize()` is responsible for asserting the correct state of
 the algorithm before it runs. This includes initializing the full population
-if no initial solution is injected before the algorithm starts or
+if no initial solution is injected before the algorithm starts, or
 if the initial solutions/chromosomes are provided,
 completing the first population with random chromosomes.
 
 While working correctly in the presence of initial solutions,
-`initialize()` incorrectly, creating a population with all alleles equal to zero
+`initialize()` incorrectly creates a population with all alleles equal to zero
 when no initial solutions were present. We have fixed that,
 and now we guarantee an entirely random initial population in both cases.
 
@@ -157,8 +163,8 @@ Thank **Daniele Ferone** for detecting such a bug.
 
 ### API enhancements
 
-On version 2.0, we claimed that BRKGA-MP-IPR was a very easy-to-use framework.
-But, few people told me this statement was not even true. The main complaining
+In version 2.0, we claimed that BRKGA-MP-IPR was a very easy-to-use framework.
+But, a few people told me this statement was not even true. The primary complaint
 was that while the features were very nice, tightening them together was hard,
 even using the provided examples.
 
@@ -191,8 +197,8 @@ optimization like total time, iteration counting, and more (check the full
 documentation for that).
 
 So, users need no more write fine control loops unless they need/want.
-Just set some control parameters (and some other callbacks, described below,
-if you like), and you are good to go!
+If you like, just set some control parameters 
+(and some other callbacks, described below), and you are good to go!
 
 Supporting `run()`, we have three new methods:
 
@@ -200,7 +206,7 @@ Supporting `run()`, we have three new methods:
   or maximum stalled iterations (without improvement in the best solution) as
   standard stopping criteria, the user can add to these other criteria using
   this method. For example, in a minimization problem, we may want to stop at
-  the value within a distance from a lower bound or when we reach a given number
+  the value within a distance from a lower bound, or when we reach a given number
   of iterations:
 
   ```cpp
@@ -218,8 +224,8 @@ Supporting `run()`, we have three new methods:
   ```
 
   In this case, the stop criteria become:
-  - Is maximum time reached **OR**
-  - Is maximum stalled iterations reached **OR**
+  - Is the maximum time reached **OR**
+  - Is the maximum stalled iterations reached **OR**
   - `status.best_fitness <= lower_bound * 1.1` **OR**
   - `status.current_iteration == max_iterations`.
 
@@ -229,10 +235,10 @@ Supporting `run()`, we have three new methods:
 
   | :memo: Note                |
   |:---------------------------|
-  | If you are using implicit path relinking (IPR), which is **very timing consuming**, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is the core stopping criteria on IPR.|
+  | If you are using implicit path relinking (IPR), which is **very time-consuming**, we **STRONGLY RECOMMEND SETTING A MAXIMUM TIME** since this is the core stopping criterion on IPR.|
 
   If you really mean to have no maximum time and/or maximum stalled iterations
-  set, we recommend to use the following code:
+  set, we recommend using the following code:
 
   ```cpp
   // After reading your parameters, e.g.,
@@ -246,8 +252,8 @@ Supporting `run()`, we have three new methods:
   ```
 
 - `addNewSolutionObserver()`: This method adds a callback that is triggered
-  when an overall improved solution is found by the algorithm. It also
-  adds an additional stop point if the users finds it useful by return `true`.
+  when the algorithm finds an overall improved solution. It also
+  adds stop point if the user finds it useful by returning `true`.
   This is very useful for tracking the evolution of the algorithm, for instance:
 
   ```cpp
@@ -263,14 +269,14 @@ Supporting `run()`, we have three new methods:
   );
   ```
 
-- `setShakingMethod()`: This method adds a custom shaking procedure defined
-  by the user. Please,
+- `setShakingMethod()`: This method adds a custom shaking procedure
+  that the user has defined. Please,
   [refer to its documentation for more details](https://ceandrade.github.io/brkga_mp_ipr_cpp/page_guide.html#providing-custom-shake-procedure).
 
 Less important but still relevant: previously, one must call `initialize()`
 before any method that manipulated the population. Also, since `initialize()`
 (re)decodes the population, we have to measure its running time too. Now,
-the user **do not need to call `initialize()` anymore!!**.
+the user **does not need to call `initialize()` anymore!!**.
 `initialize()` is called on the need by its fellow methods internally. This
 leads to fewer error-prone codes.
 
@@ -288,7 +294,7 @@ no-required parameters are not set.
 
 | :warning: Warning          |
 |:---------------------------|
-| If you are using IPR, we **STRONGLY RECOMMEND TO SET A MAXIMUM TIME** since this is the core stopping criteria on IPR.
+| If you are using IPR, we **STRONGLY RECOMMEND SETTING A MAXIMUM TIME** since this is the core stopping criterion on IPR.
 
 ### Code modernizing and speed bump
 
@@ -298,8 +304,8 @@ Therefore, your compiler must support C++20 now.
 One notable change was substituting the custom code in `randInt()` for a
 [standard library uniform distribution
 utility](https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution).
-The old code was used when a custom Mersenne Twister RNG code was used (from
-the original BRKGA implementation). The inclusion of the Mersenne Twister in
+The old code was used when a custom Mersenne Twister RNG code (from
+the original BRKGA implementation) was used. Including the Mersenne Twister in
 the standard library allows us to use all default utilities. Ad hoc tests show
 that the standard library utilities are faster than the old custom code.
 However, the speed-up is marginal when considering the full application of
@@ -310,10 +316,10 @@ translates into energy savings).
 :high_brightness: What is new in version 2.0
 --------------------------------------------------------------------------------
 
-### Multiples objectives (Lexicographically)
+### Multiple objectives (Lexicographically)
 
 In version 2.0, BRKGA-MP-IPR also deals with multiple objectives in a
-lexicographical or priority dominance order. Differing from classical
+lexicographical or priority dominance order. Unlike classical
 non-dominance order (using Pareto frontiers), the lexicographical order defines
 a _strict preference order among the objective functions._ This leads us to a
 partial ordering of the values of the solutions (composed of several values,
@@ -325,7 +331,7 @@ each one from one objective function). So, we have the following definition
 | Let $A = (f_1, f_2, \ldots, f_n)$ and $A' = (f'_1, f'_2, \ldots, f'_n)$ be two vectors for $n$ functions $f_1, f_2, \ldots, f_n$. $A$ is lexicographical smaller than $A'$, i.e., $A < A'$ if and only if $f_1 < f'_1$, or $f_1 = f'_1$ and $f_2 < f'_2$, or $`\ldots, f_1 = f'_1, \ldots f_{n-1} = f'_{n-1}`$ and $f_n < f'_n$.|
 
 For instance, let's assume we have three minimizing objective functions and
-four solutions described in the following table:
+four solutions that are described in the following table:
 
 |Solution|$f_1$      |$f_2$      |$f_3$
 |--------|-----------|-----------|----------|
@@ -359,10 +365,10 @@ in the [tutorial](https://ceandrade.github.io/brkga_mp_ipr_cpp).
 #### New type `fitness_t`
 
 Due to the inclusion of multi-objective optimization capabilities, the user now must
-define a type `fitness_t`, and his/her decoder must return such a type.
+define a type `fitness_t`, and its/decoder must return such a type.
 The user can do things like this:
 
-Please, check for details in Sections
+Please, check the details in Sections
 ["TL;DR - Multi objective"](http://localhost:8000/page_guide.html#tl-dr-multi-objective)
 and
 ["Using BRKGA-MP-IPR on multi-objective mode"](https://ceandrade.github.io/brkga_mp_ipr_cpp/page_guide.html#using-brkga-mp-ipr-on-multi-objective-mode)
@@ -377,7 +383,7 @@ Now, `setInitialPopulation()` fills up all populations.
 
 #### Changes in `BRKGA::injectChromosome()`
 
-`injectChromosome()` does not accept initial fitness value anymore. Now, `injectChromosome()` triggers the decoder in all cases (and therefore, time must be measured on its call).
+`injectChromosome()` does not accept an initial fitness value anymore. Now, `injectChromosome()` triggers the decoder in all cases (and therefore, time must be measured on its call).
 [More details here.](https://ceandrade.github.io/brkga_mp_ipr_cpp/class_BRKGA_BRKGA_MP_IPR.html#doxid-class-b-r-k-g-a-1-1-b-r-k-g-a-m-p-i-p-r-1a0347f67b59bfe36856d1c27c95d4b151)
 
 #### Pump to C++ 17
@@ -397,7 +403,7 @@ BRKGA-MP-IPR is a header-only framework, which means that you only need to
 download the header files and tell your compiler to include the path to where
 the files were downloaded.
 
-Quick example (unix): assume we are in an empty folder. So, we copy/clone
+Quick example (Unix): assume we are in an empty folder. So, we copy/clone
 BRKGA-IPR-MP first:
 
 ```terminal
@@ -423,7 +429,7 @@ int main() {
 }
 ```
 
-Then, let's compile and see it works:
+Then, let's compile and see if it works:
 
 ```terminal
   $ g++ --version
@@ -435,7 +441,7 @@ Then, let's compile and see it works:
   Testing sense: MINIMIZE
 ```
 
-Note the Git clones the whole repository that contains the library code,
+Note that Git clones the whole repository containing the library code,
 documents, and examples. All the examples were built using
 [GNU/Make](https://www.gnu.org/software/make) and
 [GCC toolchain](https://gcc.gnu.org). However, the code is standard C++,
@@ -447,7 +453,7 @@ and we can quickly adapt it to other toolchains such as
 :zap: Usage - TL;DR, Single objective
 --------------------------------------------------------------------------------
 
-The best way to keep it short is to look in the on examples on
+The best way to keep it short is to look at the examples on
 [the git repo.](https://github.com/ceandrade/brkga_mp_ipr_cpp/tree/master/examples)
 Let's start solving the traditional single-objective
 [Traveling Salesman Problem (TSP)](https://en.wikipedia.org/wiki/Travelling_salesman_problem).
@@ -470,7 +476,7 @@ using fitness_t = double;
 ```
 
 Here, `fitness_t` defines the type of the objective function value. In the vast
-majority of the cases, `double` suffices. Let's take a look into the main call
+majority of the cases, `double` suffices. Let's take a look at the main call
 [main_minimal.cpp](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_minimal.cpp).
 This is a trimmed copy:
 
@@ -570,7 +576,7 @@ You can identify the following basic steps:
    has the correct type;
 
 3. Implement a decoder object/functor. This function translates a chromosome
-   (array of numbers in the interval [0, 1]) to a solution for your problem.
+   (an array of numbers in the interval [0, 1]) to a solution for your problem.
    The decoder must return the solution value or cost to be used as fitness
    by BRKGA (example
    [`decoders/tsp_decoder.hpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/decoders/tsp_decoder.hpp));
@@ -589,13 +595,13 @@ provides a very minimal example to understand the necessary steps to use the
 BRKGA-MP-IPR framework. However,
 [`main_complete.cpp`](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/examples/tsp/src/single_obj/main_complete.cpp)
 provides a full-featured code, handy for scientific use, such as
-experimentation and paper writing. This code allows fine-grained control of
-the optimization, shows several features of BRKGA-MP-IPR such as the resets,
+experimentation and paper writing. This code allows fine-grained optimization control, 
+showing several features of BRKGA-MP-IPR, such as the resets,
 chromosome injection, and others. It also logs
-all optimization steps, _creating outputs easy to be parsed._ **You should use
-this code for serious business and experimentation.**
+all optimization steps, _creating outputs easy to be parsed._ 
+**You should use this code for serious business and experimentation.**
 
-These are the basic steps, but I do recommend the full reading of [the guide](https://ceandrade.github.io/brkga_mp_ipr_cpp).
+These are the basic steps, but I do recommend the entire reading of [the guide](https://ceandrade.github.io/brkga_mp_ipr_cpp).
 
 :zap: Usage - TL;DR, Multi objective
 --------------------------------------------------------------------------------
@@ -629,12 +635,12 @@ using fitness_t = std::tuple<double, double>;
 In this case, the first component of the tuple holds the tour length, and the
 second contains the largest edge. On Section
 [Using BRKGA-MP on multi-objective mode](https://ceandrade.github.io/brkga_mp_ipr_cpp/page_guide.html#using-brkga-mp-ipr-on-multi-objective-mode),
-we talk with more details about multi-objective problems. Just keep in mind,
+we talk in more detail about multi-objective problems. Remember that
 although you could use any type for your `fitness_t`, you should prefer to use
 `std::tuple`.
 
 The remaining code is almost identical to the single-objective. The only
-differences are in computing the largest edge, and printing such information on
+differences are computing the largest edge, and printing such information on
 the main call. All the steps described briefly in the
 [previous section](#zap-usage---tldr-single-objective) are also used here.
 
@@ -642,7 +648,8 @@ the main call. All the steps described briefly in the
 --------------------------------------------------------------------------------
 
 We provide a very thorough and easy-to-follow tutorial on using BRKGA effectively.
-We strongly recommend you read the tutorial to make your code works at best within BRKGA.
+We strongly recommend that you read the tutorial to make sure your code works 
+at best within BRKGA.
 
 Check out the tutorial and API documentation:
 <https://ceandrade.github.io/brkga_mp_ipr_cpp>
@@ -650,10 +657,10 @@ Check out the tutorial and API documentation:
 :black_nib: License and Citing
 --------------------------------------------------------------------------------
 
-BRKGA-MP-IPR uses a permissive BSD-like license and it can be used as it
-pleases you. And since this framework is also part of an academic effort, we
-kindly ask you to remember to cite the originating paper of this work.
-Indeed, Clause 4 estipulates that "all publications, softwares, or any other
+BRKGA-MP-IPR uses a permissive BSD-like license.
+And since this framework is also part of an academic effort, 
+please remember to cite the originating paper of this work.
+Indeed, Clause 4 stipulates that "all publications, softwares, or any other
 materials mentioning features or use of this software (as a whole package or
 any parts of it) and/or the data used to test it must cite the following
 article explicitly":
@@ -670,14 +677,12 @@ If you are using the multi-objective version, you must also cite this paper:
 > _IEEE Transactions on Evolutionary Computation_, to appear, 2022.
 > DOI: [10.1109/TEVC.2022.3185927](https://doi.org/10.1109/TEVC.2022.3185927).
 
-You may also consider to cite the following papers from people that helped
-to find bugs and develop new features for BRKGA-MP-IPR 2.0:
+[Check it out the full license.](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md)
 
-> A.F. Kummer N., L.S. Buriol, O.C.B. de Araujo. A biased random key genetic
-> algorithm applied to the VRPTW with skill requirements and synchronization
-> constraints. *Proceedings of the 2020 Genetic and Evolutionary Computation
-> Conference (GECCO '20)*, pages 717-724, 2020.
-> DOI: [10.1145/3377930.3390209](https://doi.org/10.1145/3377930.3390209).
+You may also find it very useful to read these reviews:
+
+- [Biased random-key genetic algorithms: A review](https://doi.org/10.1016/j.ejor.2024.03.030)
+- [Early years of Biased Random-Key Genetic Algorithms: A systematic review](https://doi.org/10.1007/s10898-024-01446-5)
 
 You can download all references for this
 [:open_file_folder: Bibtex](https://ceandrade.github.io/brkga_mp_ipr_cpp/_downloads/9e03f77296678467b193eb411a9ebc25/references.bib),
@@ -685,7 +690,14 @@ or this
 [:open_file_folder: RIS](https://ceandrade.github.io/brkga_mp_ipr_cpp/_downloads/89ca66b5c665a51fcb314b01f33d167e/references.ris)
 files.
 
-[Check it out the full license.](https://github.com/ceandrade/brkga_mp_ipr_cpp/blob/master/LICENSE.md)
+You may also consider citing the following papers from people who helped
+to find bugs and develop new features for BRKGA-MP-IPR 2.0:
+
+> A.F. Kummer N., L.S. Buriol, O.C.B. de Araujo. A biased random key genetic
+> algorithm applied to the VRPTW with skill requirements and synchronization
+> constraints. *Proceedings of the 2020 Genetic and Evolutionary Computation
+> Conference (GECCO '20)*, pages 717-724, 2020.
+> DOI: [10.1145/3377930.3390209](https://doi.org/10.1145/3377930.3390209).
 
 :muscle: Collaborators
 --------------------------------------------------------------------------------
