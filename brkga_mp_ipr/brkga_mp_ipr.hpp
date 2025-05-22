@@ -3786,7 +3786,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                 << "Reset population after " << control_params.reset_interval
                 << " iterations without improvement. "
                 << "Iteration " << status.current_iteration << ". "
-                << "Current time: " << status.current_time
+                << "Current time: " << status.current_time.count()
                 << std::endl;
             }
         } // End of reset.

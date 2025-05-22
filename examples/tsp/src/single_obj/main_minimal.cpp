@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
         // Find good solutions / evolve
         ////////////////////////////////////////
 
-        cout << "Running for " << control_params.maximum_running_time << "..."
+        cout << "Running for " << control_params.maximum_running_time.count() << " seconds..."
              << endl;
 
         const auto final_status = algorithm.run(control_params, &cout);

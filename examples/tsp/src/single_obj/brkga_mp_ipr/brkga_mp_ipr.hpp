@@ -1305,7 +1305,7 @@ operator<<(std::ostream& os, const BrkgaParams& brkga_params) {
 INLINE std::ostream&
 operator<<(std::ostream& os, const ControlParams& control_params) {
     os
-    << "maximum_running_time " << control_params.maximum_running_time << "\n"
+    << "maximum_running_time " << control_params.maximum_running_time.count() << "\n"
     << "exchange_interval " << control_params.exchange_interval << "\n"
     << "shake_interval " << control_params.shake_interval << "\n"
     << "ipr_interval " << control_params.ipr_interval << "\n"
@@ -1474,11 +1474,11 @@ std::ostream& operator<<(std::ostream& output, const AlgorithmStatus& status) {
     << "\nbest_fitness: " << status.best_fitness
     << "\ncurrent_iteration: " << status.current_iteration
     << "\nlast_update_iteration: " << status.last_update_iteration
-    << "\ncurrent_time: " << status.current_time
-    << "\nlast_update_time: " << status.last_update_time
+    << "\ncurrent_time: " << status.current_time.count()
+    << "\nlast_update_time: " << status.last_update_time.count()
     << "\nlargest_iteration_offset: " << status.largest_iteration_offset
     << "\nstalled_iterations: " << status.stalled_iterations
-    << "\npath_relink_time: " << status.path_relink_time
+    << "\npath_relink_time: " << status.path_relink_time.count()
     << "\nnum_path_relink_calls: " << status.num_path_relink_calls
     << "\nnum_homogenities: " << status.num_homogenities
     << "\nnum_best_improvements: " << status.num_best_improvements
@@ -3488,7 +3488,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
         if(logger) {
             *logger
             << "Custom stopping criteria not supplied by the user. "
-            << "Using max. time = " << control_params.maximum_running_time
+            << "Using max. time = " << control_params.maximum_running_time.count()
             << " and max. stall_offset = " << control_params.stall_offset
             << std::endl;
         }
@@ -3500,7 +3500,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
     if(logger) {
         *logger
         << "Using custom stopping supplied by the user and "
-        << "max. time = " << control_params.maximum_running_time
+        << "max. time = " << control_params.maximum_running_time.count()
         << " and max. stall_offset = " << control_params.stall_offset
         << std::endl;
     }
@@ -3587,7 +3587,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                 << "Block size: " << block_size << ". "
                 << "Type: " << params.pr_type << ". "
                 << "Distance: " << params.pr_distance_function_type << ". "
-                << "Current time: " << status.current_time
+                << "Current time: " << status.current_time.count()
                 << std::endl;
             }
 
@@ -3618,7 +3618,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                     if(logger) {
                         *logger
                         << "- Populations are too too homogeneous. "
-                        << "Current time: " << status.current_time
+                        << "Current time: " << status.current_time.count()
                         << std::endl;
                     }
                     break;
@@ -3627,7 +3627,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                     if(logger) {
                         *logger
                         << "- No improvement found. "
-                        << "Current time: " << status.current_time
+                        << "Current time: " << status.current_time.count()
                         << std::endl;
                     }
                     break;
@@ -3638,7 +3638,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                         *logger
                         << "- Improvement on the elite set but not in "
                            "the best individual. "
-                        << "Current time: " << status.current_time
+                        << "Current time: " << status.current_time.count()
                         << std::endl;
                     }
                     break;
@@ -3648,7 +3648,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                     if(logger) {
                         *logger
                         << "- Improvement in the best individual. "
-                        << "Current time: " << status.current_time
+                        << "Current time: " << status.current_time.count()
                         << std::endl;
                     }
 
@@ -3695,7 +3695,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                 << "Exchanged " << params.num_exchange_individuals
                 << " solutions from each population. "
                 << "Iteration " << status.current_iteration << ". "
-                << "Current time: " << status.current_time
+                << "Current time: " << status.current_time.count()
                 << std::endl;
             }
         } // End of exchange.
@@ -3764,7 +3764,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                 *logger
                 << "Type " << params.shaking_type << ". "
                 << "Iteration " << status.current_iteration << ". "
-                << "Current time: " << status.current_time
+                << "Current time: " << status.current_time.count()
                 << std::endl;
             }
 
@@ -3788,7 +3788,7 @@ BRKGA::AlgorithmStatus BRKGA_MP_IPR<Decoder>::run(
                 << "Reset population after " << control_params.reset_interval
                 << " iterations without improvement. "
                 << "Iteration " << status.current_iteration << ". "
-                << "Current time: " << status.current_time
+                << "Current time: " << status.current_time.count()
                 << std::endl;
             }
         } // End of reset.
