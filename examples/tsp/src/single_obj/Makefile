@@ -89,7 +89,7 @@ MAIN_MAXIMUM_ITERATIONS_EXE = main_maximum_iterations
 ###############################################################################
 
 # C++ Compiler command and flags
-CXX = g++
+CXX = g++-10
 # CXX = clang++
 
 USER_FLAGS += -std=c++20

@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "*.mustache": "mustache",
+        "chrono": "cpp",
+        "iostream": "cpp"
+    }
+}

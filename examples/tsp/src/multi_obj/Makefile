@@ -86,7 +86,7 @@ MAIN_COMPLETE_EXE = main_complete
 ###############################################################################
 
 # C++ Compiler command and flags
-CXX = g++
+CXX = g++-10
 # CXX = clang++
 
 USER_FLAGS += -std=c++20
