@@ -137,7 +137,7 @@ Options:
         using namespace std::chrono_literals;
         if(max_time <= 0s) {
             stringstream ss;
-            ss << "'maxtime' must be > 0. Given '" << max_time << "'";
+            ss << "'maxtime' must be > 0. Given '" << max_time.count() << "'";
             throw std::logic_error(ss.str());
         }
 
@@ -240,7 +240,7 @@ Options:
                 << "* " << status.current_iteration << " | "
                 << get<0>(status.best_fitness) << " | "
                 << get<1>(status.best_fitness) << " | "
-                << status.current_time
+                << status.current_time.count()
                 << endl;
                 return true;    // Don't stop the optimization.
             }
